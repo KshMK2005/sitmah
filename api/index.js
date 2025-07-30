@@ -1,7 +1,7 @@
-const express = require('express');
-const cors = require('cors');
-const mongoose = require('mongoose');
-const dotenv = require('dotenv');
+import express from 'express';
+import cors from 'cors';
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 
 // Cargar variables de entorno
 dotenv.config();
@@ -30,10 +30,10 @@ const connectDB = async () => {
 };
 
 // Importar modelos
-const Usuario = require('../src/database/models/Usuario');
-const Apertura = require('../src/database/models/Apertura');
-const Programacion = require('../src/database/models/Programacion');
-const Operador = require('../src/database/models/Operador');
+import Usuario from '../src/database/models/Usuario.js';
+import Apertura from '../src/database/models/Apertura.js';
+import Programacion from '../src/database/models/Programacion.js';
+import Operador from '../src/database/models/Operador.js';
 
 // Rutas básicas
 app.get('/', (req, res) => {
@@ -149,4 +149,4 @@ app.use((err, req, res, next) => {
 // Conectar a la base de datos antes de exportar
 connectDB();
 
-module.exports = app; 
+export default app; 
