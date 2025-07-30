@@ -1,4 +1,6 @@
-const API_URL = process.env.NODE_ENV === 'production' 
+// Detectar si estamos en producción (Vercel)
+const isProduction = window.location.hostname !== 'localhost';
+const API_URL = isProduction 
   ? 'https://sitmah.vercel.app/api' 
   : 'http://localhost:5000/api';
 
