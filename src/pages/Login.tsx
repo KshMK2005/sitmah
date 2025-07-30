@@ -43,7 +43,12 @@ export default function Login() {
         }
 
         try {
+            console.log('Intentando login con usuario:', userId);
+            console.log('URL de API:', window.location.hostname);
+            
             const user = await usuarioService.getByUsuario(userId);
+            console.log('Respuesta de la API:', user);
+            
             if (!user) {
                 Swal.fire('Error', 'Usuario no encontrado', 'error');
                 return;
@@ -75,6 +80,7 @@ export default function Login() {
                     navigate('/');
             }
         } catch (err) {
+            console.error('Error en login:', err);
             Swal.fire('Error', 'Error al iniciar sesión', 'error');
         }
     };
