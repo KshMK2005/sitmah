@@ -1,0 +1,24 @@
+/* Ajuste específico para landscape: evita que el título quede tapado por el navbar en Historial */
+@media (orientation: landscape) and (max-height: 500px) {
+  .apertura-content h2 {
+    margin-top: 4.5rem !important;
+  }
+}
+
+/* Cards responsivas en Historial */
+@media (max-width: 900px) {
+  .apertura-content .apertura-card {
+    min-width: 180px !important;
+    flex: 1 1 180px !important;
+    font-size: 0.95rem;
+    padding: 0.7rem !important;
+  }
+}
+@media (max-width: 600px) {
+  .apertura-content .apertura-card {
+    min-width: 120px !important;
+    flex: 1 1 100%;
+    font-size: 0.92rem;
+    padding: 0.5rem !important;
+  }
+}

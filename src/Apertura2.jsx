@@ -1,0 +1,1 @@
+// Archivo eliminado por reestructuración del flujo de apertura. Fecha: 2 de julio de 2025
