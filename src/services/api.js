@@ -1,8 +1,12 @@
 // Detectar si estamos en producción (Vercel)
-const isProduction = window.location.hostname !== 'localhost';
+const isProduction = window.location.hostname !== 'localhost' && !window.location.hostname.includes('localhost');
 const API_URL = isProduction 
   ? 'https://sitmah.vercel.app/api' 
   : 'http://localhost:5000/api';
+
+console.log('API_URL configurada:', API_URL);
+console.log('Hostname actual:', window.location.hostname);
+console.log('¿Es producción?', isProduction);
 
 // Servicio para programaciones
 export const programacionService = {
