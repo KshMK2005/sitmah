@@ -18,6 +18,10 @@ const connectDB = async () => {
     console.log('Intentando conectar a MongoDB...');
     console.log('MONGODB_URI:', process.env.MONGODB_URI ? 'Definida' : 'No definida');
     
+    if (!process.env.MONGODB_URI) {
+      throw new Error('MONGODB_URI no está definida');
+    }
+    
     await mongoose.connect(process.env.MONGODB_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -147,6 +151,8 @@ app.use((err, req, res, next) => {
 });
 
 // Conectar a la base de datos antes de exportar
-connectDB();
+connectDB().catch(error => {
+  console.error('Error al conectar a la base de datos:', error);
+});
 
 export default app; 
