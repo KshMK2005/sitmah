@@ -30,10 +30,10 @@ const connectDB = async () => {
 };
 
 // Importar modelos
-import Usuario from '../src/database/models/Usuario.js';
-import Apertura from '../src/database/models/Apertura.js';
-import Programacion from '../src/database/models/Programacion.js';
-import Operador from '../src/database/models/Operador.js';
+import Usuario from '../server/database/models/Usuario.js';
+import Apertura from '../server/database/models/Apertura.js';
+import Programacion from '../server/database/models/Programacion.js';
+import Operador from '../server/database/models/Operador.js';
 
 // Rutas básicas
 app.get('/', (req, res) => {
