@@ -1,4 +1,8 @@
-const API_URL = 'http://localhost:5000/api';
+// Detectar si estamos en producción (Vercel)
+const isProduction = window.location.hostname !== 'localhost';
+const API_URL = isProduction 
+  ? 'https://sitmah.vercel.app/api' 
+  : 'http://localhost:5000/api';
 
 export const operadorService = {
     // Buscar operador por tarjetón

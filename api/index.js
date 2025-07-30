@@ -56,6 +56,19 @@ app.post('/usuarios', async (req, res) => {
   }
 });
 
+// Buscar usuario por nombre de usuario
+app.get('/usuarios/:usuario', async (req, res) => {
+  try {
+    const usuario = await Usuario.findOne({ usuario: req.params.usuario });
+    if (!usuario) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+    res.json(usuario);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // Rutas de operadores
 app.get('/operadores', async (req, res) => {
   try {
