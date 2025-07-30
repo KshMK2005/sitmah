@@ -1,7 +1,7 @@
-// Forzar URL de producción para Vercel
+// Usar el mismo dominio que el frontend para evitar CORS
 const isProduction = window.location.hostname !== 'localhost';
 const API_URL = isProduction 
-  ? 'https://sitmah.vercel.app/api' 
+  ? `/api` 
   : 'http://localhost:5000/api';
 
 console.log('API_URL configurada:', API_URL);
