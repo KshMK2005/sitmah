@@ -15,13 +15,17 @@ app.use(express.json());
 // Conectar a MongoDB Atlas
 const connectDB = async () => {
   try {
+    console.log('Intentando conectar a MongoDB...');
+    console.log('MONGODB_URI:', process.env.MONGODB_URI ? 'Definida' : 'No definida');
+    
     await mongoose.connect(process.env.MONGODB_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-    console.log('MongoDB conectado');
+    console.log('MongoDB conectado exitosamente');
   } catch (error) {
     console.error('Error conectando a MongoDB:', error);
+    throw error;
   }
 };
 
@@ -59,12 +63,17 @@ app.post('/usuarios', async (req, res) => {
 // Buscar usuario por nombre de usuario
 app.get('/usuarios/:usuario', async (req, res) => {
   try {
+    console.log('Buscando usuario:', req.params.usuario);
     const usuario = await Usuario.findOne({ usuario: req.params.usuario });
+    console.log('Usuario encontrado:', usuario);
+    
     if (!usuario) {
+      console.log('Usuario no encontrado');
       return res.status(404).json({ error: 'Usuario no encontrado' });
     }
     res.json(usuario);
   } catch (error) {
+    console.error('Error buscando usuario:', error);
     res.status(500).json({ error: error.message });
   }
 });
