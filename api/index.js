@@ -121,6 +121,68 @@ app.post('/api/apertura', async (req, res) => {
   }
 });
 
+// Actualizar apertura por ID
+app.put('/api/apertura/:id', async (req, res) => {
+  try {
+    console.log('Actualizando apertura:', req.params.id);
+    console.log('Datos a actualizar:', req.body);
+    
+    const apertura = await Apertura.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+    
+    if (!apertura) {
+      return res.status(404).json({ error: 'Apertura no encontrada' });
+    }
+    
+    console.log('Apertura actualizada:', apertura);
+    res.json(apertura);
+  } catch (error) {
+    console.error('Error actualizando apertura:', error);
+    res.status(400).json({ error: error.message });
+  }
+});
+
+// Eliminar apertura por ID
+app.delete('/api/apertura/:id', async (req, res) => {
+  try {
+    console.log('Eliminando apertura:', req.params.id);
+    
+    const apertura = await Apertura.findByIdAndDelete(req.params.id);
+    
+    if (!apertura) {
+      return res.status(404).json({ error: 'Apertura no encontrada' });
+    }
+    
+    console.log('Apertura eliminada:', apertura);
+    res.json({ message: 'Apertura eliminada exitosamente' });
+  } catch (error) {
+    console.error('Error eliminando apertura:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Obtener apertura por ID
+app.get('/api/apertura/:id', async (req, res) => {
+  try {
+    console.log('Buscando apertura:', req.params.id);
+    
+    const apertura = await Apertura.findById(req.params.id);
+    
+    if (!apertura) {
+      return res.status(404).json({ error: 'Apertura no encontrada' });
+    }
+    
+    console.log('Apertura encontrada:', apertura);
+    res.json(apertura);
+  } catch (error) {
+    console.error('Error buscando apertura:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // Rutas de programación
 app.get('/api/programacion', async (req, res) => {
   try {
@@ -138,6 +200,68 @@ app.post('/api/programacion', async (req, res) => {
     res.status(201).json(programacion);
   } catch (error) {
     res.status(400).json({ error: error.message });
+  }
+});
+
+// Actualizar programación por ID
+app.put('/api/programacion/:id', async (req, res) => {
+  try {
+    console.log('Actualizando programación:', req.params.id);
+    console.log('Datos a actualizar:', req.body);
+    
+    const programacion = await Programacion.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+    
+    if (!programacion) {
+      return res.status(404).json({ error: 'Programación no encontrada' });
+    }
+    
+    console.log('Programación actualizada:', programacion);
+    res.json(programacion);
+  } catch (error) {
+    console.error('Error actualizando programación:', error);
+    res.status(400).json({ error: error.message });
+  }
+});
+
+// Eliminar programación por ID
+app.delete('/api/programacion/:id', async (req, res) => {
+  try {
+    console.log('Eliminando programación:', req.params.id);
+    
+    const programacion = await Programacion.findByIdAndDelete(req.params.id);
+    
+    if (!programacion) {
+      return res.status(404).json({ error: 'Programación no encontrada' });
+    }
+    
+    console.log('Programación eliminada:', programacion);
+    res.json({ message: 'Programación eliminada exitosamente' });
+  } catch (error) {
+    console.error('Error eliminando programación:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Obtener programación por ID
+app.get('/api/programacion/:id', async (req, res) => {
+  try {
+    console.log('Buscando programación:', req.params.id);
+    
+    const programacion = await Programacion.findById(req.params.id);
+    
+    if (!programacion) {
+      return res.status(404).json({ error: 'Programación no encontrada' });
+    }
+    
+    console.log('Programación encontrada:', programacion);
+    res.json(programacion);
+  } catch (error) {
+    console.error('Error buscando programación:', error);
+    res.status(500).json({ error: error.message });
   }
 });
 
