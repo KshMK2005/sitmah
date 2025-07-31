@@ -356,43 +356,6 @@ function HistorialVerificador() {
       </main>
     </div>
   );
-                    fontSize: '0.98rem',
-                  }}>
-                    <div><strong style={{ color: '#6F2234' }}>Ruta:</strong> {ap.ruta}</div>
-                    <div><strong style={{ color: '#6F2234' }}>Tipo Unidad:</strong> {ap.tipoUnidad}</div>
-                    <div><strong style={{ color: '#6F2234' }}>Económico:</strong> {ap.economico}</div>
-                    <div><strong style={{ color: '#6F2234' }}>Tarjetón:</strong> {ap.tarjeton}</div>
-                    <div><strong style={{ color: '#6F2234' }}>Nombre:</strong> {ap.nombre}</div>
-                    <div><strong style={{ color: '#6F2234' }}>Corrida Inicial:</strong> {ap.corridaInicial}</div>
-                    <div><strong style={{ color: '#6F2234' }}>Corrida Final:</strong> {ap.corridaFinal}</div>
-                    <div><strong style={{ color: '#6F2234' }}>Hora Salida:</strong> {ap.horaSalida}</div>
-                    <div><strong style={{ color: '#6F2234' }}>Estado:</strong> 
-                      <span style={{
-                        color: ap.estado === 'cancelado' ? '#dc3545' : 
-                               ap.estado === 'dashboard' ? '#28a745' : 
-                               ap.estado === 'retrasado' ? '#ffc107' : '#6c757d',
-                        fontWeight: 'bold'
-                      }}>
-                        {ap.estado === 'cancelado' ? 'Rechazado' : 
-                         ap.estado === 'dashboard' ? 'Aprobado' : 
-                         ap.estado === 'retrasado' ? 'Retrasado' : 
-                         ap.estado === 'completado' ? 'Completado' : ap.estado}
-                      </span>
-                    </div>
-                    <div><strong style={{ color: '#6F2234' }}>Fecha Apertura:</strong> {ap.fechaApertura ? (new Date(ap.fechaApertura).toLocaleDateString()) : ''}</div>
-                    <div><strong style={{ color: '#6F2234' }}>Motivo:</strong> {ap.estado === 'cancelado' ? (ap.observaciones || '-') : '-'}</div>
-                    {ap.retraso && (
-                      <div><strong style={{ color: '#ffc107' }}>⚠️ Retraso:</strong> {ap.observaciones || 'Retraso detectado automáticamente'}</div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))
-        )}
-      </main>
-    </div>
-  );
 }
 
 export default HistorialVerificador;
