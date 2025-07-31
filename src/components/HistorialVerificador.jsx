@@ -74,13 +74,7 @@ function HistorialVerificador() {
     return cumpleAnio && cumpleMes;
   });
 
-  // Agrupar aperturas filtradas por día
-  const aperturasAgrupadas = aperturasFiltradas.reduce((acc, ap) => {
-    const dia = ap.fechaApertura ? (new Date(ap.fechaApertura).toLocaleDateString()) : "Sin fecha";
-    if (!acc[dia]) acc[dia] = [];
-    acc[dia].push(ap);
-    return acc;
-  }, {});
+
 
   // Función para manejar la expansión de filas
   const toggleRowExpansion = (aperturaId) => {
