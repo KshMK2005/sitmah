@@ -225,8 +225,7 @@ function HistorialVerificador() {
                     <th style={{ padding: '1rem', textAlign: 'center', fontWeight: '600' }}>Acciones</th>
                   </tr>
                 </thead>
-                <tbody>
-                  {aperturasFiltradas.map((ap, index) => (
+                {aperturasFiltradas.map((ap, index) => (
                     <React.Fragment key={ap._id || index}>
                       <tr style={{ 
                         background: index % 2 === 0 ? '#fff' : '#f8f9fa',
@@ -345,7 +344,6 @@ function HistorialVerificador() {
                       )}
                     </React.Fragment>
                   ))}
-                </tbody>
               </table>
             </div>
           </div>
