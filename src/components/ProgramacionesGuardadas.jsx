@@ -7,6 +7,7 @@ function ProgramacionesGuardadas() {
   const [programaciones, setProgramaciones] = useState([]);
   const [filtro, setFiltro] = useState({ tipoVehiculo: '', ruta: '', fecha: '' });
   const [filtradas, setFiltradas] = useState([]);
+  const [expandedRows, setExpandedRows] = useState(new Set());
   const role = localStorage.getItem('userRole');
 
   useEffect(() => {
@@ -37,51 +38,272 @@ function ProgramacionesGuardadas() {
     setFiltradas(resultado);
   }, [filtro, programaciones]);
 
+  // Función para manejar la expansión de filas
+  const toggleRowExpansion = (programacionId) => {
+    const newExpandedRows = new Set(expandedRows);
+    if (newExpandedRows.has(programacionId)) {
+      newExpandedRows.delete(programacionId);
+    } else {
+      newExpandedRows.add(programacionId);
+    }
+    setExpandedRows(newExpandedRows);
+  };
+
+  // Función para formatear fecha
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('es-MX', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    });
+  };
+
   return (
     <div className="programador-page">
       {(!role || role !== 'administrador') && <NavbarProgramador />}
-      <main className="programador-content" style={{ maxWidth: '1100px', margin: '0 auto', padding: '2rem' }}>
-        <h2 style={{ color: '#6F2234', fontSize: '2rem', marginBottom: '2rem', letterSpacing: '0.5px', marginTop: '3.5rem' }}>Programaciones Guardadas</h2>
-        <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem', flexWrap: 'wrap', justifyContent: 'center' }}>
-          <select value={filtro.tipoVehiculo} onChange={e => setFiltro(f => ({ ...f, tipoVehiculo: e.target.value }))}>
-            <option value="">Tipo de Vehículo</option>
+      <main className="programador-content" style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem' }}>
+        {/* Header */}
+        <div style={{ 
+          background: 'linear-gradient(135deg, #6F2234 0%, #8B2E3F 100%)', 
+          borderRadius: '12px', 
+          padding: '1.5rem', 
+          marginBottom: '2rem',
+          boxShadow: '0 4px 20px rgba(111, 34, 52, 0.2)'
+        }}>
+          <h2 style={{ 
+            color: '#fff', 
+            fontSize: '2rem', 
+            margin: 0,
+            fontWeight: '600',
+            textAlign: 'center'
+          }}>
+            📊 Programaciones Guardadas
+          </h2>
+        </div>
+
+        {/* Filtros compactos */}
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'center', 
+          gap: '1rem',
+          marginBottom: '2rem',
+          flexWrap: 'wrap'
+        }}>
+          <select 
+            value={filtro.tipoVehiculo} 
+            onChange={e => setFiltro(f => ({ ...f, tipoVehiculo: e.target.value }))}
+            style={{ 
+              padding: '0.5rem 1rem', 
+              borderRadius: '8px', 
+              border: '2px solid #e0e0e0',
+              background: '#fff',
+              fontSize: '1rem',
+              minWidth: '150px'
+            }}
+          >
+            <option value="">Todos los tipos</option>
             <option value="GRAN VIALE">GRAN VIALE</option>
             <option value="BOXER">BOXER</option>
             <option value="SPRINTER">SPRINTER</option>
             <option value="VAGONETA">VAGONETA</option>
           </select>
-          <input type="text" placeholder="Ruta" value={filtro.ruta} onChange={e => setFiltro(f => ({ ...f, ruta: e.target.value }))} />
-          <input type="date" value={filtro.fecha} onChange={e => setFiltro(f => ({ ...f, fecha: e.target.value }))} />
+          <input 
+            type="text" 
+            placeholder="Buscar por ruta" 
+            value={filtro.ruta} 
+            onChange={e => setFiltro(f => ({ ...f, ruta: e.target.value }))}
+            style={{ 
+              padding: '0.5rem 1rem', 
+              borderRadius: '8px', 
+              border: '2px solid #e0e0e0',
+              background: '#fff',
+              fontSize: '1rem',
+              minWidth: '150px'
+            }}
+          />
+          <input 
+            type="date" 
+            value={filtro.fecha} 
+            onChange={e => setFiltro(f => ({ ...f, fecha: e.target.value }))}
+            style={{ 
+              padding: '0.5rem 1rem', 
+              borderRadius: '8px', 
+              border: '2px solid #e0e0e0',
+              background: '#fff',
+              fontSize: '1rem',
+              minWidth: '150px'
+            }}
+          />
         </div>
-        <div className="programaciones-list" style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(290px, 1fr))',
-          gap: '2rem',
-          justifyItems: 'center',
-          alignItems: 'stretch',
-          width: '100%',
-        }}>
-          {filtradas.length === 0 ? (
-            <div className="archivo-uploader">No hay programaciones guardadas.</div>
-          ) : (
-            filtradas.map(p => (
-              <div key={p._id} className="programacion-card" style={{ background: '#fff', borderRadius: 12, boxShadow: '0 2px 8px rgba(0,0,0,0.10)', padding: '1.5rem', minWidth: 0, width: '100%', maxWidth: 350, boxSizing: 'border-box', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-start' }}>
-                <h4 style={{ color: '#6F2234', fontSize: '1.2rem', marginBottom: '0.7rem' }}>Ruta: {p.ruta}</h4>
-                <p>Tipo de Vehículo: {p.tipoVehiculo}</p>
-                <p>Unidades: {p.cantidadUnidades}</p>
-                <p>Intervalo: {p.intervalo} min</p>
-                <p>Corridas: {p.corridaInicial} - {p.corridaFinal}</p>
-                <p>Hora de Salida: {p.horaSalida}</p>
-                <p>Fecha: {p.fechaCreacion ? new Date(p.fechaCreacion).toLocaleDateString() : '-'}</p>
-                <div className="horarios-list" style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '0.5rem' }}>
-                  {p.horarios && p.horarios.map((h, i) => (
-                    <div key={i} className="horario-badge" style={{ fontSize: '0.95rem', background: '#eee', borderRadius: 4, padding: '2px 8px' }}>{h.hora} - Corrida {h.corrida}</div>
+
+        {/* Tabla de programaciones */}
+        {filtradas.length === 0 ? (
+          <div style={{ 
+            textAlign: 'center', 
+            padding: '3rem', 
+            background: '#f8f9fa', 
+            borderRadius: '12px',
+            border: '2px dashed #dee2e6'
+          }}>
+            <p style={{ color: '#6F2234', fontSize: '1.2rem', margin: 0 }}>
+              No hay programaciones guardadas para este periodo.
+            </p>
+          </div>
+        ) : (
+          <div style={{ 
+            background: '#fff', 
+            borderRadius: '12px', 
+            boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+            overflow: 'hidden'
+          }}>
+            {/* Tabla */}
+            <div style={{ overflowX: 'auto' }}>
+              <table style={{ 
+                width: '100%', 
+                borderCollapse: 'collapse',
+                fontSize: '0.95rem'
+              }}>
+                <thead>
+                  <tr style={{ 
+                    background: '#6F2234', 
+                    color: '#fff'
+                  }}>
+                    <th style={{ padding: '1rem', textAlign: 'left', fontWeight: '600' }}>Fecha</th>
+                    <th style={{ padding: '1rem', textAlign: 'left', fontWeight: '600' }}>Ruta</th>
+                    <th style={{ padding: '1rem', textAlign: 'left', fontWeight: '600' }}>Tipo</th>
+                    <th style={{ padding: '1rem', textAlign: 'center', fontWeight: '600' }}>Unidades</th>
+                    <th style={{ padding: '1rem', textAlign: 'center', fontWeight: '600' }}>Hora</th>
+                    <th style={{ padding: '1rem', textAlign: 'center', fontWeight: '600' }}>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filtradas.map((p, index) => (
+                    <React.Fragment key={p._id || index}>
+                      <tr style={{ 
+                        background: index % 2 === 0 ? '#fff' : '#f8f9fa',
+                        borderBottom: '1px solid #e9ecef'
+                      }}>
+                        <td style={{ padding: '1rem', fontWeight: '500' }}>
+                          {formatDate(p.fechaCreacion)}
+                        </td>
+                        <td style={{ padding: '1rem', fontWeight: '600', color: '#6F2234' }}>
+                          {p.ruta}
+                        </td>
+                        <td style={{ padding: '1rem' }}>
+                          {p.tipoVehiculo}
+                        </td>
+                        <td style={{ padding: '1rem', textAlign: 'center' }}>
+                          {p.cantidadUnidades}
+                        </td>
+                        <td style={{ padding: '1rem', textAlign: 'center' }}>
+                          <span style={{ 
+                            background: '#6F2234', 
+                            color: '#fff', 
+                            padding: '0.3rem 0.6rem', 
+                            borderRadius: '6px',
+                            fontSize: '0.9rem',
+                            fontWeight: '600'
+                          }}>
+                            {p.horaSalida}
+                          </span>
+                        </td>
+                        <td style={{ padding: '1rem', textAlign: 'center' }}>
+                          <button
+                            onClick={() => toggleRowExpansion(p._id)}
+                            style={{
+                              background: expandedRows.has(p._id) ? '#8B2E3F' : '#6F2234',
+                              color: '#fff',
+                              border: 'none',
+                              borderRadius: '6px',
+                              padding: '0.5rem 1rem',
+                              cursor: 'pointer',
+                              fontSize: '0.9rem',
+                              fontWeight: '500',
+                              transition: 'all 0.2s ease'
+                            }}
+                          >
+                            {expandedRows.has(p._id) ? '🔽 Ocultar' : '🔍 Ver'}
+                          </button>
+                        </td>
+                      </tr>
+                      {/* Fila expandible con detalles */}
+                      {expandedRows.has(p._id) && (
+                        <tr style={{ background: '#f8f9fa' }}>
+                          <td colSpan="6" style={{ padding: '1.5rem' }}>
+                            <div style={{ 
+                              background: '#fff', 
+                              borderRadius: '8px', 
+                              padding: '1.5rem',
+                              boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                            }}>
+                              <h4 style={{ 
+                                color: '#6F2234', 
+                                marginBottom: '1rem',
+                                fontSize: '1.1rem',
+                                fontWeight: '600'
+                              }}>
+                                Detalles de la Programación
+                              </h4>
+                              <div style={{ 
+                                display: 'grid', 
+                                gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', 
+                                gap: '1rem' 
+                              }}>
+                                <div><strong>Ruta:</strong> {p.ruta}</div>
+                                <div><strong>Tipo de Vehículo:</strong> {p.tipoVehiculo}</div>
+                                <div><strong>Número Económico:</strong> {p.numeroEconomico || '-'}</div>
+                                <div><strong>Cantidad de Unidades:</strong> {p.cantidadUnidades}</div>
+                                <div><strong>Intervalo:</strong> {p.intervalo} minutos</div>
+                                <div><strong>Corrida Inicial:</strong> {p.corridaInicial}</div>
+                                <div><strong>Corrida Final:</strong> {p.corridaFinal}</div>
+                                <div><strong>Hora de Salida:</strong> {p.horaSalida}</div>
+                                <div><strong>Programador:</strong> {p.programador || '-'}</div>
+                                <div><strong>Estado:</strong> 
+                                  <span style={{ 
+                                    background: p.estado === 'activo' ? '#28a745' : '#dc3545',
+                                    color: '#fff',
+                                    padding: '0.2rem 0.5rem',
+                                    borderRadius: '4px',
+                                    marginLeft: '0.5rem',
+                                    fontSize: '0.85rem'
+                                  }}>
+                                    {p.estado || 'N/A'}
+                                  </span>
+                                </div>
+                              </div>
+                              {p.horarios && p.horarios.length > 0 && (
+                                <div style={{ marginTop: '1rem' }}>
+                                  <h5 style={{ color: '#6F2234', marginBottom: '0.5rem' }}>Horarios Generados:</h5>
+                                  <div style={{ 
+                                    display: 'flex', 
+                                    flexWrap: 'wrap', 
+                                    gap: '0.5rem' 
+                                  }}>
+                                    {p.horarios.map((horario, idx) => (
+                                      <span key={idx} style={{
+                                        background: '#e9ecef',
+                                        padding: '0.3rem 0.6rem',
+                                        borderRadius: '4px',
+                                        fontSize: '0.9rem'
+                                      }}>
+                                        {horario.hora} - Corrida {horario.corrida}
+                                      </span>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                      )}
+                    </React.Fragment>
                   ))}
-                </div>
-              </div>
-            ))
-          )}
-        </div>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
       </main>
     </div>
   );
