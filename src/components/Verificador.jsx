@@ -47,6 +47,17 @@ function Verificador() {
 
     useEffect(() => {
         cargarAperturas();
+        // Verificar retrasos automáticamente cada minuto
+        const interval = setInterval(async () => {
+            try {
+                await aperturaService.verificarRetrasos();
+                cargarAperturas(); // Recargar para mostrar cambios
+            } catch (error) {
+                console.error('Error verificando retrasos:', error);
+            }
+        }, 60000); // Cada minuto
+
+        return () => clearInterval(interval);
     }, []);
 
     const cargarAperturas = async () => {
@@ -79,13 +90,37 @@ function Verificador() {
 
     const filtrarAperturas = () => {
         return aperturas.filter(ap => {
-            // Solo mostrar aperturas con estado 'completado' (o el estado que desees)
-            if (ap.estado !== 'completado') return false;
+            // Mostrar aperturas con estado 'completado' y 'pendiente' para verificación
+            if (!['completado', 'pendiente', 'retrasado'].includes(ap.estado)) return false;
             const cumpleRuta = !filtros.ruta || ap.ruta.toLowerCase().includes(filtros.ruta.toLowerCase());
             const cumpleTipo = !filtros.tipoUnidad || ap.tipoUnidad === filtros.tipoUnidad;
             const cumpleFecha = !filtros.fecha || new Date(ap.fechaApertura).toLocaleDateString() === new Date(filtros.fecha).toLocaleDateString();
             return cumpleRuta && cumpleTipo && cumpleFecha;
         });
+    };
+
+    // Función para obtener el color de fondo según el estado
+    const getEstadoColor = (estado, retraso) => {
+        if (retraso) return '#fff3cd'; // Amarillo claro para retrasos
+        switch (estado) {
+            case 'completado': return '#d4edda'; // Verde claro
+            case 'pendiente': return '#f8d7da'; // Rojo claro
+            case 'retrasado': return '#fff3cd'; // Amarillo claro
+            case 'dashboard': return '#cce5ff'; // Azul claro
+            default: return '#f8f9fa'; // Gris claro
+        }
+    };
+
+    // Función para obtener el color del texto según el estado
+    const getEstadoTextColor = (estado, retraso) => {
+        if (retraso) return '#856404'; // Amarillo oscuro para retrasos
+        switch (estado) {
+            case 'completado': return '#155724'; // Verde oscuro
+            case 'pendiente': return '#721c24'; // Rojo oscuro
+            case 'retrasado': return '#856404'; // Amarillo oscuro
+            case 'dashboard': return '#004085'; // Azul oscuro
+            default: return '#6c757d'; // Gris oscuro
+        }
     };
 
     const handleAprobar = async (id) => {
@@ -580,7 +615,7 @@ function Verificador() {
                                 gridTemplateColumns: 'repeat(9, 1fr)',
                                 alignItems: 'center',
                                 borderBottom: idx === aperturasOrdenadas.length - 1 ? 'none' : '1px solid #eee',
-                                background: idx % 2 === 0 ? '#fff' : '#f8f9fa',
+                                background: getEstadoColor(ap.estado, ap.retraso),
                                 fontSize: '1rem',
                                 minWidth: '1050px',
                                 transition: 'background 0.2s',
@@ -590,9 +625,10 @@ function Verificador() {
                                 padding: '0.5rem 0',
                                 boxShadow: idx === aperturasOrdenadas.length - 1 ? '0 2px 8px rgba(0,0,0,0.03)' : 'none',
                                 cursor: 'pointer',
+                                borderLeft: ap.retraso ? '4px solid #ffc107' : 'none',
                             }}
                                 onMouseOver={e => e.currentTarget.style.background = '#f0e6ec'}
-                                onMouseOut={e => e.currentTarget.style.background = idx % 2 === 0 ? '#fff' : '#f8f9fa'}
+                                onMouseOut={e => e.currentTarget.style.background = getEstadoColor(ap.estado, ap.retraso)}
                             >
                                 <div className="table-cell" style={{ textAlign: 'center' }}>
                                     <button
@@ -622,13 +658,39 @@ function Verificador() {
                                     <button
                                         onClick={() => handleAprobar(ap._id)}
                                         className="btn-edit action-btn"
-                                        style={{ background: '#6F2234', color: 'white', border: 'none', borderRadius: '6px', padding: '0.4rem 0.9rem', fontWeight: 600, cursor: 'pointer', boxShadow: '0 1px 4px #e0e0e0', transition: 'background 0.2s' }}
+                                        style={{ 
+                                            background: '#6F2234', 
+                                            color: 'white', 
+                                            border: 'none', 
+                                            borderRadius: '6px', 
+                                            padding: '0.4rem 0.9rem', 
+                                            fontWeight: 600, 
+                                            cursor: 'pointer', 
+                                            boxShadow: '0 1px 4px #e0e0e0', 
+                                            transition: 'background 0.2s',
+                                            width: '80px',
+                                            height: '32px',
+                                            fontSize: '0.85rem'
+                                        }}
                                         title="Aprobar apertura"
                                     >Aprobar</button>
                                     <button
                                         onClick={() => handleEditar(ap)}
                                         className="btn-edit action-btn"
-                                        style={{ background: '#f7b731', color: '#6F2234', border: 'none', borderRadius: '6px', padding: '0.4rem 0.9rem', fontWeight: 600, cursor: 'pointer', boxShadow: '0 1px 4px #e0e0e0', transition: 'background 0.2s' }}
+                                        style={{ 
+                                            background: '#f7b731', 
+                                            color: '#6F2234', 
+                                            border: 'none', 
+                                            borderRadius: '6px', 
+                                            padding: '0.4rem 0.9rem', 
+                                            fontWeight: 600, 
+                                            cursor: 'pointer', 
+                                            boxShadow: '0 1px 4px #e0e0e0', 
+                                            transition: 'background 0.2s',
+                                            width: '80px',
+                                            height: '32px',
+                                            fontSize: '0.85rem'
+                                        }}
                                         title="Editar apertura"
                                     >Editar</button>
                                     {/* Modal de edición */}
@@ -679,7 +741,20 @@ function Verificador() {
                                             }
                                         }}
                                         className="btn-submit-table action-btn"
-                                        style={{ background: '#f7b731', color: '#6F2234', border: 'none', borderRadius: '6px', padding: '0.4rem 0.9rem', fontWeight: 600, cursor: 'pointer', boxShadow: '0 1px 4px #e0e0e0', transition: 'background 0.2s' }}
+                                        style={{ 
+                                            background: '#f7b731', 
+                                            color: '#6F2234', 
+                                            border: 'none', 
+                                            borderRadius: '6px', 
+                                            padding: '0.4rem 0.9rem', 
+                                            fontWeight: 600, 
+                                            cursor: 'pointer', 
+                                            boxShadow: '0 1px 4px #e0e0e0', 
+                                            transition: 'background 0.2s',
+                                            width: '80px',
+                                            height: '32px',
+                                            fontSize: '0.85rem'
+                                        }}
                                         title="Marcar como pendiente"
                                     >Pendiente</button>
                                 </div>

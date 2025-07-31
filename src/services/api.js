@@ -97,6 +97,22 @@ export const aperturaService = {
             throw new Error(error.error || 'Error al actualizar apertura');
         }
         return response.json();
+    },
+
+    async verificarRetrasos() {
+        const response = await fetch(`${API_URL}/apertura/verificar-retrasos`);
+        if (!response.ok) {
+            throw new Error('Error al verificar retrasos');
+        }
+        return response.json();
+    },
+
+    async getByEstado(estado) {
+        const response = await fetch(`${API_URL}/apertura/estado/${estado}`);
+        if (!response.ok) {
+            throw new Error('Error al obtener aperturas por estado');
+        }
+        return response.json();
     }
 };
 
