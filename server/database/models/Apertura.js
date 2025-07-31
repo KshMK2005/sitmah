@@ -28,7 +28,11 @@ const aperturaSchema = new mongoose.Schema({
         min: [1, 'La corrida final debe ser mayor a 0'],
         validate: {
             validator: function(v) {
-                return v >= this.corridaInicial;
+                // Permitir edición sin validación estricta si es una actualización
+                if (this.isNew) {
+                    return v >= this.corridaInicial;
+                }
+                return true; // Permitir cualquier valor en edición
             },
             message: 'La corrida final debe ser mayor o igual a la corrida inicial'
         }
@@ -88,8 +92,24 @@ const aperturaSchema = new mongoose.Schema({
     },
     estado: {
         type: String,
-        enum: ['pendiente', 'completado', 'cancelado', 'enviado', 'dashboard'],
+        enum: ['pendiente', 'completado', 'cancelado', 'enviado', 'dashboard', 'retrasado'],
         default: 'pendiente'
+    },
+    retraso: {
+        type: Boolean,
+        default: false
+    },
+    horaRealSalida: {
+        type: String,
+        validate: {
+            validator: function(v) {
+                if (v) {
+                    return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(v);
+                }
+                return true;
+            },
+            message: 'La hora real de salida debe estar en formato HH:mm'
+        }
     },
     observaciones: {
         type: String,
@@ -145,6 +165,38 @@ aperturaSchema.statics.getEstadisticas = async function() {
             }
         }
     ]);
+};
+
+// Método para verificar retrasos automáticamente
+aperturaSchema.statics.verificarRetrasos = async function() {
+    const ahora = new Date();
+    const horaActual = ahora.getHours().toString().padStart(2, '0') + ':' + ahora.getMinutes().toString().padStart(2, '0');
+    
+    // Buscar aperturas que deberían haber salido pero no han sido marcadas como completadas
+    const aperturasRetrasadas = await this.find({
+        estado: { $in: ['pendiente', 'enviado'] },
+        retraso: false
+    });
+    
+    for (const apertura of aperturasRetrasadas) {
+        const horaProgramada = apertura.horaSalida;
+        const [horaProg, minProg] = horaProgramada.split(':').map(Number);
+        const [horaAct, minAct] = horaActual.split(':').map(Number);
+        
+        const minutosProgramados = horaProg * 60 + minProg;
+        const minutosActuales = horaAct * 60 + minAct;
+        
+        // Si han pasado más de 1 minuto desde la hora programada
+        if (minutosActuales > minutosProgramados + 1) {
+            await this.findByIdAndUpdate(apertura._id, {
+                estado: 'pendiente',
+                retraso: true,
+                observaciones: `Retraso automático: Hora programada ${horaProgramada}, hora actual ${horaActual}`
+            });
+        }
+    }
+    
+    return aperturasRetrasadas.length;
 };
 
 // Método para verificar si una unidad está disponible

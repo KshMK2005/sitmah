@@ -183,6 +183,37 @@ app.get('/api/apertura/:id', async (req, res) => {
   }
 });
 
+// Verificar retrasos automáticamente
+app.get('/api/apertura/verificar-retrasos', async (req, res) => {
+  try {
+    console.log('Verificando retrasos automáticamente...');
+    const retrasosEncontrados = await Apertura.verificarRetrasos();
+    console.log(`Retrasos encontrados: ${retrasosEncontrados}`);
+    res.json({ 
+      message: 'Verificación de retrasos completada',
+      retrasosEncontrados 
+    });
+  } catch (error) {
+    console.error('Error verificando retrasos:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Obtener aperturas por estado
+app.get('/api/apertura/estado/:estado', async (req, res) => {
+  try {
+    console.log('Buscando aperturas con estado:', req.params.estado);
+    
+    const aperturas = await Apertura.find({ estado: req.params.estado });
+    
+    console.log(`Aperturas encontradas: ${aperturas.length}`);
+    res.json(aperturas);
+  } catch (error) {
+    console.error('Error buscando aperturas por estado:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // Rutas de programación
 app.get('/api/programacion', async (req, res) => {
   try {
