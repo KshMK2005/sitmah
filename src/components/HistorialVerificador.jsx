@@ -116,7 +116,7 @@ function HistorialVerificador() {
     <div className="apertura-page">
       <style>{animationStyles}</style>
       {(!role || role !== 'administrador') && <NavbarVerificador />}
-      <main className="apertura-content" style={{ maxWidth: '1600px', margin: '0 auto', padding: '4rem' }}>
+      <main className="apertura-content" style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem' }}>
         {/* Header */}
         <div style={{ 
           background: 'linear-gradient(135deg, #6F2234 0%, #8B2E3F 100%)', 
@@ -132,7 +132,7 @@ function HistorialVerificador() {
             fontWeight: '600',
             textAlign: 'center'
           }}>
-            📊 Historial de Verificaciones - TABLA ALARGADA
+            📊 Historial de Verificaciones
           </h2>
         </div>
 
@@ -140,22 +140,20 @@ function HistorialVerificador() {
         <div style={{ 
           display: 'flex', 
           justifyContent: 'center', 
-          gap: '2rem',
-          marginBottom: '3rem',
-          flexWrap: 'wrap',
-          padding: '0 2rem'
+          gap: '1rem',
+          marginBottom: '2rem',
+          flexWrap: 'wrap'
         }}>
           <select 
             value={filtroAnio} 
             onChange={e => setFiltroAnio(e.target.value)}
             style={{ 
-              padding: '1rem 1.5rem', 
-              borderRadius: '10px', 
+              padding: '0.5rem 1rem', 
+              borderRadius: '8px', 
               border: '2px solid #e0e0e0',
               background: '#fff',
-              fontSize: '1.1rem',
-              minWidth: '200px',
-              fontWeight: '500'
+              fontSize: '1rem',
+              minWidth: '150px'
             }}
           >
             <option value="">Todos los años</option>
@@ -167,13 +165,12 @@ function HistorialVerificador() {
             value={filtroMes} 
             onChange={e => setFiltroMes(e.target.value)}
             style={{ 
-              padding: '1rem 1.5rem', 
-              borderRadius: '10px', 
+              padding: '0.5rem 1rem', 
+              borderRadius: '8px', 
               border: '2px solid #e0e0e0',
               background: '#fff',
-              fontSize: '1.1rem',
-              minWidth: '200px',
-              fontWeight: '500'
+              fontSize: '1rem',
+              minWidth: '150px'
             }}
           >
             <option value="">Todos los meses</option>
@@ -206,24 +203,23 @@ function HistorialVerificador() {
             overflow: 'hidden'
           }}>
             {/* Tabla */}
-            <div style={{ overflowX: 'auto', padding: '3rem' }}>
+            <div style={{ overflowX: 'auto', padding: '1.5rem' }}>
               <table style={{ 
                 width: '100%', 
                 borderCollapse: 'collapse',
-                fontSize: '1.2rem',
-                minHeight: '600px'
+                fontSize: '0.95rem'
               }}>
                 <thead>
                   <tr style={{ 
                     background: '#6F2234', 
                     color: '#fff'
                   }}>
-                    <th style={{ padding: '2rem', textAlign: 'left', fontWeight: '600' }}>Fecha</th>
-                    <th style={{ padding: '2rem', textAlign: 'left', fontWeight: '600' }}>Ruta</th>
-                    <th style={{ padding: '2rem', textAlign: 'left', fontWeight: '600' }}>Operador</th>
-                    <th style={{ padding: '2rem', textAlign: 'center', fontWeight: '600' }}>Estado</th>
-                    <th style={{ padding: '2rem', textAlign: 'center', fontWeight: '600' }}>Hora</th>
-                    <th style={{ padding: '2rem', textAlign: 'center', fontWeight: '600' }}>Acciones</th>
+                    <th style={{ padding: '1rem', textAlign: 'left', fontWeight: '600' }}>Fecha</th>
+                    <th style={{ padding: '1rem', textAlign: 'left', fontWeight: '600' }}>Ruta</th>
+                    <th style={{ padding: '1rem', textAlign: 'left', fontWeight: '600' }}>Operador</th>
+                    <th style={{ padding: '1rem', textAlign: 'center', fontWeight: '600' }}>Estado</th>
+                    <th style={{ padding: '1rem', textAlign: 'center', fontWeight: '600' }}>Hora</th>
+                    <th style={{ padding: '1rem', textAlign: 'center', fontWeight: '600' }}>Acciones</th>
                   </tr>
                 </thead>
                 {aperturasFiltradas.map((ap, index) => (
@@ -232,16 +228,16 @@ function HistorialVerificador() {
                         background: index % 2 === 0 ? '#fff' : '#f8f9fa',
                         borderBottom: '1px solid #e9ecef'
                       }}>
-                        <td style={{ padding: '2rem', fontWeight: '500' }}>
+                        <td style={{ padding: '1rem', fontWeight: '500' }}>
                           {formatDate(ap.fechaApertura)}
                         </td>
-                        <td style={{ padding: '2rem', fontWeight: '600', color: '#6F2234' }}>
+                        <td style={{ padding: '1rem', fontWeight: '600', color: '#6F2234' }}>
                           {ap.ruta}
                         </td>
-                        <td style={{ padding: '2rem' }}>
+                        <td style={{ padding: '1rem' }}>
                           {ap.nombre}
                         </td>
-                        <td style={{ padding: '2rem', textAlign: 'center' }}>
+                        <td style={{ padding: '1rem', textAlign: 'center' }}>
                           <span style={{ 
                             background: getEstadoColor(ap.estado), 
                             color: '#fff', 
@@ -256,29 +252,29 @@ function HistorialVerificador() {
                              ap.estado === 'completado' ? 'Completado' : ap.estado}
                           </span>
                         </td>
-                        <td style={{ padding: '2rem', textAlign: 'center' }}>
+                        <td style={{ padding: '1rem', textAlign: 'center' }}>
                           <span style={{ 
                             background: '#6F2234', 
                             color: '#fff', 
-                            padding: '0.6rem 1rem', 
-                            borderRadius: '8px',
-                            fontSize: '1.1rem',
+                            padding: '0.3rem 0.6rem', 
+                            borderRadius: '6px',
+                            fontSize: '0.9rem',
                             fontWeight: '600'
                           }}>
                             {ap.horaSalida}
                           </span>
                         </td>
-                        <td style={{ padding: '2rem', textAlign: 'center' }}>
+                        <td style={{ padding: '1rem', textAlign: 'center' }}>
                           <button
                             onClick={() => toggleRowExpansion(ap._id)}
                             style={{
                               background: expandedRows.has(ap._id) ? '#8B2E3F' : '#6F2234',
                               color: '#fff',
                               border: 'none',
-                              borderRadius: '10px',
-                              padding: '1rem 2rem',
+                              borderRadius: '6px',
+                              padding: '0.5rem 1rem',
                               cursor: 'pointer',
-                              fontSize: '1.1rem',
+                              fontSize: '0.9rem',
                               fontWeight: '500',
                               transition: 'all 0.2s ease'
                             }}
