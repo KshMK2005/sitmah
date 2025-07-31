@@ -15,6 +15,7 @@ app.use(express.json());
 // Conectar a MongoDB Atlas
 const connectDB = async () => {
   try {
+    console.log('=== INICIO CONEXIÓN MONGODB ===');
     console.log('Intentando conectar a MongoDB...');
     console.log('MONGODB_URI:', process.env.MONGODB_URI ? 'Definida' : 'No definida');
     
@@ -27,8 +28,10 @@ const connectDB = async () => {
       useUnifiedTopology: true,
     });
     console.log('MongoDB conectado exitosamente');
+    console.log('=== FIN CONEXIÓN MONGODB ===');
   } catch (error) {
     console.error('Error conectando a MongoDB:', error);
+    console.error('Stack trace:', error.stack);
     throw error;
   }
 };
@@ -67,17 +70,28 @@ app.post('/api/usuarios', async (req, res) => {
 // Buscar usuario por nombre de usuario
 app.get('/api/usuarios/:usuario', async (req, res) => {
   try {
+    console.log('=== INICIO BÚSQUEDA USUARIO ===');
     console.log('Buscando usuario:', req.params.usuario);
+    
+    // Verificar conexión a MongoDB
+    if (mongoose.connection.readyState !== 1) {
+      console.log('MongoDB no está conectado. Estado:', mongoose.connection.readyState);
+      await connectDB();
+    }
+    
     const usuario = await Usuario.findOne({ usuario: req.params.usuario });
-    console.log('Usuario encontrado:', usuario);
+    console.log('Usuario encontrado:', usuario ? 'SÍ' : 'NO');
     
     if (!usuario) {
       console.log('Usuario no encontrado');
       return res.status(404).json({ error: 'Usuario no encontrado' });
     }
+    
+    console.log('=== FIN BÚSQUEDA USUARIO ===');
     res.json(usuario);
   } catch (error) {
     console.error('Error buscando usuario:', error);
+    console.error('Stack trace:', error.stack);
     res.status(500).json({ error: error.message });
   }
 });
