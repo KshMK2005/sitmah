@@ -116,7 +116,7 @@ function HistorialVerificador() {
     <div className="apertura-page">
       <style>{animationStyles}</style>
       {(!role || role !== 'administrador') && <NavbarVerificador />}
-      <main className="apertura-content" style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem' }}>
+      <main className="apertura-content" style={{ maxWidth: '1400px', margin: '0 auto', padding: '3rem' }}>
         {/* Header */}
         <div style={{ 
           background: 'linear-gradient(135deg, #6F2234 0%, #8B2E3F 100%)', 
@@ -140,9 +140,10 @@ function HistorialVerificador() {
         <div style={{ 
           display: 'flex', 
           justifyContent: 'center', 
-          gap: '1rem',
-          marginBottom: '2rem',
-          flexWrap: 'wrap'
+          gap: '1.5rem',
+          marginBottom: '2.5rem',
+          flexWrap: 'wrap',
+          padding: '0 1rem'
         }}>
           <select 
             value={filtroAnio} 
@@ -165,12 +166,12 @@ function HistorialVerificador() {
             value={filtroMes} 
             onChange={e => setFiltroMes(e.target.value)}
             style={{ 
-              padding: '0.5rem 1rem', 
+              padding: '0.75rem 1.25rem', 
               borderRadius: '8px', 
               border: '2px solid #e0e0e0',
               background: '#fff',
               fontSize: '1rem',
-              minWidth: '150px'
+              minWidth: '180px'
             }}
           >
             <option value="">Todos los meses</option>
@@ -222,7 +223,8 @@ function HistorialVerificador() {
                     <th style={{ padding: '1rem', textAlign: 'center', fontWeight: '600' }}>Acciones</th>
                   </tr>
                 </thead>
-                {aperturasFiltradas.map((ap, index) => (
+                <tbody>
+                  {aperturasFiltradas.map((ap, index) => (
                     <React.Fragment key={ap._id || index}>
                       <tr style={{ 
                         background: index % 2 === 0 ? '#fff' : '#f8f9fa',
@@ -341,6 +343,7 @@ function HistorialVerificador() {
                       )}
                     </React.Fragment>
                   ))}
+                </tbody>
               </table>
             </div>
           </div>
