@@ -119,20 +119,20 @@ function HistorialVerificador() {
       <main className="apertura-content" style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         {/* Header */}
         <div style={{ 
-          background: 'linear-gradient(135deg, #6F2234 0%, #8B2E3F 100%)', 
+          background: 'linear-gradient(135deg, #ff0000 0%, #ff6600 100%)', 
           borderRadius: '12px', 
           padding: '1.5rem', 
           marginBottom: '2rem',
-          boxShadow: '0 4px 20px rgba(111, 34, 52, 0.2)'
+          boxShadow: '0 4px 20px rgba(255, 0, 0, 0.3)'
         }}>
           <h2 style={{ 
-            color: '#fff', 
+            color: '#000', 
             fontSize: '2rem', 
             margin: 0,
             fontWeight: '600',
             textAlign: 'center'
           }}>
-            📊 Historial de Verificaciones - CONTENEDOR AMPLIADO
+            📊 Historial de Verificaciones - CAMBIO VISIBLE
           </h2>
         </div>
 
