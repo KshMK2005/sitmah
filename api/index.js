@@ -40,12 +40,12 @@ import Programacion from '../server/database/models/Programacion.js';
 import Operador from '../server/database/models/Operador.js';
 
 // Rutas básicas
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
   res.json({ message: 'API de SITMAH funcionando en Vercel' });
 });
 
 // Rutas de usuarios
-app.get('/usuarios/admin', async (req, res) => {
+app.get('/api/usuarios/admin', async (req, res) => {
   try {
     const admin = await Usuario.findOne({ rol: 'administrador' });
     res.json(admin || { message: 'No hay administrador' });
@@ -54,7 +54,7 @@ app.get('/usuarios/admin', async (req, res) => {
   }
 });
 
-app.post('/usuarios', async (req, res) => {
+app.post('/api/usuarios', async (req, res) => {
   try {
     const usuario = new Usuario(req.body);
     await usuario.save();
@@ -65,7 +65,7 @@ app.post('/usuarios', async (req, res) => {
 });
 
 // Buscar usuario por nombre de usuario
-app.get('/usuarios/:usuario', async (req, res) => {
+app.get('/api/usuarios/:usuario', async (req, res) => {
   try {
     console.log('Buscando usuario:', req.params.usuario);
     const usuario = await Usuario.findOne({ usuario: req.params.usuario });
@@ -83,7 +83,7 @@ app.get('/usuarios/:usuario', async (req, res) => {
 });
 
 // Rutas de operadores
-app.get('/operadores', async (req, res) => {
+app.get('/api/operadores', async (req, res) => {
   try {
     const operadores = await Operador.find();
     res.json(operadores);
@@ -92,7 +92,7 @@ app.get('/operadores', async (req, res) => {
   }
 });
 
-app.get('/operadores/buscar/:tarjeton', async (req, res) => {
+app.get('/api/operadores/buscar/:tarjeton', async (req, res) => {
   try {
     const operador = await Operador.findOne({ tarjeton: req.params.tarjeton });
     res.json(operador);
@@ -102,7 +102,7 @@ app.get('/operadores/buscar/:tarjeton', async (req, res) => {
 });
 
 // Rutas de aperturas
-app.get('/apertura', async (req, res) => {
+app.get('/api/apertura', async (req, res) => {
   try {
     const aperturas = await Apertura.find();
     res.json(aperturas);
@@ -111,7 +111,7 @@ app.get('/apertura', async (req, res) => {
   }
 });
 
-app.post('/apertura', async (req, res) => {
+app.post('/api/apertura', async (req, res) => {
   try {
     const apertura = new Apertura(req.body);
     await apertura.save();
@@ -122,7 +122,7 @@ app.post('/apertura', async (req, res) => {
 });
 
 // Rutas de programación
-app.get('/programacion', async (req, res) => {
+app.get('/api/programacion', async (req, res) => {
   try {
     const programaciones = await Programacion.find();
     res.json(programaciones);
@@ -131,7 +131,7 @@ app.get('/programacion', async (req, res) => {
   }
 });
 
-app.post('/programacion', async (req, res) => {
+app.post('/api/programacion', async (req, res) => {
   try {
     const programacion = new Programacion(req.body);
     await programacion.save();
