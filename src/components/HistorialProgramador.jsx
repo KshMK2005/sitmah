@@ -44,16 +44,75 @@ function HistorialProgramador() {
     <div className="apertura-page">
       {/* Mostrar el navbar solo si NO es administrador */}
       {localStorage.getItem('userRole') !== 'administrador' && <NavbarProgramador />}
-      <main className="apertura-content" style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem', width:'100%' }}>
-        <h2 style={{ color: '#6F2234', fontSize: '2rem', marginBottom: '2rem', letterSpacing: '0.5px' }}>
-          Historial de Programaciones Guardadas
-        </h2>
-        <button
-          style={{ background: '#6F2234', color: '#fff', border: 'none', borderRadius: '4px', padding: '0.5rem 1rem', cursor: 'pointer', marginBottom: '1rem', fontWeight: 'bold', fontSize: '1rem', boxShadow: (mostrarFiltros ? '0 2px 8px #CBB26A88' : 'none'), transition: 'box-shadow 0.2s' }}
-          onClick={() => setMostrarFiltros(f => !f)}
-        >
-          {mostrarFiltros ? 'Ocultar filtros' : 'Mostrar filtros'}
-        </button>
+      <main className="apertura-content" style={{ maxWidth: '1400px', margin: '0 auto', padding: '2rem', width:'100%' }}>
+        <div style={{ 
+          background: 'linear-gradient(135deg, #6F2234 0%, #8B2E3F 100%)', 
+          borderRadius: '16px', 
+          padding: '2rem', 
+          marginBottom: '2rem',
+          boxShadow: '0 8px 32px rgba(111, 34, 52, 0.3)',
+          position: 'relative',
+          overflow: 'hidden'
+        }}>
+          <div style={{
+            position: 'absolute',
+            top: '-50%',
+            right: '-50%',
+            width: '200%',
+            height: '200%',
+            background: 'radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%)',
+            pointerEvents: 'none'
+          }}></div>
+          <h2 style={{ 
+            color: '#fff', 
+            fontSize: '2.5rem', 
+            marginBottom: '0.5rem', 
+            letterSpacing: '1px',
+            fontWeight: '700',
+            textAlign: 'center',
+            textShadow: '0 2px 4px rgba(0,0,0,0.3)',
+            position: 'relative',
+            zIndex: 1
+          }}>
+            📊 Historial de Programaciones
+          </h2>
+          <p style={{ 
+            color: 'rgba(255,255,255,0.9)', 
+            fontSize: '1.1rem', 
+            textAlign: 'center',
+            margin: 0,
+            position: 'relative',
+            zIndex: 1
+          }}>
+            Sistema de Gestión y Control de Programaciones
+          </p>
+        </div>
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'center', 
+          marginBottom: '2rem' 
+        }}>
+          <button
+            style={{ 
+              background: mostrarFiltros ? '#8B2E3F' : '#6F2234', 
+              color: '#fff', 
+              border: 'none', 
+              borderRadius: '12px', 
+              padding: '1rem 2rem', 
+              cursor: 'pointer', 
+              fontWeight: '600', 
+              fontSize: '1.1rem', 
+              boxShadow: '0 4px 16px rgba(111, 34, 52, 0.3)', 
+              transition: 'all 0.3s ease',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem'
+            }}
+            onClick={() => setMostrarFiltros(f => !f)}
+          >
+            {mostrarFiltros ? '🔽 Ocultar Filtros' : '🔼 Mostrar Filtros'}
+          </button>
+        </div>
         {mostrarFiltros && (
           <div style={{ background: '#f9f9f9', border: '1px solid #eee', borderRadius: '8px', padding: '1rem', marginBottom: '1.5rem', display: 'flex', gap: '1rem', alignItems: 'center', flexWrap:'wrap' }}>
             <label style={{ color: '#6F2234', fontWeight: 'bold' }}>
@@ -87,28 +146,124 @@ function HistorialProgramador() {
           </div>
         ) : (
           Object.entries(programacionesAgrupadas).map(([dia, programacionesDelDia]) => (
-            <div key={dia} style={{ marginBottom: '1.5rem', padding: '1rem', background: '#f9f9f9', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.05)', overflowX:'auto' }}>
-              <h3 style={{ color: '#6F2234', fontSize: '1.2rem', marginBottom: '0.5rem' }}>Día: {dia}</h3>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', minWidth:'250px' }}>
+            <div key={dia} style={{ 
+              marginBottom: '2rem', 
+              padding: '1.5rem', 
+              background: 'linear-gradient(145deg, #f8f9fa 0%, #e9ecef 100%)', 
+              borderRadius: '16px', 
+              boxShadow: '0 8px 32px rgba(0,0,0,0.1)', 
+              overflowX:'auto',
+              border: '1px solid rgba(111, 34, 52, 0.1)'
+            }}>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                marginBottom: '1.5rem',
+                padding: '1rem',
+                background: 'linear-gradient(135deg, #6F2234 0%, #8B2E3F 100%)',
+                borderRadius: '12px',
+                color: '#fff'
+              }}>
+                <span style={{ fontSize: '1.5rem', marginRight: '0.5rem' }}>📅</span>
+                <h3 style={{ 
+                  color: '#fff', 
+                  fontSize: '1.4rem', 
+                  margin: 0,
+                  fontWeight: '600',
+                  textShadow: '0 1px 2px rgba(0,0,0,0.3)'
+                }}>
+                  {dia}
+                </h3>
+                <span style={{ 
+                  marginLeft: 'auto', 
+                  background: 'rgba(255,255,255,0.2)', 
+                  padding: '0.3rem 0.8rem', 
+                  borderRadius: '20px',
+                  fontSize: '0.9rem',
+                  fontWeight: '500'
+                }}>
+                  {programacionesDelDia.length} programación{programacionesDelDia.length !== 1 ? 'es' : ''}
+                </span>
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem' }}>
                 {programacionesDelDia.map((pr, idx) => (
                   <div key={pr._id || idx} style={{
                     background: '#fff',
-                    borderRadius: '8px',
-                    padding: '1.2rem',
-                    boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
-                    border: '1px solid #eee',
-                    minWidth: 250,
-                    flex: '1 1 250px',
-                    fontSize: '0.98rem',
-                  }}>
-                    <div><strong style={{ color: '#6F2234' }}>Ruta:</strong> {pr.ruta}</div>
-                    <div><strong style={{ color: '#6F2234' }}>Tipo Vehículo:</strong> {pr.tipoVehiculo}</div>
-                    <div><strong style={{ color: '#6F2234' }}>Unidades:</strong> {pr.cantidadUnidades}</div>
-                    <div><strong style={{ color: '#6F2234' }}>Intervalo:</strong> {pr.intervalo}</div>
-                    <div><strong style={{ color: '#6F2234' }}>Corrida Inicial:</strong> {pr.corridaInicial}</div>
-                    <div><strong style={{ color: '#6F2234' }}>Corrida Final:</strong> {pr.corridaFinal}</div>
-                    <div><strong style={{ color: '#6F2234' }}>Hora Salida:</strong> {pr.horaSalida}</div>
-                    <div><strong style={{ color: '#6F2234' }}>Programador:</strong> {pr.programador}</div>
+                    borderRadius: '16px',
+                    padding: '1.5rem',
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+                    border: '1px solid rgba(111, 34, 52, 0.1)',
+                    fontSize: '1rem',
+                    transition: 'all 0.3s ease',
+                    position: 'relative',
+                    overflow: 'hidden'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'translateY(-4px)';
+                    e.currentTarget.style.boxShadow = '0 8px 32px rgba(111, 34, 52, 0.15)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,0.08)';
+                  }}
+                  >
+                    <div style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      height: '4px',
+                      background: 'linear-gradient(90deg, #6F2234 0%, #8B2E3F 50%, #6F2234 100%)'
+                    }}></div>
+                    <div style={{ 
+                      display: 'grid', 
+                      gridTemplateColumns: '1fr 1fr', 
+                      gap: '1rem',
+                      marginTop: '0.5rem'
+                    }}>
+                      <div style={{ gridColumn: '1 / -1' }}>
+                        <div style={{ 
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          marginBottom: '1rem',
+                          padding: '0.5rem',
+                          background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)',
+                          borderRadius: '8px'
+                        }}>
+                          <span style={{ fontSize: '1.2rem', marginRight: '0.5rem' }}>🚌</span>
+                          <strong style={{ color: '#6F2234', fontSize: '1.1rem' }}>{pr.ruta}</strong>
+                        </div>
+                      </div>
+                      <div><strong style={{ color: '#6F2234' }}>Tipo:</strong> {pr.tipoVehiculo}</div>
+                      <div><strong style={{ color: '#6F2234' }}>Unidades:</strong> {pr.cantidadUnidades}</div>
+                      <div><strong style={{ color: '#6F2234' }}>Intervalo:</strong> {pr.intervalo} min</div>
+                      <div><strong style={{ color: '#6F2234' }}>Corrida I:</strong> {pr.corridaInicial}</div>
+                      <div><strong style={{ color: '#6F2234' }}>Corrida F:</strong> {pr.corridaFinal}</div>
+                      <div style={{ gridColumn: '1 / -1' }}>
+                        <strong style={{ color: '#6F2234' }}>Hora Salida:</strong> 
+                        <span style={{ 
+                          background: '#6F2234', 
+                          color: '#fff', 
+                          padding: '0.2rem 0.6rem', 
+                          borderRadius: '6px',
+                          marginLeft: '0.5rem',
+                          fontSize: '0.9rem',
+                          fontWeight: '600'
+                        }}>
+                          {pr.horaSalida}
+                        </span>
+                      </div>
+                      <div style={{ gridColumn: '1 / -1', marginTop: '0.5rem', paddingTop: '0.5rem', borderTop: '1px solid #eee' }}>
+                        <strong style={{ color: '#6F2234' }}>Programador:</strong> 
+                        <span style={{ 
+                          color: '#8B2E3F', 
+                          fontWeight: '600',
+                          marginLeft: '0.5rem'
+                        }}>
+                          {pr.programador}
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>

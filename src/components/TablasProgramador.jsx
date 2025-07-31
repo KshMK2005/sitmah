@@ -6,10 +6,10 @@ import '../Apertura.css';
 function TablasProgramador() {
     const [programaciones, setProgramaciones] = useState([]);
     const [estadisticas, setEstadisticas] = useState({
-        GRAN_VIALE: { totalUnidades: 0, totalViajes: 0 },
-        BOXER: { totalUnidades: 0, totalViajes: 0 },
-        SPRINTER: { totalUnidades: 0, totalViajes: 0 },
-        VAGONETA: { totalUnidades: 0, totalViajes: 0 }
+        'GRAN VIALE': { totalUnidades: 0, totalViajes: 0 },
+        'BOXER': { totalUnidades: 0, totalViajes: 0 },
+        'SPRINTER': { totalUnidades: 0, totalViajes: 0 },
+        'VAGONETA': { totalUnidades: 0, totalViajes: 0 }
     });
 
     useEffect(() => {
@@ -28,10 +28,10 @@ function TablasProgramador() {
 
     const calcularEstadisticas = (programaciones) => {
         const nuevasEstadisticas = {
-            GRAN_VIALE: { totalUnidades: 0, totalViajes: 0 },
-            BOXER: { totalUnidades: 0, totalViajes: 0 },
-            SPRINTER: { totalUnidades: 0, totalViajes: 0 },
-            VAGONETA: { totalUnidades: 0, totalViajes: 0 }
+            'GRAN VIALE': { totalUnidades: 0, totalViajes: 0 },
+            'BOXER': { totalUnidades: 0, totalViajes: 0 },
+            'SPRINTER': { totalUnidades: 0, totalViajes: 0 },
+            'VAGONETA': { totalUnidades: 0, totalViajes: 0 }
         };
         programaciones.forEach(prog => {
             const tipo = prog.tipoVehiculo;
@@ -63,7 +63,7 @@ function TablasProgramador() {
                         <tbody>
                             {Object.entries(estadisticas).map(([tipo, stats], idx) => (
                                 <tr key={tipo} style={{ background: idx % 2 === 0 ? '#fff' : '#f9f9f9' }}>
-                                    <td style={{ padding: '0.7rem', textAlign: 'center' }}>{tipo.replace('_', ' ')}</td>
+                                    <td style={{ padding: '0.7rem', textAlign: 'center' }}>{tipo}</td>
                                     <td style={{ padding: '0.7rem', textAlign: 'center' }}>{stats.totalUnidades}</td>
                                     <td style={{ padding: '0.7rem', textAlign: 'center' }}>{stats.totalViajes}</td>
                                 </tr>

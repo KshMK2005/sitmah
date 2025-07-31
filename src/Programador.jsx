@@ -9,10 +9,10 @@ function Programador() {
     const { navigateWithTransition } = useTransition();
     const [programaciones, setProgramaciones] = useState([]);
     const [estadisticas, setEstadisticas] = useState({
-        GRAN_VIALE: { totalUnidades: 0, totalHorarios: 0 },
-        BOXER: { totalUnidades: 0, totalHorarios: 0 },
-        SPRINTER: { totalUnidades: 0, totalHorarios: 0 },
-        VAGONETA: { totalUnidades: 0, totalHorarios: 0 }
+        'GRAN VIALE': { totalUnidades: 0, totalHorarios: 0 },
+        'BOXER': { totalUnidades: 0, totalHorarios: 0 },
+        'SPRINTER': { totalUnidades: 0, totalHorarios: 0 },
+        'VAGONETA': { totalUnidades: 0, totalHorarios: 0 }
     });
     const [formData, setFormData] = useState({
         ruta: '',
@@ -52,10 +52,10 @@ function Programador() {
 
     const calcularEstadisticas = (programaciones) => {
         const nuevasEstadisticas = {
-            GRAN_VIALE: { totalUnidades: 0, totalHorarios: 0 },
-            BOXER: { totalUnidades: 0, totalHorarios: 0 },
-            SPRINTER: { totalUnidades: 0, totalHorarios: 0 },
-            VAGONETA: { totalUnidades: 0, totalHorarios: 0 }
+            'GRAN VIALE': { totalUnidades: 0, totalHorarios: 0 },
+            'BOXER': { totalUnidades: 0, totalHorarios: 0 },
+            'SPRINTER': { totalUnidades: 0, totalHorarios: 0 },
+            'VAGONETA': { totalUnidades: 0, totalHorarios: 0 }
         };
 
         programaciones.forEach(prog => {
@@ -171,11 +171,37 @@ function Programador() {
     const gridStyles = {
         display: 'grid',
         gridTemplateColumns: '1fr',
-        gap: '1.2rem',
+        gap: '1.5rem',
     };
     if (window.innerWidth >= 600) {
         gridStyles.gridTemplateColumns = '1fr 1fr';
     }
+
+    // Estilos estandarizados para elementos del formulario
+    const inputStyles = {
+        width: '100%',
+        height: '45px',
+        padding: '0.75rem',
+        border: '2px solid #e0e0e0',
+        borderRadius: '8px',
+        fontSize: '1rem',
+        transition: 'border-color 0.3s ease',
+        boxSizing: 'border-box'
+    };
+
+    const labelStyles = {
+        display: 'block',
+        marginBottom: '0.5rem',
+        fontWeight: '600',
+        color: '#6F2234',
+        fontSize: '0.95rem'
+    };
+
+    const formGroupStyles = {
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: '80px'
+    };
 
     return (
         <div className="programador-page" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', background: '#f5f5f5' }}>
@@ -185,13 +211,27 @@ function Programador() {
                     <h2 style={{textAlign:'center',marginBottom:'1.5rem'}}>Nueva Programación</h2>
                     <form onSubmit={handleSubmit} style={{display:'flex',flexDirection:'column',gap:'1.5rem'}}>
                         <div className="form-grid-2col" style={gridStyles}>
-                            <div className="form-group">
-                                <label>Ruta</label>
-                                <input type="text" name="ruta" value={formData.ruta} onChange={handleInputChange} required placeholder="Ej: Ruta 1" />
+                            <div className="form-group" style={formGroupStyles}>
+                                <label style={labelStyles}>Ruta</label>
+                                <input 
+                                    type="text" 
+                                    name="ruta" 
+                                    value={formData.ruta} 
+                                    onChange={handleInputChange} 
+                                    required 
+                                    placeholder="Ej: Ruta 1" 
+                                    style={inputStyles}
+                                />
                             </div>
-                            <div className="form-group">
-                                <label>Tipo de Vehículo</label>
-                                <select name="tipoVehiculo" value={formData.tipoVehiculo} onChange={handleInputChange} required>
+                            <div className="form-group" style={formGroupStyles}>
+                                <label style={labelStyles}>Tipo de Vehículo</label>
+                                <select 
+                                    name="tipoVehiculo" 
+                                    value={formData.tipoVehiculo} 
+                                    onChange={handleInputChange} 
+                                    required
+                                    style={inputStyles}
+                                >
                                     <option value="">Seleccione un tipo</option>
                                     <option value="GRAN VIALE">GRAN VIALE</option>
                                     <option value="BOXER">BOXER</option>
@@ -199,29 +239,80 @@ function Programador() {
                                     <option value="VAGONETA">VAGONETA</option>
                                 </select>
                             </div>
-                            <div className="form-group">
-                                <label>Número Económico</label>
-                                <input type="text" name="numeroEconomico" value={formData.numeroEconomico} onChange={handleInputChange} required placeholder="Ej: 1234" />
+                            <div className="form-group" style={formGroupStyles}>
+                                <label style={labelStyles}>Número Económico</label>
+                                <input 
+                                    type="text" 
+                                    name="numeroEconomico" 
+                                    value={formData.numeroEconomico} 
+                                    onChange={handleInputChange} 
+                                    required 
+                                    placeholder="Ej: 1234" 
+                                    style={inputStyles}
+                                />
                             </div>
-                            <div className="form-group">
-                                <label>Cantidad de Unidades</label>
-                                <input type="number" name="cantidadUnidades" value={formData.cantidadUnidades} onChange={handleInputChange} required min="1" placeholder="Ej: 5" />
+                            <div className="form-group" style={formGroupStyles}>
+                                <label style={labelStyles}>Cantidad de Unidades</label>
+                                <input 
+                                    type="number" 
+                                    name="cantidadUnidades" 
+                                    value={formData.cantidadUnidades} 
+                                    onChange={handleInputChange} 
+                                    required 
+                                    min="1" 
+                                    placeholder="Ej: 5" 
+                                    style={inputStyles}
+                                />
                             </div>
-                            <div className="form-group">
-                                <label>Intervalo (minutos)</label>
-                                <input type="number" name="intervalo" value={formData.intervalo} onChange={handleInputChange} required min="1" placeholder="Ej: 10" />
+                            <div className="form-group" style={formGroupStyles}>
+                                <label style={labelStyles}>Intervalo (minutos)</label>
+                                <input 
+                                    type="number" 
+                                    name="intervalo" 
+                                    value={formData.intervalo} 
+                                    onChange={handleInputChange} 
+                                    required 
+                                    min="1" 
+                                    placeholder="Ej: 10" 
+                                    style={inputStyles}
+                                />
                             </div>
-                            <div className="form-group">
-                                <label>Corrida Inicial</label>
-                                <input type="number" name="corridaInicial" value={formData.corridaInicial} onChange={handleInputChange} required min="1" placeholder="Ej: 1" />
+                            <div className="form-group" style={formGroupStyles}>
+                                <label style={labelStyles}>Corrida Inicial</label>
+                                <input 
+                                    type="number" 
+                                    name="corridaInicial" 
+                                    value={formData.corridaInicial} 
+                                    onChange={handleInputChange} 
+                                    required 
+                                    min="1" 
+                                    placeholder="Ej: 1" 
+                                    style={inputStyles}
+                                />
                             </div>
-                            <div className="form-group">
-                                <label>Corrida Final</label>
-                                <input type="number" name="corridaFinal" value={formData.corridaFinal} onChange={handleInputChange} required min="1" placeholder="Ej: 10" />
+                            <div className="form-group" style={formGroupStyles}>
+                                <label style={labelStyles}>Corrida Final</label>
+                                <input 
+                                    type="number" 
+                                    name="corridaFinal" 
+                                    value={formData.corridaFinal} 
+                                    onChange={handleInputChange} 
+                                    required 
+                                    min="1" 
+                                    placeholder="Ej: 10" 
+                                    style={inputStyles}
+                                />
                             </div>
-                            <div className="form-group">
-                                <label>Hora de Salida</label>
-                                <input type="time" name="horaSalida" value={formData.horaSalida} onChange={handleInputChange} required />
+                            <div className="form-group" style={formGroupStyles}>
+                                <label style={labelStyles}>Hora de Salida</label>
+                                <input 
+                                    type="time" 
+                                    name="horaSalida" 
+                                    value={formData.horaSalida} 
+                                    onChange={handleInputChange} 
+                                    required 
+                                    style={inputStyles}
+                                />
                             </div>
                         </div>
                         <div className="form-actions" style={{display:'flex',flexDirection:'column',gap:'1rem',marginTop:'1.5rem'}}>
