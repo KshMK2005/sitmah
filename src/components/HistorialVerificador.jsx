@@ -132,7 +132,7 @@ function HistorialVerificador() {
             fontWeight: '600',
             textAlign: 'center'
           }}>
-            📊 Historial de Verificaciones - CON MÁS ESPACIO
+            📊 Historial de Verificaciones - CONTENEDOR AMPLIADO
           </h2>
         </div>
 
@@ -202,10 +202,10 @@ function HistorialVerificador() {
             boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
             overflow: 'hidden',
             width: '100%',
-            maxWidth: '1000px'
+            maxWidth: '1200px'
           }}>
             {/* Tabla */}
-            <div style={{ overflowX: 'auto', padding: '1.5rem' }}>
+            <div style={{ overflowX: 'auto', padding: '2rem' }}>
               <table style={{ 
                 width: '100%', 
                 borderCollapse: 'collapse',
