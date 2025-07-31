@@ -3,6 +3,48 @@ import { programacionService } from '../services/api';
 import NavbarProgramador from './NavbarProgramador';
 import '../Apertura.css';
 
+// Estilos CSS para animaciones
+const animationStyles = `
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+      max-height: 0;
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+      max-height: 500px;
+    }
+  }
+  
+  @keyframes slideUp {
+    from {
+      opacity: 1;
+      transform: translateY(0);
+      max-height: 500px;
+    }
+    to {
+      opacity: 0;
+      transform: translateY(-10px);
+      max-height: 0;
+    }
+  }
+  
+  .expandable-row {
+    overflow: hidden;
+    transition: all 0.3s ease-out;
+  }
+  
+  .expandable-row.expanded {
+    animation: slideDown 0.3s ease-out;
+  }
+  
+  .expandable-row.collapsed {
+    animation: slideUp 0.3s ease-out;
+  }
+`;
+
 function ProgramacionesGuardadas() {
   const [programaciones, setProgramaciones] = useState([]);
   const [filtro, setFiltro] = useState({ tipoVehiculo: '', ruta: '', fecha: '' });
@@ -61,6 +103,7 @@ function ProgramacionesGuardadas() {
 
   return (
     <div className="programador-page">
+      <style>{animationStyles}</style>
       {(!role || role !== 'administrador') && <NavbarProgramador />}
       <main className="programador-content" style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem' }}>
         {/* Header */}
@@ -227,10 +270,13 @@ function ProgramacionesGuardadas() {
                           </button>
                         </td>
                       </tr>
-                      {/* Fila expandible con detalles */}
-                      {expandedRows.has(p._id) && (
-                        <tr style={{ background: '#f8f9fa' }}>
-                          <td colSpan="6" style={{ padding: '1.5rem' }}>
+                                             {/* Fila expandible con detalles */}
+                       {expandedRows.has(p._id) && (
+                         <tr style={{ 
+                           background: '#f8f9fa',
+                           animation: 'slideDown 0.3s ease-out'
+                         }}>
+                           <td colSpan="6" style={{ padding: '1.5rem' }}>
                             <div style={{ 
                               background: '#fff', 
                               borderRadius: '8px', 
