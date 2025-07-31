@@ -116,7 +116,7 @@ function HistorialVerificador() {
     <div className="apertura-page">
       <style>{animationStyles}</style>
       {(!role || role !== 'administrador') && <NavbarVerificador />}
-      <main className="apertura-content" style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem' }}>
+      <main className="apertura-content" style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         {/* Header */}
         <div style={{ 
           background: 'linear-gradient(135deg, #6F2234 0%, #8B2E3F 100%)', 
@@ -200,7 +200,9 @@ function HistorialVerificador() {
             background: '#fff',
             borderRadius: '12px', 
             boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-            overflow: 'hidden'
+            overflow: 'hidden',
+            width: '100%',
+            maxWidth: '1000px'
           }}>
             {/* Tabla */}
             <div style={{ overflowX: 'auto', padding: '1.5rem' }}>
