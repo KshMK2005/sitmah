@@ -133,7 +133,7 @@ function HistorialVerificador() {
             textAlign: 'center'
           }}>
             📊 Historial de Verificaciones
-          </h2>
+        </h2>
         </div>
 
         {/* Filtros compactos */}
@@ -157,10 +157,10 @@ function HistorialVerificador() {
             }}
           >
             <option value="">Todos los años</option>
-            {Array.from(new Set(aperturas.map(ap => ap.fechaApertura && (new Date(ap.fechaApertura).getFullYear())))).filter(Boolean).sort((a, b) => b - a).map(anio => (
-              <option key={anio} value={anio}>{anio}</option>
-            ))}
-          </select>
+                {Array.from(new Set(aperturas.map(ap => ap.fechaApertura && (new Date(ap.fechaApertura).getFullYear())))).filter(Boolean).sort((a, b) => b - a).map(anio => (
+                  <option key={anio} value={anio}>{anio}</option>
+                ))}
+              </select>
           <select 
             value={filtroMes} 
             onChange={e => setFiltroMes(e.target.value)}
@@ -174,13 +174,13 @@ function HistorialVerificador() {
             }}
           >
             <option value="">Todos los meses</option>
-            {[...Array(12)].map((_, i) => (
-              <option key={i + 1} value={(i + 1).toString().padStart(2, '0')}>
-                {new Date(0, i).toLocaleString('es-MX', { month: 'long' })}
-              </option>
-            ))}
-          </select>
-        </div>
+                {[...Array(12)].map((_, i) => (
+                  <option key={i + 1} value={(i + 1).toString().padStart(2, '0')}>
+                    {new Date(0, i).toLocaleString('es-MX', { month: 'long' })}
+                  </option>
+                ))}
+              </select>
+          </div>
 
         {/* Tabla de verificaciones */}
         {aperturasFiltradas.length === 0 ? (
@@ -197,7 +197,7 @@ function HistorialVerificador() {
           </div>
         ) : (
           <div style={{ 
-            background: '#fff', 
+            background: '#fff',
             borderRadius: '12px', 
             boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
             overflow: 'hidden'
