@@ -132,7 +132,7 @@ function HistorialVerificador() {
             fontWeight: '600',
             textAlign: 'center'
           }}>
-            📊 Historial de Verificaciones (Actualizado)
+            📊 Historial de Verificaciones - TABLA ALARGADA
           </h2>
         </div>
 
@@ -206,24 +206,24 @@ function HistorialVerificador() {
             overflow: 'hidden'
           }}>
             {/* Tabla */}
-            <div style={{ overflowX: 'auto', padding: '2rem' }}>
+            <div style={{ overflowX: 'auto', padding: '3rem' }}>
               <table style={{ 
                 width: '100%', 
                 borderCollapse: 'collapse',
-                fontSize: '1rem',
-                minHeight: '400px'
+                fontSize: '1.2rem',
+                minHeight: '600px'
               }}>
                 <thead>
                   <tr style={{ 
                     background: '#6F2234', 
                     color: '#fff'
                   }}>
-                    <th style={{ padding: '1.5rem', textAlign: 'left', fontWeight: '600' }}>Fecha</th>
-                    <th style={{ padding: '1.5rem', textAlign: 'left', fontWeight: '600' }}>Ruta</th>
-                    <th style={{ padding: '1.5rem', textAlign: 'left', fontWeight: '600' }}>Operador</th>
-                    <th style={{ padding: '1.5rem', textAlign: 'center', fontWeight: '600' }}>Estado</th>
-                    <th style={{ padding: '1.5rem', textAlign: 'center', fontWeight: '600' }}>Hora</th>
-                    <th style={{ padding: '1.5rem', textAlign: 'center', fontWeight: '600' }}>Acciones</th>
+                    <th style={{ padding: '2rem', textAlign: 'left', fontWeight: '600' }}>Fecha</th>
+                    <th style={{ padding: '2rem', textAlign: 'left', fontWeight: '600' }}>Ruta</th>
+                    <th style={{ padding: '2rem', textAlign: 'left', fontWeight: '600' }}>Operador</th>
+                    <th style={{ padding: '2rem', textAlign: 'center', fontWeight: '600' }}>Estado</th>
+                    <th style={{ padding: '2rem', textAlign: 'center', fontWeight: '600' }}>Hora</th>
+                    <th style={{ padding: '2rem', textAlign: 'center', fontWeight: '600' }}>Acciones</th>
                   </tr>
                 </thead>
                 {aperturasFiltradas.map((ap, index) => (
@@ -232,16 +232,16 @@ function HistorialVerificador() {
                         background: index % 2 === 0 ? '#fff' : '#f8f9fa',
                         borderBottom: '1px solid #e9ecef'
                       }}>
-                        <td style={{ padding: '1.5rem', fontWeight: '500' }}>
+                        <td style={{ padding: '2rem', fontWeight: '500' }}>
                           {formatDate(ap.fechaApertura)}
                         </td>
-                        <td style={{ padding: '1.5rem', fontWeight: '600', color: '#6F2234' }}>
+                        <td style={{ padding: '2rem', fontWeight: '600', color: '#6F2234' }}>
                           {ap.ruta}
                         </td>
-                        <td style={{ padding: '1.5rem' }}>
+                        <td style={{ padding: '2rem' }}>
                           {ap.nombre}
                         </td>
-                        <td style={{ padding: '1.5rem', textAlign: 'center' }}>
+                        <td style={{ padding: '2rem', textAlign: 'center' }}>
                           <span style={{ 
                             background: getEstadoColor(ap.estado), 
                             color: '#fff', 
@@ -256,29 +256,29 @@ function HistorialVerificador() {
                              ap.estado === 'completado' ? 'Completado' : ap.estado}
                           </span>
                         </td>
-                        <td style={{ padding: '1.5rem', textAlign: 'center' }}>
+                        <td style={{ padding: '2rem', textAlign: 'center' }}>
                           <span style={{ 
                             background: '#6F2234', 
                             color: '#fff', 
-                            padding: '0.4rem 0.8rem', 
-                            borderRadius: '6px',
-                            fontSize: '1rem',
+                            padding: '0.6rem 1rem', 
+                            borderRadius: '8px',
+                            fontSize: '1.1rem',
                             fontWeight: '600'
                           }}>
                             {ap.horaSalida}
                           </span>
                         </td>
-                        <td style={{ padding: '1.5rem', textAlign: 'center' }}>
+                        <td style={{ padding: '2rem', textAlign: 'center' }}>
                           <button
                             onClick={() => toggleRowExpansion(ap._id)}
                             style={{
                               background: expandedRows.has(ap._id) ? '#8B2E3F' : '#6F2234',
                               color: '#fff',
                               border: 'none',
-                              borderRadius: '8px',
-                              padding: '0.75rem 1.5rem',
+                              borderRadius: '10px',
+                              padding: '1rem 2rem',
                               cursor: 'pointer',
-                              fontSize: '1rem',
+                              fontSize: '1.1rem',
                               fontWeight: '500',
                               transition: 'all 0.2s ease'
                             }}
