@@ -116,7 +116,7 @@ function HistorialVerificador() {
     <div className="apertura-page">
       <style>{animationStyles}</style>
       {(!role || role !== 'administrador') && <NavbarVerificador />}
-      <main className="apertura-content" style={{ maxWidth: '1400px', margin: '0 auto', padding: '3rem' }}>
+      <main className="apertura-content" style={{ maxWidth: '1600px', margin: '0 auto', padding: '4rem' }}>
         {/* Header */}
         <div style={{ 
           background: 'linear-gradient(135deg, #6F2234 0%, #8B2E3F 100%)', 
@@ -132,7 +132,7 @@ function HistorialVerificador() {
             fontWeight: '600',
             textAlign: 'center'
           }}>
-            📊 Historial de Verificaciones
+            📊 Historial de Verificaciones (Actualizado)
           </h2>
         </div>
 
@@ -140,21 +140,22 @@ function HistorialVerificador() {
         <div style={{ 
           display: 'flex', 
           justifyContent: 'center', 
-          gap: '1.5rem',
-          marginBottom: '2.5rem',
+          gap: '2rem',
+          marginBottom: '3rem',
           flexWrap: 'wrap',
-          padding: '0 1rem'
+          padding: '0 2rem'
         }}>
           <select 
             value={filtroAnio} 
             onChange={e => setFiltroAnio(e.target.value)}
             style={{ 
-              padding: '0.75rem 1.25rem', 
-              borderRadius: '8px', 
+              padding: '1rem 1.5rem', 
+              borderRadius: '10px', 
               border: '2px solid #e0e0e0',
               background: '#fff',
-              fontSize: '1rem',
-              minWidth: '180px'
+              fontSize: '1.1rem',
+              minWidth: '200px',
+              fontWeight: '500'
             }}
           >
             <option value="">Todos los años</option>
@@ -166,12 +167,13 @@ function HistorialVerificador() {
             value={filtroMes} 
             onChange={e => setFiltroMes(e.target.value)}
             style={{ 
-              padding: '0.75rem 1.25rem', 
-              borderRadius: '8px', 
+              padding: '1rem 1.5rem', 
+              borderRadius: '10px', 
               border: '2px solid #e0e0e0',
               background: '#fff',
-              fontSize: '1rem',
-              minWidth: '180px'
+              fontSize: '1.1rem',
+              minWidth: '200px',
+              fontWeight: '500'
             }}
           >
             <option value="">Todos los meses</option>
