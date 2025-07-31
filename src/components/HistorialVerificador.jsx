@@ -216,30 +216,31 @@ function HistorialVerificador() {
                     background: '#6F2234', 
                     color: '#fff'
                   }}>
-                    <th style={{ padding: '1rem', textAlign: 'left', fontWeight: '600' }}>Fecha</th>
-                    <th style={{ padding: '1rem', textAlign: 'left', fontWeight: '600' }}>Ruta</th>
-                    <th style={{ padding: '1rem', textAlign: 'left', fontWeight: '600' }}>Operador</th>
-                    <th style={{ padding: '1rem', textAlign: 'center', fontWeight: '600' }}>Estado</th>
-                    <th style={{ padding: '1rem', textAlign: 'center', fontWeight: '600' }}>Hora</th>
-                    <th style={{ padding: '1rem', textAlign: 'center', fontWeight: '600' }}>Acciones</th>
+                    <th style={{ padding: '1.25rem 1rem', textAlign: 'left', fontWeight: '600' }}>Fecha</th>
+                    <th style={{ padding: '1.25rem 1rem', textAlign: 'left', fontWeight: '600' }}>Ruta</th>
+                    <th style={{ padding: '1.25rem 1rem', textAlign: 'left', fontWeight: '600' }}>Operador</th>
+                    <th style={{ padding: '1.25rem 1rem', textAlign: 'center', fontWeight: '600' }}>Estado</th>
+                    <th style={{ padding: '1.25rem 1rem', textAlign: 'center', fontWeight: '600' }}>Hora</th>
+                    <th style={{ padding: '1.25rem 1rem', textAlign: 'center', fontWeight: '600' }}>Acciones</th>
                   </tr>
                 </thead>
                 {aperturasFiltradas.map((ap, index) => (
                     <React.Fragment key={ap._id || index}>
                       <tr style={{ 
                         background: index % 2 === 0 ? '#fff' : '#f8f9fa',
-                        borderBottom: '1px solid #e9ecef'
+                        borderBottom: '2px solid #e9ecef',
+                        marginBottom: '1rem'
                       }}>
-                        <td style={{ padding: '1rem', fontWeight: '500' }}>
+                        <td style={{ padding: '1.25rem 1rem', fontWeight: '500' }}>
                           {formatDate(ap.fechaApertura)}
                         </td>
-                        <td style={{ padding: '1rem', fontWeight: '600', color: '#6F2234' }}>
+                        <td style={{ padding: '1.25rem 1rem', fontWeight: '600', color: '#6F2234' }}>
                           {ap.ruta}
                         </td>
-                        <td style={{ padding: '1rem' }}>
+                        <td style={{ padding: '1.25rem 1rem' }}>
                           {ap.nombre}
                         </td>
-                        <td style={{ padding: '1rem', textAlign: 'center' }}>
+                        <td style={{ padding: '1.25rem 1rem', textAlign: 'center' }}>
                           <span style={{ 
                             background: getEstadoColor(ap.estado), 
                             color: '#fff', 
@@ -254,7 +255,7 @@ function HistorialVerificador() {
                              ap.estado === 'completado' ? 'Completado' : ap.estado}
                           </span>
                         </td>
-                        <td style={{ padding: '1rem', textAlign: 'center' }}>
+                        <td style={{ padding: '1.25rem 1rem', textAlign: 'center' }}>
                           <span style={{ 
                             background: '#6F2234', 
                             color: '#fff', 
@@ -266,7 +267,7 @@ function HistorialVerificador() {
                             {ap.horaSalida}
                           </span>
                         </td>
-                        <td style={{ padding: '1rem', textAlign: 'center' }}>
+                        <td style={{ padding: '1.25rem 1rem', textAlign: 'center' }}>
                           <button
                             onClick={() => toggleRowExpansion(ap._id)}
                             style={{
