@@ -133,7 +133,7 @@ function HistorialVerificador() {
             textAlign: 'center'
           }}>
             📊 Historial de Verificaciones
-        </h2>
+          </h2>
         </div>
 
         {/* Filtros compactos */}
@@ -149,19 +149,19 @@ function HistorialVerificador() {
             value={filtroAnio} 
             onChange={e => setFiltroAnio(e.target.value)}
             style={{ 
-              padding: '0.5rem 1rem', 
+              padding: '0.75rem 1.25rem', 
               borderRadius: '8px', 
               border: '2px solid #e0e0e0',
               background: '#fff',
               fontSize: '1rem',
-              minWidth: '120px'
+              minWidth: '180px'
             }}
           >
             <option value="">Todos los años</option>
-                {Array.from(new Set(aperturas.map(ap => ap.fechaApertura && (new Date(ap.fechaApertura).getFullYear())))).filter(Boolean).sort((a, b) => b - a).map(anio => (
-                  <option key={anio} value={anio}>{anio}</option>
-                ))}
-              </select>
+            {Array.from(new Set(aperturas.map(ap => ap.fechaApertura && (new Date(ap.fechaApertura).getFullYear())))).filter(Boolean).sort((a, b) => b - a).map(anio => (
+              <option key={anio} value={anio}>{anio}</option>
+            ))}
+          </select>
           <select 
             value={filtroMes} 
             onChange={e => setFiltroMes(e.target.value)}
@@ -175,12 +175,12 @@ function HistorialVerificador() {
             }}
           >
             <option value="">Todos los meses</option>
-                {[...Array(12)].map((_, i) => (
-                  <option key={i + 1} value={(i + 1).toString().padStart(2, '0')}>
-                    {new Date(0, i).toLocaleString('es-MX', { month: 'long' })}
-                  </option>
-                ))}
-              </select>
+            {[...Array(12)].map((_, i) => (
+              <option key={i + 1} value={(i + 1).toString().padStart(2, '0')}>
+                {new Date(0, i).toLocaleString('es-MX', { month: 'long' })}
+              </option>
+            ))}
+          </select>
           </div>
 
         {/* Tabla de verificaciones */}
