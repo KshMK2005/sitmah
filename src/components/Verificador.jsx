@@ -627,7 +627,7 @@ function Verificador() {
                                 cursor: 'pointer',
                                 borderLeft: ap.retraso ? '4px solid #ffc107' : 'none',
                             }}
-                                onMouseOver={e => e.currentTarget.style.background = '#f0e6ec'}
+                                onMouseOver={e => e.currentTarget.style.background = '#d4edda'}
                                 onMouseOut={e => e.currentTarget.style.background = getEstadoColor(ap.estado, ap.retraso)}
                             >
                                 <div className="table-cell" style={{ textAlign: 'center' }}>

@@ -14,8 +14,8 @@ function HistorialVerificador() {
     const cargarAperturas = async () => {
       try {
         const data = await aperturaService.getAll();
-        // Solo mostrar aperturas que ya fueron verificadas (completado o cancelado)
-        setAperturas(data.filter(ap => ap.estado === 'completado' || ap.estado === 'cancelado'));
+        // Mostrar aperturas que ya fueron verificadas (completado, cancelado, dashboard, retrasado)
+        setAperturas(data.filter(ap => ['completado', 'cancelado', 'dashboard', 'retrasado'].includes(ap.estado)));
       } catch (error) {
         setAperturas([]);
       }
@@ -108,9 +108,24 @@ function HistorialVerificador() {
                     <div><strong style={{ color: '#6F2234' }}>Corrida Inicial:</strong> {ap.corridaInicial}</div>
                     <div><strong style={{ color: '#6F2234' }}>Corrida Final:</strong> {ap.corridaFinal}</div>
                     <div><strong style={{ color: '#6F2234' }}>Hora Salida:</strong> {ap.horaSalida}</div>
-                    <div><strong style={{ color: '#6F2234' }}>Estado:</strong> {ap.estado === 'cancelado' ? 'rechazado' : 'aceptado'}</div>
+                    <div><strong style={{ color: '#6F2234' }}>Estado:</strong> 
+                      <span style={{
+                        color: ap.estado === 'cancelado' ? '#dc3545' : 
+                               ap.estado === 'dashboard' ? '#28a745' : 
+                               ap.estado === 'retrasado' ? '#ffc107' : '#6c757d',
+                        fontWeight: 'bold'
+                      }}>
+                        {ap.estado === 'cancelado' ? 'Rechazado' : 
+                         ap.estado === 'dashboard' ? 'Aprobado' : 
+                         ap.estado === 'retrasado' ? 'Retrasado' : 
+                         ap.estado === 'completado' ? 'Completado' : ap.estado}
+                      </span>
+                    </div>
                     <div><strong style={{ color: '#6F2234' }}>Fecha Apertura:</strong> {ap.fechaApertura ? (new Date(ap.fechaApertura).toLocaleDateString()) : ''}</div>
                     <div><strong style={{ color: '#6F2234' }}>Motivo:</strong> {ap.estado === 'cancelado' ? (ap.observaciones || '-') : '-'}</div>
+                    {ap.retraso && (
+                      <div><strong style={{ color: '#ffc107' }}>⚠️ Retraso:</strong> {ap.observaciones || 'Retraso detectado automáticamente'}</div>
+                    )}
                   </div>
                 ))}
               </div>
