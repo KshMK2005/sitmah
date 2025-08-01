@@ -292,7 +292,7 @@ function Historial({ adminMode, programadorMode }) {
           {currentAperturas.length === 0 ? (
             <div style={{ 
               textAlign: 'center', 
-              padding: '3rem', 
+              padding: '2rem', 
               background: '#f8f9fa', 
               borderRadius: '12px',
               border: '2px dashed #dee2e6'
@@ -302,13 +302,13 @@ function Historial({ adminMode, programadorMode }) {
               </p>
             </div>
           ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', padding: '1rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', padding: '0.5rem' }}>
               {currentAperturas.map((ap, index) => (
                 <div key={ap._id || index} style={{
                   background: '#fff',
-                  borderRadius: '8px',
-                  padding: '1.5rem',
-                  boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
+                  borderRadius: '6px',
+                  padding: '1rem',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
                   border: '1px solid #eee'
                 }}>
                   {/* Header de la card */}
@@ -316,33 +316,33 @@ function Historial({ adminMode, programadorMode }) {
                     display: 'flex',
                     justifyContent: 'space-between',
                     alignItems: 'center',
-                    marginBottom: '1rem',
-                    paddingBottom: '1rem',
+                    marginBottom: '0.75rem',
+                    paddingBottom: '0.75rem',
                     borderBottom: '1px solid #eee'
                   }}>
                     <div>
                       <h3 style={{
                         color: '#6F2234',
-                        fontSize: '1.2rem',
-                        margin: '0 0 0.5rem 0'
+                        fontSize: '1.1rem',
+                        margin: '0 0 0.25rem 0'
                       }}>
                         {ap.ruta} - {ap.nombre}
                       </h3>
                       <p style={{
                         color: '#666',
                         margin: 0,
-                        fontSize: '0.9rem'
+                        fontSize: '0.85rem'
                       }}>
                         {formatDate(ap.fechaApertura)} - {ap.horaSalida}
                       </p>
                     </div>
-                    <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                    <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
                       <span style={{ 
                         background: getEstadoColor(ap.estado), 
                         color: '#fff', 
-                        padding: '0.3rem 0.6rem', 
-                        borderRadius: '6px',
-                        fontSize: '0.9rem',
+                        padding: '0.25rem 0.5rem', 
+                        borderRadius: '4px',
+                        fontSize: '0.8rem',
                         fontWeight: '600'
                       }}>
                         {ap.estado}
@@ -353,8 +353,8 @@ function Historial({ adminMode, programadorMode }) {
                   {/* Detalles de la apertura */}
                   <div style={{
                     display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
-                    gap: '1rem',
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+                    gap: '0.5rem',
                     padding: '0.5rem',
                     backgroundColor: '#f9f9f9',
                     borderRadius: '4px'
