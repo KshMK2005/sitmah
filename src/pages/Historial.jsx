@@ -22,6 +22,8 @@ function Historial({ adminMode, programadorMode }) {
   const [filtroRuta, setFiltroRuta] = useState('');
   const [filtroUnidades, setFiltroUnidades] = useState('');
   const [mostrarFiltros, setMostrarFiltros] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(20);
   const role = localStorage.getItem('userRole');
 
   useEffect(() => {
@@ -47,6 +49,17 @@ function Historial({ adminMode, programadorMode }) {
     return cumpleFecha && cumpleOperador && cumpleRuta && cumpleUnidades;
   });
 
+  // Calcular paginación
+  const totalPages = Math.ceil(aperturasFiltradas.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentAperturas = aperturasFiltradas.slice(startIndex, endIndex);
+
+  // Resetear a la primera página cuando cambien los filtros
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filtroFecha, filtroOperador, filtroRuta, filtroUnidades]);
+
   // Función para formatear fecha
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -70,6 +83,42 @@ function Historial({ adminMode, programadorMode }) {
       default:
         return '#6c757d';
     }
+  };
+
+  // Función para generar números de página
+  const getPageNumbers = () => {
+    const pages = [];
+    const maxVisiblePages = 5;
+    
+    if (totalPages <= maxVisiblePages) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      if (currentPage <= 3) {
+        for (let i = 1; i <= 4; i++) {
+          pages.push(i);
+        }
+        pages.push('...');
+        pages.push(totalPages);
+      } else if (currentPage >= totalPages - 2) {
+        pages.push(1);
+        pages.push('...');
+        for (let i = totalPages - 3; i <= totalPages; i++) {
+          pages.push(i);
+        }
+      } else {
+        pages.push(1);
+        pages.push('...');
+        for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+          pages.push(i);
+        }
+        pages.push('...');
+        pages.push(totalPages);
+      }
+    }
+    
+    return pages;
   };
 
   return (
@@ -199,9 +248,48 @@ function Historial({ adminMode, programadorMode }) {
           </div>
         )}
 
+        {/* Información de resultados y selector de elementos por página */}
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'space-between', 
+          alignItems: 'center', 
+          width: '100%', 
+          marginBottom: '1rem',
+          padding: '0 1rem'
+        }}>
+          <div style={{ color: '#6F2234', fontSize: '1rem' }}>
+            Mostrando {startIndex + 1}-{Math.min(endIndex, aperturasFiltradas.length)} de {aperturasFiltradas.length} aperturas
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <label style={{ color: '#6F2234', fontSize: '0.9rem' }}>
+              Elementos por página:
+            </label>
+            <select
+              value={itemsPerPage}
+              onChange={(e) => {
+                setItemsPerPage(Number(e.target.value));
+                setCurrentPage(1);
+              }}
+              style={{ 
+                padding: '0.3rem 0.5rem', 
+                borderRadius: '4px', 
+                border: '1px solid #ccc',
+                background: '#fff',
+                fontSize: '0.9rem'
+              }}
+            >
+              <option value={10}>10</option>
+              <option value={20}>20</option>
+              <option value={50}>50</option>
+              <option value={100}>100</option>
+              <option value={200}>200</option>
+            </select>
+          </div>
+        </div>
+
         {/* Contenido principal */}
         <div className="table-container">
-          {aperturasFiltradas.length === 0 ? (
+          {currentAperturas.length === 0 ? (
             <div style={{ 
               textAlign: 'center', 
               padding: '3rem', 
@@ -215,7 +303,7 @@ function Historial({ adminMode, programadorMode }) {
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', padding: '1rem' }}>
-              {aperturasFiltradas.map((ap, index) => (
+              {currentAperturas.map((ap, index) => (
                 <div key={ap._id || index} style={{
                   background: '#fff',
                   borderRadius: '8px',
@@ -369,6 +457,78 @@ function Historial({ adminMode, programadorMode }) {
             </div>
           )}
         </div>
+
+        {/* Navegación de páginas */}
+        {totalPages > 1 && (
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'center', 
+            alignItems: 'center', 
+            gap: '0.5rem', 
+            marginTop: '1.5rem', 
+            padding: '0.5rem 0'
+          }}>
+            <button
+              onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+              disabled={currentPage === 1}
+              style={{ 
+                background: '#6F2234', 
+                color: '#fff', 
+                border: 'none', 
+                borderRadius: '4px', 
+                padding: '0.5rem 1rem', 
+                cursor: 'pointer', 
+                fontWeight: 'bold', 
+                fontSize: '1rem', 
+                boxShadow: '0 2px 8px rgba(111, 34, 52, 0.3)'
+              }}
+            >
+              Anterior
+            </button>
+            {getPageNumbers().map((page, index) => (
+              <span
+                key={index}
+                style={{ 
+                  color: '#6F2234', 
+                  fontWeight: 'bold', 
+                  fontSize: '1rem', 
+                  cursor: 'pointer', 
+                  padding: '0.5rem 1rem', 
+                  borderRadius: '4px', 
+                  background: currentPage === page ? '#6F2234' : '#f0f0f0',
+                  color: currentPage === page ? '#fff' : '#6F2234',
+                  border: '1px solid #6F2234'
+                }}
+                onClick={() => {
+                  if (typeof page === 'number') {
+                    setCurrentPage(page);
+                  } else if (page === '...') {
+                    // No hacer nada, ya que '...' indica saltos
+                  }
+                }}
+              >
+                {page}
+              </span>
+            ))}
+            <button
+              onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+              disabled={currentPage === totalPages}
+              style={{ 
+                background: '#6F2234', 
+                color: '#fff', 
+                border: 'none', 
+                borderRadius: '4px', 
+                padding: '0.5rem 1rem', 
+                cursor: 'pointer', 
+                fontWeight: 'bold', 
+                fontSize: '1rem', 
+                boxShadow: '0 2px 8px rgba(111, 34, 52, 0.3)'
+              }}
+            >
+              Siguiente
+            </button>
+          </div>
+        )}
 
         <button
           style={{ 

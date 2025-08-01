@@ -54,6 +54,8 @@ function HistorialVerificador() {
   const [filtroRuta, setFiltroRuta] = useState('');
   const [filtroUnidades, setFiltroUnidades] = useState('');
   const [expandedRows, setExpandedRows] = useState(new Set());
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(20);
   const role = localStorage.getItem('userRole');
 
   useEffect(() => {
@@ -79,6 +81,17 @@ function HistorialVerificador() {
     const cumpleUnidades = filtroUnidades ? (ap.unidades && ap.unidades.toString().includes(filtroUnidades)) : true;
     return cumpleFecha && cumpleOperador && cumpleRuta && cumpleUnidades;
   });
+
+  // Calcular paginación
+  const totalPages = Math.ceil(aperturasFiltradas.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentAperturas = aperturasFiltradas.slice(startIndex, endIndex);
+
+  // Resetear a la primera página cuando cambien los filtros
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filtroFecha, filtroOperador, filtroRuta, filtroUnidades]);
 
   // Función para manejar la expansión de filas
   const toggleRowExpansion = (aperturaId) => {
@@ -114,6 +127,42 @@ function HistorialVerificador() {
       default:
         return '#6c757d';
     }
+  };
+
+  // Función para generar números de página
+  const getPageNumbers = () => {
+    const pages = [];
+    const maxVisiblePages = 5;
+    
+    if (totalPages <= maxVisiblePages) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      if (currentPage <= 3) {
+        for (let i = 1; i <= 4; i++) {
+          pages.push(i);
+        }
+        pages.push('...');
+        pages.push(totalPages);
+      } else if (currentPage >= totalPages - 2) {
+        pages.push(1);
+        pages.push('...');
+        for (let i = totalPages - 3; i <= totalPages; i++) {
+          pages.push(i);
+        }
+      } else {
+        pages.push(1);
+        pages.push('...');
+        for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+          pages.push(i);
+        }
+        pages.push('...');
+        pages.push(totalPages);
+      }
+    }
+    
+    return pages;
   };
 
   return (
@@ -206,8 +255,47 @@ function HistorialVerificador() {
           />
         </div>
 
+        {/* Información de resultados y selector de elementos por página */}
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'space-between', 
+          alignItems: 'center', 
+          width: '100%', 
+          marginBottom: '1rem',
+          padding: '0 1rem'
+        }}>
+          <div style={{ color: '#6F2234', fontSize: '1rem' }}>
+            Mostrando {startIndex + 1}-{Math.min(endIndex, aperturasFiltradas.length)} de {aperturasFiltradas.length} verificaciones
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <label style={{ color: '#6F2234', fontSize: '0.9rem' }}>
+              Elementos por página:
+            </label>
+            <select
+              value={itemsPerPage}
+              onChange={(e) => {
+                setItemsPerPage(Number(e.target.value));
+                setCurrentPage(1);
+              }}
+              style={{ 
+                padding: '0.3rem 0.5rem', 
+                borderRadius: '4px', 
+                border: '1px solid #ccc',
+                background: '#fff',
+                fontSize: '0.9rem'
+              }}
+            >
+              <option value={10}>10</option>
+              <option value={20}>20</option>
+              <option value={50}>50</option>
+              <option value={100}>100</option>
+              <option value={200}>200</option>
+            </select>
+          </div>
+        </div>
+
         {/* Tabla de verificaciones */}
-        {aperturasFiltradas.length === 0 ? (
+        {currentAperturas.length === 0 ? (
           <div style={{ 
             textAlign: 'center', 
             padding: '3rem', 
@@ -222,7 +310,7 @@ function HistorialVerificador() {
         ) : (
           <div className="table-container">
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', padding: '1rem' }}>
-              {aperturasFiltradas.map((ap, index) => (
+              {currentAperturas.map((ap, index) => (
                 <div key={ap._id || index} style={{
                   background: '#fff',
                   borderRadius: '8px',
@@ -444,6 +532,76 @@ function HistorialVerificador() {
                 </div>
               ))}
             </div>
+          </div>
+        )}
+
+        {/* Controles de paginación */}
+        {totalPages > 1 && (
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'center', 
+            alignItems: 'center', 
+            gap: '0.5rem', 
+            marginTop: '2rem',
+            padding: '1rem',
+            background: '#f8f9fa',
+            borderRadius: '8px',
+            border: '1px solid #e9ecef'
+          }}>
+            <button
+              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              style={{
+                padding: '0.5rem 1rem',
+                border: '1px solid #6F2234',
+                background: currentPage === 1 ? '#f8f9fa' : '#6F2234',
+                color: currentPage === 1 ? '#6F2234' : '#fff',
+                borderRadius: '4px',
+                cursor: currentPage === 1 ? 'not-allowed' : 'pointer',
+                fontSize: '0.9rem',
+                fontWeight: '500'
+              }}
+            >
+              ← Anterior
+            </button>
+
+            {getPageNumbers().map((page, index) => (
+              <button
+                key={index}
+                onClick={() => typeof page === 'number' && setCurrentPage(page)}
+                disabled={page === '...'}
+                style={{
+                  padding: '0.5rem 0.75rem',
+                  border: '1px solid #6F2234',
+                  background: page === currentPage ? '#6F2234' : '#fff',
+                  color: page === currentPage ? '#fff' : '#6F2234',
+                  borderRadius: '4px',
+                  cursor: page === '...' ? 'default' : 'pointer',
+                  fontSize: '0.9rem',
+                  fontWeight: '500',
+                  minWidth: '2.5rem'
+                }}
+              >
+                {page}
+              </button>
+            ))}
+
+            <button
+              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+              disabled={currentPage === totalPages}
+              style={{
+                padding: '0.5rem 1rem',
+                border: '1px solid #6F2234',
+                background: currentPage === totalPages ? '#f8f9fa' : '#6F2234',
+                color: currentPage === totalPages ? '#6F2234' : '#fff',
+                borderRadius: '4px',
+                cursor: currentPage === totalPages ? 'not-allowed' : 'pointer',
+                fontSize: '0.9rem',
+                fontWeight: '500'
+              }}
+            >
+              Siguiente →
+            </button>
           </div>
         )}
       </main>
