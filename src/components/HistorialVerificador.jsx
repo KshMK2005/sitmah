@@ -49,6 +49,7 @@ function HistorialVerificador() {
   const [aperturas, setAperturas] = useState([]);
   const [filtroAnio, setFiltroAnio] = useState('');
   const [filtroMes, setFiltroMes] = useState('');
+  const [filtroDia, setFiltroDia] = useState('');
   const [filtroNombre, setFiltroNombre] = useState('');
   const [expandedRows, setExpandedRows] = useState(new Set());
   const role = localStorage.getItem('userRole');
@@ -66,15 +67,23 @@ function HistorialVerificador() {
     cargarAperturas();
   }, []);
 
-  // Filtrar aperturas por año, mes y nombre
+  // Filtrar aperturas por año, mes, día y nombre
   const aperturasFiltradas = aperturas.filter(ap => {
     if (!ap.fechaApertura) return false;
     const fecha = new Date(ap.fechaApertura);
     const cumpleAnio = filtroAnio ? (fecha.getFullYear().toString() === filtroAnio) : true;
     const cumpleMes = filtroMes ? ((fecha.getMonth() + 1).toString().padStart(2, '0') === filtroMes) : true;
+    const cumpleDia = filtroDia ? (fecha.getDate().toString().padStart(2, '0') === filtroDia) : true;
     const cumpleNombre = filtroNombre ? (ap.nombre && ap.nombre.toLowerCase().includes(filtroNombre.toLowerCase())) : true;
-    return cumpleAnio && cumpleMes && cumpleNombre;
+    return cumpleAnio && cumpleMes && cumpleDia && cumpleNombre;
   });
+
+  // Generar días disponibles basados en el mes seleccionado
+  const getDiasDisponibles = () => {
+    if (!filtroAnio || !filtroMes) return [];
+    const diasEnMes = new Date(parseInt(filtroAnio), parseInt(filtroMes), 0).getDate();
+    return Array.from({ length: diasEnMes }, (_, i) => (i + 1).toString().padStart(2, '0'));
+  };
 
   // Función para manejar la expansión de filas
   const toggleRowExpansion = (aperturaId) => {
@@ -146,7 +155,11 @@ function HistorialVerificador() {
         }}>
           <select 
             value={filtroAnio} 
-            onChange={e => setFiltroAnio(e.target.value)}
+            onChange={e => {
+              setFiltroAnio(e.target.value);
+              setFiltroMes('');
+              setFiltroDia('');
+            }}
             style={{ 
               padding: '0.5rem 1rem', 
               borderRadius: '8px', 
@@ -163,7 +176,10 @@ function HistorialVerificador() {
           </select>
           <select 
             value={filtroMes} 
-            onChange={e => setFiltroMes(e.target.value)}
+            onChange={e => {
+              setFiltroMes(e.target.value);
+              setFiltroDia('');
+            }}
             style={{ 
               padding: '0.5rem 1rem', 
               borderRadius: '8px', 
@@ -178,6 +194,23 @@ function HistorialVerificador() {
               <option key={i + 1} value={(i + 1).toString().padStart(2, '0')}>
                 {new Date(0, i).toLocaleString('es-MX', { month: 'long' })}
               </option>
+            ))}
+          </select>
+          <select 
+            value={filtroDia} 
+            onChange={e => setFiltroDia(e.target.value)}
+            style={{ 
+              padding: '0.5rem 1rem', 
+              borderRadius: '8px', 
+              border: '2px solid #e0e0e0',
+              background: '#fff',
+              fontSize: '1rem',
+              minWidth: '150px'
+            }}
+          >
+            <option value="">Todos los días</option>
+            {getDiasDisponibles().map(dia => (
+              <option key={dia} value={dia}>{dia}</option>
             ))}
           </select>
           <input
