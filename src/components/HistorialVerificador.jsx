@@ -49,11 +49,10 @@ const animationStyles = `
 
 function HistorialVerificador() {
   const [aperturas, setAperturas] = useState([]);
-  const [filtroAnio, setFiltroAnio] = useState('');
-  const [filtroMes, setFiltroMes] = useState('');
-  const [filtroDia, setFiltroDia] = useState(null);
+  const [filtroFecha, setFiltroFecha] = useState(null);
   const [filtroOperador, setFiltroOperador] = useState('');
   const [filtroRuta, setFiltroRuta] = useState('');
+  const [filtroUnidades, setFiltroUnidades] = useState('');
   const [expandedRows, setExpandedRows] = useState(new Set());
   const role = localStorage.getItem('userRole');
 
@@ -70,16 +69,15 @@ function HistorialVerificador() {
     cargarAperturas();
   }, []);
 
-  // Filtrar aperturas por año, mes, día, operador y ruta
+  // Filtrar aperturas por fecha, operador, ruta y unidades
   const aperturasFiltradas = aperturas.filter(ap => {
     if (!ap.fechaApertura) return false;
     const fecha = new Date(ap.fechaApertura);
-    const cumpleAnio = filtroAnio ? (fecha.getFullYear().toString() === filtroAnio) : true;
-    const cumpleMes = filtroMes ? ((fecha.getMonth() + 1).toString().padStart(2, '0') === filtroMes) : true;
-    const cumpleDia = filtroDia ? (fecha.toDateString() === filtroDia.toDateString()) : true;
+    const cumpleFecha = filtroFecha ? (fecha.toDateString() === filtroFecha.toDateString()) : true;
     const cumpleOperador = filtroOperador ? (ap.nombre && ap.nombre.toLowerCase().includes(filtroOperador.toLowerCase())) : true;
     const cumpleRuta = filtroRuta ? (ap.ruta && ap.ruta.toLowerCase().includes(filtroRuta.toLowerCase())) : true;
-    return cumpleAnio && cumpleMes && cumpleDia && cumpleOperador && cumpleRuta;
+    const cumpleUnidades = filtroUnidades ? (ap.unidades && ap.unidades.toString().includes(filtroUnidades)) : true;
+    return cumpleFecha && cumpleOperador && cumpleRuta && cumpleUnidades;
   });
 
   // Función para manejar la expansión de filas
@@ -150,13 +148,11 @@ function HistorialVerificador() {
           marginBottom: '2rem',
           flexWrap: 'wrap'
         }}>
-          <select 
-            value={filtroAnio} 
-            onChange={e => {
-              setFiltroAnio(e.target.value);
-              setFiltroMes('');
-              setFiltroDia(null);
-            }}
+          <DatePicker
+            selected={filtroFecha}
+            onChange={(date) => setFiltroFecha(date)}
+            placeholderText="Seleccionar fecha..."
+            dateFormat="dd/MM/yyyy"
             style={{ 
               padding: '0.5rem 1rem', 
               borderRadius: '8px', 
@@ -165,50 +161,7 @@ function HistorialVerificador() {
               fontSize: '1rem',
               minWidth: '150px'
             }}
-          >
-            <option value="">Todos los años</option>
-            {Array.from(new Set(aperturas.map(ap => ap.fechaApertura && (new Date(ap.fechaApertura).getFullYear())))).filter(Boolean).sort((a, b) => b - a).map(anio => (
-              <option key={anio} value={anio}>{anio}</option>
-            ))}
-          </select>
-          <select 
-            value={filtroMes} 
-            onChange={e => {
-              setFiltroMes(e.target.value);
-              setFiltroDia(null);
-            }}
-            style={{ 
-              padding: '0.5rem 1rem', 
-              borderRadius: '8px', 
-              border: '2px solid #e0e0e0',
-              background: '#fff',
-              fontSize: '1rem',
-              minWidth: '150px'
-            }}
-          >
-            <option value="">Todos los meses</option>
-            {[...Array(12)].map((_, i) => (
-              <option key={i + 1} value={(i + 1).toString().padStart(2, '0')}>
-                {new Date(0, i).toLocaleString('es-MX', { month: 'long' })}
-              </option>
-            ))}
-          </select>
-          {filtroMes && (
-            <DatePicker
-              selected={filtroDia}
-              onChange={(date) => setFiltroDia(date)}
-              placeholderText="Seleccionar día..."
-              dateFormat="dd/MM/yyyy"
-              style={{ 
-                padding: '0.5rem 1rem', 
-                borderRadius: '8px', 
-                border: '2px solid #e0e0e0',
-                background: '#fff',
-                fontSize: '1rem',
-                minWidth: '150px'
-              }}
-            />
-          )}
+          />
           <input
             type="text"
             placeholder="Buscar por operador..."
@@ -235,6 +188,20 @@ function HistorialVerificador() {
               background: '#fff',
               fontSize: '1rem',
               minWidth: '200px'
+            }}
+          />
+          <input
+            type="text"
+            placeholder="Buscar por unidades..."
+            value={filtroUnidades}
+            onChange={e => setFiltroUnidades(e.target.value)}
+            style={{ 
+              padding: '0.5rem 1rem', 
+              borderRadius: '8px', 
+              border: '2px solid #e0e0e0',
+              background: '#fff',
+              fontSize: '1rem',
+              minWidth: '150px'
             }}
           />
         </div>

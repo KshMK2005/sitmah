@@ -17,11 +17,10 @@ function Historial({ adminMode, programadorMode }) {
   const navigate = useNavigate();
   const { navigateWithTransition } = useTransition();
   const [aperturas, setAperturas] = useState([]);
-  const [filtroAnio, setFiltroAnio] = useState('');
-  const [filtroMes, setFiltroMes] = useState('');
-  const [filtroDia, setFiltroDia] = useState(null);
+  const [filtroFecha, setFiltroFecha] = useState(null);
   const [filtroOperador, setFiltroOperador] = useState('');
   const [filtroRuta, setFiltroRuta] = useState('');
+  const [filtroUnidades, setFiltroUnidades] = useState('');
   const [mostrarFiltros, setMostrarFiltros] = useState(false);
   const role = localStorage.getItem('userRole');
 
@@ -37,16 +36,15 @@ function Historial({ adminMode, programadorMode }) {
     cargarAperturas();
   }, []);
 
-  // Filtrar aperturas por año, mes, día, operador y ruta
+  // Filtrar aperturas por fecha, operador, ruta y unidades
   const aperturasFiltradas = aperturas.filter(ap => {
     if (!ap.fechaApertura) return false;
     const fecha = new Date(ap.fechaApertura);
-    const cumpleAnio = filtroAnio ? (fecha.getFullYear().toString() === filtroAnio) : true;
-    const cumpleMes = filtroMes ? ((fecha.getMonth() + 1).toString().padStart(2, '0') === filtroMes) : true;
-    const cumpleDia = filtroDia ? (fecha.toDateString() === filtroDia.toDateString()) : true;
+    const cumpleFecha = filtroFecha ? (fecha.toDateString() === filtroFecha.toDateString()) : true;
     const cumpleOperador = filtroOperador ? (ap.nombre && ap.nombre.toLowerCase().includes(filtroOperador.toLowerCase())) : true;
     const cumpleRuta = filtroRuta ? (ap.ruta && ap.ruta.toLowerCase().includes(filtroRuta.toLowerCase())) : true;
-    return cumpleAnio && cumpleMes && cumpleDia && cumpleOperador && cumpleRuta;
+    const cumpleUnidades = filtroUnidades ? (ap.unidades && ap.unidades.toString().includes(filtroUnidades)) : true;
+    return cumpleFecha && cumpleOperador && cumpleRuta && cumpleUnidades;
   });
 
   // Función para formatear fecha
@@ -135,68 +133,21 @@ function Historial({ adminMode, programadorMode }) {
             flexWrap: 'wrap'
           }}>
             <label style={{ color: '#6F2234', fontWeight: 'bold' }}>
-              Año:
-              <select 
-                value={filtroAnio} 
-                onChange={e => {
-                  setFiltroAnio(e.target.value);
-                  setFiltroMes('');
-                  setFiltroDia(null);
-                }} 
+              Fecha:
+              <DatePicker
+                selected={filtroFecha}
+                onChange={(date) => setFiltroFecha(date)}
+                placeholderText="Seleccionar fecha..."
+                dateFormat="dd/MM/yyyy"
                 style={{ 
                   marginLeft: '0.5rem', 
                   padding: '0.3rem', 
                   borderRadius: '4px', 
-                  border: '1px solid #ccc' 
+                  border: '1px solid #ccc',
+                  minWidth: '120px'
                 }}
-              >
-                <option value="">Todos</option>
-                {Array.from(new Set(aperturas.map(ap => ap.fechaApertura && (new Date(ap.fechaApertura).getFullYear())))).filter(Boolean).sort((a, b) => b - a).map(anio => (
-                  <option key={anio} value={anio}>{anio}</option>
-                ))}
-              </select>
+              />
             </label>
-            <label style={{ color: '#6F2234', fontWeight: 'bold' }}>
-              Mes:
-              <select 
-                value={filtroMes} 
-                onChange={e => {
-                  setFiltroMes(e.target.value);
-                  setFiltroDia(null);
-                }} 
-                style={{ 
-                  marginLeft: '0.5rem', 
-                  padding: '0.3rem', 
-                  borderRadius: '4px', 
-                  border: '1px solid #ccc' 
-                }}
-              >
-                <option value="">Todos</option>
-                {[...Array(12)].map((_, i) => (
-                  <option key={i + 1} value={(i + 1).toString().padStart(2, '0')}>
-                    {new Date(0, i).toLocaleString('es-MX', { month: 'long' })}
-                  </option>
-                ))}
-              </select>
-            </label>
-            {filtroMes && (
-              <label style={{ color: '#6F2234', fontWeight: 'bold' }}>
-                Día:
-                <DatePicker
-                  selected={filtroDia}
-                  onChange={(date) => setFiltroDia(date)}
-                  placeholderText="Seleccionar día..."
-                  dateFormat="dd/MM/yyyy"
-                  style={{ 
-                    marginLeft: '0.5rem', 
-                    padding: '0.3rem', 
-                    borderRadius: '4px', 
-                    border: '1px solid #ccc',
-                    minWidth: '120px'
-                  }}
-                />
-              </label>
-            )}
             <label style={{ color: '#6F2234', fontWeight: 'bold' }}>
               Operador:
               <input
@@ -226,6 +177,22 @@ function Historial({ adminMode, programadorMode }) {
                   borderRadius: '4px', 
                   border: '1px solid #ccc',
                   minWidth: '150px'
+                }}
+              />
+            </label>
+            <label style={{ color: '#6F2234', fontWeight: 'bold' }}>
+              Unidades:
+              <input
+                type="text"
+                placeholder="Buscar por unidades..."
+                value={filtroUnidades}
+                onChange={e => setFiltroUnidades(e.target.value)}
+                style={{ 
+                  marginLeft: '0.5rem', 
+                  padding: '0.3rem', 
+                  borderRadius: '4px', 
+                  border: '1px solid #ccc',
+                  minWidth: '120px'
                 }}
               />
             </label>
