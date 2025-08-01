@@ -13,6 +13,8 @@ function TablasGuardadas() {
     const [aperturas, setAperturas] = useState([]);
     const [filtroAnio, setFiltroAnio] = useState('');
     const [filtroMes, setFiltroMes] = useState('');
+    const [filtroNombre, setFiltroNombre] = useState('');
+    const [filtroRuta, setFiltroRuta] = useState('');
     const [mostrarFiltros, setMostrarFiltros] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(20);
@@ -40,13 +42,15 @@ function TablasGuardadas() {
     const aniosDisponibles = Array.from(new Set(tablasCombinadas.map(tabla => tabla.fechaCreacion && (new Date(tabla.fechaCreacion).getFullYear())))).filter(Boolean).sort((a, b) => b - a);
     const mesesDisponibles = [...Array(12)].map((_, i) => (i + 1).toString().padStart(2, '0'));
 
-    // Filtrar tablas por año y mes seleccionados
+    // Filtrar tablas por año, mes, nombre y ruta
     const tablasFiltradas = tablasCombinadas.filter(tabla => {
         if (!tabla.fechaCreacion) return false;
         const fecha = new Date(tabla.fechaCreacion);
         const cumpleAnio = filtroAnio ? (fecha.getFullYear().toString() === filtroAnio) : true;
         const cumpleMes = filtroMes ? ((fecha.getMonth() + 1).toString().padStart(2, '0') === filtroMes) : true;
-        return cumpleAnio && cumpleMes;
+        const cumpleNombre = filtroNombre ? (tabla.nombre && tabla.nombre.toLowerCase().includes(filtroNombre.toLowerCase())) : true;
+        const cumpleRuta = filtroRuta ? (tabla.horarios && tabla.horarios.some(h => h.ruta && h.ruta.toLowerCase().includes(filtroRuta.toLowerCase()))) : true;
+        return cumpleAnio && cumpleMes && cumpleNombre && cumpleRuta;
     });
 
     // Calcular paginación
@@ -58,7 +62,7 @@ function TablasGuardadas() {
     // Resetear a la primera página cuando cambien los filtros
     useEffect(() => {
         setCurrentPage(1);
-    }, [filtroAnio, filtroMes]);
+    }, [filtroAnio, filtroMes, filtroNombre, filtroRuta]);
 
     // Función para generar números de página
     const getPageNumbers = () => {
@@ -165,6 +169,26 @@ function TablasGuardadas() {
                                     <option key={mes} value={mes}>{new Date(0, i).toLocaleString('es-MX', { month: 'long' })}</option>
                                 ))}
                             </select>
+                        </label>
+                        <label style={{ color: '#6F2234', fontWeight: 'bold' }}>
+                            Nombre:
+                            <input
+                                type="text"
+                                value={filtroNombre}
+                                onChange={e => setFiltroNombre(e.target.value)}
+                                placeholder="Buscar por nombre"
+                                style={{ marginLeft: '0.5rem', padding: '0.3rem', borderRadius: '4px', border: '1px solid #ccc' }}
+                            />
+                        </label>
+                        <label style={{ color: '#6F2234', fontWeight: 'bold' }}>
+                            Ruta:
+                            <input
+                                type="text"
+                                value={filtroRuta}
+                                onChange={e => setFiltroRuta(e.target.value)}
+                                placeholder="Buscar por ruta"
+                                style={{ marginLeft: '0.5rem', padding: '0.3rem', borderRadius: '4px', border: '1px solid #ccc' }}
+                            />
                         </label>
                     </div>
                 )}
