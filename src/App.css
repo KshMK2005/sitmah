@@ -106,12 +106,14 @@ h1 {
   width: 100%;
   box-sizing: border-box;
   color: #333 !important;
+  background-color: #ffffff !important;
 }
 
 .input:focus, .input-filter:focus {
   border-color: var(--pantone-7421) !important;
   outline: none;
   box-shadow: 0 0 0 2px rgba(105, 27, 49, 0.1) !important;
+  background-color: #ffffff !important;
 }
 
 
@@ -338,6 +340,7 @@ h1 {
 /* For selects in App.jsx */
 .input[type="select"], select.input, .form-group select, .form-group select option {
   color: #111 !important;
+  background-color: #ffffff !important;
 }
 
 /* PALETA PANTONE ORIGINAL - RESETEADA */
@@ -348,6 +351,12 @@ h1 {
   --pantone-465: #BC955B;
   --pantone-coolgray7: #98989A;
   --pantone-424: #6F7271;
+}
+
+/* Asegurar que todos los inputs tengan fondo blanco */
+input[type="text"], input[type="number"], input[type="time"], input[type="date"], input[type="email"], input[type="password"], input[type="search"], input[type="tel"], input[type="url"], textarea, select {
+  background-color: #ffffff !important;
+  color: #333 !important;
 }
 
 body, html {
