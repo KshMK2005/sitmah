@@ -49,6 +49,7 @@ function HistorialVerificador() {
   const [aperturas, setAperturas] = useState([]);
   const [filtroAnio, setFiltroAnio] = useState('');
   const [filtroMes, setFiltroMes] = useState('');
+  const [filtroNombre, setFiltroNombre] = useState('');
   const [expandedRows, setExpandedRows] = useState(new Set());
   const role = localStorage.getItem('userRole');
 
@@ -65,16 +66,15 @@ function HistorialVerificador() {
     cargarAperturas();
   }, []);
 
-  // Filtrar aperturas por año y mes seleccionados
+  // Filtrar aperturas por año, mes y nombre
   const aperturasFiltradas = aperturas.filter(ap => {
     if (!ap.fechaApertura) return false;
     const fecha = new Date(ap.fechaApertura);
     const cumpleAnio = filtroAnio ? (fecha.getFullYear().toString() === filtroAnio) : true;
     const cumpleMes = filtroMes ? ((fecha.getMonth() + 1).toString().padStart(2, '0') === filtroMes) : true;
-    return cumpleAnio && cumpleMes;
+    const cumpleNombre = filtroNombre ? (ap.nombre && ap.nombre.toLowerCase().includes(filtroNombre.toLowerCase())) : true;
+    return cumpleAnio && cumpleMes && cumpleNombre;
   });
-
-
 
   // Función para manejar la expansión de filas
   const toggleRowExpansion = (aperturaId) => {
@@ -119,20 +119,20 @@ function HistorialVerificador() {
       <main className="apertura-content" style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         {/* Header */}
         <div style={{ 
-          background: 'linear-gradient(135deg, #ff0000 0%, #ff6600 100%)', 
+          background: 'linear-gradient(135deg, #6F2234 0%, #A02142 100%)', 
           borderRadius: '12px', 
           padding: '1.5rem', 
           marginBottom: '2rem',
-          boxShadow: '0 4px 20px rgba(255, 0, 0, 0.3)'
+          boxShadow: '0 4px 20px rgba(111, 34, 52, 0.3)'
         }}>
           <h2 style={{ 
-            color: '#000', 
+            color: '#fff', 
             fontSize: '2rem', 
             margin: 0,
             fontWeight: '600',
             textAlign: 'center'
           }}>
-            📊 Historial de Verificaciones - CAMBIO VISIBLE
+            📊 Historial de Verificaciones
           </h2>
         </div>
 
@@ -180,7 +180,21 @@ function HistorialVerificador() {
               </option>
             ))}
           </select>
-          </div>
+          <input
+            type="text"
+            placeholder="Buscar por nombre..."
+            value={filtroNombre}
+            onChange={e => setFiltroNombre(e.target.value)}
+            style={{ 
+              padding: '0.5rem 1rem', 
+              borderRadius: '8px', 
+              border: '2px solid #e0e0e0',
+              background: '#fff',
+              fontSize: '1rem',
+              minWidth: '200px'
+            }}
+          />
+        </div>
 
         {/* Tabla de verificaciones */}
         {aperturasFiltradas.length === 0 ? (
