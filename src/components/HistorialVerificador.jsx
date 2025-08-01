@@ -298,7 +298,7 @@ function HistorialVerificador() {
         {currentAperturas.length === 0 ? (
           <div style={{ 
             textAlign: 'center', 
-            padding: '2rem', 
+            padding: '1.5rem', 
             background: '#f8f9fa', 
             borderRadius: '12px',
             border: '2px dashed #dee2e6'
@@ -309,13 +309,13 @@ function HistorialVerificador() {
           </div>
         ) : (
           <div className="table-container">
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', padding: '0.5rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem', padding: '0.3rem' }}>
               {currentAperturas.map((ap, index) => (
                 <div key={ap._id || index} style={{
                   background: '#fff',
-                  borderRadius: '6px',
-                  padding: '1rem',
-                  boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+                  borderRadius: '4px',
+                  padding: '0.75rem',
+                  boxShadow: '0 1px 2px rgba(0,0,0,0.08)',
                   border: '1px solid #eee'
                 }}>
                   {/* Header de la card */}
@@ -323,33 +323,33 @@ function HistorialVerificador() {
                     display: 'flex',
                     justifyContent: 'space-between',
                     alignItems: 'center',
-                    marginBottom: '0.75rem',
-                    paddingBottom: '0.75rem',
+                    marginBottom: '0.5rem',
+                    paddingBottom: '0.5rem',
                     borderBottom: '1px solid #eee'
                   }}>
                     <div>
                       <h3 style={{
                         color: '#6F2234',
-                        fontSize: '1.1rem',
-                        margin: '0 0 0.25rem 0'
+                        fontSize: '1rem',
+                        margin: '0 0 0.2rem 0'
                       }}>
                         {ap.ruta} - {ap.nombre}
                       </h3>
                       <p style={{
                         color: '#666',
                         margin: 0,
-                        fontSize: '0.85rem'
+                        fontSize: '0.8rem'
                       }}>
                         {formatDate(ap.fechaApertura)} - {ap.horaSalida}
                       </p>
                     </div>
-                    <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                    <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                       <span style={{ 
                         background: getEstadoColor(ap.estado), 
                         color: '#fff', 
-                        padding: '0.25rem 0.5rem', 
-                        borderRadius: '4px',
-                        fontSize: '0.8rem',
+                        padding: '0.2rem 0.4rem', 
+                        borderRadius: '3px',
+                        fontSize: '0.75rem',
                         fontWeight: '600'
                       }}>
                         {ap.estado === 'cancelado' ? 'Rechazado' :
@@ -363,10 +363,10 @@ function HistorialVerificador() {
                           background: expandedRows.has(ap._id) ? '#8B2E3F' : '#6F2234',
                           color: '#fff',
                           border: 'none',
-                          borderRadius: '4px',
-                          padding: '0.4rem 0.75rem',
+                          borderRadius: '3px',
+                          padding: '0.3rem 0.6rem',
                           cursor: 'pointer',
-                          fontSize: '0.8rem',
+                          fontSize: '0.75rem',
                           fontWeight: '500',
                           transition: 'all 0.2s ease'
                         }}
@@ -380,13 +380,13 @@ function HistorialVerificador() {
                   {expandedRows.has(ap._id) && (
                     <div style={{
                       display: 'grid',
-                      gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-                      gap: '0.5rem',
-                      maxHeight: '150px',
+                      gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))',
+                      gap: '0.4rem',
+                      maxHeight: '120px',
                       overflowY: 'auto',
-                      padding: '0.5rem',
+                      padding: '0.4rem',
                       backgroundColor: '#f9f9f9',
-                      borderRadius: '4px'
+                      borderRadius: '3px'
                     }}>
                       <div style={{
                         padding: '0.75rem',
