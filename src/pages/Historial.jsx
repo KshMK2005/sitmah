@@ -369,7 +369,7 @@ function Historial({ adminMode, programadorMode }) {
                     </div>
                   </div>
 
-                  {/* Detalles de la apertura */}
+                  {/* Detalles de la apertura - solo en vista normal */}
                   {!vistaCompacta && (
                     <div style={{
                       display: 'grid',
@@ -393,82 +393,83 @@ function Historial({ adminMode, programadorMode }) {
                           {ap.tipoUnidad}
                         </div>
                       </div>
-                    <div style={{
-                      padding: '0.75rem',
-                      backgroundColor: '#fff',
-                      borderRadius: '4px',
-                      border: '1px solid #eee',
-                      fontSize: '0.9rem'
-                    }}>
-                      <div style={{ fontWeight: '500', color: '#6F2234' }}>
-                        Económico
+                      <div style={{
+                        padding: '0.6rem',
+                        backgroundColor: '#fff',
+                        borderRadius: '3px',
+                        border: '1px solid #eee',
+                        fontSize: '0.8rem'
+                      }}>
+                        <div style={{ fontWeight: '500', color: '#6F2234' }}>
+                          Económico
+                        </div>
+                        <div style={{ color: '#666' }}>
+                          {ap.economico}
+                        </div>
                       </div>
-                      <div style={{ color: '#666' }}>
-                        {ap.economico}
+                      <div style={{
+                        padding: '0.6rem',
+                        backgroundColor: '#fff',
+                        borderRadius: '3px',
+                        border: '1px solid #eee',
+                        fontSize: '0.8rem'
+                      }}>
+                        <div style={{ fontWeight: '500', color: '#6F2234' }}>
+                          Tarjetón
+                        </div>
+                        <div style={{ color: '#666' }}>
+                          {ap.tarjeton}
+                        </div>
                       </div>
-                    </div>
-                    <div style={{
-                      padding: '0.75rem',
-                      backgroundColor: '#fff',
-                      borderRadius: '4px',
-                      border: '1px solid #eee',
-                      fontSize: '0.9rem'
-                    }}>
-                      <div style={{ fontWeight: '500', color: '#6F2234' }}>
-                        Tarjetón
+                      <div style={{
+                        padding: '0.6rem',
+                        backgroundColor: '#fff',
+                        borderRadius: '3px',
+                        border: '1px solid #eee',
+                        fontSize: '0.8rem'
+                      }}>
+                        <div style={{ fontWeight: '500', color: '#6F2234' }}>
+                          Corrida Inicial
+                        </div>
+                        <div style={{ color: '#666' }}>
+                          {ap.corridaInicial}
+                        </div>
                       </div>
-                      <div style={{ color: '#666' }}>
-                        {ap.tarjeton}
+                      <div style={{
+                        padding: '0.6rem',
+                        backgroundColor: '#fff',
+                        borderRadius: '3px',
+                        border: '1px solid #eee',
+                        fontSize: '0.8rem'
+                      }}>
+                        <div style={{ fontWeight: '500', color: '#6F2234' }}>
+                          Corrida Final
+                        </div>
+                        <div style={{ color: '#666' }}>
+                          {ap.corridaFinal}
+                        </div>
                       </div>
-                    </div>
-                    <div style={{
-                      padding: '0.75rem',
-                      backgroundColor: '#fff',
-                      borderRadius: '4px',
-                      border: '1px solid #eee',
-                      fontSize: '0.9rem'
-                    }}>
-                      <div style={{ fontWeight: '500', color: '#6F2234' }}>
-                        Corrida Inicial
-                      </div>
-                      <div style={{ color: '#666' }}>
-                        {ap.corridaInicial}
-                      </div>
-                    </div>
-                    <div style={{
-                      padding: '0.75rem',
-                      backgroundColor: '#fff',
-                      borderRadius: '4px',
-                      border: '1px solid #eee',
-                      fontSize: '0.9rem'
-                    }}>
-                      <div style={{ fontWeight: '500', color: '#6F2234' }}>
-                        Corrida Final
-                      </div>
-                      <div style={{ color: '#666' }}>
-                        {ap.corridaFinal}
-                      </div>
-                    </div>
-                    <div style={{
-                      padding: '0.75rem',
-                      backgroundColor: '#fff',
-                      borderRadius: '4px',
-                      border: '1px solid #eee',
-                      fontSize: '0.9rem'
-                    }}>
-                      <div style={{ fontWeight: '500', color: '#6F2234' }}>
-                        Estado
-                      </div>
-                      <div style={{ color: '#666' }}>
-                        <span style={{ 
-                          background: getEstadoColor(ap.estado),
-                          color: '#fff',
-                          padding: '0.2rem 0.5rem',
-                          borderRadius: '4px',
-                          fontSize: '0.85rem'
-                        }}>
-                          {ap.estado}
-                        </span>
+                      <div style={{
+                        padding: '0.6rem',
+                        backgroundColor: '#fff',
+                        borderRadius: '3px',
+                        border: '1px solid #eee',
+                        fontSize: '0.8rem'
+                      }}>
+                        <div style={{ fontWeight: '500', color: '#6F2234' }}>
+                          Estado
+                        </div>
+                        <div style={{ color: '#666' }}>
+                          <span style={{ 
+                            background: getEstadoColor(ap.estado),
+                            color: '#fff',
+                            padding: '0.2rem 0.4rem',
+                            borderRadius: '3px',
+                            fontSize: '0.75rem'
+                          }}>
+                            {ap.estado}
+                          </span>
+                        </div>
                       </div>
                     </div>
                   )}
