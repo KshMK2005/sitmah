@@ -24,7 +24,7 @@ function Historial({ adminMode, programadorMode }) {
   const [mostrarFiltros, setMostrarFiltros] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(20);
-  const [vistaCompacta, setVistaCompacta] = useState(false);
+  const [expandedRows, setExpandedRows] = useState(new Set());
   const role = localStorage.getItem('userRole');
 
   useEffect(() => {
@@ -84,6 +84,17 @@ function Historial({ adminMode, programadorMode }) {
       default:
         return '#6c757d';
     }
+  };
+
+  // Función para alternar expansión de fila
+  const toggleRowExpansion = (rowId) => {
+    const newExpandedRows = new Set(expandedRows);
+    if (newExpandedRows.has(rowId)) {
+      newExpandedRows.delete(rowId);
+    } else {
+      newExpandedRows.add(rowId);
+    }
+    setExpandedRows(newExpandedRows);
   };
 
   // Función para generar números de página
@@ -150,41 +161,23 @@ function Historial({ adminMode, programadorMode }) {
           <h3 style={{ color: '#6F2234', fontSize: '1.8rem', margin: 0 }}>
             Aperturas Guardadas
           </h3>
-          <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-            <button
-              style={{ 
-                background: vistaCompacta ? '#8B2E3F' : '#6F2234', 
-                color: '#fff', 
-                border: 'none', 
-                borderRadius: '4px', 
-                padding: '0.5rem 1rem', 
-                cursor: 'pointer', 
-                fontWeight: 'bold', 
-                fontSize: '1rem', 
-                transition: 'all 0.2s'
-              }}
-              onClick={() => setVistaCompacta(!vistaCompacta)}
-            >
-              {vistaCompacta ? '📋 Vista Normal' : '📄 Vista Compacta'}
-            </button>
-            <button
-              style={{ 
-                background: '#6F2234', 
-                color: '#fff', 
-                border: 'none', 
-                borderRadius: '4px', 
-                padding: '0.5rem 1rem', 
-                cursor: 'pointer', 
-                fontWeight: 'bold', 
-                fontSize: '1rem', 
-                boxShadow: (mostrarFiltros ? '0 2px 8px rgba(111, 34, 52, 0.3)' : 'none'), 
-                transition: 'box-shadow 0.2s' 
-              }}
-              onClick={() => setMostrarFiltros(f => !f)}
-            >
-              {mostrarFiltros ? 'Ocultar filtros' : 'Mostrar filtros'}
-            </button>
-          </div>
+          <button
+            style={{ 
+              background: '#6F2234', 
+              color: '#fff', 
+              border: 'none', 
+              borderRadius: '4px', 
+              padding: '0.5rem 1rem', 
+              cursor: 'pointer', 
+              fontWeight: 'bold', 
+              fontSize: '1rem', 
+              boxShadow: (mostrarFiltros ? '0 2px 8px rgba(111, 34, 52, 0.3)' : 'none'), 
+              transition: 'box-shadow 0.2s' 
+            }}
+            onClick={() => setMostrarFiltros(f => !f)}
+          >
+            {mostrarFiltros ? 'Ocultar filtros' : 'Mostrar filtros'}
+          </button>
         </div>
 
         {/* Filtros */}
@@ -321,13 +314,13 @@ function Historial({ adminMode, programadorMode }) {
               </p>
             </div>
           ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: vistaCompacta ? '0.2rem' : '0.3rem', padding: vistaCompacta ? '0.2rem' : '0.3rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem', padding: '0.3rem' }}>
               {currentAperturas.map((ap, index) => (
                 <div key={ap._id || index} style={{
                   background: '#fff',
-                  borderRadius: vistaCompacta ? '3px' : '4px',
-                  padding: vistaCompacta ? '0.5rem' : '0.75rem',
-                  boxShadow: vistaCompacta ? '0 1px 2px rgba(0,0,0,0.05)' : '0 1px 2px rgba(0,0,0,0.08)',
+                  borderRadius: '4px',
+                  padding: '0.75rem',
+                  boxShadow: '0 1px 2px rgba(0,0,0,0.08)',
                   border: '1px solid #eee'
                 }}>
                   {/* Header de la card */}
@@ -335,14 +328,14 @@ function Historial({ adminMode, programadorMode }) {
                     display: 'flex',
                     justifyContent: 'space-between',
                     alignItems: 'center',
-                    marginBottom: vistaCompacta ? '0.3rem' : '0.5rem',
-                    paddingBottom: vistaCompacta ? '0.3rem' : '0.5rem',
+                    marginBottom: '0.5rem',
+                    paddingBottom: '0.5rem',
                     borderBottom: '1px solid #eee'
                   }}>
                     <div>
                       <h3 style={{
                         color: '#6F2234',
-                        fontSize: vistaCompacta ? '0.9rem' : '1rem',
+                        fontSize: '1rem',
                         margin: '0 0 0.2rem 0'
                       }}>
                         {ap.ruta} - {ap.nombre}
@@ -350,27 +343,43 @@ function Historial({ adminMode, programadorMode }) {
                       <p style={{
                         color: '#666',
                         margin: 0,
-                        fontSize: vistaCompacta ? '0.75rem' : '0.8rem'
+                        fontSize: '0.8rem'
                       }}>
                         {formatDate(ap.fechaApertura)} - {ap.horaSalida}
                       </p>
                     </div>
-                    <div style={{ display: 'flex', gap: vistaCompacta ? '0.4rem' : '0.5rem', alignItems: 'center' }}>
+                    <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
                       <span style={{ 
                         background: getEstadoColor(ap.estado), 
                         color: '#fff', 
-                        padding: vistaCompacta ? '0.15rem 0.3rem' : '0.2rem 0.4rem', 
-                        borderRadius: vistaCompacta ? '2px' : '3px',
-                        fontSize: vistaCompacta ? '0.7rem' : '0.75rem',
+                        padding: '0.15rem 0.3rem', 
+                        borderRadius: '2px',
+                        fontSize: '0.7rem',
                         fontWeight: '600'
                       }}>
                         {ap.estado}
                       </span>
+                                             <button
+                         onClick={() => toggleRowExpansion(ap._id || index)}
+                         style={{
+                           background: expandedRows.has(ap._id || index) ? '#8B2E3F' : '#6F2234',
+                           color: '#fff',
+                           border: 'none',
+                           borderRadius: '3px',
+                           padding: '0.3rem 0.6rem',
+                           cursor: 'pointer',
+                           fontSize: '0.75rem',
+                           fontWeight: '500',
+                           transition: 'all 0.2s ease'
+                         }}
+                       >
+                         {expandedRows.has(ap._id || index) ? '🔽 Ocultar' : '🔍 Ver'}
+                       </button>
                     </div>
                   </div>
 
                   {/* Detalles de la apertura - solo en vista normal */}
-                  {!vistaCompacta && (
+                  {expandedRows.has(ap._id || index) && (
                     <div style={{
                       display: 'grid',
                       gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))',
