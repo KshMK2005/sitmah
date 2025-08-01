@@ -6,6 +6,8 @@ import { aperturaService } from '../services/api';
 import '../Apertura.css';
 import { useTransition } from '../components/TransitionContext';
 import './Historial.css';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 function Historial({ adminMode, programadorMode }) {
   // Aplica el tema global guardado al cargar la página
@@ -17,8 +19,9 @@ function Historial({ adminMode, programadorMode }) {
   const [aperturas, setAperturas] = useState([]);
   const [filtroAnio, setFiltroAnio] = useState('');
   const [filtroMes, setFiltroMes] = useState('');
-  const [filtroDia, setFiltroDia] = useState('');
-  const [filtroNombre, setFiltroNombre] = useState('');
+  const [filtroDia, setFiltroDia] = useState(null);
+  const [filtroOperador, setFiltroOperador] = useState('');
+  const [filtroRuta, setFiltroRuta] = useState('');
   const [mostrarFiltros, setMostrarFiltros] = useState(false);
   const role = localStorage.getItem('userRole');
 
@@ -34,23 +37,17 @@ function Historial({ adminMode, programadorMode }) {
     cargarAperturas();
   }, []);
 
-  // Filtrar aperturas por año, mes, día y nombre
+  // Filtrar aperturas por año, mes, día, operador y ruta
   const aperturasFiltradas = aperturas.filter(ap => {
     if (!ap.fechaApertura) return false;
     const fecha = new Date(ap.fechaApertura);
     const cumpleAnio = filtroAnio ? (fecha.getFullYear().toString() === filtroAnio) : true;
     const cumpleMes = filtroMes ? ((fecha.getMonth() + 1).toString().padStart(2, '0') === filtroMes) : true;
-    const cumpleDia = filtroDia ? (fecha.getDate().toString().padStart(2, '0') === filtroDia) : true;
-    const cumpleNombre = filtroNombre ? (ap.nombre && ap.nombre.toLowerCase().includes(filtroNombre.toLowerCase())) : true;
-    return cumpleAnio && cumpleMes && cumpleDia && cumpleNombre;
+    const cumpleDia = filtroDia ? (fecha.toDateString() === filtroDia.toDateString()) : true;
+    const cumpleOperador = filtroOperador ? (ap.nombre && ap.nombre.toLowerCase().includes(filtroOperador.toLowerCase())) : true;
+    const cumpleRuta = filtroRuta ? (ap.ruta && ap.ruta.toLowerCase().includes(filtroRuta.toLowerCase())) : true;
+    return cumpleAnio && cumpleMes && cumpleDia && cumpleOperador && cumpleRuta;
   });
-
-  // Generar días disponibles basados en el mes seleccionado
-  const getDiasDisponibles = () => {
-    if (!filtroAnio || !filtroMes) return [];
-    const diasEnMes = new Date(parseInt(filtroAnio), parseInt(filtroMes), 0).getDate();
-    return Array.from({ length: diasEnMes }, (_, i) => (i + 1).toString().padStart(2, '0'));
-  };
 
   // Función para formatear fecha
   const formatDate = (dateString) => {
@@ -144,7 +141,7 @@ function Historial({ adminMode, programadorMode }) {
                 onChange={e => {
                   setFiltroAnio(e.target.value);
                   setFiltroMes('');
-                  setFiltroDia('');
+                  setFiltroDia(null);
                 }} 
                 style={{ 
                   marginLeft: '0.5rem', 
@@ -165,7 +162,7 @@ function Historial({ adminMode, programadorMode }) {
                 value={filtroMes} 
                 onChange={e => {
                   setFiltroMes(e.target.value);
-                  setFiltroDia('');
+                  setFiltroDia(null);
                 }} 
                 style={{ 
                   marginLeft: '0.5rem', 
@@ -182,31 +179,47 @@ function Historial({ adminMode, programadorMode }) {
                 ))}
               </select>
             </label>
+            {filtroMes && (
+              <label style={{ color: '#6F2234', fontWeight: 'bold' }}>
+                Día:
+                <DatePicker
+                  selected={filtroDia}
+                  onChange={(date) => setFiltroDia(date)}
+                  placeholderText="Seleccionar día..."
+                  dateFormat="dd/MM/yyyy"
+                  style={{ 
+                    marginLeft: '0.5rem', 
+                    padding: '0.3rem', 
+                    borderRadius: '4px', 
+                    border: '1px solid #ccc',
+                    minWidth: '120px'
+                  }}
+                />
+              </label>
+            )}
             <label style={{ color: '#6F2234', fontWeight: 'bold' }}>
-              Día:
-              <select 
-                value={filtroDia} 
-                onChange={e => setFiltroDia(e.target.value)} 
+              Operador:
+              <input
+                type="text"
+                placeholder="Buscar por operador..."
+                value={filtroOperador}
+                onChange={e => setFiltroOperador(e.target.value)}
                 style={{ 
                   marginLeft: '0.5rem', 
                   padding: '0.3rem', 
                   borderRadius: '4px', 
-                  border: '1px solid #ccc' 
+                  border: '1px solid #ccc',
+                  minWidth: '150px'
                 }}
-              >
-                <option value="">Todos</option>
-                {getDiasDisponibles().map(dia => (
-                  <option key={dia} value={dia}>{dia}</option>
-                ))}
-              </select>
+              />
             </label>
             <label style={{ color: '#6F2234', fontWeight: 'bold' }}>
-              Nombre:
+              Ruta:
               <input
                 type="text"
-                placeholder="Buscar por nombre..."
-                value={filtroNombre}
-                onChange={e => setFiltroNombre(e.target.value)}
+                placeholder="Buscar por ruta..."
+                value={filtroRuta}
+                onChange={e => setFiltroRuta(e.target.value)}
                 style={{ 
                   marginLeft: '0.5rem', 
                   padding: '0.3rem', 
