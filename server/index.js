@@ -1,8 +1,12 @@
-const express = require('express');
-const cors = require('cors');
-const dotenv = require('dotenv');
-const path = require('path');
-const connectDB = require('../src/database/config');
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import connectDB from '../src/database/config.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Cargar variables de entorno
 dotenv.config();
@@ -37,10 +41,10 @@ app.get('/', (req, res) => {
 });
 
 // Importar rutas
-const programacionRoutes = require('./routes/programacionRoutes');
-const aperturaRoutes = require('./routes/aperturaRoutes');
-const usuarioRoutes = require('./routes/usuarioRoutes');
-const operadorRoutes = require('./routes/operadorRoutes');
+import programacionRoutes from './routes/programacionRoutes.js';
+import aperturaRoutes from './routes/aperturaRoutes.js';
+import usuarioRoutes from './routes/usuarioRoutes.js';
+import operadorRoutes from './routes/operadorRoutes.js';
 
 // Usar rutas
 app.use('/api/programacion', programacionRoutes);

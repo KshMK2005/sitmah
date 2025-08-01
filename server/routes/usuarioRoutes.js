@@ -1,6 +1,7 @@
-const express = require('express');
+import express from 'express';
+import Usuario from '../database/models/Usuario.js';
+
 const router = express.Router();
-const Usuario = require('../database/models/Usuario');
 
 // Registrar usuario
 router.post('/', async (req, res) => {
@@ -65,4 +66,4 @@ router.get('/tarjeton/:tarjeton', async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

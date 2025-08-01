@@ -1,6 +1,7 @@
-const express = require('express');
+import express from 'express';
+import Programacion from '../../src/database/models/Programacion.js';
+
 const router = express.Router();
-const Programacion = require('../../src/database/models/Programacion');
 
 // Obtener todas las programaciones
 router.get('/', async (req, res) => {
@@ -87,4 +88,4 @@ router.get('/estadisticas/totales', async (req, res) => {
     }
 });
 
-module.exports = router; 
+export default router; 

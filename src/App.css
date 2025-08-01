@@ -189,15 +189,15 @@ h1 {
   background: #ffffff00 !important; /* transparente */
   border-radius: 4px;
   overflow: hidden;
-  box-shadow: 0 2px 12px rgba(128,0,32,0.07);
+  box-shadow: 0 2px 12px rgba(111, 34, 52, 0.07);
   font-size: 1.08rem;
   border: 1px solid var(--pantone-468);
 }
 
 
 .table th {
-  background: #ffffffcc !important; /* semitransparente */
-  color: var(--pantone-7421) !important;
+  background: var(--pantone-7421) !important;
+  color: var(--pantone-468) !important;
   font-weight: 700;
   padding: 1.1rem 0.7rem;
   text-align: left;
@@ -210,7 +210,7 @@ h1 {
   padding: 1rem 0.7rem;
   color: var(--pantone-7421);
   border-bottom: 1px solid var(--pantone-468);
-  background: #ffffffcc; /* semitransparente */
+  background: #ffffff;
 }
 
 .table tr:last-child td {
@@ -218,7 +218,7 @@ h1 {
 }
 
 .table tbody tr:hover td {
-  background: #fff8dc99;
+  background: #f8f9fa;
 }
 
 .filter {
@@ -340,9 +340,9 @@ h1 {
   color: #111 !important;
 }
 
-/* PALETA PANTONE ACTUALIZADA */
+/* PALETA PANTONE ORIGINAL - RESETEADA */
 :root {
-  --pantone-7421: #691B31;
+  --pantone-7421: #6F2234;
   --pantone-7420: #A02142;
   --pantone-468: #DDC9A3;
   --pantone-465: #BC955B;
@@ -361,57 +361,145 @@ body, html {
 }
 
 .logout-button, .btn-apertura, button {
-  background: var(--pantone-7420) !important;
-  color: #fff !important;
-  border: none;
+  background: var(--pantone-7421) !important;
+  color: var(--pantone-468) !important;
+  border: 1px solid var(--pantone-7421) !important;
 }
 
-.apertura-content, .main-content, .container_home, .apertura-form, .form, .tabla, .apertura-table, .tabla-completa, .tabla-programador {
-  background: #ffffff00 !important; /* semitransparente */
+.logout-button:hover, .btn-apertura:hover, button:hover {
+  background: var(--pantone-468) !important;
   color: var(--pantone-7421) !important;
+  border: 1px solid var(--pantone-7421) !important;
+}
+
+/* Reset de colores para botones de acción */
+.btn-delete, .btn-edit {
+  background: var(--pantone-7421) !important;
+  color: var(--pantone-468) !important;
+  border: 1px solid var(--pantone-7421) !important;
+}
+
+.btn-delete:hover, .btn-edit:hover {
+  background: var(--pantone-468) !important;
+  color: var(--pantone-7421) !important;
+  border: 1px solid var(--pantone-7421) !important;
+}
+
+/* Reset de tabla con estructura correcta */
+.table {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  border-collapse: collapse;
+  background: #ffffff !important;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(111, 34, 52, 0.07);
+  font-size: 1.08rem;
+  border: 1px solid var(--pantone-468);
+}
+
+.table th {
+  background: var(--pantone-7421) !important;
+  color: var(--pantone-468) !important;
+  font-weight: 700;
+  padding: 1.1rem 0.7rem;
+  text-align: left;
+  font-size: 1.05rem;
+  border-bottom: 1px solid var(--pantone-468);
+}
+
+.table td {
+  padding: 1rem 0.7rem;
+  color: var(--pantone-7421);
+  border-bottom: 1px solid var(--pantone-468);
+  background: #ffffff;
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.table tbody tr:hover td {
+  background: #f8f9fa;
+}
+
+/* Contenedor de tabla con estructura responsive */
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  background: white;
   border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  margin-bottom: 2rem;
 }
 
-th, td {
-  color: var(--pantone-7421) !important;
+/* Estructura de tabla con grid para distribución uniforme */
+.table-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  background: #fff;
+  font-size: 1rem;
+  transition: background 0.2s;
+  padding: 0.7rem 0.5rem;
 }
 
-/* Bordes y detalles */
-input, select, textarea {
-  border: 1.5px solid #ccc !important;
+.table-row:hover {
+  background: #f8f9fa;
+}
+
+.table-cell {
+  padding: 0.7rem 0.5rem;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.table-row:last-child {
+  border-bottom: none;
+}
+
+/* Botones de acción con colores correctos */
+.action-btn {
+  margin: 0 2px;
+  padding: 0.3rem 0.7rem;
   border-radius: 6px;
-  color: #333 !important;
-  background: #fff !important;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
 }
 
-input:focus, select:focus, textarea:focus {
-  border-color: var(--pantone-7421) !important;
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(105, 27, 49, 0.1) !important;
+.btn-edit.action-btn {
+  background: var(--pantone-7421);
+  color: var(--pantone-468);
 }
 
-/* Hover y activos */
-button:hover, .logout-button:hover, .btn-apertura:hover {
-  background: var(--pantone-465) !important;
-  color: var(--pantone-7421) !important;
+.btn-edit.action-btn:hover {
+  background: var(--pantone-468);
+  color: var(--pantone-7421);
+  border: 1px solid var(--pantone-7421);
 }
 
-nav .active, .navbar-link.active {
-  background: var(--pantone-465) !important;
-  color: var(--pantone-7421) !important;
+.btn-delete.action-btn {
+  background: #dc3545;
+  color: white;
 }
 
-input::placeholder, textarea::placeholder, select option {
-  color: #666 !important;
-  opacity: 1;
+.btn-delete.action-btn:hover {
+  background: #c82333;
 }
 
-select:required:invalid {
-  color: #666 !important;
+.btn-submit-table.action-btn {
+  background: #28a745;
+  color: white;
 }
 
-select option[value=""] {
-  color: #666 !important;
+.btn-submit-table.action-btn:hover {
+  background: #218838;
 }
 
 /* --- RESPONSIVE PARA TABLETS (max-width: 1024px) --- */

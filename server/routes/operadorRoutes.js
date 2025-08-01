@@ -1,6 +1,7 @@
-const express = require('express');
+import express from 'express';
+import Operador from '../../src/database/models/Operador.js';
+
 const router = express.Router();
-const Operador = require('../../src/database/models/Operador');
 
 // Buscar operador por tarjetón
 router.get('/buscar/:tarjeton', async (req, res) => {
@@ -73,4 +74,4 @@ router.get('/', async (req, res) => {
     }
 });
 
-module.exports = router; 
+export default router; 
