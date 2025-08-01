@@ -196,156 +196,229 @@ function HistorialVerificador() {
             </p>
           </div>
         ) : (
-          <div style={{ 
-            background: '#fff',
-            borderRadius: '12px', 
-            boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-            overflow: 'hidden',
-            width: '100%',
-            maxWidth: '1200px'
-          }}>
-            {/* Tabla */}
-            <div style={{ overflowX: 'auto', padding: '2rem' }}>
-              <table style={{ 
-                width: '100%', 
-                borderCollapse: 'collapse',
-                fontSize: '0.95rem'
-              }}>
-                <thead>
-                  <tr style={{ 
-                    background: '#6F2234', 
-                    color: '#fff'
+          <div className="table-container">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', padding: '1rem' }}>
+              {aperturasFiltradas.map((ap, index) => (
+                <div key={ap._id || index} style={{
+                  background: '#fff',
+                  borderRadius: '8px',
+                  padding: '1.5rem',
+                  boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
+                  border: '1px solid #eee'
+                }}>
+                  {/* Header de la card */}
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginBottom: '1rem',
+                    paddingBottom: '1rem',
+                    borderBottom: '1px solid #eee'
                   }}>
-                    <th style={{ padding: '2rem 1rem', textAlign: 'left', fontWeight: '600' }}>Fecha</th>
-                    <th style={{ padding: '2rem 1rem', textAlign: 'left', fontWeight: '600' }}>Ruta</th>
-                    <th style={{ padding: '2rem 1rem', textAlign: 'left', fontWeight: '600' }}>Operador</th>
-                    <th style={{ padding: '2rem 1rem', textAlign: 'center', fontWeight: '600' }}>Estado</th>
-                    <th style={{ padding: '2rem 1rem', textAlign: 'center', fontWeight: '600' }}>Hora</th>
-                    <th style={{ padding: '2rem 1rem', textAlign: 'center', fontWeight: '600' }}>Acciones</th>
-                  </tr>
-                </thead>
-                {aperturasFiltradas.map((ap, index) => (
-                    <React.Fragment key={ap._id || index}>
-                      <tr style={{ 
-                        background: index % 2 === 0 ? '#fff' : '#f8f9fa',
-                        borderBottom: '3px solid #6F2234',
-                        marginBottom: '1.5rem',
-                        height: '80px'
+                    <div>
+                      <h3 style={{
+                        color: '#6F2234',
+                        fontSize: '1.2rem',
+                        margin: '0 0 0.5rem 0'
                       }}>
-                        <td style={{ padding: '2rem 1rem', fontWeight: '500' }}>
-                          {formatDate(ap.fechaApertura)}
-                        </td>
-                        <td style={{ padding: '2rem 1rem', fontWeight: '600', color: '#6F2234' }}>
+                        {ap.ruta} - {ap.nombre}
+                      </h3>
+                      <p style={{
+                        color: '#666',
+                        margin: 0,
+                        fontSize: '0.9rem'
+                      }}>
+                        {formatDate(ap.fechaApertura)} - {ap.horaSalida}
+                      </p>
+                    </div>
+                    <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                      <span style={{ 
+                        background: getEstadoColor(ap.estado), 
+                        color: '#fff', 
+                        padding: '0.3rem 0.6rem', 
+                        borderRadius: '6px',
+                        fontSize: '0.9rem',
+                        fontWeight: '600'
+                      }}>
+                        {ap.estado === 'cancelado' ? 'Rechazado' :
+                         ap.estado === 'dashboard' ? 'Aprobado' :
+                         ap.estado === 'retrasado' ? 'Retrasado' :
+                         ap.estado === 'completado' ? 'Completado' : ap.estado}
+                      </span>
+                      <button
+                        onClick={() => toggleRowExpansion(ap._id)}
+                        style={{
+                          background: expandedRows.has(ap._id) ? '#8B2E3F' : '#6F2234',
+                          color: '#fff',
+                          border: 'none',
+                          borderRadius: '6px',
+                          padding: '0.5rem 1rem',
+                          cursor: 'pointer',
+                          fontSize: '0.9rem',
+                          fontWeight: '500',
+                          transition: 'all 0.2s ease'
+                        }}
+                      >
+                        {expandedRows.has(ap._id) ? '🔽 Ocultar' : '🔍 Ver'}
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Detalles expandibles */}
+                  {expandedRows.has(ap._id) && (
+                    <div style={{
+                      display: 'grid',
+                      gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
+                      gap: '1rem',
+                      maxHeight: '200px',
+                      overflowY: 'auto',
+                      padding: '0.5rem',
+                      backgroundColor: '#f9f9f9',
+                      borderRadius: '4px'
+                    }}>
+                      <div style={{
+                        padding: '0.75rem',
+                        backgroundColor: '#fff',
+                        borderRadius: '4px',
+                        border: '1px solid #eee',
+                        fontSize: '0.9rem'
+                      }}>
+                        <div style={{ fontWeight: '500', color: '#6F2234' }}>
+                          Ruta
+                        </div>
+                        <div style={{ color: '#666' }}>
                           {ap.ruta}
-                        </td>
-                        <td style={{ padding: '2rem 1rem' }}>
+                        </div>
+                      </div>
+                      <div style={{
+                        padding: '0.75rem',
+                        backgroundColor: '#fff',
+                        borderRadius: '4px',
+                        border: '1px solid #eee',
+                        fontSize: '0.9rem'
+                      }}>
+                        <div style={{ fontWeight: '500', color: '#6F2234' }}>
+                          Operador
+                        </div>
+                        <div style={{ color: '#666' }}>
                           {ap.nombre}
-                        </td>
-                        <td style={{ padding: '2rem 1rem', textAlign: 'center' }}>
+                        </div>
+                      </div>
+                      <div style={{
+                        padding: '0.75rem',
+                        backgroundColor: '#fff',
+                        borderRadius: '4px',
+                        border: '1px solid #eee',
+                        fontSize: '0.9rem'
+                      }}>
+                        <div style={{ fontWeight: '500', color: '#6F2234' }}>
+                          Económico
+                        </div>
+                        <div style={{ color: '#666' }}>
+                          {ap.economico}
+                        </div>
+                      </div>
+                      <div style={{
+                        padding: '0.75rem',
+                        backgroundColor: '#fff',
+                        borderRadius: '4px',
+                        border: '1px solid #eee',
+                        fontSize: '0.9rem'
+                      }}>
+                        <div style={{ fontWeight: '500', color: '#6F2234' }}>
+                          Tarjetón
+                        </div>
+                        <div style={{ color: '#666' }}>
+                          {ap.tarjeton}
+                        </div>
+                      </div>
+                      <div style={{
+                        padding: '0.75rem',
+                        backgroundColor: '#fff',
+                        borderRadius: '4px',
+                        border: '1px solid #eee',
+                        fontSize: '0.9rem'
+                      }}>
+                        <div style={{ fontWeight: '500', color: '#6F2234' }}>
+                          Hora de Salida
+                        </div>
+                        <div style={{ color: '#666' }}>
+                          {ap.horaSalida}
+                        </div>
+                      </div>
+                      <div style={{
+                        padding: '0.75rem',
+                        backgroundColor: '#fff',
+                        borderRadius: '4px',
+                        border: '1px solid #eee',
+                        fontSize: '0.9rem'
+                      }}>
+                        <div style={{ fontWeight: '500', color: '#6F2234' }}>
+                          Estado
+                        </div>
+                        <div style={{ color: '#666' }}>
                           <span style={{ 
-                            background: getEstadoColor(ap.estado), 
-                            color: '#fff', 
-                            padding: '0.3rem 0.6rem', 
-                            borderRadius: '6px',
-                            fontSize: '0.9rem',
-                            fontWeight: '600'
+                            background: getEstadoColor(ap.estado),
+                            color: '#fff',
+                            padding: '0.2rem 0.5rem',
+                            borderRadius: '4px',
+                            fontSize: '0.85rem'
                           }}>
                             {ap.estado === 'cancelado' ? 'Rechazado' :
                              ap.estado === 'dashboard' ? 'Aprobado' :
                              ap.estado === 'retrasado' ? 'Retrasado' :
                              ap.estado === 'completado' ? 'Completado' : ap.estado}
                           </span>
-                        </td>
-                        <td style={{ padding: '2rem 1rem', textAlign: 'center' }}>
-                          <span style={{ 
-                            background: '#6F2234', 
-                            color: '#fff', 
-                            padding: '0.3rem 0.6rem', 
-                            borderRadius: '6px',
-                            fontSize: '0.9rem',
-                            fontWeight: '600'
-                          }}>
-                            {ap.horaSalida}
-                          </span>
-                        </td>
-                        <td style={{ padding: '2rem 1rem', textAlign: 'center' }}>
-                          <button
-                            onClick={() => toggleRowExpansion(ap._id)}
-                            style={{
-                              background: expandedRows.has(ap._id) ? '#8B2E3F' : '#6F2234',
-                              color: '#fff',
-                              border: 'none',
-                              borderRadius: '6px',
-                              padding: '0.5rem 1rem',
-                              cursor: 'pointer',
-                              fontSize: '0.9rem',
-                              fontWeight: '500',
-                              transition: 'all 0.2s ease'
-                            }}
-                          >
-                            {expandedRows.has(ap._id) ? '🔽 Ocultar' : '🔍 Ver'}
-                          </button>
-                        </td>
-                      </tr>
-                      {/* Fila expandible con detalles */}
-                      {expandedRows.has(ap._id) && (
-                        <tr style={{ 
-                          background: '#f8f9fa',
-                          animation: 'slideDown 0.3s ease-out'
+                        </div>
+                      </div>
+                      <div style={{
+                        padding: '0.75rem',
+                        backgroundColor: '#fff',
+                        borderRadius: '4px',
+                        border: '1px solid #eee',
+                        fontSize: '0.9rem'
+                      }}>
+                        <div style={{ fontWeight: '500', color: '#6F2234' }}>
+                          Fecha Apertura
+                        </div>
+                        <div style={{ color: '#666' }}>
+                          {formatDate(ap.fechaApertura)}
+                        </div>
+                      </div>
+                      <div style={{
+                        padding: '0.75rem',
+                        backgroundColor: '#fff',
+                        borderRadius: '4px',
+                        border: '1px solid #eee',
+                        fontSize: '0.9rem'
+                      }}>
+                        <div style={{ fontWeight: '500', color: '#6F2234' }}>
+                          Motivo
+                        </div>
+                        <div style={{ color: '#666' }}>
+                          {ap.estado === 'cancelado' ? (ap.observaciones || '-') : '-'}
+                        </div>
+                      </div>
+                      {ap.retraso && (
+                        <div style={{
+                          padding: '0.75rem',
+                          backgroundColor: '#fff',
+                          borderRadius: '4px',
+                          border: '1px solid #eee',
+                          fontSize: '0.9rem'
                         }}>
-                          <td colSpan="6" style={{ padding: '1.5rem' }}>
-                            <div style={{ 
-                              background: '#fff', 
-                              borderRadius: '8px', 
-                              padding: '1.5rem',
-                              boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-                            }}>
-                              <h4 style={{ 
-                                color: '#6F2234', 
-                                marginBottom: '1rem',
-                                fontSize: '1.1rem',
-                                fontWeight: '600'
-                              }}>
-                                Detalles de la Verificación
-                              </h4>
-                              <div style={{ 
-                                display: 'grid', 
-                                gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', 
-                                gap: '1rem' 
-                              }}>
-                                <div><strong>Ruta:</strong> {ap.ruta}</div>
-                                <div><strong>Operador:</strong> {ap.nombre}</div>
-                                <div><strong>Económico:</strong> {ap.economico}</div>
-                                <div><strong>Tarjetón:</strong> {ap.tarjeton}</div>
-                                <div><strong>Hora de Salida:</strong> {ap.horaSalida}</div>
-                                <div><strong>Estado:</strong> 
-                                  <span style={{ 
-                                    background: getEstadoColor(ap.estado),
-                                    color: '#fff',
-                                    padding: '0.2rem 0.5rem',
-                                    borderRadius: '4px',
-                                    marginLeft: '0.5rem',
-                                    fontSize: '0.85rem'
-                                  }}>
-                                    {ap.estado === 'cancelado' ? 'Rechazado' :
-                                     ap.estado === 'dashboard' ? 'Aprobado' :
-                                     ap.estado === 'retrasado' ? 'Retrasado' :
-                                     ap.estado === 'completado' ? 'Completado' : ap.estado}
-                                  </span>
-                                </div>
-                                <div><strong>Fecha Apertura:</strong> {formatDate(ap.fechaApertura)}</div>
-                                <div><strong>Motivo:</strong> {ap.estado === 'cancelado' ? (ap.observaciones || '-') : '-'}</div>
-                                {ap.retraso && (
-                                  <div><strong style={{ color: '#ffc107' }}>⚠️ Retraso:</strong> {ap.observaciones || 'Retraso detectado automáticamente'}</div>
-                                )}
-                              </div>
-                            </div>
-                          </td>
-                        </tr>
+                          <div style={{ fontWeight: '500', color: '#ffc107' }}>
+                            ⚠️ Retraso
+                          </div>
+                          <div style={{ color: '#666' }}>
+                            {ap.observaciones || 'Retraso detectado automáticamente'}
+                          </div>
+                        </div>
                       )}
-                    </React.Fragment>
-                  ))}
-              </table>
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
           </div>
         )}
