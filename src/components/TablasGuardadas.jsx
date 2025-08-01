@@ -13,7 +13,11 @@ function TablasGuardadas() {
     const [aperturas, setAperturas] = useState([]);
     const [filtroAnio, setFiltroAnio] = useState('');
     const [filtroMes, setFiltroMes] = useState('');
+    const [filtroNombre, setFiltroNombre] = useState('');
+    const [filtroRuta, setFiltroRuta] = useState('');
     const [mostrarFiltros, setMostrarFiltros] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage, setItemsPerPage] = useState(20);
 
     useEffect(() => {
         const tablas = JSON.parse(localStorage.getItem('tablasCombinadas') || '[]');
@@ -38,14 +42,63 @@ function TablasGuardadas() {
     const aniosDisponibles = Array.from(new Set(tablasCombinadas.map(tabla => tabla.fechaCreacion && (new Date(tabla.fechaCreacion).getFullYear())))).filter(Boolean).sort((a, b) => b - a);
     const mesesDisponibles = [...Array(12)].map((_, i) => (i + 1).toString().padStart(2, '0'));
 
-    // Filtrar tablas por año y mes seleccionados
+    // Filtrar tablas por año, mes, nombre y ruta
     const tablasFiltradas = tablasCombinadas.filter(tabla => {
         if (!tabla.fechaCreacion) return false;
         const fecha = new Date(tabla.fechaCreacion);
         const cumpleAnio = filtroAnio ? (fecha.getFullYear().toString() === filtroAnio) : true;
         const cumpleMes = filtroMes ? ((fecha.getMonth() + 1).toString().padStart(2, '0') === filtroMes) : true;
-        return cumpleAnio && cumpleMes;
+        const cumpleNombre = filtroNombre ? (tabla.nombre && tabla.nombre.toLowerCase().includes(filtroNombre.toLowerCase())) : true;
+        const cumpleRuta = filtroRuta ? (tabla.horarios && tabla.horarios.some(h => h.ruta && h.ruta.toLowerCase().includes(filtroRuta.toLowerCase()))) : true;
+        return cumpleAnio && cumpleMes && cumpleNombre && cumpleRuta;
     });
+
+    // Calcular paginación
+    const totalPages = Math.ceil(tablasFiltradas.length / itemsPerPage);
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const currentTablas = tablasFiltradas.slice(startIndex, endIndex);
+
+    // Resetear a la primera página cuando cambien los filtros
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [filtroAnio, filtroMes, filtroNombre, filtroRuta]);
+
+    // Función para generar números de página
+    const getPageNumbers = () => {
+        const pages = [];
+        const maxVisiblePages = 5;
+        
+        if (totalPages <= maxVisiblePages) {
+            for (let i = 1; i <= totalPages; i++) {
+                pages.push(i);
+            }
+        } else {
+            if (currentPage <= 3) {
+                for (let i = 1; i <= 4; i++) {
+                    pages.push(i);
+                }
+                pages.push('...');
+                pages.push(totalPages);
+            } else if (currentPage >= totalPages - 2) {
+                pages.push(1);
+                pages.push('...');
+                for (let i = totalPages - 3; i <= totalPages; i++) {
+                    pages.push(i);
+                }
+            } else {
+                pages.push(1);
+                pages.push('...');
+                for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+                    pages.push(i);
+                }
+                pages.push('...');
+                pages.push(totalPages);
+            }
+        }
+        
+        return pages;
+    };
 
     const handleVerTabla = (tablaId) => {
         navigateWithTransition('/tabla-completa', {
@@ -117,13 +170,72 @@ function TablasGuardadas() {
                                 ))}
                             </select>
                         </label>
+                        <label style={{ color: '#6F2234', fontWeight: 'bold' }}>
+                            Nombre:
+                            <input
+                                type="text"
+                                value={filtroNombre}
+                                onChange={e => setFiltroNombre(e.target.value)}
+                                placeholder="Buscar por nombre"
+                                style={{ marginLeft: '0.5rem', padding: '0.3rem', borderRadius: '4px', border: '1px solid #ccc' }}
+                            />
+                        </label>
+                        <label style={{ color: '#6F2234', fontWeight: 'bold' }}>
+                            Ruta:
+                            <input
+                                type="text"
+                                value={filtroRuta}
+                                onChange={e => setFiltroRuta(e.target.value)}
+                                placeholder="Buscar por ruta"
+                                style={{ marginLeft: '0.5rem', padding: '0.3rem', borderRadius: '4px', border: '1px solid #ccc' }}
+                            />
+                        </label>
                     </div>
                 )}
 
+                {/* Información de resultados y selector de elementos por página */}
+                <div style={{ 
+                    display: 'flex', 
+                    justifyContent: 'space-between', 
+                    alignItems: 'center', 
+                    width: '100%', 
+                    marginBottom: '1rem',
+                    padding: '0 1rem'
+                }}>
+                    <div style={{ color: '#6F2234', fontSize: '1rem' }}>
+                        Mostrando {startIndex + 1}-{Math.min(endIndex, tablasFiltradas.length)} de {tablasFiltradas.length} tablas
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <label style={{ color: '#6F2234', fontSize: '0.9rem' }}>
+                            Elementos por página:
+                        </label>
+                        <select
+                            value={itemsPerPage}
+                            onChange={(e) => {
+                                setItemsPerPage(Number(e.target.value));
+                                setCurrentPage(1);
+                            }}
+                            style={{ 
+                                padding: '0.3rem 0.5rem', 
+                                borderRadius: '4px', 
+                                border: '1px solid #ccc',
+                                background: '#fff',
+                                fontSize: '0.9rem'
+                            }}
+                        >
+                            <option value={10}>10</option>
+                            <option value={20}>20</option>
+                            <option value={50}>50</option>
+                            <option value={100}>100</option>
+                            <option value={200}>200</option>
+                        </select>
+                    </div>
+                </div>
+
                 <div className="table-container">
-                    {tablasFiltradas.length > 0 ? (
+                    {currentTablas.length > 0 ? (
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', padding: '1rem' }}>
-                            {tablasFiltradas.map((tabla) => (
+                            {currentTablas.map((tabla) => (
                                 <div key={tabla.id} style={{
                                     background: '#fff',
                                     borderRadius: '8px',
@@ -222,6 +334,76 @@ function TablasGuardadas() {
                         </div>
                     )}
                 </div>
+
+                {/* Controles de paginación */}
+                {totalPages > 1 && (
+                    <div style={{ 
+                        display: 'flex', 
+                        justifyContent: 'center', 
+                        alignItems: 'center', 
+                        gap: '0.5rem', 
+                        marginTop: '2rem',
+                        padding: '1rem',
+                        background: '#f8f9fa',
+                        borderRadius: '8px',
+                        border: '1px solid #e9ecef'
+                    }}>
+                        <button
+                            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                            disabled={currentPage === 1}
+                            style={{
+                                padding: '0.5rem 1rem',
+                                border: '1px solid #6F2234',
+                                background: currentPage === 1 ? '#f8f9fa' : '#6F2234',
+                                color: currentPage === 1 ? '#6F2234' : '#fff',
+                                borderRadius: '4px',
+                                cursor: currentPage === 1 ? 'not-allowed' : 'pointer',
+                                fontSize: '0.9rem',
+                                fontWeight: '500'
+                            }}
+                        >
+                            ← Anterior
+                        </button>
+
+                        {getPageNumbers().map((page, index) => (
+                            <button
+                                key={index}
+                                onClick={() => typeof page === 'number' && setCurrentPage(page)}
+                                disabled={page === '...'}
+                                style={{
+                                    padding: '0.5rem 0.75rem',
+                                    border: '1px solid #6F2234',
+                                    background: page === currentPage ? '#6F2234' : '#fff',
+                                    color: page === currentPage ? '#fff' : '#6F2234',
+                                    borderRadius: '4px',
+                                    cursor: page === '...' ? 'default' : 'pointer',
+                                    fontSize: '0.9rem',
+                                    fontWeight: '500',
+                                    minWidth: '2.5rem'
+                                }}
+                            >
+                                {page}
+                            </button>
+                        ))}
+
+                        <button
+                            onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                            disabled={currentPage === totalPages}
+                            style={{
+                                padding: '0.5rem 1rem',
+                                border: '1px solid #6F2234',
+                                background: currentPage === totalPages ? '#f8f9fa' : '#6F2234',
+                                color: currentPage === totalPages ? '#6F2234' : '#fff',
+                                borderRadius: '4px',
+                                cursor: currentPage === totalPages ? 'not-allowed' : 'pointer',
+                                fontSize: '0.9rem',
+                                fontWeight: '500'
+                            }}
+                        >
+                            Siguiente →
+                        </button>
+                    </div>
+                )}
 
                 <button
                     style={{ marginTop: '1.5rem', marginRight: '1rem', background: '#6F2234', color: '#fff', border: 'none', borderRadius: '4px', padding: '0.5rem 1rem', cursor: 'pointer', fontWeight: 'bold', fontSize: '1rem' }}
