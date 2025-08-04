@@ -14,6 +14,7 @@ import { programacionService, usuarioService } from './services/api';
 import Select from 'react-select';
 import { useTransition } from './components/TransitionContext';
 import { aperturaService } from './services/api';
+import { operadorService } from './services/operadores';
 import LluviaSanValentin from './components/LluviaSanValentin';
 import LluviaNavidad from './components/LluviaNavidad';
 
@@ -47,6 +48,8 @@ function App() {
   const [economico, setEconomico] = useState('');
   const [tarjeton, setTarjeton] = useState('');
   const [nombre, setNombre] = useState('');
+  const [operadores, setOperadores] = useState([]);
+  const [operadorSeleccionado, setOperadorSeleccionado] = useState(null);
 
   // Buscar automáticamente el nombre del operador por tarjetón
   useEffect(() => {
@@ -90,22 +93,42 @@ function App() {
     }
   }, [location.state, navigateWithTransition]);
 
-  // Cargar programaciones y rutas al iniciar
+  // Cargar programaciones, rutas y operadores al iniciar
   useEffect(() => {
-    const cargarProgramaciones = async () => {
+    const cargarDatos = async () => {
       try {
-        const data = await programacionService.getAll();
-        setProgramaciones(data);
+        const [programacionesData, operadoresData] = await Promise.all([
+          programacionService.getAll(),
+          operadorService.obtenerTodos()
+        ]);
+        
+        setProgramaciones(programacionesData);
+        setOperadores(operadoresData);
+        
         // Extraer rutas únicas
-        const rutasUnicas = Array.from(new Set(data.map(p => p.ruta)));
+        const rutasUnicas = Array.from(new Set(programacionesData.map(p => p.ruta)));
         setRutasDisponibles(rutasUnicas);
       } catch (error) {
+        console.error('Error al cargar datos:', error);
         // Si hay error, dejar rutas vacías
         setRutasDisponibles([]);
       }
     };
-    cargarProgramaciones();
+    cargarDatos();
   }, []);
+
+  // Efecto para establecer el operador seleccionado cuando se cargan los operadores y hay un horario en edición
+  useEffect(() => {
+    if (operadores.length > 0 && editandoId && tarjeton) {
+      const operadorEncontrado = operadores.find(op => op.tarjeton === tarjeton);
+      if (operadorEncontrado) {
+        setOperadorSeleccionado({
+          value: operadorEncontrado.tarjeton,
+          label: `${operadorEncontrado.tarjeton} - ${operadorEncontrado.nombre}`
+        });
+      }
+    }
+  }, [operadores, editandoId, tarjeton]);
 
   // Cuando se selecciona una ruta, poner la hora de salida, intervalo y corridas de la programación
   useEffect(() => {
@@ -144,7 +167,20 @@ function App() {
     setEconomico('');
     setTarjeton('');
     setNombre('');
+    setOperadorSeleccionado(null);
     setErrores({});
+  };
+
+  // Manejar selección de operador
+  const handleOperadorChange = (option) => {
+    setOperadorSeleccionado(option);
+    if (option) {
+      setTarjeton(option.value);
+      setNombre(option.label.split(' - ')[1]); // Obtener solo el nombre
+    } else {
+      setTarjeton('');
+      setNombre('');
+    }
   };
 
   const validarFormulario = () => {
@@ -302,6 +338,22 @@ function App() {
     setEconomico(item.apertura?.economico || '');
     setTarjeton(item.apertura?.tarjeton || '');
     setNombre(item.apertura?.nombre || '');
+    
+    // Establecer el operador seleccionado si existe
+    if (item.apertura?.tarjeton && operadores.length > 0) {
+      const operadorEncontrado = operadores.find(op => op.tarjeton === item.apertura.tarjeton);
+      if (operadorEncontrado) {
+        setOperadorSeleccionado({
+          value: operadorEncontrado.tarjeton,
+          label: `${operadorEncontrado.tarjeton} - ${operadorEncontrado.nombre}`
+        });
+      } else {
+        setOperadorSeleccionado(null);
+      }
+    } else {
+      setOperadorSeleccionado(null);
+    }
+    
     localStorage.setItem('editandoHorarioId', item.id);
   };
 
@@ -542,23 +594,20 @@ function App() {
               />
             </div>
             <div className="form-group">
-              <label>Tarjetón</label>
-              <input
-                type="text"
-                value={tarjeton}
-                onChange={e => setTarjeton(e.target.value)}
-                placeholder="Número de tarjetón"
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label>Nombre del Operador</label>
-              <input
-                type="text"
-                value={nombre}
-                onChange={e => setNombre(e.target.value)}
-                placeholder="Nombre del operador"
-                required
+              <label>Operador</label>
+              <Select
+                options={operadores.map(op => ({ 
+                  value: op.tarjeton, 
+                  label: `${op.tarjeton} - ${op.nombre}` 
+                }))}
+                value={operadorSeleccionado}
+                onChange={handleOperadorChange}
+                placeholder="Buscar o seleccionar operador"
+                isClearable
+                isSearchable
+                classNamePrefix="react-select"
+                noOptionsMessage={() => "No se encontraron operadores"}
+                loadingMessage={() => "Cargando operadores..."}
               />
             </div>
             <div className="form-group">

@@ -1,7 +1,7 @@
 # Funcionalidad de Búsqueda de Operadores
 
 ## Descripción
-Esta funcionalidad permite buscar y seleccionar operadores usando un buscador tipo dropdown (como el de ruta) en el formulario de apertura. La búsqueda se realiza en la colección "operadors" de la base de datos MongoDB.
+Esta funcionalidad permite buscar y seleccionar operadores usando un buscador tipo dropdown (como el de ruta) en el formulario principal de App.jsx. La búsqueda se realiza en la colección "operadors" de la base de datos MongoDB.
 
 ## Características Implementadas
 
@@ -26,7 +26,7 @@ Esta funcionalidad permite buscar y seleccionar operadores usando un buscador ti
 ## Archivos Modificados
 
 ### Frontend
-- `src/Apertura.jsx`: Componente principal con la funcionalidad de búsqueda
+- `src/App.jsx`: Componente principal con la funcionalidad de búsqueda
 - `src/services/operadores.js`: Servicio para comunicarse con la API
 
 ### Backend
@@ -54,15 +54,17 @@ npm run dev
 ```
 
 ### 3. Probar la Funcionalidad
-1. Ir a la página de Apertura
-2. En el campo "Operador", verás un buscador tipo dropdown
-3. Puedes:
+1. Ir a la página principal (App.jsx)
+2. En el formulario "Nueva Programación", busca el campo "Operador"
+3. Verás un buscador tipo dropdown igual al de "Ruta"
+4. Puedes:
    - Escribir para buscar por tarjetón (ej: "TPA0001")
    - Escribir para buscar por nombre (ej: "Juan Carlos")
    - Hacer clic para ver la lista completa
-4. Al seleccionar un operador, se autocompletarán automáticamente:
+5. Al seleccionar un operador, se autocompletarán automáticamente:
    - El tarjetón
    - El nombre del operador
+6. Los datos aparecerán en la tabla de horarios
 
 ### 4. Ejemplos de Búsqueda
 - **Por tarjetón**: Escribir "TPA0001" → Mostrará "TPA0001 - Juan Carlos Pérez López"
@@ -71,13 +73,14 @@ npm run dev
 
 ## Script de Pruebas
 ```bash
-# Ejecutar prueba del buscador
-node testBuscadorOperadores.js
+# Ejecutar prueba del buscador en App.jsx
+node testAppOperadores.js
 ```
 
 Este script verifica:
 - Conexión a la base de datos
 - Carga de operadores
+- Búsquedas específicas
 - Disponibilidad de datos para el buscador
 
 ## Estructura de Datos

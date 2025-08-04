@@ -32,8 +32,9 @@ function Apertura() {
 
   const [horario, setHorario] = useState(null);
   const [programaciones, setProgramaciones] = useState([]);
-  const [operadores, setOperadores] = useState([]);
-  const [operadorSeleccionado, setOperadorSeleccionado] = useState(null);
+  const [operadorEncontrado, setOperadorEncontrado] = useState(false);
+  const [operadorNoEncontrado, setOperadorNoEncontrado] = useState(false);
+  const [buscandoOperador, setBuscandoOperador] = useState(false);
 
   useEffect(() => {
     if (!horarioId) {
@@ -65,38 +66,21 @@ function Apertura() {
   }, [horarioId, navigateWithTransition]);
 
   useEffect(() => {
-    // Cargar programaciones y operadores al iniciar
-    const cargarDatos = async () => {
+    // Cargar programaciones al iniciar
+    const cargarProgramaciones = async () => {
       try {
-        const [programacionesData, operadoresData] = await Promise.all([
-          programacionService.getAll(),
-          operadorService.obtenerTodos()
-        ]);
-        setProgramaciones(programacionesData);
-        setOperadores(operadoresData);
+        const data = await programacionService.getAll();
+        setProgramaciones(data);
       } catch (error) {
         Swal.fire({
           title: 'Error',
-          text: 'Error al cargar los datos',
+          text: 'Error al cargar las programaciones',
           icon: 'error'
         });
       }
     };
-    cargarDatos();
+    cargarProgramaciones();
   }, []);
-
-  // Efecto para establecer el operador seleccionado cuando se cargan los operadores
-  useEffect(() => {
-    if (operadores.length > 0 && formData.tarjeton) {
-      const operadorEncontrado = operadores.find(op => op.tarjeton === formData.tarjeton);
-      if (operadorEncontrado) {
-        setOperadorSeleccionado({
-          value: operadorEncontrado.tarjeton,
-          label: `${operadorEncontrado.tarjeton} - ${operadorEncontrado.nombre}`
-        });
-      }
-    }
-  }, [operadores, formData.tarjeton]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -130,27 +114,76 @@ function Apertura() {
       ...prev,
       [name]: value
     }));
-  };
 
-  // Manejar selección de operador
-  const handleOperadorChange = (option) => {
-    setOperadorSeleccionado(option);
-    if (option) {
-      setFormData(prev => ({
-        ...prev,
-        tarjeton: option.value,
-        nombre: option.label
-      }));
-    } else {
-      setFormData(prev => ({
-        ...prev,
-        tarjeton: '',
-        nombre: ''
-      }));
+    // Si se está cambiando el tarjetón, buscar el operador automáticamente
+    if (name === 'tarjeton') {
+      setOperadorEncontrado(false);
+      setOperadorNoEncontrado(false);
+      setFormData(prev => ({ ...prev, nombre: '' }));
+
+      // Normalizar tarjetón: quitar espacios y poner en mayúsculas
+      const tarjetonNormalizado = value.trim().toUpperCase().replace(/\s+/g, '');
+
+      if (tarjetonNormalizado.length >= 3) {
+        setBuscandoOperador(true);
+        // Usar el servicio específico para buscar por tarjetón
+        buscarOperadorPorTarjeton(tarjetonNormalizado);
+      }
     }
   };
 
 
+
+  // Función para buscar operador por tarjetón
+  const buscarOperadorPorTarjeton = async (tarjeton) => {
+    try {
+      console.log('Buscando operador para tarjetón:', tarjeton);
+      const operador = await operadorService.buscarPorTarjeton(tarjeton);
+      console.log('Respuesta del servicio:', operador);
+
+      if (operador && operador.nombre) {
+        console.log('Autocompletando nombre:', operador.nombre);
+        setFormData(prev => ({
+          ...prev,
+          nombre: operador.nombre
+        }));
+        setOperadorEncontrado(true);
+        setOperadorNoEncontrado(false);
+
+        // Mostrar mensaje de éxito más discreto
+        Swal.fire({
+          title: '✅ Operador encontrado',
+          text: operador.nombre,
+          icon: 'success',
+          timer: 1500,
+          showConfirmButton: false,
+          toast: true,
+          position: 'top-end'
+        });
+      } else {
+        console.log('Operador no encontrado o sin nombre');
+        setOperadorNoEncontrado(true);
+        setOperadorEncontrado(false);
+      }
+    } catch (error) {
+      console.error('Error al buscar operador:', error);
+      setOperadorNoEncontrado(true);
+      setOperadorEncontrado(false);
+      
+      // Solo mostrar error si no es un 404 (operador no encontrado)
+      if (error.message && !error.message.includes('404')) {
+        Swal.fire({
+          title: 'Error de conexión',
+          text: 'Error al conectar con la base de datos',
+          icon: 'error',
+          timer: 2000,
+          showConfirmButton: false
+        });
+      }
+    } finally {
+      setBuscandoOperador(false);
+    }
+  };
 
   const role = localStorage.getItem('userRole');
 
@@ -214,33 +247,56 @@ function Apertura() {
               <input type="text" id="economico" name="economico" value={formData.economico} onChange={handleChange} required placeholder="Número económico de la unidad" />
             </div>
             <div className="form-group">
-              <label htmlFor="operador">Operador:</label>
-              <Select
-                options={operadores.map(op => ({ 
-                  value: op.tarjeton, 
-                  label: `${op.tarjeton} - ${op.nombre}` 
-                }))}
-                value={operadorSeleccionado}
-                onChange={handleOperadorChange}
-                placeholder="Buscar o seleccionar operador"
-                isClearable
-                isSearchable
-                classNamePrefix="react-select"
-                noOptionsMessage={() => "No se encontraron operadores"}
-                loadingMessage={() => "Cargando operadores..."}
+              <label htmlFor="tarjeton">Tarjetón:</label>
+              <input
+                type="text"
+                id="tarjeton"
+                name="tarjeton"
+                value={formData.tarjeton || ''}
+                onChange={handleChange}
+                required
+                placeholder="Número de tarjetón"
+                style={{ width: '100%', padding: '8px', border: '1px solid #ccc', borderRadius: '4px' }}
+                data-testid="tarjeton-input"
               />
+              {buscandoOperador && (
+                <small style={{ color: '#007bff', display: 'block', marginTop: '4px' }}>
+                  🔍 Buscando operador...
+                </small>
+              )}
             </div>
-            <div className="form-group">
-              <label htmlFor="comentario">Comentario:</label>
-              <textarea 
-                id="comentario" 
-                name="comentario" 
-                value={formData.comentario} 
-                onChange={handleChange} 
-                placeholder="Comentario opcional" 
-                rows={2} 
-                style={{ resize: 'vertical', width: '100%' }} 
-              />
+            {/* Agrupar operador y comentario en el mismo div para alinearlos */}
+            <div className="form-group" style={{ display: 'flex', gap: '1.5rem' }}>
+              <div style={{ flex: 1 }}>
+                <label htmlFor="nombre">Nombre del Operador:</label>
+                <input
+                  type="text"
+                  id="nombre"
+                  name="nombre"
+                  value={formData.nombre}
+                  readOnly
+                  placeholder="Se autocompletará al ingresar el tarjetón"
+                  style={{
+                    backgroundColor: operadorEncontrado ? '#e8f5e8' : '#f5f5f5',
+                    cursor: 'not-allowed',
+                    border: operadorEncontrado ? '1px solid #28a745' : '1px solid #ccc'
+                  }}
+                />
+                {operadorNoEncontrado && (
+                  <small style={{ color: '#dc3545', display: 'block', marginTop: '4px' }}>
+                    ❌ Usuario no encontrado
+                  </small>
+                )}
+                {operadorEncontrado && (
+                  <small style={{ color: '#28a745', display: 'block', marginTop: '4px' }}>
+                    ✅ Operador encontrado
+                  </small>
+                )}
+              </div>
+              <div style={{ flex: 1 }}>
+                <label htmlFor="comentario">Comentario:</label>
+                <textarea id="comentario" name="comentario" value={formData.comentario} onChange={handleChange} placeholder="Comentario opcional" rows={2} style={{ resize: 'vertical', width: '100%' }} />
+              </div>
             </div>
           </div>
           <div className="form-actions" style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1.5rem' }}>
