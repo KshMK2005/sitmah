@@ -1,28 +1,27 @@
 # Funcionalidad de Búsqueda de Operadores
 
 ## Descripción
-Esta funcionalidad permite buscar automáticamente el nombre de un operador cuando se ingresa su tarjetón en el formulario de apertura. La búsqueda se realiza en la colección "operadors" de la base de datos MongoDB.
+Esta funcionalidad permite buscar y seleccionar operadores usando un buscador tipo dropdown (como el de ruta) en el formulario de apertura. La búsqueda se realiza en la colección "operadors" de la base de datos MongoDB.
 
 ## Características Implementadas
 
-### 1. Búsqueda Automática
-- Al ingresar un tarjetón en el campo correspondiente, se busca automáticamente en la base de datos
-- Si se encuentra el operador, se autocompleta el campo "Nombre del Operador"
-- La búsqueda se activa cuando el tarjetón tiene al menos 3 caracteres
+### 1. Buscador con React-Select
+- Campo de búsqueda tipo dropdown similar al de ruta
+- Búsqueda por tarjetón o nombre del operador
+- Autocompletado automático del tarjetón y nombre al seleccionar
+- Interfaz limpia y fácil de usar
 
-### 2. Normalización de Datos
-- Los tarjetones se normalizan automáticamente (espacios eliminados, mayúsculas)
-- Búsqueda flexible que maneja variaciones en el formato del tarjetón
+### 2. Funcionalidades del Buscador
+- Búsqueda en tiempo real mientras escribes
+- Lista desplegable con todos los operadores disponibles
+- Formato: "TARJETÓN - NOMBRE" para fácil identificación
+- Opción para limpiar la selección
 
-### 3. Feedback Visual
-- Indicador de búsqueda en progreso
-- Mensajes de éxito/error discretos
-- Colores diferenciados en el campo de nombre según el estado
-
-### 4. Manejo de Errores
-- Timeout de 5 segundos para evitar esperas indefinidas
-- Manejo de errores de conexión
-- Mensajes informativos para el usuario
+### 3. Integración con el Formulario
+- Al seleccionar un operador, se autocompletan automáticamente:
+  - Campo tarjetón
+  - Campo nombre
+- Mantiene la consistencia con el resto del formulario
 
 ## Archivos Modificados
 
@@ -56,31 +55,30 @@ npm run dev
 
 ### 3. Probar la Funcionalidad
 1. Ir a la página de Apertura
-2. En el campo "Tarjetón", ingresar uno de estos valores:
-   - `TPA0001` → Debería mostrar "Juan Carlos Pérez López"
-   - `TPA0002` → Debería mostrar "María Elena Rodríguez García"
-   - `TPA0005` → Debería mostrar "Carlos Alberto Herrera Jiménez"
+2. En el campo "Operador", verás un buscador tipo dropdown
+3. Puedes:
+   - Escribir para buscar por tarjetón (ej: "TPA0001")
+   - Escribir para buscar por nombre (ej: "Juan Carlos")
+   - Hacer clic para ver la lista completa
+4. Al seleccionar un operador, se autocompletarán automáticamente:
+   - El tarjetón
+   - El nombre del operador
 
-### 4. Probar Casos Especiales
-- **Con espacios**: ` TPA0001 ` (debería funcionar igual)
-- **Minúsculas**: `tpa0001` (debería funcionar igual)
-- **Inexistente**: `TPA9999` (debería mostrar "Usuario no encontrado")
+### 4. Ejemplos de Búsqueda
+- **Por tarjetón**: Escribir "TPA0001" → Mostrará "TPA0001 - Juan Carlos Pérez López"
+- **Por nombre**: Escribir "Juan" → Mostrará todos los operadores con "Juan" en el nombre
+- **Lista completa**: Hacer clic en el campo para ver todos los operadores disponibles
 
-### 5. Botones de Prueba
-- **"Probar Búsqueda (TPA0001)"**: Prueba manual con un tarjetón específico
-- **"Verificar Base de Datos"**: Muestra el estado de la conexión y datos disponibles
-
-## Script de Pruebas Automatizadas
+## Script de Pruebas
 ```bash
-# Ejecutar pruebas automatizadas
-node testOperadores.js
+# Ejecutar prueba del buscador
+node testBuscadorOperadores.js
 ```
 
 Este script verifica:
 - Conexión a la base de datos
-- Búsquedas exitosas
-- Búsquedas inexistentes
-- Manejo de variaciones en el formato
+- Carga de operadores
+- Disponibilidad de datos para el buscador
 
 ## Estructura de Datos
 
