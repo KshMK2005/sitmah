@@ -98,7 +98,7 @@ function App() {
       try {
         const [programacionesData, operadorsData] = await Promise.all([
           programacionService.getAll(),
-          operadorService.obtenerTodos()
+          operadorService2.obtenerTodos()
         ]);
 
         setProgramaciones(programacionesData || []);
