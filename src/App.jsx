@@ -97,7 +97,7 @@ function App() {
       try {
         const [programacionesData, operadorsData] = await Promise.all([
           programacionService.getAll(),
-          operadorService2.obtenerTodos()
+          operadorService.obtenerTodos()
         ]);
 
         setProgramaciones(programacionesData || []);
@@ -180,26 +180,6 @@ function App() {
     } else {
       setTarjeton('');
       setNombre('');
-    }
-  };
-
-  // Manejar selección de nombre de operador
-  const handleNombreChange = (option) => {
-    if (option) {
-      setNombre(option.value);
-      // Buscar el tarjetón correspondiente al nombre seleccionado
-      const operadorEncontrado = operadors.find(op => op.nombre === option.value);
-      if (operadorEncontrado) {
-        setTarjeton(operadorEncontrado.tarjeton);
-        setOperadorSeleccionado({
-          value: operadorEncontrado.tarjeton,
-          label: `${operadorEncontrado.tarjeton} - ${operadorEncontrado.nombre}`
-        });
-      }
-    } else {
-      setNombre('');
-      setTarjeton('');
-      setOperadorSeleccionado(null);
     }
   };
 
@@ -636,23 +616,16 @@ function App() {
                 }
               />
             </div>
-                         <div className="form-group">
-               <label>Nombre del Operador</label>
-               <Select
-                 options={operadors ? operadors.map(op => ({
-                   value: op.nombre,
-                   label: `${op.tarjeton} - ${op.nombre}`
-                 })) : []}
-                 value={nombre ? { value: nombre, label: nombre } : null}
-                 onChange={handleNombreChange}
-                 placeholder="Seleccionar operador"
-                 isClearable
-                 isSearchable
-                 classNamePrefix="react-select"
-                 noOptionsMessage={() => "No se encontraron operadores"}
-                 loadingMessage={() => "Cargando operadores..."}
-               />
-             </div>
+            <div className="form-group">
+              <label>Nombre del Operador</label>
+              <input
+                type="text"
+                value={nombre}
+                onChange={e => setNombre(e.target.value)}
+                placeholder="Nombre del operador"
+                required
+              />
+            </div>
             <div className="form-group">
               <label>Comentario</label>
               <textarea
