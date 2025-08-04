@@ -102,15 +102,17 @@ function App() {
           operadorService.obtenerTodos()
         ]);
         
-        setProgramaciones(programacionesData);
-        setOperadores(operadoresData);
+        setProgramaciones(programacionesData || []);
+        setOperadores(operadoresData || []);
         
         // Extraer rutas únicas
-        const rutasUnicas = Array.from(new Set(programacionesData.map(p => p.ruta)));
+        const rutasUnicas = Array.from(new Set((programacionesData || []).map(p => p.ruta)));
         setRutasDisponibles(rutasUnicas);
       } catch (error) {
         console.error('Error al cargar datos:', error);
-        // Si hay error, dejar rutas vacías
+        // Si hay error, establecer arrays vacíos
+        setProgramaciones([]);
+        setOperadores([]);
         setRutasDisponibles([]);
       }
     };
@@ -468,9 +470,9 @@ function App() {
     };
   }, []);
 
-  const filtered = schedules.filter(item =>
+  const filtered = schedules ? schedules.filter(item =>
     item.ruta.toLowerCase().includes(filtro.toLowerCase())
-  );
+  ) : [];
 
   return (
     <div>
@@ -495,7 +497,7 @@ function App() {
             <div className="form-group">
               <label>Ruta</label>
               <Select
-                options={rutasDisponibles.map(r => ({ value: r, label: r }))}
+                options={rutasDisponibles ? rutasDisponibles.map(r => ({ value: r, label: r })) : []}
                 value={ruta ? { value: ruta, label: ruta } : null}
                 onChange={option => setRuta(option ? option.value : '')}
                 placeholder="Buscar o seleccionar ruta"
@@ -596,10 +598,10 @@ function App() {
             <div className="form-group">
               <label>Operador</label>
               <Select
-                options={operadores.map(op => ({ 
+                options={operadores ? operadores.map(op => ({ 
                   value: op.tarjeton, 
                   label: `${op.tarjeton} - ${op.nombre}` 
-                }))}
+                })) : []}
                 value={operadorSeleccionado}
                 onChange={handleOperadorChange}
                 placeholder="Buscar o seleccionar operador"
