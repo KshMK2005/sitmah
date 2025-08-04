@@ -15,7 +15,6 @@ import Select from 'react-select';
 import { useTransition } from './components/TransitionContext';
 import { aperturaService } from './services/api';
 import { operadorService } from './services/operadores';
-import { operadorService2 } from './services/operadores2';
 import LluviaSanValentin from './components/LluviaSanValentin';
 import LluviaNavidad from './components/LluviaNavidad';
 
