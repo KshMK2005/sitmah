@@ -49,24 +49,30 @@ function App() {
   const [tarjeton, setTarjeton] = useState('');
   const [nombre, setNombre] = useState('');
   const [operadores, setOperadores] = useState([]);
-  const [operadorSeleccionado, setOperadorSeleccionado] = useState(null);
+
 
   // Buscar automáticamente el nombre del operador por tarjetón
   useEffect(() => {
     const buscarOperadorPorTarjeton = async () => {
+      console.log('🔍 useEffect ejecutado - tarjetón actual:', tarjeton);
       if (tarjeton && tarjeton.trim() !== '') {
+        console.log('🔍 Buscando operador para tarjetón:', tarjeton.trim());
         try {
           const operador = await operadorService.buscarPorTarjeton(tarjeton.trim());
+          console.log('✅ Operador encontrado:', operador);
           if (operador && operador.nombre) {
+            console.log('✅ Estableciendo nombre:', operador.nombre);
             setNombre(operador.nombre);
           } else {
+            console.log('❌ Operador sin nombre, limpiando campo');
             setNombre('');
           }
         } catch (err) {
-          console.log('No se encontró operador para tarjetón:', tarjeton);
+          console.error('❌ Error al buscar operador:', err);
           setNombre('');
         }
       } else {
+        console.log('🔍 Tarjetón vacío, limpiando nombre');
         setNombre('');
       }
     };
@@ -119,18 +125,7 @@ function App() {
     cargarDatos();
   }, []);
 
-  // Efecto para establecer el operador seleccionado cuando se cargan los operadores y hay un horario en edición
-  useEffect(() => {
-    if (operadores.length > 0 && editandoId && tarjeton) {
-      const operadorEncontrado = operadores.find(op => op.tarjeton === tarjeton);
-      if (operadorEncontrado) {
-        setOperadorSeleccionado({
-          value: operadorEncontrado.tarjeton,
-          label: `${operadorEncontrado.tarjeton} - ${operadorEncontrado.nombre}`
-        });
-      }
-    }
-  }, [operadores, editandoId, tarjeton]);
+
 
   // Cuando se selecciona una ruta, poner la hora de salida, intervalo y corridas de la programación
   useEffect(() => {
@@ -169,21 +164,10 @@ function App() {
     setEconomico('');
     setTarjeton('');
     setNombre('');
-    setOperadorSeleccionado(null);
     setErrores({});
   };
 
-  // Manejar selección de operador
-  const handleOperadorChange = (option) => {
-    setOperadorSeleccionado(option);
-    if (option) {
-      setTarjeton(option.value);
-      setNombre(option.label.split(' - ')[1]); // Obtener solo el nombre
-    } else {
-      setTarjeton('');
-      setNombre('');
-    }
-  };
+
 
   const validarFormulario = () => {
     const nuevosErrores = {};
@@ -341,20 +325,7 @@ function App() {
     setTarjeton(item.apertura?.tarjeton || '');
     setNombre(item.apertura?.nombre || '');
     
-    // Establecer el operador seleccionado si existe
-    if (item.apertura?.tarjeton && operadores.length > 0) {
-      const operadorEncontrado = operadores.find(op => op.tarjeton === item.apertura.tarjeton);
-      if (operadorEncontrado) {
-        setOperadorSeleccionado({
-          value: operadorEncontrado.tarjeton,
-          label: `${operadorEncontrado.tarjeton} - ${operadorEncontrado.nombre}`
-        });
-      } else {
-        setOperadorSeleccionado(null);
-      }
-    } else {
-      setOperadorSeleccionado(null);
-    }
+
     
     localStorage.setItem('editandoHorarioId', item.id);
   };
@@ -493,7 +464,7 @@ function App() {
       }}>
         <form onSubmit={handleSubmit} className="form" style={{ marginTop: '0.5rem', marginBottom: 8, width: '100%', maxWidth: 900, background: '#fff', borderRadius: 12, boxShadow: '0 2px 12px rgba(128, 0, 32, 0.08)', padding: '2rem 2.5rem', display: 'flex', flexDirection: 'column', gap: '1.2rem', alignItems: 'center' }}>
           <h2 style={{marginTop:'0',marginBottom:'1.2rem',color:'#6F2234'}}>Nueva Programación</h2>
-          <div className="form-grid-4col">
+          <div className="form-grid-3col">
             <div className="form-group">
               <label>Ruta</label>
               <Select
@@ -620,23 +591,7 @@ function App() {
               />
               {errores.nombre && <span className="error-message">{errores.nombre}</span>}
             </div>
-            <div className="form-group">
-              <label>Seleccionar Operador (Alternativo)</label>
-              <Select
-                options={operadores ? operadores.map(op => ({ 
-                  value: op.tarjeton, 
-                  label: `${op.tarjeton} - ${op.nombre}` 
-                })) : []}
-                value={operadorSeleccionado}
-                onChange={handleOperadorChange}
-                placeholder="Buscar o seleccionar operador"
-                isClearable
-                isSearchable
-                classNamePrefix="react-select"
-                noOptionsMessage={() => "No se encontraron operadores"}
-                loadingMessage={() => "Cargando operadores..."}
-              />
-            </div>
+
             <div className="form-group">
               <label>Comentario</label>
               <textarea
