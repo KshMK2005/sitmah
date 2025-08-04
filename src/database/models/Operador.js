@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const operadorSchema = new mongoose.Schema({
     id: {
@@ -37,4 +37,4 @@ operadorSchema.statics.buscarPorNombre = async function(nombre) {
     }).limit(10);
 };
 
-module.exports = mongoose.model('Operador', operadorSchema); 
+export default mongoose.model('Operador', operadorSchema); 

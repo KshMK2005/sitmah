@@ -29,6 +29,9 @@ function Apertura() {
 
   const [horario, setHorario] = useState(null);
   const [programaciones, setProgramaciones] = useState([]);
+  const [operadorEncontrado, setOperadorEncontrado] = useState(false);
+  const [operadorNoEncontrado, setOperadorNoEncontrado] = useState(false);
+  const [buscandoOperador, setBuscandoOperador] = useState(false);
 
   useEffect(() => {
     if (!horarioId) {
@@ -103,8 +106,6 @@ function Apertura() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     console.log('handleChange llamado:', name, value);
-    console.log('Event target:', e.target);
-    console.log('Event target name attribute:', e.target.getAttribute('name'));
     
     setFormData(prev => ({
       ...prev,
@@ -112,20 +113,30 @@ function Apertura() {
     }));
 
     // Si se está cambiando el tarjetón, buscar el operador automáticamente
-    if (name === 'tarjeton' && value.trim().length >= 3) {
-      console.log('Campo tarjetón cambiado, buscando operador...');
-      console.log('Valor del tarjetón:', value.trim());
-      // Agregar un pequeño delay para evitar muchas llamadas
-      setTimeout(() => {
-        console.log('Ejecutando búsqueda después del delay...');
-        buscarOperadorPorTarjeton(value.trim());
-      }, 500);
+    if (name === 'tarjeton') {
+      // Limpiar estados anteriores
+      setOperadorEncontrado(false);
+      setOperadorNoEncontrado(false);
+      setFormData(prev => ({ ...prev, nombre: '' }));
+      
+      if (value.trim().length >= 3) {
+        console.log('Campo tarjetón cambiado, buscando operador...');
+        console.log('Valor del tarjetón:', value.trim());
+        setBuscandoOperador(true);
+        
+        // Agregar un pequeño delay para evitar muchas llamadas
+        setTimeout(() => {
+          console.log('Ejecutando búsqueda después del delay...');
+          buscarOperadorPorTarjeton(value.trim());
+        }, 500);
+      }
     }
   };
 
   // Función para probar la búsqueda manualmente
   const probarBusqueda = async () => {
     console.log('Probando búsqueda manual...');
+    setBuscandoOperador(true);
     try {
       const operador = await operadorService.buscarPorTarjeton('TPA0001');
       console.log('Resultado de búsqueda manual:', operador);
@@ -134,6 +145,8 @@ function Apertura() {
           ...prev,
           nombre: operador.nombre
         }));
+        setOperadorEncontrado(true);
+        setOperadorNoEncontrado(false);
         Swal.fire({
           title: 'Prueba exitosa',
           text: `Operador encontrado: ${operador.nombre}`,
@@ -142,11 +155,15 @@ function Apertura() {
       }
     } catch (error) {
       console.error('Error en prueba manual:', error);
+      setOperadorNoEncontrado(true);
+      setOperadorEncontrado(false);
       Swal.fire({
         title: 'Error en prueba',
         text: error.message,
         icon: 'error'
       });
+    } finally {
+      setBuscandoOperador(false);
     }
   };
 
@@ -163,6 +180,8 @@ function Apertura() {
           ...prev,
           nombre: operador.nombre
         }));
+        setOperadorEncontrado(true);
+        setOperadorNoEncontrado(false);
         
         // Mostrar mensaje de éxito
         Swal.fire({
@@ -174,10 +193,15 @@ function Apertura() {
         });
       } else {
         console.log('Operador no encontrado o sin nombre');
+        setOperadorNoEncontrado(true);
+        setOperadorEncontrado(false);
       }
     } catch (error) {
       console.error('Error al buscar operador:', error);
-      // Si no se encuentra el operador, no mostrar error (puede ser un tarjetón nuevo)
+      setOperadorNoEncontrado(true);
+      setOperadorEncontrado(false);
+    } finally {
+      setBuscandoOperador(false);
     }
   };
 
@@ -254,10 +278,12 @@ function Apertura() {
                 placeholder="Número de tarjetón"
                 style={{width: '100%', padding: '8px', border: '1px solid #ccc', borderRadius: '4px'}}
                 data-testid="tarjeton-input"
-                onFocus={() => console.log('Campo tarjetón enfocado')}
-                onBlur={() => console.log('Campo tarjetón perdido foco')}
               />
-              <small style={{color: 'red'}}>Debug: name="{formData.tarjeton || 'vacío'}"</small>
+              {buscandoOperador && (
+                <small style={{color: '#007bff', display: 'block', marginTop: '4px'}}>
+                  🔍 Buscando operador...
+                </small>
+              )}
             </div>
             {/* Agrupar operador y comentario en el mismo div para alinearlos */}
             <div className="form-group" style={{display:'flex',gap:'1.5rem'}}>
@@ -270,8 +296,22 @@ function Apertura() {
                   value={formData.nombre} 
                   readOnly 
                   placeholder="Se autocompletará al ingresar el tarjetón" 
-                  style={{backgroundColor: '#f5f5f5', cursor: 'not-allowed'}}
+                  style={{
+                    backgroundColor: operadorEncontrado ? '#e8f5e8' : '#f5f5f5', 
+                    cursor: 'not-allowed',
+                    border: operadorEncontrado ? '1px solid #28a745' : '1px solid #ccc'
+                  }}
                 />
+                {operadorNoEncontrado && (
+                  <small style={{color: '#dc3545', display: 'block', marginTop: '4px'}}>
+                    ❌ Usuario no encontrado
+                  </small>
+                )}
+                {operadorEncontrado && (
+                  <small style={{color: '#28a745', display: 'block', marginTop: '4px'}}>
+                    ✅ Operador encontrado
+                  </small>
+                )}
               </div>
               <div style={{flex:1}}>
                 <label htmlFor="comentario">Comentario:</label>
