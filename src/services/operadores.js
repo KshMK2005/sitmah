@@ -11,9 +11,9 @@ export const operadorService = {
     async buscarPorTarjeton(tarjeton) {
         try {
             console.log('Iniciando búsqueda de operador con tarjetón:', tarjeton);
-            console.log('URL de la petición:', `${API_URL}/operadores/buscar/${tarjeton}`);
+            console.log('URL de la petición:', `${API_URL}/operadors/buscar/${tarjeton}`);
 
-            const response = await fetch(`${API_URL}/operadores/buscar/${tarjeton}`, {
+            const response = await fetch(`${API_URL}/operadors/buscar/${tarjeton}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -50,7 +50,7 @@ export const operadorService = {
     // Buscar operadores por nombre (búsqueda parcial)
     async buscarPorNombre(nombre) {
         try {
-            const response = await fetch(`${API_URL}/operadores/buscar-nombre/${nombre}`);
+            const response = await fetch(`${API_URL}/operadors/buscar-nombre/${nombre}`);
             const data = await response.json();
 
             if (!response.ok) {
@@ -68,9 +68,9 @@ export const operadorService = {
     async obtenerTodos() {
         try {
             console.log('Obteniendo todos los operadores...');
-            console.log('URL de la petición:', `${API_URL}/operadores`);
+                    console.log('URL de la petición:', `${API_URL}/operadors`);
 
-            const response = await fetch(`${API_URL}/operadores`);
+        const response = await fetch(`${API_URL}/operadors`);
             console.log('Respuesta recibida:', response.status, response.statusText);
 
             const data = await response.json();
