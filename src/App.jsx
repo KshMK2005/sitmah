@@ -48,21 +48,30 @@ function App() {
   const [economico, setEconomico] = useState('');
   const [tarjeton, setTarjeton] = useState('');
   const [nombre, setNombre] = useState('');
-  const [operadors, setOperadors] = useState([]);
+  const [operadores, setOperadores] = useState([]);
+  const [operadorSeleccionado, setOperadorSeleccionado] = useState(null);
 
-  // Buscar automáticamente el operador por tarjetón escrito manualmente
+  // Buscar automáticamente el nombre del operador por tarjetón
   useEffect(() => {
-    if (tarjeton && operadors.length > 0) {
-      const operadorEncontrado = operadors.find(op => String(op.tarjeton).toLowerCase() === String(tarjeton).toLowerCase());
-      if (operadorEncontrado) {
-        setNombre(operadorEncontrado.nombre);
-      } else {
-        setNombre('');
-      }
-    } else {
-      setNombre('');
-    }
-  }, [tarjeton, operadors]);
+    // Desactivado para permitir testeo sin usuarios registrados
+    // const buscarOperadorPorTarjeton = async () => {
+    //   if (tarjeton && tarjeton.trim() !== '') {
+    //     try {
+    //       const user = await usuarioService.getByTarjeton(tarjeton.trim());
+    //       if (user && user.usuario) {
+    //         setNombre(user.usuario);
+    //       } else {
+    //         setNombre('');
+    //       }
+    //     } catch (err) {
+    //       setNombre('');
+    //     }
+    //   } else {
+    //     setNombre('');
+    //   }
+    // };
+    // buscarOperadorPorTarjeton();
+  }, [tarjeton]);
   const { navigateWithTransition } = useTransition();
   const location = useLocation();
   const role = localStorage.getItem('userRole');
@@ -88,14 +97,14 @@ function App() {
   useEffect(() => {
     const cargarDatos = async () => {
       try {
-        const [programacionesData, operadorsData] = await Promise.all([
+        const [programacionesData, operadoresData] = await Promise.all([
           programacionService.getAll(),
           operadorService.obtenerTodos()
         ]);
-
+        
         setProgramaciones(programacionesData || []);
-        setOperadors(operadorsData || []);
-
+        setOperadores(operadoresData || []);
+        
         // Extraer rutas únicas
         const rutasUnicas = Array.from(new Set((programacionesData || []).map(p => p.ruta)));
         setRutasDisponibles(rutasUnicas);
@@ -103,14 +112,25 @@ function App() {
         console.error('Error al cargar datos:', error);
         // Si hay error, establecer arrays vacíos
         setProgramaciones([]);
-        setOperadors([]);
+        setOperadores([]);
         setRutasDisponibles([]);
       }
     };
     cargarDatos();
   }, []);
 
-
+  // Efecto para establecer el operador seleccionado cuando se cargan los operadores y hay un horario en edición
+  useEffect(() => {
+    if (operadores.length > 0 && editandoId && tarjeton) {
+      const operadorEncontrado = operadores.find(op => op.tarjeton === tarjeton);
+      if (operadorEncontrado) {
+        setOperadorSeleccionado({
+          value: operadorEncontrado.tarjeton,
+          label: `${operadorEncontrado.tarjeton} - ${operadorEncontrado.nombre}`
+        });
+      }
+    }
+  }, [operadores, editandoId, tarjeton]);
 
   // Cuando se selecciona una ruta, poner la hora de salida, intervalo y corridas de la programación
   useEffect(() => {
@@ -149,10 +169,21 @@ function App() {
     setEconomico('');
     setTarjeton('');
     setNombre('');
+    setOperadorSeleccionado(null);
     setErrores({});
   };
 
-
+  // Manejar selección de operador
+  const handleOperadorChange = (option) => {
+    setOperadorSeleccionado(option);
+    if (option) {
+      setTarjeton(option.value);
+      setNombre(option.label.split(' - ')[1]); // Obtener solo el nombre
+    } else {
+      setTarjeton('');
+      setNombre('');
+    }
+  };
 
   const validarFormulario = () => {
     const nuevosErrores = {};
@@ -309,9 +340,22 @@ function App() {
     setEconomico(item.apertura?.economico || '');
     setTarjeton(item.apertura?.tarjeton || '');
     setNombre(item.apertura?.nombre || '');
-
-
-
+    
+    // Establecer el operador seleccionado si existe
+    if (item.apertura?.tarjeton && operadores.length > 0) {
+      const operadorEncontrado = operadores.find(op => op.tarjeton === item.apertura.tarjeton);
+      if (operadorEncontrado) {
+        setOperadorSeleccionado({
+          value: operadorEncontrado.tarjeton,
+          label: `${operadorEncontrado.tarjeton} - ${operadorEncontrado.nombre}`
+        });
+      } else {
+        setOperadorSeleccionado(null);
+      }
+    } else {
+      setOperadorSeleccionado(null);
+    }
+    
     localStorage.setItem('editandoHorarioId', item.id);
   };
 
@@ -372,7 +416,7 @@ function App() {
               try {
                 const parsed = JSON.parse(error.message);
                 mensaje = parsed.message || parsed.error || error.message;
-              } catch { }
+              } catch {}
             }
             Swal.fire({
               title: "Error al guardar",
@@ -448,7 +492,7 @@ function App() {
         justifyContent: 'flex-start'
       }}>
         <form onSubmit={handleSubmit} className="form" style={{ marginTop: '0.5rem', marginBottom: 8, width: '100%', maxWidth: 900, background: '#fff', borderRadius: 12, boxShadow: '0 2px 12px rgba(128, 0, 32, 0.08)', padding: '2rem 2.5rem', display: 'flex', flexDirection: 'column', gap: '1.2rem', alignItems: 'center' }}>
-          <h2 style={{ marginTop: '0', marginBottom: '1.2rem', color: '#6F2234' }}>Nueva Programación</h2>
+          <h2 style={{marginTop:'0',marginBottom:'1.2rem',color:'#6F2234'}}>Nueva Programación</h2>
           <div className="form-grid-3col">
             <div className="form-group">
               <label>Ruta</label>
@@ -551,28 +595,23 @@ function App() {
                 required
               />
             </div>
-                         <div className="form-group">
-               <label>Tarjetón</label>
-               <input
-                 type="text"
-                 value={tarjeton}
-                 onChange={e => setTarjeton(e.target.value)}
-                 placeholder="Número de tarjetón del operador"
-                 className={`input ${errores.tarjeton ? 'input-error' : ''}`}
-               />
-               {errores.tarjeton && <span className="error-message">{errores.tarjeton}</span>}
-             </div>
-             <div className="form-group">
-               <label>Nombre del Operador</label>
-               <input
-                 type="text"
-                 value={nombre}
-                 onChange={e => setNombre(e.target.value)}
-                 placeholder="Nombre completo del operador"
-                 className={`input ${errores.nombre ? 'input-error' : ''}`}
-               />
-               {errores.nombre && <span className="error-message">{errores.nombre}</span>}
-             </div>
+            <div className="form-group">
+              <label>Operador</label>
+              <Select
+                options={operadores ? operadores.map(op => ({ 
+                  value: op.tarjeton, 
+                  label: `${op.tarjeton} - ${op.nombre}` 
+                })) : []}
+                value={operadorSeleccionado}
+                onChange={handleOperadorChange}
+                placeholder="Buscar o seleccionar operador"
+                isClearable
+                isSearchable
+                classNamePrefix="react-select"
+                noOptionsMessage={() => "No se encontraron operadores"}
+                loadingMessage={() => "Cargando operadores..."}
+              />
+            </div>
             <div className="form-group">
               <label>Comentario</label>
               <textarea
@@ -581,12 +620,12 @@ function App() {
                 placeholder="Comentario opcional"
                 className="input"
                 rows={2}
-                style={{ width: '100%' }}
+                style={{width:'100%'}}
               />
             </div>
           </div>
 
-          <button type="submit" className="btn-submit" style={{ marginBottom: '1.2rem' }}>{editandoId !== null ? 'GUARDAR CAMBIOS' : 'SUBIR'}</button>
+          <button type="submit" className="btn-submit" style={{marginBottom: '1.2rem'}}>{editandoId !== null ? 'GUARDAR CAMBIOS' : 'SUBIR'}</button>
           {editandoId !== null && (
             <button type="button" className="btn-delete" onClick={handleCancelEdit} style={{ marginLeft: '1rem' }}>CANCELAR</button>
           )}
