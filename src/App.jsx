@@ -99,10 +99,10 @@ function App() {
           programacionService.getAll(),
           operadorService.obtenerTodos()
         ]);
-        
+
         setProgramaciones(programacionesData || []);
         setOperadors(operadorsData || []);
-        
+
         // Extraer rutas únicas
         const rutasUnicas = Array.from(new Set((programacionesData || []).map(p => p.ruta)));
         setRutasDisponibles(rutasUnicas);
@@ -338,7 +338,7 @@ function App() {
     setEconomico(item.apertura?.economico || '');
     setTarjeton(item.apertura?.tarjeton || '');
     setNombre(item.apertura?.nombre || '');
-    
+
     // Establecer el operador seleccionado si existe
     if (item.apertura?.tarjeton && operadors.length > 0) {
       const operadorEncontrado = operadors.find(op => op.tarjeton === item.apertura.tarjeton);
@@ -353,7 +353,7 @@ function App() {
     } else {
       setOperadorSeleccionado(null);
     }
-    
+
     localStorage.setItem('editandoHorarioId', item.id);
   };
 
@@ -414,7 +414,7 @@ function App() {
               try {
                 const parsed = JSON.parse(error.message);
                 mensaje = parsed.message || parsed.error || error.message;
-              } catch {}
+              } catch { }
             }
             Swal.fire({
               title: "Error al guardar",
@@ -490,7 +490,7 @@ function App() {
         justifyContent: 'flex-start'
       }}>
         <form onSubmit={handleSubmit} className="form" style={{ marginTop: '0.5rem', marginBottom: 8, width: '100%', maxWidth: 900, background: '#fff', borderRadius: 12, boxShadow: '0 2px 12px rgba(128, 0, 32, 0.08)', padding: '2rem 2.5rem', display: 'flex', flexDirection: 'column', gap: '1.2rem', alignItems: 'center' }}>
-          <h2 style={{marginTop:'0',marginBottom:'1.2rem',color:'#6F2234'}}>Nueva Programación</h2>
+          <h2 style={{ marginTop: '0', marginBottom: '1.2rem', color: '#6F2234' }}>Nueva Programación</h2>
           <div className="form-grid-3col">
             <div className="form-group">
               <label>Ruta</label>
@@ -554,22 +554,22 @@ function App() {
 
             <div className="form-group">
               <label>Del</label>
-                       <DatePicker
-           selected={fechaDel}
-           onChange={date => setFechaDel(date)}
-           dateFormat="yyyy-MM-dd"
-           className={`input ${errores.fechas ? 'input-error' : ''}`}
-         />
+              <DatePicker
+                selected={fechaDel}
+                onChange={date => setFechaDel(date)}
+                dateFormat="yyyy-MM-dd"
+                className={`input ${errores.fechas ? 'input-error' : ''}`}
+              />
             </div>
 
             <div className="form-group">
               <label>Al</label>
-                       <DatePicker
-           selected={fechaAl}
-           onChange={date => setFechaAl(date)}
-           dateFormat="yyyy-MM-dd"
-           className={`input ${errores.fechas ? 'input-error' : ''}`}
-         />
+              <DatePicker
+                selected={fechaAl}
+                onChange={date => setFechaAl(date)}
+                dateFormat="yyyy-MM-dd"
+                className={`input ${errores.fechas ? 'input-error' : ''}`}
+              />
               {errores.fechas && <span className="error-message">{errores.fechas}</span>}
             </div>
 
@@ -596,10 +596,10 @@ function App() {
             <div className="form-group">
               <label>Tarjetón</label>
               <Select
-                           options={operadors ? operadors.map(op => ({
-             value: op.tarjeton,
-             label: `${op.tarjeton} - ${op.nombre}`
-           })) : []}
+                options={operadors ? operadors.map(op => ({
+                  value: op.tarjeton,
+                  label: `${op.tarjeton} - ${op.nombre}`
+                })) : []}
                 value={operadorSeleccionado}
                 onChange={handleOperadorChange}
                 onInputChange={inputValue => setTarjeton(inputValue)}
@@ -634,12 +634,12 @@ function App() {
                 placeholder="Comentario opcional"
                 className="input"
                 rows={2}
-                style={{width:'100%'}}
+                style={{ width: '100%' }}
               />
             </div>
           </div>
 
-          <button type="submit" className="btn-submit" style={{marginBottom: '1.2rem'}}>{editandoId !== null ? 'GUARDAR CAMBIOS' : 'SUBIR'}</button>
+          <button type="submit" className="btn-submit" style={{ marginBottom: '1.2rem' }}>{editandoId !== null ? 'GUARDAR CAMBIOS' : 'SUBIR'}</button>
           {editandoId !== null && (
             <button type="button" className="btn-delete" onClick={handleCancelEdit} style={{ marginLeft: '1rem' }}>CANCELAR</button>
           )}
