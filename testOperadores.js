@@ -23,66 +23,99 @@ function fetch(url) {
     });
 }
 
-const API_URL = 'http://localhost:5000/api';
-
-async function testOperadores() {
+// Script de prueba para verificar la funcionalidad de búsqueda de operadores
+const testOperadores = async () => {
+    const API_URL = 'http://localhost:5000/api';
+    
+    console.log('🧪 Iniciando pruebas de operadores...\n');
+    
     try {
-        console.log('Probando API de operadores...\n');
-
-        // Test 1: Buscar operador por tarjetón existente
-        console.log('1. Probando búsqueda por tarjetón TPA0001...');
-        const response1 = await fetch(`${API_URL}/operadores/buscar/TPA0001`);
-        const data1 = await response1.json();
+        // 1. Verificar estado de la base de datos
+        console.log('1. Verificando estado de la base de datos...');
+        const statusResponse = await fetch(`${API_URL}/operadores/status`);
+        const statusData = await statusResponse.json();
         
-        if (response1.ok) {
-            console.log('✅ Operador encontrado:', data1.operador);
-        } else {
-            console.log('❌ Error:', data1.message);
-        }
-
-        // Test 2: Buscar operador por tarjetón inexistente
-        console.log('\n2. Probando búsqueda por tarjetón inexistente...');
-        const response2 = await fetch(`${API_URL}/operadores/buscar/INEXISTENTE`);
-        const data2 = await response2.json();
-        
-        if (response2.status === 404) {
-            console.log('✅ Correcto: Operador no encontrado');
-        } else {
-            console.log('❌ Error inesperado:', data2);
-        }
-
-        // Test 3: Buscar operadores por nombre
-        console.log('\n3. Probando búsqueda por nombre "JESÚS"...');
-        const response3 = await fetch(`${API_URL}/operadores/buscar-nombre/JESÚS`);
-        const data3 = await response3.json();
-        
-        if (response3.ok) {
-            console.log(`✅ Encontrados ${data3.operadores.length} operadores:`);
-            data3.operadores.slice(0, 3).forEach(op => {
-                console.log(`   - ${op.nombre} (${op.tarjeton})`);
+        if (statusData.success) {
+            console.log('✅ Base de datos conectada');
+            console.log(`📊 Total de operadores: ${statusData.totalOperadores}`);
+            console.log('📋 Ejemplos de operadores:');
+            statusData.sampleOperadores.forEach(op => {
+                console.log(`   - ${op.tarjeton}: ${op.nombre}`);
             });
         } else {
-            console.log('❌ Error:', data3.message);
+            console.log('❌ Error al verificar estado:', statusData.message);
+            return;
         }
-
-        // Test 4: Obtener todos los operadores
-        console.log('\n4. Probando obtener todos los operadores...');
-        const response4 = await fetch(`${API_URL}/operadores`);
-        const data4 = await response4.json();
         
-        if (response4.ok) {
-            console.log(`✅ Total de operadores: ${data4.total}`);
-        } else {
-            console.log('❌ Error:', data4.message);
+        console.log('\n2. Probando búsquedas de operadores...\n');
+        
+        // 2. Probar búsquedas exitosas
+        const tarjetonesExitosos = ['TPA0001', 'TPA0005', 'TPA0010'];
+        
+        for (const tarjeton of tarjetonesExitosos) {
+            console.log(`Buscando tarjetón: ${tarjeton}`);
+            const response = await fetch(`${API_URL}/operadores/buscar/${tarjeton}`);
+            const data = await response.json();
+            
+            if (data.success && data.operador) {
+                console.log(`✅ Encontrado: ${data.operador.nombre}`);
+            } else {
+                console.log(`❌ No encontrado: ${data.message}`);
+            }
         }
-
+        
+        // 3. Probar búsquedas que no existen
+        console.log('\n3. Probando búsquedas inexistentes...\n');
+        
+        const tarjetonesInexistentes = ['TPA9999', 'INVALIDO', 'ABC123'];
+        
+        for (const tarjeton of tarjetonesInexistentes) {
+            console.log(`Buscando tarjetón inexistente: ${tarjeton}`);
+            const response = await fetch(`${API_URL}/operadores/buscar/${tarjeton}`);
+            const data = await response.json();
+            
+            if (response.status === 404) {
+                console.log(`✅ Correcto: No encontrado (404)`);
+            } else {
+                console.log(`❌ Error: ${data.message}`);
+            }
+        }
+        
+        // 4. Probar búsqueda con espacios y variaciones
+        console.log('\n4. Probando búsquedas con variaciones...\n');
+        
+        const variaciones = [
+            ' tpa0001 ',  // Con espacios
+            'tpa0001',    // Minúsculas
+            'TPA0001',    // Mayúsculas
+            '  TPA0001  ' // Múltiples espacios
+        ];
+        
+        for (const tarjeton of variaciones) {
+            console.log(`Buscando variación: "${tarjeton}"`);
+            const response = await fetch(`${API_URL}/operadores/buscar/${tarjeton}`);
+            const data = await response.json();
+            
+            if (data.success && data.operador) {
+                console.log(`✅ Encontrado: ${data.operador.nombre}`);
+            } else {
+                console.log(`❌ No encontrado: ${data.message}`);
+            }
+        }
+        
+        console.log('\n🎉 Todas las pruebas completadas!');
+        
     } catch (error) {
-        console.error('❌ Error en las pruebas:', error.message);
+        console.error('❌ Error durante las pruebas:', error.message);
+        console.log('\n💡 Asegúrate de que:');
+        console.log('   1. El servidor esté corriendo en puerto 5000');
+        console.log('   2. La base de datos esté conectada');
+        console.log('   3. Los datos de operadores estén cargados');
     }
-}
+};
 
 // Ejecutar las pruebas
-testOperadores(); 
+testOperadores();
 
 // Verificar el campo tarjetón
 const tarjetonInput = document.querySelector('input[data-testid="tarjeton-input"]');

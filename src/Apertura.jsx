@@ -13,6 +13,9 @@ function Apertura() {
   const location = useLocation();
   const { navigateWithTransition } = useTransition();
   const { horarioId, horarioData } = location.state || {};
+  
+  // Detectar si estamos en producción
+  const isProduction = window.location.hostname !== 'localhost';
 
   const [formData, setFormData] = useState({
     tipoUnidad: '',
@@ -123,23 +126,8 @@ function Apertura() {
 
       if (tarjetonNormalizado.length >= 3) {
         setBuscandoOperador(true);
-        // Buscar en la colección completa de operadors (como filtro de ruta)
-        operadorService.obtenerTodos().then(operadores => {
-          const encontrado = operadores.find(op => (op.tarjeton || '').toUpperCase().replace(/\s+/g, '') === tarjetonNormalizado);
-          if (encontrado) {
-            setFormData(prev => ({ ...prev, nombre: encontrado.nombre }));
-            setOperadorEncontrado(true);
-            setOperadorNoEncontrado(false);
-          } else {
-            setOperadorNoEncontrado(true);
-            setOperadorEncontrado(false);
-          }
-        }).catch(error => {
-          setOperadorNoEncontrado(true);
-          setOperadorEncontrado(false);
-        }).finally(() => {
-          setBuscandoOperador(false);
-        });
+        // Usar el servicio específico para buscar por tarjetón
+        buscarOperadorPorTarjeton(tarjetonNormalizado);
       }
     }
   };
@@ -178,6 +166,37 @@ function Apertura() {
     }
   };
 
+  // Función para verificar el estado de la base de datos
+  const verificarEstadoDB = async () => {
+    try {
+      const response = await fetch(`${isProduction ? '/api' : 'http://localhost:5000/api'}/operadores/status`);
+      const data = await response.json();
+      
+      if (data.success) {
+        Swal.fire({
+          title: '✅ Base de datos conectada',
+          html: `
+            <p><strong>Total de operadores:</strong> ${data.totalOperadores}</p>
+            <p><strong>Ejemplos:</strong></p>
+            <ul style="text-align: left;">
+              ${data.sampleOperadores.map(op => `<li>${op.tarjeton} - ${op.nombre}</li>`).join('')}
+            </ul>
+          `,
+          icon: 'success'
+        });
+      } else {
+        throw new Error(data.message);
+      }
+    } catch (error) {
+      console.error('Error al verificar estado:', error);
+      Swal.fire({
+        title: '❌ Error de conexión',
+        text: 'No se pudo conectar con la base de datos',
+        icon: 'error'
+      });
+    }
+  };
+
   // Función para buscar operador por tarjetón
   const buscarOperadorPorTarjeton = async (tarjeton) => {
     try {
@@ -194,37 +213,36 @@ function Apertura() {
         setOperadorEncontrado(true);
         setOperadorNoEncontrado(false);
 
-        // Mostrar mensaje de éxito
+        // Mostrar mensaje de éxito más discreto
         Swal.fire({
-          title: 'Operador encontrado',
-          text: `Se autocompletó el nombre: ${operador.nombre}`,
+          title: '✅ Operador encontrado',
+          text: operador.nombre,
           icon: 'success',
-          timer: 2000,
-          showConfirmButton: false
+          timer: 1500,
+          showConfirmButton: false,
+          toast: true,
+          position: 'top-end'
         });
       } else {
         console.log('Operador no encontrado o sin nombre');
         setOperadorNoEncontrado(true);
         setOperadorEncontrado(false);
-        Swal.fire({
-          title: 'No encontrado',
-          text: 'No se encontró un operador con ese tarjetón.',
-          icon: 'warning',
-          timer: 2000,
-          showConfirmButton: false
-        });
       }
     } catch (error) {
       console.error('Error al buscar operador:', error);
       setOperadorNoEncontrado(true);
       setOperadorEncontrado(false);
-      Swal.fire({
-        title: 'Error',
-        text: error.message || 'Error al buscar operador',
-        icon: 'error',
-        timer: 2000,
-        showConfirmButton: false
-      });
+      
+      // Solo mostrar error si no es un 404 (operador no encontrado)
+      if (error.message && !error.message.includes('404')) {
+        Swal.fire({
+          title: 'Error de conexión',
+          text: 'Error al conectar con la base de datos',
+          icon: 'error',
+          timer: 2000,
+          showConfirmButton: false
+        });
+      }
     } finally {
       setBuscandoOperador(false);
     }
@@ -345,9 +363,14 @@ function Apertura() {
             </div>
           </div>
           <div className="form-actions" style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1.5rem' }}>
-            <button type="button" onClick={probarBusqueda} style={{ padding: '10px', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
-              🔍 Probar Búsqueda (TPA0001)
-            </button>
+            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+              <button type="button" onClick={probarBusqueda} style={{ padding: '10px', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
+                🔍 Probar Búsqueda (TPA0001)
+              </button>
+              <button type="button" onClick={verificarEstadoDB} style={{ padding: '10px', backgroundColor: '#28a745', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
+                📊 Verificar Base de Datos
+              </button>
+            </div>
             <button type="submit" className="btn-apertura">SUBIR</button>
           </div>
         </form>

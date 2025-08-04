@@ -13,19 +13,36 @@ export const operadorService = {
             console.log('Iniciando búsqueda de operador con tarjetón:', tarjeton);
             console.log('URL de la petición:', `${API_URL}/operadores/buscar/${tarjeton}`);
             
-            const response = await fetch(`${API_URL}/operadores/buscar/${tarjeton}`);
+            const response = await fetch(`${API_URL}/operadores/buscar/${tarjeton}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                // Agregar timeout para evitar esperas indefinidas
+                signal: AbortSignal.timeout(5000) // 5 segundos de timeout
+            });
+            
             console.log('Respuesta recibida:', response.status, response.statusText);
+            
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                const errorMessage = errorData.message || `Error ${response.status}: ${response.statusText}`;
+                throw new Error(errorMessage);
+            }
             
             const data = await response.json();
             console.log('Datos recibidos:', data);
             
-            if (!response.ok) {
-                throw new Error(data.message || 'Error al buscar operador');
-            }
-            
             return data.operador;
         } catch (error) {
             console.error('Error en buscarPorTarjeton:', error);
+            // Si es un error de timeout o red, lanzar un error más específico
+            if (error.name === 'AbortError') {
+                throw new Error('Timeout: La búsqueda tardó demasiado');
+            }
+            if (error.name === 'TypeError' && error.message.includes('fetch')) {
+                throw new Error('Error de conexión: No se pudo conectar con el servidor');
+            }
             throw error;
         }
     },

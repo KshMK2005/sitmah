@@ -28,7 +28,25 @@ operadorSchema.index({ nombre: 1 });
 
 // Método estático para buscar operador por tarjetón
 operadorSchema.statics.buscarPorTarjeton = async function(tarjeton) {
-    return await this.findOne({ tarjeton: tarjeton });
+    try {
+        // Normalizar el tarjetón: quitar espacios, poner en mayúsculas
+        const tarjetonNormalizado = tarjeton.trim().toUpperCase().replace(/\s+/g, '');
+        
+        // Buscar con coincidencia exacta primero
+        let operador = await this.findOne({ tarjeton: tarjetonNormalizado });
+        
+        // Si no se encuentra, buscar con regex para casos donde hay variaciones
+        if (!operador) {
+            operador = await this.findOne({
+                tarjeton: { $regex: `^${tarjetonNormalizado.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, $options: 'i' }
+            });
+        }
+        
+        return operador;
+    } catch (error) {
+        console.error('Error en buscarPorTarjeton:', error);
+        throw error;
+    }
 };
 
 // Método estático para buscar operador por nombre (búsqueda parcial)

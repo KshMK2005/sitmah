@@ -7,14 +7,32 @@ const router = express.Router();
 router.get('/buscar/:tarjeton', async (req, res) => {
     try {
         const { tarjeton } = req.params;
+        console.log('Buscando operador con tarjetón:', tarjeton);
+        
+        // Validar que el tarjetón no esté vacío
+        if (!tarjeton || tarjeton.trim().length === 0) {
+            return res.status(400).json({ 
+                error: 'Tarjetón inválido',
+                message: 'El tarjetón no puede estar vacío'
+            });
+        }
+        
         const operador = await Operador.buscarPorTarjeton(tarjeton);
+        console.log('Resultado de búsqueda:', operador ? 'Encontrado' : 'No encontrado');
         
         if (!operador) {
             return res.status(404).json({ 
                 error: 'Operador no encontrado',
-                message: `No se encontró operador con tarjetón: ${tarjeton}`
+                message: `No se encontró operador con tarjetón: ${tarjeton}`,
+                tarjetonBuscado: tarjeton
             });
         }
+        
+        console.log('Operador encontrado:', {
+            id: operador.id,
+            tarjeton: operador.tarjeton,
+            nombre: operador.nombre
+        });
         
         res.json({
             success: true,
@@ -28,7 +46,8 @@ router.get('/buscar/:tarjeton', async (req, res) => {
         console.error('Error al buscar operador:', error);
         res.status(500).json({ 
             error: 'Error interno del servidor',
-            message: error.message 
+            message: error.message,
+            stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
         });
     }
 });
@@ -69,6 +88,28 @@ router.get('/', async (req, res) => {
         console.error('Error al obtener operadores:', error);
         res.status(500).json({ 
             error: 'Error interno del servidor',
+            message: error.message 
+        });
+    }
+});
+
+// Ruta para verificar el estado de la base de datos
+router.get('/status', async (req, res) => {
+    try {
+        const totalOperadores = await Operador.countDocuments();
+        const sampleOperadores = await Operador.find().limit(3).select('tarjeton nombre');
+        
+        res.json({
+            success: true,
+            status: 'Conectado',
+            totalOperadores,
+            sampleOperadores,
+            timestamp: new Date().toISOString()
+        });
+    } catch (error) {
+        console.error('Error al verificar estado:', error);
+        res.status(500).json({ 
+            error: 'Error de conexión',
             message: error.message 
         });
     }
