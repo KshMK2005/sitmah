@@ -1,4 +1,5 @@
 import express from 'express';
+import mongoose from 'mongoose';
 import Operador from '../../src/database/models/Operador.js';
 
 const router = express.Router();
@@ -86,6 +87,32 @@ router.get('/', async (req, res) => {
         });
     } catch (error) {
         console.error('Error al obtener operadores:', error);
+        res.status(500).json({ 
+            error: 'Error interno del servidor',
+            message: error.message 
+        });
+    }
+});
+
+// Obtener operadores de la colección operadors (específico para el frontend)
+router.get('/operadors', async (req, res) => {
+    try {
+        console.log('Obteniendo operadores de la colección operadors...');
+        
+        // Usar directamente la colección operadors
+        const db = req.app.locals.db || mongoose.connection.db;
+        const operadorsCollection = db.collection('operadors');
+        
+        const operadors = await operadorsCollection.find({}).toArray();
+        console.log(`Encontrados ${operadors.length} operadores en operadors`);
+        
+        res.json({
+            success: true,
+            total: operadors.length,
+            operadores: operadors
+        });
+    } catch (error) {
+        console.error('Error al obtener operadores de operadors:', error);
         res.status(500).json({ 
             error: 'Error interno del servidor',
             message: error.message 
