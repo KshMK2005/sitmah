@@ -51,27 +51,25 @@ function App() {
   const [operadores, setOperadores] = useState([]);
   const [operadorSeleccionado, setOperadorSeleccionado] = useState(null);
 
-  // Buscar automáticamente el nombre del operador por tarjetón
+  // Buscar automáticamente el operador por tarjetón escrito manualmente
   useEffect(() => {
-    // Desactivado para permitir testeo sin usuarios registrados
-    // const buscarOperadorPorTarjeton = async () => {
-    //   if (tarjeton && tarjeton.trim() !== '') {
-    //     try {
-    //       const user = await usuarioService.getByTarjeton(tarjeton.trim());
-    //       if (user && user.usuario) {
-    //         setNombre(user.usuario);
-    //       } else {
-    //         setNombre('');
-    //       }
-    //     } catch (err) {
-    //       setNombre('');
-    //     }
-    //   } else {
-    //     setNombre('');
-    //   }
-    // };
-    // buscarOperadorPorTarjeton();
-  }, [tarjeton]);
+    if (tarjeton && operadores.length > 0) {
+      const operadorEncontrado = operadores.find(op => String(op.tarjeton).toLowerCase() === String(tarjeton).toLowerCase());
+      if (operadorEncontrado) {
+        setOperadorSeleccionado({
+          value: operadorEncontrado.tarjeton,
+          label: `${operadorEncontrado.tarjeton} - ${operadorEncontrado.nombre}`
+        });
+        setNombre(operadorEncontrado.nombre);
+      } else {
+        setOperadorSeleccionado(null);
+        setNombre('');
+      }
+    } else {
+      setOperadorSeleccionado(null);
+      setNombre('');
+    }
+  }, [tarjeton, operadores]);
   const { navigateWithTransition } = useTransition();
   const location = useLocation();
   const role = localStorage.getItem('userRole');
