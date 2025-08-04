@@ -48,13 +48,13 @@ function App() {
   const [economico, setEconomico] = useState('');
   const [tarjeton, setTarjeton] = useState('');
   const [nombre, setNombre] = useState('');
-  const [operadores, setOperadores] = useState([]);
+  const [operadors, setOperadors] = useState([]);
   const [operadorSeleccionado, setOperadorSeleccionado] = useState(null);
 
   // Buscar automáticamente el operador por tarjetón escrito manualmente
   useEffect(() => {
-    if (tarjeton && operadores.length > 0) {
-      const operadorEncontrado = operadores.find(op => String(op.tarjeton).toLowerCase() === String(tarjeton).toLowerCase());
+    if (tarjeton && operadors.length > 0) {
+      const operadorEncontrado = operadors.find(op => String(op.tarjeton).toLowerCase() === String(tarjeton).toLowerCase());
       if (operadorEncontrado) {
         setOperadorSeleccionado({
           value: operadorEncontrado.tarjeton,
@@ -69,7 +69,7 @@ function App() {
       setOperadorSeleccionado(null);
       setNombre('');
     }
-  }, [tarjeton, operadores]);
+  }, [tarjeton, operadors]);
   const { navigateWithTransition } = useTransition();
   const location = useLocation();
   const role = localStorage.getItem('userRole');
@@ -95,13 +95,13 @@ function App() {
   useEffect(() => {
     const cargarDatos = async () => {
       try {
-        const [programacionesData, operadoresData] = await Promise.all([
+        const [programacionesData, operadorsData] = await Promise.all([
           programacionService.getAll(),
           operadorService.obtenerTodos()
         ]);
         
         setProgramaciones(programacionesData || []);
-        setOperadores(operadoresData || []);
+        setOperadors(operadorsData || []);
         
         // Extraer rutas únicas
         const rutasUnicas = Array.from(new Set((programacionesData || []).map(p => p.ruta)));
@@ -110,7 +110,7 @@ function App() {
         console.error('Error al cargar datos:', error);
         // Si hay error, establecer arrays vacíos
         setProgramaciones([]);
-        setOperadores([]);
+        setOperadors([]);
         setRutasDisponibles([]);
       }
     };
@@ -119,8 +119,8 @@ function App() {
 
   // Efecto para establecer el operador seleccionado cuando se cargan los operadores y hay un horario en edición
   useEffect(() => {
-    if (operadores.length > 0 && editandoId && tarjeton) {
-      const operadorEncontrado = operadores.find(op => op.tarjeton === tarjeton);
+    if (operadors.length > 0 && editandoId && tarjeton) {
+      const operadorEncontrado = operadors.find(op => op.tarjeton === tarjeton);
       if (operadorEncontrado) {
         setOperadorSeleccionado({
           value: operadorEncontrado.tarjeton,
@@ -128,7 +128,7 @@ function App() {
         });
       }
     }
-  }, [operadores, editandoId, tarjeton]);
+  }, [operadors, editandoId, tarjeton]);
 
   // Cuando se selecciona una ruta, poner la hora de salida, intervalo y corridas de la programación
   useEffect(() => {
@@ -340,8 +340,8 @@ function App() {
     setNombre(item.apertura?.nombre || '');
     
     // Establecer el operador seleccionado si existe
-    if (item.apertura?.tarjeton && operadores.length > 0) {
-      const operadorEncontrado = operadores.find(op => op.tarjeton === item.apertura.tarjeton);
+    if (item.apertura?.tarjeton && operadors.length > 0) {
+      const operadorEncontrado = operadors.find(op => op.tarjeton === item.apertura.tarjeton);
       if (operadorEncontrado) {
         setOperadorSeleccionado({
           value: operadorEncontrado.tarjeton,
@@ -554,22 +554,22 @@ function App() {
 
             <div className="form-group">
               <label>Del</label>
-              <DatePicker
-                selected={fechaDel}
-                onChange={date => setFechaDel(date)}
-                dateFormat="yyyy-MM-dd"
-                className={`input ${errores.fechas ? 'input-error' : ''}`}
-              />
+                       <DatePicker
+           selected={fechaDel}
+           onChange={date => setFechaDel(date)}
+           dateFormat="yyyy-MM-dd"
+           className={`input ${errores.fechas ? 'input-error' : ''}`}
+         />
             </div>
 
             <div className="form-group">
               <label>Al</label>
-              <DatePicker
-                selected={fechaAl}
-                onChange={date => setFechaAl(date)}
-                dateFormat="yyyy-MM-dd"
-                className={`input ${errores.fechas ? 'input-error' : ''}`}
-              />
+                       <DatePicker
+           selected={fechaAl}
+           onChange={date => setFechaAl(date)}
+           dateFormat="yyyy-MM-dd"
+           className={`input ${errores.fechas ? 'input-error' : ''}`}
+         />
               {errores.fechas && <span className="error-message">{errores.fechas}</span>}
             </div>
 
@@ -596,18 +596,24 @@ function App() {
             <div className="form-group">
               <label>Tarjetón</label>
               <Select
-                options={operadores ? operadores.map(op => ({ 
-                  value: op.tarjeton, 
-                  label: `${op.tarjeton} - ${op.nombre}` 
-                })) : []}
+                           options={operadors ? operadors.map(op => ({
+             value: op.tarjeton,
+             label: `${op.tarjeton} - ${op.nombre}`
+           })) : []}
                 value={operadorSeleccionado}
                 onChange={handleOperadorChange}
-                placeholder="Buscar o seleccionar operador"
+                onInputChange={inputValue => setTarjeton(inputValue)}
+                inputValue={tarjeton}
+                placeholder="Buscar o escribir tarjetón"
                 isClearable
                 isSearchable
                 classNamePrefix="react-select"
                 noOptionsMessage={() => "No se encontraron operadores"}
                 loadingMessage={() => "Cargando operadores..."}
+                filterOption={(option, input) =>
+                  option.data.value.toLowerCase().includes(input.toLowerCase()) ||
+                  option.data.label.toLowerCase().includes(input.toLowerCase())
+                }
               />
             </div>
             <div className="form-group">
