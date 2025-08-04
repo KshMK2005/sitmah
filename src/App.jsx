@@ -49,24 +49,17 @@ function App() {
   const [tarjeton, setTarjeton] = useState('');
   const [nombre, setNombre] = useState('');
   const [operadors, setOperadors] = useState([]);
-  const [operadorSeleccionado, setOperadorSeleccionado] = useState(null);
 
   // Buscar automáticamente el operador por tarjetón escrito manualmente
   useEffect(() => {
     if (tarjeton && operadors.length > 0) {
       const operadorEncontrado = operadors.find(op => String(op.tarjeton).toLowerCase() === String(tarjeton).toLowerCase());
       if (operadorEncontrado) {
-        setOperadorSeleccionado({
-          value: operadorEncontrado.tarjeton,
-          label: `${operadorEncontrado.tarjeton} - ${operadorEncontrado.nombre}`
-        });
         setNombre(operadorEncontrado.nombre);
       } else {
-        setOperadorSeleccionado(null);
         setNombre('');
       }
     } else {
-      setOperadorSeleccionado(null);
       setNombre('');
     }
   }, [tarjeton, operadors]);
@@ -117,18 +110,7 @@ function App() {
     cargarDatos();
   }, []);
 
-  // Efecto para establecer el operador seleccionado cuando se cargan los operadores y hay un horario en edición
-  useEffect(() => {
-    if (operadors.length > 0 && editandoId && tarjeton) {
-      const operadorEncontrado = operadors.find(op => op.tarjeton === tarjeton);
-      if (operadorEncontrado) {
-        setOperadorSeleccionado({
-          value: operadorEncontrado.tarjeton,
-          label: `${operadorEncontrado.tarjeton} - ${operadorEncontrado.nombre}`
-        });
-      }
-    }
-  }, [operadors, editandoId, tarjeton]);
+
 
   // Cuando se selecciona una ruta, poner la hora de salida, intervalo y corridas de la programación
   useEffect(() => {
@@ -167,41 +149,10 @@ function App() {
     setEconomico('');
     setTarjeton('');
     setNombre('');
-    setOperadorSeleccionado(null);
     setErrores({});
   };
 
-  // Manejar selección de operador
-  const handleOperadorChange = (option) => {
-    setOperadorSeleccionado(option);
-    if (option) {
-      setTarjeton(option.value);
-      setNombre(option.label.split(' - ')[1]); // Obtener solo el nombre
-    } else {
-      setTarjeton('');
-      setNombre('');
-    }
-  };
 
-  // Manejar selección de nombre de operador
-  const handleNombreChange = (option) => {
-    if (option) {
-      setNombre(option.value);
-      // Buscar el tarjetón correspondiente al nombre seleccionado
-      const operadorEncontrado = operadors.find(op => op.nombre === option.value);
-      if (operadorEncontrado) {
-        setTarjeton(operadorEncontrado.tarjeton);
-        setOperadorSeleccionado({
-          value: operadorEncontrado.tarjeton,
-          label: `${operadorEncontrado.tarjeton} - ${operadorEncontrado.nombre}`
-        });
-      }
-    } else {
-      setNombre('');
-      setTarjeton('');
-      setOperadorSeleccionado(null);
-    }
-  };
 
   const validarFormulario = () => {
     const nuevosErrores = {};
@@ -359,20 +310,7 @@ function App() {
     setTarjeton(item.apertura?.tarjeton || '');
     setNombre(item.apertura?.nombre || '');
 
-    // Establecer el operador seleccionado si existe
-    if (item.apertura?.tarjeton && operadors.length > 0) {
-      const operadorEncontrado = operadors.find(op => op.tarjeton === item.apertura.tarjeton);
-      if (operadorEncontrado) {
-        setOperadorSeleccionado({
-          value: operadorEncontrado.tarjeton,
-          label: `${operadorEncontrado.tarjeton} - ${operadorEncontrado.nombre}`
-        });
-      } else {
-        setOperadorSeleccionado(null);
-      }
-    } else {
-      setOperadorSeleccionado(null);
-    }
+
 
     localStorage.setItem('editandoHorarioId', item.id);
   };
@@ -613,46 +551,28 @@ function App() {
                 required
               />
             </div>
-            <div className="form-group">
-              <label>Tarjetón</label>
-              <Select
-                options={operadors ? operadors.map(op => ({
-                  value: op.tarjeton,
-                  label: `${op.tarjeton} - ${op.nombre}`
-                })) : []}
-                value={operadorSeleccionado}
-                onChange={handleOperadorChange}
-                onInputChange={inputValue => setTarjeton(inputValue)}
-                inputValue={tarjeton}
-                placeholder="Buscar o escribir tarjetón"
-                isClearable
-                isSearchable
-                classNamePrefix="react-select"
-                noOptionsMessage={() => "No se encontraron operadores"}
-                loadingMessage={() => "Cargando operadores..."}
-                filterOption={(option, input) =>
-                  option.data.value.toLowerCase().includes(input.toLowerCase()) ||
-                  option.data.label.toLowerCase().includes(input.toLowerCase())
-                }
-              />
-            </div>
-            <div className="form-group">
-              <label>Nombre del Operador</label>
-              <Select
-                options={operadors ? operadors.map(op => ({
-                  value: op.nombre,
-                  label: `${op.tarjeton} - ${op.nombre}`
-                })) : []}
-                value={nombre ? { value: nombre, label: nombre } : null}
-                onChange={handleNombreChange}
-                placeholder="Seleccionar operador"
-                isClearable
-                isSearchable
-                classNamePrefix="react-select"
-                noOptionsMessage={() => "No se encontraron operadores"}
-                loadingMessage={() => "Cargando operadores..."}
-              />
-            </div>
+                         <div className="form-group">
+               <label>Tarjetón</label>
+               <input
+                 type="text"
+                 value={tarjeton}
+                 onChange={e => setTarjeton(e.target.value)}
+                 placeholder="Número de tarjetón del operador"
+                 className={`input ${errores.tarjeton ? 'input-error' : ''}`}
+               />
+               {errores.tarjeton && <span className="error-message">{errores.tarjeton}</span>}
+             </div>
+             <div className="form-group">
+               <label>Nombre del Operador</label>
+               <input
+                 type="text"
+                 value={nombre}
+                 onChange={e => setNombre(e.target.value)}
+                 placeholder="Nombre completo del operador"
+                 className={`input ${errores.nombre ? 'input-error' : ''}`}
+               />
+               {errores.nombre && <span className="error-message">{errores.nombre}</span>}
+             </div>
             <div className="form-group">
               <label>Comentario</label>
               <textarea
