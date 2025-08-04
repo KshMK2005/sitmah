@@ -606,6 +606,26 @@ body, html {
   }
 }
 
+.form-grid-4col {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+@media (min-width: 600px) {
+  .form-grid-4col {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem 2.5rem;
+  }
+}
+@media (min-width: 900px) {
+  .form-grid-4col {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 1.5rem 2.5rem;
+  }
+}
+
 /* --- Scroll horizontal para tablas extensas en dashboard --- */
 .tabla-scroll-x {
   width: 100%;

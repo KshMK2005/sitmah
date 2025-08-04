@@ -50,13 +50,13 @@ import operadorRoutes from './routes/operadorRoutes.js';
 app.use('/api/programacion', programacionRoutes);
 app.use('/api/apertura', aperturaRoutes);
 app.use('/api/usuarios', usuarioRoutes);
-app.use('/api/operadors', operadorRoutes);
+app.use('/api/operadores', operadorRoutes);
 
 // Servir archivos estáticos en producción
 if (process.env.NODE_ENV === 'production') {
     // Servir archivos estáticos desde la carpeta dist
     app.use(express.static(path.join(__dirname, '../dist')));
-    
+
     // Manejar todas las rutas de React
     app.get('*', (req, res) => {
         res.sendFile(path.join(__dirname, '../dist/index.html'));
@@ -66,9 +66,9 @@ if (process.env.NODE_ENV === 'production') {
 // Manejador de errores
 app.use((err, req, res, next) => {
     console.error('Error en el servidor:', err);
-    res.status(500).json({ 
+    res.status(500).json({
         error: 'Error interno del servidor',
-        message: err.message 
+        message: err.message
     });
 });
 

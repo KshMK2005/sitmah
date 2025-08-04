@@ -53,24 +53,24 @@ function App() {
 
   // Buscar automáticamente el nombre del operador por tarjetón
   useEffect(() => {
-    // Desactivado para permitir testeo sin usuarios registrados
-    // const buscarOperadorPorTarjeton = async () => {
-    //   if (tarjeton && tarjeton.trim() !== '') {
-    //     try {
-    //       const user = await usuarioService.getByTarjeton(tarjeton.trim());
-    //       if (user && user.usuario) {
-    //         setNombre(user.usuario);
-    //       } else {
-    //         setNombre('');
-    //       }
-    //     } catch (err) {
-    //       setNombre('');
-    //     }
-    //   } else {
-    //     setNombre('');
-    //   }
-    // };
-    // buscarOperadorPorTarjeton();
+    const buscarOperadorPorTarjeton = async () => {
+      if (tarjeton && tarjeton.trim() !== '') {
+        try {
+          const operador = await operadorService.buscarPorTarjeton(tarjeton.trim());
+          if (operador && operador.nombre) {
+            setNombre(operador.nombre);
+          } else {
+            setNombre('');
+          }
+        } catch (err) {
+          console.log('No se encontró operador para tarjetón:', tarjeton);
+          setNombre('');
+        }
+      } else {
+        setNombre('');
+      }
+    };
+    buscarOperadorPorTarjeton();
   }, [tarjeton]);
   const { navigateWithTransition } = useTransition();
   const location = useLocation();
@@ -493,7 +493,7 @@ function App() {
       }}>
         <form onSubmit={handleSubmit} className="form" style={{ marginTop: '0.5rem', marginBottom: 8, width: '100%', maxWidth: 900, background: '#fff', borderRadius: 12, boxShadow: '0 2px 12px rgba(128, 0, 32, 0.08)', padding: '2rem 2.5rem', display: 'flex', flexDirection: 'column', gap: '1.2rem', alignItems: 'center' }}>
           <h2 style={{marginTop:'0',marginBottom:'1.2rem',color:'#6F2234'}}>Nueva Programación</h2>
-          <div className="form-grid-3col">
+          <div className="form-grid-4col">
             <div className="form-group">
               <label>Ruta</label>
               <Select
@@ -596,7 +596,32 @@ function App() {
               />
             </div>
             <div className="form-group">
-              <label>Operador</label>
+              <label>Tarjetón</label>
+              <input
+                type="text"
+                value={tarjeton}
+                onChange={e => setTarjeton(e.target.value)}
+                placeholder="Ingrese el tarjetón del operador"
+                className={`input ${errores.tarjeton ? 'input-error' : ''}`}
+                style={{ textTransform: 'uppercase' }}
+              />
+              {errores.tarjeton && <span className="error-message">{errores.tarjeton}</span>}
+            </div>
+            <div className="form-group">
+              <label>Nombre del Operador</label>
+              <input
+                type="text"
+                value={nombre}
+                onChange={e => setNombre(e.target.value)}
+                placeholder="Nombre del operador (se llena automáticamente)"
+                className={`input ${errores.nombre ? 'input-error' : ''}`}
+                readOnly
+                style={{ background: '#f7f7fa', color: '#333', fontWeight: 500 }}
+              />
+              {errores.nombre && <span className="error-message">{errores.nombre}</span>}
+            </div>
+            <div className="form-group">
+              <label>Seleccionar Operador (Alternativo)</label>
               <Select
                 options={operadores ? operadores.map(op => ({ 
                   value: op.tarjeton, 
