@@ -596,7 +596,7 @@ function App() {
               />
             </div>
             <div className="form-group">
-              <label>Operador</label>
+              <label>Tarjetón</label>
               <Select
                 options={operadores ? operadores.map(op => ({ 
                   value: op.tarjeton, 
@@ -610,6 +610,16 @@ function App() {
                 classNamePrefix="react-select"
                 noOptionsMessage={() => "No se encontraron operadores"}
                 loadingMessage={() => "Cargando operadores..."}
+              />
+            </div>
+            <div className="form-group">
+              <label>Nombre del Operador</label>
+              <input
+                type="text"
+                value={nombre}
+                onChange={e => setNombre(e.target.value)}
+                placeholder="Nombre del operador"
+                required
               />
             </div>
             <div className="form-group">
