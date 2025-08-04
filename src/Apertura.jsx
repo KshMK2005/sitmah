@@ -112,114 +112,119 @@ function Apertura() {
       [name]: value
     }));
 
-    // Si se está cambiando el tarjetón, buscar el operador automáticamente
-    if (name === 'tarjeton') {
+    // Si se está cambiando el nombre, buscar el operador automáticamente
+    if (name === 'nombre') {
       // Limpiar estados anteriores
       setOperadorEncontrado(false);
       setOperadorNoEncontrado(false);
-      setFormData(prev => ({ ...prev, nombre: '' }));
+      setFormData(prev => ({ ...prev, tarjeton: '' }));
 
-      // Normalizar tarjetón: quitar espacios y poner en mayúsculas
-      const tarjetonNormalizado = value.trim().toUpperCase().replace(/\s+/g, '');
+      // Normalizar nombre: quitar espacios extra
+      const nombreNormalizado = value.trim().replace(/\s+/g, ' ');
 
-      if (tarjetonNormalizado.length >= 3) {
-        console.log('Campo tarjetón cambiado, buscando operador...');
-        console.log('Valor del tarjetón (normalizado):', tarjetonNormalizado);
+      if (nombreNormalizado.length >= 3) {
+        console.log('Campo nombre cambiado, buscando operador...');
+        console.log('Valor del nombre (normalizado):', nombreNormalizado);
         setBuscandoOperador(true);
 
         // Agregar un pequeño delay para evitar muchas llamadas
         setTimeout(() => {
           console.log('Ejecutando búsqueda después del delay...');
-          buscarOperadorPorTarjeton(tarjetonNormalizado);
+          buscarOperadorPorNombre(nombreNormalizado);
         }, 500);
       }
     }
   };
 
-  // Función para probar la búsqueda manualmente
+    // Función para probar la búsqueda manualmente
   const probarBusqueda = async () => {
     console.log('Probando búsqueda manual...');
     setBuscandoOperador(true);
     try {
-      const operador = await operadorService.buscarPorTarjeton('TPA0001');
-      console.log('Resultado de búsqueda manual:', operador);
-      if (operador) {
+      const operadores = await operadorService.buscarPorNombre('Juan Carlos');
+      console.log('Resultado de búsqueda manual:', operadores);
+      if (operadores && operadores.length > 0) {
+        const operador = operadores[0];
         setFormData(prev => ({
           ...prev,
+          tarjeton: operador.tarjeton,
           nombre: operador.nombre
         }));
         setOperadorEncontrado(true);
         setOperadorNoEncontrado(false);
         Swal.fire({
           title: 'Prueba exitosa',
-          text: `Operador encontrado: ${operador.nombre}`,
+          text: `Operador encontrado: ${operador.nombre} - Tarjetón: ${operador.tarjeton}`,
           icon: 'success'
         });
       }
     } catch (error) {
-    console.error('Error en prueba manual:', error);
-    setOperadorNoEncontrado(true);
-    setOperadorEncontrado(false);
-    Swal.fire({
-      title: 'Error en prueba',
-      text: error.message,
-      icon: 'error'
-    });
-  } finally {
-    setBuscandoOperador(false);
-  }
-};
-
-// Función para buscar operador por tarjetón
-const buscarOperadorPorTarjeton = async (tarjeton) => {
-  try {
-    console.log('Buscando operador para tarjetón:', tarjeton);
-    const operador = await operadorService.buscarPorTarjeton(tarjeton);
-    console.log('Respuesta del servicio:', operador);
-
-    if (operador && operador.nombre) {
-      console.log('Autocompletando nombre:', operador.nombre);
-      setFormData(prev => ({
-        ...prev,
-        nombre: operador.nombre
-      }));
-      setOperadorEncontrado(true);
-      setOperadorNoEncontrado(false);
-
-      // Mostrar mensaje de éxito
+      console.error('Error en prueba manual:', error);
+      setOperadorNoEncontrado(true);
+      setOperadorEncontrado(false);
       Swal.fire({
-        title: 'Operador encontrado',
-        text: `Se autocompletó el nombre: ${operador.nombre}`,
-        icon: 'success',
+        title: 'Error en prueba',
+        text: error.message,
+        icon: 'error'
+      });
+    } finally {
+      setBuscandoOperador(false);
+    }
+  };
+
+  // Función para buscar operador por nombre
+  const buscarOperadorPorNombre = async (nombre) => {
+    try {
+      console.log('Buscando operador para nombre:', nombre);
+      const operadores = await operadorService.buscarPorNombre(nombre);
+      console.log('Respuesta del servicio:', operadores);
+
+      if (operadores && operadores.length > 0) {
+        // Si hay múltiples resultados, usar el primero
+        const operador = operadores[0];
+        console.log('Autocompletando tarjetón:', operador.tarjeton);
+        setFormData(prev => ({
+          ...prev,
+          tarjeton: operador.tarjeton,
+          nombre: operador.nombre // También actualizar el nombre completo
+        }));
+        setOperadorEncontrado(true);
+        setOperadorNoEncontrado(false);
+
+        // Mostrar mensaje de éxito
+        Swal.fire({
+          title: 'Operador encontrado',
+          text: `Se autocompletó el tarjetón: ${operador.tarjeton}`,
+          icon: 'success',
+          timer: 2000,
+          showConfirmButton: false
+        });
+      } else {
+        console.log('Operador no encontrado');
+        setOperadorNoEncontrado(true);
+        setOperadorEncontrado(false);
+        Swal.fire({
+          title: 'No encontrado',
+          text: 'No se encontró un operador con ese nombre.',
+          icon: 'warning',
+          timer: 2000,
+          showConfirmButton: false
+        });
+      }
+    } catch (error) {
+      console.error('Error al buscar operador:', error);
+      setOperadorNoEncontrado(true);
+      setOperadorEncontrado(false);
+      Swal.fire({
+        title: 'Error',
+        text: error.message || 'Error al buscar operador',
+        icon: 'error',
         timer: 2000,
         showConfirmButton: false
       });
-    } else {
-    console.log('Operador no encontrado o sin nombre');
-    setOperadorNoEncontrado(true);
-    setOperadorEncontrado(false);
-    Swal.fire({
-      title: 'No encontrado',
-      text: 'No se encontró un operador con ese tarjetón.',
-      icon: 'warning',
-      timer: 2000,
-      showConfirmButton: false
-    });
-  }
-} catch (error) {
-  console.error('Error al buscar operador:', error);
-  setOperadorNoEncontrado(true);
-  setOperadorEncontrado(false);
-  Swal.fire({
-    title: 'Error',
-    text: error.message || 'Error al buscar operador',
-    icon: 'error',
-    timer: 2000,
-    showConfirmButton: false
-  });
-} finally {
-  setBuscandoOperador(false);
-}
+    } finally {
+      setBuscandoOperador(false);
+    }
   };
 
 const role = localStorage.getItem('userRole');
@@ -284,17 +289,17 @@ return (
             <input type="text" id="economico" name="economico" value={formData.economico} onChange={handleChange} required placeholder="Número económico de la unidad" />
           </div>
           <div className="form-group">
-            <label htmlFor="tarjeton">Tarjetón:</label>
+            <label htmlFor="nombre">Nombre del Operador:</label>
             <input
               type="text"
-              id="tarjeton"
-              name="tarjeton"
-              value={formData.tarjeton || ''}
+              id="nombre"
+              name="nombre"
+              value={formData.nombre || ''}
               onChange={handleChange}
               required
-              placeholder="Número de tarjetón"
+              placeholder="Escriba el nombre del operador"
               style={{ width: '100%', padding: '8px', border: '1px solid #ccc', borderRadius: '4px' }}
-              data-testid="tarjeton-input"
+              data-testid="nombre-input"
             />
             {buscandoOperador && (
               <small style={{ color: '#007bff', display: 'block', marginTop: '4px' }}>
@@ -302,17 +307,17 @@ return (
               </small>
             )}
           </div>
-          {/* Agrupar operador y comentario en el mismo div para alinearlos */}
+          {/* Agrupar tarjetón y comentario en el mismo div para alinearlos */}
           <div className="form-group" style={{ display: 'flex', gap: '1.5rem' }}>
             <div style={{ flex: 1 }}>
-              <label htmlFor="nombre">Nombre del Operador:</label>
+              <label htmlFor="tarjeton">Tarjetón:</label>
               <input
                 type="text"
-                id="nombre"
-                name="nombre"
-                value={formData.nombre}
+                id="tarjeton"
+                name="tarjeton"
+                value={formData.tarjeton}
                 readOnly
-                placeholder="Se autocompletará al ingresar el tarjetón"
+                placeholder="Se autocompletará al ingresar el nombre"
                 style={{
                   backgroundColor: operadorEncontrado ? '#e8f5e8' : '#f5f5f5',
                   cursor: 'not-allowed',
@@ -338,7 +343,7 @@ return (
         </div>
         <div className="form-actions" style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1.5rem' }}>
           <button type="button" onClick={probarBusqueda} style={{ padding: '10px', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
-            🔍 Probar Búsqueda (TPA0001)
+            🔍 Probar Búsqueda (Juan Carlos)
           </button>
           <button type="submit" className="btn-apertura">SUBIR</button>
         </div>
