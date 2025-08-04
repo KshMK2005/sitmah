@@ -3,7 +3,7 @@ import { programacionService } from '../services/api';
 import NavbarProgramador from './NavbarProgramador';
 import '../Apertura.css';
 
-// Estilos CSS para animaciones
+// Estilos CSS para animaciones mejoradas
 const animationStyles = `
   @keyframes slideDown {
     from {
@@ -40,8 +40,53 @@ const animationStyles = `
     animation: slideDown 0.3s ease-out;
   }
   
-  .expandable-row.collapsed {
+  .expandable-row.collapsing {
     animation: slideUp 0.3s ease-out;
+  }
+  
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 2rem;
+    padding: 1rem;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .pagination button {
+    padding: 0.5rem 1rem;
+    border: 1px solid #6F2234;
+    background: #fff;
+    color: #6F2234;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .pagination button:hover {
+    background: #6F2234;
+    color: #fff;
+  }
+  
+  .pagination button:disabled {
+    background: #f5f5f5;
+    color: #ccc;
+    border-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  .pagination button.active {
+    background: #6F2234;
+    color: #fff;
+  }
+  
+  .pagination-info {
+    color: #6F2234;
+    font-weight: 600;
+    margin: 0 1rem;
   }
 `;
 
@@ -50,6 +95,9 @@ function ProgramacionesGuardadas() {
   const [filtro, setFiltro] = useState({ tipoVehiculo: '', ruta: '', fecha: '' });
   const [filtradas, setFiltradas] = useState([]);
   const [expandedRows, setExpandedRows] = useState(new Set());
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(25);
+  const [collapsingRows, setCollapsingRows] = useState(new Set());
   const role = localStorage.getItem('userRole');
 
   useEffect(() => {
@@ -78,17 +126,31 @@ function ProgramacionesGuardadas() {
       resultado = resultado.filter(p => p.fechaCreacion && new Date(p.fechaCreacion).toISOString().slice(0,10) === filtro.fecha);
     }
     setFiltradas(resultado);
+    setCurrentPage(1); // Reset a la primera página cuando se aplica un filtro
   }, [filtro, programaciones]);
 
-  // Función para manejar la expansión de filas
+  // Función para manejar la expansión de filas con animación de cierre
   const toggleRowExpansion = (programacionId) => {
     const newExpandedRows = new Set(expandedRows);
+    const newCollapsingRows = new Set(collapsingRows);
+    
     if (newExpandedRows.has(programacionId)) {
-      newExpandedRows.delete(programacionId);
+      // Iniciar animación de cierre
+      newCollapsingRows.add(programacionId);
+      setCollapsingRows(newCollapsingRows);
+      
+      // Esperar a que termine la animación antes de ocultar
+      setTimeout(() => {
+        newExpandedRows.delete(programacionId);
+        newCollapsingRows.delete(programacionId);
+        setExpandedRows(newExpandedRows);
+        setCollapsingRows(newCollapsingRows);
+      }, 300); // Duración de la animación
     } else {
+      // Abrir directamente
       newExpandedRows.add(programacionId);
+      setExpandedRows(newExpandedRows);
     }
-    setExpandedRows(newExpandedRows);
   };
 
   // Función para formatear fecha
@@ -99,6 +161,56 @@ function ProgramacionesGuardadas() {
       month: '2-digit',
       year: 'numeric'
     });
+  };
+
+  // Cálculos de paginación
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filtradas.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filtradas.length / itemsPerPage);
+
+  // Función para cambiar de página
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    // Cerrar todas las filas expandidas al cambiar de página
+    setExpandedRows(new Set());
+    setCollapsingRows(new Set());
+  };
+
+  // Generar números de página para mostrar
+  const getPageNumbers = () => {
+    const pages = [];
+    const maxVisiblePages = 5;
+    
+    if (totalPages <= maxVisiblePages) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      if (currentPage <= 3) {
+        for (let i = 1; i <= 4; i++) {
+          pages.push(i);
+        }
+        pages.push('...');
+        pages.push(totalPages);
+      } else if (currentPage >= totalPages - 2) {
+        pages.push(1);
+        pages.push('...');
+        for (let i = totalPages - 3; i <= totalPages; i++) {
+          pages.push(i);
+        }
+      } else {
+        pages.push(1);
+        pages.push('...');
+        for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+          pages.push(i);
+        }
+        pages.push('...');
+        pages.push(totalPages);
+      }
+    }
+    
+    return pages;
   };
 
   return (
@@ -180,6 +292,22 @@ function ProgramacionesGuardadas() {
           />
         </div>
 
+        {/* Información de paginación */}
+        {filtradas.length > 0 && (
+          <div style={{ 
+            textAlign: 'center', 
+            marginBottom: '1rem',
+            padding: '0.5rem',
+            background: '#f8f9fa',
+            borderRadius: '8px',
+            border: '1px solid #e9ecef'
+          }}>
+            <span style={{ color: '#6F2234', fontWeight: '600' }}>
+              Mostrando {indexOfFirstItem + 1}-{Math.min(indexOfLastItem, filtradas.length)} de {filtradas.length} programaciones
+            </span>
+          </div>
+        )}
+
         {/* Tabla de programaciones */}
         {filtradas.length === 0 ? (
           <div style={{ 
@@ -221,7 +349,7 @@ function ProgramacionesGuardadas() {
                   </tr>
                 </thead>
                 <tbody>
-                  {filtradas.map((p, index) => (
+                  {currentItems.map((p, index) => (
                     <React.Fragment key={p._id || index}>
                       <tr style={{ 
                         background: index % 2 === 0 ? '#fff' : '#f8f9fa',
@@ -270,13 +398,15 @@ function ProgramacionesGuardadas() {
                           </button>
                         </td>
                       </tr>
-                                             {/* Fila expandible con detalles */}
-                       {expandedRows.has(p._id) && (
-                         <tr style={{ 
-                           background: '#f8f9fa',
-                           animation: 'slideDown 0.3s ease-out'
-                         }}>
-                           <td colSpan="6" style={{ padding: '1.5rem' }}>
+                      {/* Fila expandible con detalles */}
+                      {(expandedRows.has(p._id) || collapsingRows.has(p._id)) && (
+                        <tr 
+                          className={`expandable-row ${collapsingRows.has(p._id) ? 'collapsing' : 'expanded'}`}
+                          style={{ 
+                            background: '#f8f9fa'
+                          }}
+                        >
+                          <td colSpan="6" style={{ padding: '1.5rem' }}>
                             <div style={{ 
                               background: '#fff', 
                               borderRadius: '8px', 
@@ -348,6 +478,37 @@ function ProgramacionesGuardadas() {
                 </tbody>
               </table>
             </div>
+          </div>
+        )}
+
+        {/* Paginación */}
+        {totalPages > 1 && (
+          <div className="pagination">
+            <button 
+              onClick={() => paginate(currentPage - 1)} 
+              disabled={currentPage === 1}
+            >
+              ← Anterior
+            </button>
+            
+            {getPageNumbers().map((pageNumber, index) => (
+              <button
+                key={index}
+                onClick={() => typeof pageNumber === 'number' ? paginate(pageNumber) : null}
+                className={currentPage === pageNumber ? 'active' : ''}
+                disabled={pageNumber === '...'}
+                style={pageNumber === '...' ? { cursor: 'default' } : {}}
+              >
+                {pageNumber}
+              </button>
+            ))}
+            
+            <button 
+              onClick={() => paginate(currentPage + 1)} 
+              disabled={currentPage === totalPages}
+            >
+              Siguiente →
+            </button>
           </div>
         )}
       </main>
