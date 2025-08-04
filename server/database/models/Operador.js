@@ -18,7 +18,8 @@ const operadorSchema = new mongoose.Schema({
         trim: true
     }
 }, {
-    timestamps: true
+    timestamps: true,
+    collection: 'operadors' // Especificar el nombre exacto de la colección
 });
 
 // Índices para búsquedas eficientes

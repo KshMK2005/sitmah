@@ -80,6 +80,11 @@ const seedOperadores = async () => {
             console.log(`ID: ${op.id}, Tarjetón: ${op.tarjeton}, Nombre: ${op.nombre}`);
         });
 
+        // Verificar que la colección se llama correctamente
+        const collections = await mongoose.connection.db.listCollections().toArray();
+        const operadorCollection = collections.find(col => col.name === 'operadors');
+        console.log('Colección encontrada:', operadorCollection ? operadorCollection.name : 'No encontrada');
+
         // Cerrar la conexión
         await mongoose.connection.close();
         console.log('Conexión cerrada');
