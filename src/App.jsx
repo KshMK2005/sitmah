@@ -52,22 +52,14 @@ function App() {
 
   // Buscar automáticamente el operador por tarjetón escrito manualmente
   useEffect(() => {
-    console.log('🔍 Buscando operador para tarjetón:', tarjeton);
-    console.log('👥 Operadores disponibles:', operadors.length);
-    
     if (tarjeton && operadors.length > 0) {
       const operadorEncontrado = operadors.find(op => String(op.tarjeton).toLowerCase() === String(tarjeton).toLowerCase());
-      console.log('🔎 Operador encontrado:', operadorEncontrado);
-      
       if (operadorEncontrado) {
-        console.log('✅ Estableciendo nombre:', operadorEncontrado.nombre);
         setNombre(operadorEncontrado.nombre);
       } else {
-        console.log('❌ No se encontró operador');
         setNombre('');
       }
     } else {
-      console.log('⚠️ No hay tarjetón o no hay operadores cargados');
       setNombre('');
     }
   }, [tarjeton, operadors]);
@@ -96,27 +88,19 @@ function App() {
   useEffect(() => {
     const cargarDatos = async () => {
       try {
-        console.log('🔄 Iniciando carga de datos...');
-        
-        // Cargar programaciones primero
-        console.log('📊 Cargando programaciones...');
-        const programacionesData = await programacionService.getAll();
-        console.log('✅ Programaciones cargadas:', programacionesData?.length || 0);
+        const [programacionesData, operadorsData] = await Promise.all([
+          programacionService.getAll(),
+          operadorService.obtenerTodos()
+        ]);
+
         setProgramaciones(programacionesData || []);
+        setOperadors(operadorsData || []);
 
         // Extraer rutas únicas
         const rutasUnicas = Array.from(new Set((programacionesData || []).map(p => p.ruta)));
-        console.log('🛣️ Rutas únicas encontradas:', rutasUnicas);
         setRutasDisponibles(rutasUnicas);
-
-        // Cargar operadores después
-        console.log('👥 Cargando operadores...');
-        const operadorsData = await operadorService.obtenerTodos();
-        console.log('✅ Operadores cargados:', operadorsData?.length || 0);
-        setOperadors(operadorsData || []);
-
       } catch (error) {
-        console.error('❌ Error al cargar datos:', error);
+        console.error('Error al cargar datos:', error);
         // Si hay error, establecer arrays vacíos
         setProgramaciones([]);
         setOperadors([]);
@@ -124,22 +108,6 @@ function App() {
       }
     };
     cargarDatos();
-  }, []);
-
-  // Cargar operadores por separado para evitar conflictos
-  useEffect(() => {
-    const cargarOperadores = async () => {
-      try {
-        console.log('👥 Cargando operadores por separado...');
-        const operadorsData = await operadorService.obtenerTodos();
-        console.log('✅ Operadores cargados por separado:', operadorsData?.length || 0);
-        setOperadors(operadorsData || []);
-      } catch (error) {
-        console.error('❌ Error al cargar operadores:', error);
-        setOperadors([]);
-      }
-    };
-    cargarOperadores();
   }, []);
 
 
