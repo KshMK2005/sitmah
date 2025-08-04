@@ -18,11 +18,51 @@ function TablasGuardadas() {
     const [mostrarFiltros, setMostrarFiltros] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(20);
+    const [ultimoReinicio, setUltimoReinicio] = useState(null);
 
     useEffect(() => {
+        verificarReinicioDiario();
         const tablas = JSON.parse(localStorage.getItem('tablasCombinadas') || '[]');
         setTablasCombinadas(tablas);
     }, []);
+
+    // Función para verificar si es necesario reiniciar diariamente
+    const verificarReinicioDiario = () => {
+        const ahora = new Date();
+        const hoy = new Date(ahora.getFullYear(), ahora.getMonth(), ahora.getDate());
+        
+        const ultimoReinicioGuardado = localStorage.getItem('ultimoReinicioTablasGuardadas');
+        
+        if (!ultimoReinicioGuardado || new Date(ultimoReinicioGuardado) < hoy) {
+            // Es un nuevo día, reiniciar
+            reiniciarTablasDiario();
+            localStorage.setItem('ultimoReinicioTablasGuardadas', ahora.toISOString());
+            setUltimoReinicio(ahora);
+        } else {
+            setUltimoReinicio(new Date(ultimoReinicioGuardado));
+        }
+    };
+
+    // Función para reiniciar las tablas diariamente
+    const reiniciarTablasDiario = () => {
+        try {
+            // Limpiar tablas del día anterior
+            const tablasActuales = JSON.parse(localStorage.getItem('tablasCombinadas') || '[]');
+            const hoy = new Date();
+            const tablasHoy = tablasActuales.filter(tabla => {
+                if (!tabla.fechaCreacion) return false;
+                const fechaTabla = new Date(tabla.fechaCreacion);
+                return fechaTabla.toDateString() === hoy.toDateString();
+            });
+            
+            localStorage.setItem('tablasCombinadas', JSON.stringify(tablasHoy));
+            setTablasCombinadas(tablasHoy);
+            
+            console.log('Reinicio diario de tablas guardadas ejecutado');
+        } catch (error) {
+            console.error('Error en reinicio diario:', error);
+        }
+    };
 
     useEffect(() => {
         const cargarAperturas = async () => {
@@ -138,10 +178,25 @@ function TablasGuardadas() {
         <div className="tablas-guardadas-page">
             {role !== 'administrador' && <Navbar />}
             <main className="apertura-content" style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem' }}>
-                <h2 style={{ color: '#6F2234', fontSize: '2rem', marginBottom: '2rem', letterSpacing: '0.5px' }}>Tablas Guardadas</h2>
+                {/* Indicador de reinicio diario */}
+                {ultimoReinicio && (
+                    <div style={{ 
+                        background: '#e8f5e8', 
+                        border: '1px solid #28a745', 
+                        borderRadius: '8px', 
+                        padding: '0.75rem', 
+                        marginBottom: '1rem',
+                        textAlign: 'center'
+                    }}>
+                        <span style={{ color: '#28a745', fontWeight: '600' }}>
+                            📅 Último reinicio diario: {ultimoReinicio.toLocaleDateString('es-MX')} - Solo se muestran elementos del día actual
+                        </span>
+                    </div>
+                )}
+
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginBottom: '2rem' }}>
                     <h2 style={{ color: '#6F2234', fontSize: '1.8rem', margin: 0 }}>
-                        Tablas Guardadas
+                        Tablas Guardadas (Diarias)
                     </h2>
                     <button
                         style={{ background: '#6F2234', color: '#fff', border: 'none', borderRadius: '4px', padding: '0.5rem 1rem', cursor: 'pointer', fontWeight: 'bold', fontSize: '1rem', boxShadow: (mostrarFiltros ? '0 2px 8px #CBB26A88' : 'none'), transition: 'box-shadow 0.2s' }}
@@ -203,7 +258,7 @@ function TablasGuardadas() {
                     padding: '0 1rem'
                 }}>
                     <div style={{ color: '#6F2234', fontSize: '1rem' }}>
-                        Mostrando {startIndex + 1}-{Math.min(endIndex, tablasFiltradas.length)} de {tablasFiltradas.length} tablas
+                        Mostrando {startIndex + 1}-{Math.min(endIndex, tablasFiltradas.length)} de {tablasFiltradas.length} tablas del día
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                         <label style={{ color: '#6F2234', fontSize: '0.9rem' }}>
@@ -329,7 +384,7 @@ function TablasGuardadas() {
                                 fontSize: '1.1rem',
                                 margin: 0
                             }}>
-                                No hay tablas guardadas
+                                No hay tablas guardadas para el día de hoy
                             </p>
                         </div>
                     )}

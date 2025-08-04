@@ -9,6 +9,48 @@ import './Historial.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
+// Estilos CSS para animaciones de expansión
+const animationStyles = `
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+      max-height: 0;
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+      max-height: 500px;
+    }
+  }
+  
+  @keyframes slideUp {
+    from {
+      opacity: 1;
+      transform: translateY(0);
+      max-height: 500px;
+    }
+    to {
+      opacity: 0;
+      transform: translateY(-10px);
+      max-height: 0;
+    }
+  }
+  
+  .expandable-row {
+    overflow: hidden;
+    transition: all 0.3s ease-out;
+  }
+  
+  .expandable-row.expanded {
+    animation: slideDown 0.3s ease-out;
+  }
+  
+  .expandable-row.collapsing {
+    animation: slideUp 0.3s ease-out;
+  }
+`;
+
 function Historial({ adminMode, programadorMode }) {
   // Aplica el tema global guardado al cargar la página
   useEffect(() => {
@@ -25,6 +67,7 @@ function Historial({ adminMode, programadorMode }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(20);
   const [expandedRows, setExpandedRows] = useState(new Set());
+  const [collapsingRows, setCollapsingRows] = useState(new Set());
   const role = localStorage.getItem('userRole');
 
   useEffect(() => {
@@ -86,15 +129,28 @@ function Historial({ adminMode, programadorMode }) {
     }
   };
 
-  // Función para alternar expansión de fila
+  // Función para alternar expansión de fila con animación
   const toggleRowExpansion = (rowId) => {
     const newExpandedRows = new Set(expandedRows);
+    const newCollapsingRows = new Set(collapsingRows);
+    
     if (newExpandedRows.has(rowId)) {
-      newExpandedRows.delete(rowId);
+      // Iniciar animación de cierre
+      newCollapsingRows.add(rowId);
+      setCollapsingRows(newCollapsingRows);
+      
+      // Esperar a que termine la animación antes de ocultar
+      setTimeout(() => {
+        newExpandedRows.delete(rowId);
+        newCollapsingRows.delete(rowId);
+        setExpandedRows(newExpandedRows);
+        setCollapsingRows(newCollapsingRows);
+      }, 300); // Duración de la animación
     } else {
+      // Abrir directamente
       newExpandedRows.add(rowId);
+      setExpandedRows(newExpandedRows);
     }
-    setExpandedRows(newExpandedRows);
   };
 
   // Función para generar números de página
@@ -135,6 +191,7 @@ function Historial({ adminMode, programadorMode }) {
 
   return (
     <div className="apertura-page">
+      <style>{animationStyles}</style>
       {!adminMode && (!role || role !== 'administrador') && <Navbar />}
       <main className="apertura-content" style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem' }}>
         {/* Header */}
@@ -379,15 +436,18 @@ function Historial({ adminMode, programadorMode }) {
                   </div>
 
                   {/* Detalles de la apertura - solo en vista normal */}
-                  {expandedRows.has(ap._id || index) && (
-                    <div style={{
-                      display: 'grid',
-                      gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))',
-                      gap: '0.4rem',
-                      padding: '0.4rem',
-                      backgroundColor: '#f9f9f9',
-                      borderRadius: '3px'
-                    }}>
+                  {(expandedRows.has(ap._id || index) || collapsingRows.has(ap._id || index)) && (
+                    <div 
+                      className={`expandable-row ${collapsingRows.has(ap._id || index) ? 'collapsing' : 'expanded'}`}
+                      style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))',
+                        gap: '0.4rem',
+                        padding: '0.4rem',
+                        backgroundColor: '#f9f9f9',
+                        borderRadius: '3px'
+                      }}
+                    >
                       <div style={{
                         padding: '0.6rem',
                         backgroundColor: '#fff',

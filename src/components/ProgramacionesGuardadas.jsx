@@ -428,7 +428,6 @@ function ProgramacionesGuardadas() {
                               }}>
                                 <div><strong>Ruta:</strong> {p.ruta}</div>
                                 <div><strong>Tipo de Vehículo:</strong> {p.tipoVehiculo}</div>
-                                <div><strong>Número Económico:</strong> {p.numeroEconomico || '-'}</div>
                                 <div><strong>Cantidad de Unidades:</strong> {p.cantidadUnidades}</div>
                                 <div><strong>Intervalo:</strong> {p.intervalo} minutos</div>
                                 <div><strong>Corrida Inicial:</strong> {p.corridaInicial}</div>
