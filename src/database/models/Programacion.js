@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const programacionSchema = new mongoose.Schema({
     ruta: {
@@ -107,5 +107,4 @@ programacionSchema.statics.getEstadisticas = async function(){
     return estadisticas;
 };
 
-
-module.exports = mongoose.model('Programacion', programacionSchema); 
+export default mongoose.model('Programacion', programacionSchema); 

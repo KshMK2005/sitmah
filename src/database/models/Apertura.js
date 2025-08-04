@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const aperturaSchema = new mongoose.Schema({
     programacionId: {
@@ -190,4 +190,4 @@ aperturaSchema.pre('save', function(next) {
     next();
 });
 
-module.exports = mongoose.model('Apertura', aperturaSchema);
+export default mongoose.model('Apertura', aperturaSchema);

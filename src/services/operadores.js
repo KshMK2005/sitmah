@@ -4,12 +4,20 @@ const API_URL = isProduction
   ? `/api` 
   : 'http://localhost:5000/api';
 
+console.log('API_URL configurado como:', API_URL);
+
 export const operadorService = {
     // Buscar operador por tarjetón
     async buscarPorTarjeton(tarjeton) {
         try {
+            console.log('Iniciando búsqueda de operador con tarjetón:', tarjeton);
+            console.log('URL de la petición:', `${API_URL}/operadores/buscar/${tarjeton}`);
+            
             const response = await fetch(`${API_URL}/operadores/buscar/${tarjeton}`);
+            console.log('Respuesta recibida:', response.status, response.statusText);
+            
             const data = await response.json();
+            console.log('Datos recibidos:', data);
             
             if (!response.ok) {
                 throw new Error(data.message || 'Error al buscar operador');
@@ -42,8 +50,14 @@ export const operadorService = {
     // Obtener todos los operadores (para debugging)
     async obtenerTodos() {
         try {
+            console.log('Obteniendo todos los operadores...');
+            console.log('URL de la petición:', `${API_URL}/operadores`);
+            
             const response = await fetch(`${API_URL}/operadores`);
+            console.log('Respuesta recibida:', response.status, response.statusText);
+            
             const data = await response.json();
+            console.log('Datos recibidos:', data);
             
             if (!response.ok) {
                 throw new Error(data.message || 'Error al obtener operadores');
