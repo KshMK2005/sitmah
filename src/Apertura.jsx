@@ -112,49 +112,55 @@ function Apertura() {
       [name]: value
     }));
 
-    // Si se está cambiando el nombre, buscar el operador automáticamente
-    if (name === 'nombre') {
-      // Limpiar estados anteriores
+    // Si se está cambiando el tarjetón, buscar el operador automáticamente
+    if (name === 'tarjeton') {
       setOperadorEncontrado(false);
       setOperadorNoEncontrado(false);
-      setFormData(prev => ({ ...prev, tarjeton: '' }));
+      setFormData(prev => ({ ...prev, nombre: '' }));
 
-      // Normalizar nombre: quitar espacios extra
-      const nombreNormalizado = value.trim().replace(/\s+/g, ' ');
+      // Normalizar tarjetón: quitar espacios y poner en mayúsculas
+      const tarjetonNormalizado = value.trim().toUpperCase().replace(/\s+/g, '');
 
-      if (nombreNormalizado.length >= 3) {
-        console.log('Campo nombre cambiado, buscando operador...');
-        console.log('Valor del nombre (normalizado):', nombreNormalizado);
+      if (tarjetonNormalizado.length >= 3) {
         setBuscandoOperador(true);
-
-        // Agregar un pequeño delay para evitar muchas llamadas
-        setTimeout(() => {
-          console.log('Ejecutando búsqueda después del delay...');
-          buscarOperadorPorNombre(nombreNormalizado);
-        }, 500);
+        // Buscar en la colección completa de operadors (como filtro de ruta)
+        operadorService.obtenerTodos().then(operadores => {
+          const encontrado = operadores.find(op => (op.tarjeton || '').toUpperCase().replace(/\s+/g, '') === tarjetonNormalizado);
+          if (encontrado) {
+            setFormData(prev => ({ ...prev, nombre: encontrado.nombre }));
+            setOperadorEncontrado(true);
+            setOperadorNoEncontrado(false);
+          } else {
+            setOperadorNoEncontrado(true);
+            setOperadorEncontrado(false);
+          }
+        }).catch(error => {
+          setOperadorNoEncontrado(true);
+          setOperadorEncontrado(false);
+        }).finally(() => {
+          setBuscandoOperador(false);
+        });
       }
     }
   };
 
-    // Función para probar la búsqueda manualmente
+  // Función para probar la búsqueda manualmente
   const probarBusqueda = async () => {
     console.log('Probando búsqueda manual...');
     setBuscandoOperador(true);
     try {
-      const operadores = await operadorService.buscarPorNombre('Juan Carlos');
-      console.log('Resultado de búsqueda manual:', operadores);
-      if (operadores && operadores.length > 0) {
-        const operador = operadores[0];
+      const operador = await operadorService.buscarPorTarjeton('TPA0001');
+      console.log('Resultado de búsqueda manual:', operador);
+      if (operador) {
         setFormData(prev => ({
           ...prev,
-          tarjeton: operador.tarjeton,
           nombre: operador.nombre
         }));
         setOperadorEncontrado(true);
         setOperadorNoEncontrado(false);
         Swal.fire({
           title: 'Prueba exitosa',
-          text: `Operador encontrado: ${operador.nombre} - Tarjetón: ${operador.tarjeton}`,
+          text: `Operador encontrado: ${operador.nombre}`,
           icon: 'success'
         });
       }
@@ -172,21 +178,18 @@ function Apertura() {
     }
   };
 
-  // Función para buscar operador por nombre
-  const buscarOperadorPorNombre = async (nombre) => {
+  // Función para buscar operador por tarjetón
+  const buscarOperadorPorTarjeton = async (tarjeton) => {
     try {
-      console.log('Buscando operador para nombre:', nombre);
-      const operadores = await operadorService.buscarPorNombre(nombre);
-      console.log('Respuesta del servicio:', operadores);
+      console.log('Buscando operador para tarjetón:', tarjeton);
+      const operador = await operadorService.buscarPorTarjeton(tarjeton);
+      console.log('Respuesta del servicio:', operador);
 
-      if (operadores && operadores.length > 0) {
-        // Si hay múltiples resultados, usar el primero
-        const operador = operadores[0];
-        console.log('Autocompletando tarjetón:', operador.tarjeton);
+      if (operador && operador.nombre) {
+        console.log('Autocompletando nombre:', operador.nombre);
         setFormData(prev => ({
           ...prev,
-          tarjeton: operador.tarjeton,
-          nombre: operador.nombre // También actualizar el nombre completo
+          nombre: operador.nombre
         }));
         setOperadorEncontrado(true);
         setOperadorNoEncontrado(false);
@@ -194,18 +197,18 @@ function Apertura() {
         // Mostrar mensaje de éxito
         Swal.fire({
           title: 'Operador encontrado',
-          text: `Se autocompletó el tarjetón: ${operador.tarjeton}`,
+          text: `Se autocompletó el nombre: ${operador.nombre}`,
           icon: 'success',
           timer: 2000,
           showConfirmButton: false
         });
       } else {
-        console.log('Operador no encontrado');
+        console.log('Operador no encontrado o sin nombre');
         setOperadorNoEncontrado(true);
         setOperadorEncontrado(false);
         Swal.fire({
           title: 'No encontrado',
-          text: 'No se encontró un operador con ese nombre.',
+          text: 'No se encontró un operador con ese tarjetón.',
           icon: 'warning',
           timer: 2000,
           showConfirmButton: false
@@ -227,130 +230,130 @@ function Apertura() {
     }
   };
 
-const role = localStorage.getItem('userRole');
+  const role = localStorage.getItem('userRole');
 
-if (!horario) {
+  if (!horario) {
+    return (
+      <div className="container">
+        {role !== 'administrador' && <Navbar />}
+        <main className="main-content">
+          <div className="loading">Cargando...</div>
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className="container">
       {role !== 'administrador' && <Navbar />}
       <main className="main-content">
-        <div className="loading">Cargando...</div>
-      </main>
-    </div>
-  );
-}
-
-return (
-  <div className="container">
-    {role !== 'administrador' && <Navbar />}
-    <main className="main-content">
-      <div className="apertura-header" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '1.5rem' }}>
-        <h2 style={{ marginTop: '7rem', textAlign: 'center', fontWeight: 'bold', color: '#6F2234', fontSize: '2rem', letterSpacing: '0.5px' }}>Asignación de Unidad</h2>
-        <div className="horario-info" style={{ textAlign: 'center', marginTop: '0.5rem' }}>
-          <p><strong>Ruta:</strong> {horario.ruta}</p>
-          <p><strong>Fecha:</strong> {horario.fecha}</p>
-          <p><strong>Hora de salida:</strong> {horario.horaSalida}</p>
+        <div className="apertura-header" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '1.5rem' }}>
+          <h2 style={{ marginTop: '7rem', textAlign: 'center', fontWeight: 'bold', color: '#6F2234', fontSize: '2rem', letterSpacing: '0.5px' }}>Asignación de Unidad</h2>
+          <div className="horario-info" style={{ textAlign: 'center', marginTop: '0.5rem' }}>
+            <p><strong>Ruta:</strong> {horario.ruta}</p>
+            <p><strong>Fecha:</strong> {horario.fecha}</p>
+            <p><strong>Hora de salida:</strong> {horario.horaSalida}</p>
+          </div>
         </div>
-      </div>
-      <form onSubmit={handleSubmit} className="apertura-form modern-form" style={{ width: '100%', maxWidth: 700, margin: '0 auto 2rem auto', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', gap: '2.5rem', justifyContent: 'center' }}>
-        <h2 style={{ textAlign: 'center', marginBottom: '1.5rem' }}>Nueva Programación</h2>
-        <div className="form-grid-2col apertura-form-grid">
-          <div className="form-group">
-            <label htmlFor="ruta">Ruta:</label>
-            <input type="text" id="ruta" name="ruta" value={formData.ruta} onChange={handleChange} required placeholder="Ej: Ruta 1" />
-          </div>
-          <div className="form-group">
-            <label htmlFor="tipoUnidad">Tipo de Unidad:</label>
-            <select id="tipoUnidad" name="tipoUnidad" value={formData.tipoUnidad} onChange={handleChange} required>
-              <option value="">Seleccione tipo de unidad</option>
-              <option value="URBANO">URBANO</option>
-              <option value="SUBURBANO">SUBURBANO</option>
-              <option value="INTERMUNICIPAL">INTERMUNICIPAL</option>
-            </select>
-          </div>
-          <div className="form-group">
-            <label htmlFor="intervalo">Intervalo:</label>
-            <input type="number" id="intervalo" name="intervalo" value={formData.intervalo} onChange={handleChange} required placeholder="Intervalo" />
-          </div>
-          <div className="form-group">
-            <label htmlFor="corridaInicial">Corrida Inicial:</label>
-            <input type="number" id="corridaInicial" name="corridaInicial" value={formData.corridaInicial} onChange={handleChange} required placeholder="Corrida Inicial" />
-          </div>
-          <div className="form-group">
-            <label htmlFor="corridaFinal">Corrida Final:</label>
-            <input type="number" id="corridaFinal" name="corridaFinal" value={formData.corridaFinal} onChange={handleChange} required placeholder="Corrida Final" />
-          </div>
-          <div className="form-group">
-            <label htmlFor="horaSalida">Hora de Salida:</label>
-            <input type="text" id="horaSalida" name="horaSalida" value={formData.horaSalida} onChange={handleChange} required placeholder="Hora de salida" />
-          </div>
-          <div className="form-group">
-            <label htmlFor="economico">Número Económico:</label>
-            <input type="text" id="economico" name="economico" value={formData.economico} onChange={handleChange} required placeholder="Número económico de la unidad" />
-          </div>
-          <div className="form-group">
-            <label htmlFor="nombre">Nombre del Operador:</label>
-            <input
-              type="text"
-              id="nombre"
-              name="nombre"
-              value={formData.nombre || ''}
-              onChange={handleChange}
-              required
-              placeholder="Escriba el nombre del operador"
-              style={{ width: '100%', padding: '8px', border: '1px solid #ccc', borderRadius: '4px' }}
-              data-testid="nombre-input"
-            />
-            {buscandoOperador && (
-              <small style={{ color: '#007bff', display: 'block', marginTop: '4px' }}>
-                🔍 Buscando operador...
-              </small>
-            )}
-          </div>
-          {/* Agrupar tarjetón y comentario en el mismo div para alinearlos */}
-          <div className="form-group" style={{ display: 'flex', gap: '1.5rem' }}>
-            <div style={{ flex: 1 }}>
+        <form onSubmit={handleSubmit} className="apertura-form modern-form" style={{ width: '100%', maxWidth: 700, margin: '0 auto 2rem auto', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', gap: '2.5rem', justifyContent: 'center' }}>
+          <h2 style={{ textAlign: 'center', marginBottom: '1.5rem' }}>Nueva Programación</h2>
+          <div className="form-grid-2col apertura-form-grid">
+            <div className="form-group">
+              <label htmlFor="ruta">Ruta:</label>
+              <input type="text" id="ruta" name="ruta" value={formData.ruta} onChange={handleChange} required placeholder="Ej: Ruta 1" />
+            </div>
+            <div className="form-group">
+              <label htmlFor="tipoUnidad">Tipo de Unidad:</label>
+              <select id="tipoUnidad" name="tipoUnidad" value={formData.tipoUnidad} onChange={handleChange} required>
+                <option value="">Seleccione tipo de unidad</option>
+                <option value="URBANO">URBANO</option>
+                <option value="SUBURBANO">SUBURBANO</option>
+                <option value="INTERMUNICIPAL">INTERMUNICIPAL</option>
+              </select>
+            </div>
+            <div className="form-group">
+              <label htmlFor="intervalo">Intervalo:</label>
+              <input type="number" id="intervalo" name="intervalo" value={formData.intervalo} onChange={handleChange} required placeholder="Intervalo" />
+            </div>
+            <div className="form-group">
+              <label htmlFor="corridaInicial">Corrida Inicial:</label>
+              <input type="number" id="corridaInicial" name="corridaInicial" value={formData.corridaInicial} onChange={handleChange} required placeholder="Corrida Inicial" />
+            </div>
+            <div className="form-group">
+              <label htmlFor="corridaFinal">Corrida Final:</label>
+              <input type="number" id="corridaFinal" name="corridaFinal" value={formData.corridaFinal} onChange={handleChange} required placeholder="Corrida Final" />
+            </div>
+            <div className="form-group">
+              <label htmlFor="horaSalida">Hora de Salida:</label>
+              <input type="text" id="horaSalida" name="horaSalida" value={formData.horaSalida} onChange={handleChange} required placeholder="Hora de salida" />
+            </div>
+            <div className="form-group">
+              <label htmlFor="economico">Número Económico:</label>
+              <input type="text" id="economico" name="economico" value={formData.economico} onChange={handleChange} required placeholder="Número económico de la unidad" />
+            </div>
+            <div className="form-group">
               <label htmlFor="tarjeton">Tarjetón:</label>
               <input
                 type="text"
                 id="tarjeton"
                 name="tarjeton"
-                value={formData.tarjeton}
-                readOnly
-                placeholder="Se autocompletará al ingresar el nombre"
-                style={{
-                  backgroundColor: operadorEncontrado ? '#e8f5e8' : '#f5f5f5',
-                  cursor: 'not-allowed',
-                  border: operadorEncontrado ? '1px solid #28a745' : '1px solid #ccc'
-                }}
+                value={formData.tarjeton || ''}
+                onChange={handleChange}
+                required
+                placeholder="Número de tarjetón"
+                style={{ width: '100%', padding: '8px', border: '1px solid #ccc', borderRadius: '4px' }}
+                data-testid="tarjeton-input"
               />
-              {operadorNoEncontrado && (
-                <small style={{ color: '#dc3545', display: 'block', marginTop: '4px' }}>
-                  ❌ Usuario no encontrado
-                </small>
-              )}
-              {operadorEncontrado && (
-                <small style={{ color: '#28a745', display: 'block', marginTop: '4px' }}>
-                  ✅ Operador encontrado
+              {buscandoOperador && (
+                <small style={{ color: '#007bff', display: 'block', marginTop: '4px' }}>
+                  🔍 Buscando operador...
                 </small>
               )}
             </div>
-            <div style={{ flex: 1 }}>
-              <label htmlFor="comentario">Comentario:</label>
-              <textarea id="comentario" name="comentario" value={formData.comentario} onChange={handleChange} placeholder="Comentario opcional" rows={2} style={{ resize: 'vertical', width: '100%' }} />
+            {/* Agrupar operador y comentario en el mismo div para alinearlos */}
+            <div className="form-group" style={{ display: 'flex', gap: '1.5rem' }}>
+              <div style={{ flex: 1 }}>
+                <label htmlFor="nombre">Nombre del Operador:</label>
+                <input
+                  type="text"
+                  id="nombre"
+                  name="nombre"
+                  value={formData.nombre}
+                  readOnly
+                  placeholder="Se autocompletará al ingresar el tarjetón"
+                  style={{
+                    backgroundColor: operadorEncontrado ? '#e8f5e8' : '#f5f5f5',
+                    cursor: 'not-allowed',
+                    border: operadorEncontrado ? '1px solid #28a745' : '1px solid #ccc'
+                  }}
+                />
+                {operadorNoEncontrado && (
+                  <small style={{ color: '#dc3545', display: 'block', marginTop: '4px' }}>
+                    ❌ Usuario no encontrado
+                  </small>
+                )}
+                {operadorEncontrado && (
+                  <small style={{ color: '#28a745', display: 'block', marginTop: '4px' }}>
+                    ✅ Operador encontrado
+                  </small>
+                )}
+              </div>
+              <div style={{ flex: 1 }}>
+                <label htmlFor="comentario">Comentario:</label>
+                <textarea id="comentario" name="comentario" value={formData.comentario} onChange={handleChange} placeholder="Comentario opcional" rows={2} style={{ resize: 'vertical', width: '100%' }} />
+              </div>
             </div>
           </div>
-        </div>
-        <div className="form-actions" style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1.5rem' }}>
-          <button type="button" onClick={probarBusqueda} style={{ padding: '10px', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
-            🔍 Probar Búsqueda (Juan Carlos)
-          </button>
-          <button type="submit" className="btn-apertura">SUBIR</button>
-        </div>
-      </form>
-    </main>
-  </div>
-);
+          <div className="form-actions" style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1.5rem' }}>
+            <button type="button" onClick={probarBusqueda} style={{ padding: '10px', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
+              🔍 Probar Búsqueda (TPA0001)
+            </button>
+            <button type="submit" className="btn-apertura">SUBIR</button>
+          </div>
+        </form>
+      </main>
+    </div>
+  );
 }
 
 export default Apertura;
