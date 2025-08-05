@@ -379,6 +379,28 @@ function App() {
             if (!prog || !prog._id) {
               throw new Error('No se encontró una programación válida para la ruta: ' + horario.ruta);
             }
+
+            // Calcular diferencia entre hora programada y hora real
+            let estado = 'completado';
+            if (horario.horaProgramada && horario.horaSalida) {
+              const horaProgramada = new Date();
+              const [horaProg, minProg] = horario.horaProgramada.split(':').map(Number);
+              horaProgramada.setHours(horaProg, minProg, 0, 0);
+
+              const horaReal = new Date();
+              const [horaRealH, minReal] = horario.horaSalida.split(':').map(Number);
+              horaReal.setHours(horaRealH, minReal, 0, 0);
+
+              const diferenciaMs = horaReal.getTime() - horaProgramada.getTime();
+              const diferenciaMinutos = Math.abs(diferenciaMs / (1000 * 60));
+
+              // Si hay más de 3 minutos de diferencia, marcar como pendiente
+              if (diferenciaMinutos > 3) {
+                estado = 'pendiente';
+                console.log(`🚨 Retraso detectado: ${diferenciaMinutos.toFixed(1)} minutos para ruta ${horario.ruta}`);
+              }
+            }
+
             await aperturaService.create({
               programacionId: prog._id,
               ruta: horario.ruta,
@@ -386,13 +408,13 @@ function App() {
               corridaInicial: Number(horario.corridaIni),
               corridaFinal: Number(horario.corridaFin),
               horaSalida: horario.horaSalida.slice(0, 5), // Asegura formato HH:mm
+              horaProgramada: horario.horaProgramada || '',
               tipoUnidad: (horario.apertura?.tipoUnidad || '').toUpperCase(),
               economico: (horario.apertura?.economico || '').toUpperCase(),
               tarjeton: (horario.apertura?.tarjeton || '').toUpperCase(),
               nombre: horario.apertura?.nombre || '',
               comentario: horario.comentario || '',
-              // Estado por defecto: 'completado' para que aparezca en la sección principal del verificador
-              estado: 'completado',
+              estado: estado,
               fechaApertura: new Date().toISOString(),
               usuarioCreacion: 'sistema'
             });
@@ -518,19 +540,6 @@ function App() {
           </div>
           <div style={{ display: 'flex', gap: '1rem', width: '100%' }}>
             <div className="form-group" style={{ flex: 1 }}>
-              <label>Hora de salida</label>
-              <DatePicker
-                selected={salidaIni}
-                onChange={date => setSalidaIni(date)}
-                showTimeSelect
-                showTimeSelectOnly
-                timeIntervals={5}
-                timeCaption="Hora"
-                dateFormat="HH:mm"
-                className="input"
-              />
-            </div>
-            <div className="form-group" style={{ flex: 1 }}>
               <label>Hora programada</label>
               <input
                 type="text"
@@ -540,6 +549,39 @@ function App() {
                 className="input"
                 maxLength={5}
               />
+            </div>
+            <div className="form-group" style={{ flex: 1 }}>
+              <label>Hora de salida (real)</label>
+              <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                <DatePicker
+                  selected={salidaIni}
+                  onChange={date => setSalidaIni(date)}
+                  showTimeSelect
+                  showTimeSelectOnly
+                  timeIntervals={5}
+                  timeCaption="Hora"
+                  dateFormat="HH:mm"
+                  className="input"
+                  placeholderText="Hora actual"
+                  style={{ flex: 1 }}
+                />
+                <button
+                  type="button"
+                  onClick={() => setSalidaIni(new Date())}
+                  style={{
+                    padding: '0.5rem',
+                    background: '#4CAF50',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    fontSize: '0.8rem'
+                  }}
+                  title="Establecer hora actual"
+                >
+                  🕐
+                </button>
+              </div>
             </div>
           </div>
           <div className="form-group">
