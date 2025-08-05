@@ -86,4 +86,4 @@ export const operadorService = {
             throw error;
         }
     }
-}; 
+};

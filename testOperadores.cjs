@@ -81,12 +81,4 @@ async function testBuscarOperador() {
 }
 
 // Ejecutar la prueba
-testBuscarOperador();
-
-// Verificar el campo tarjetón
-const tarjetonInput = document.querySelector('input[data-testid="tarjeton-input"]');
-console.log('Campo tarjetón por data-testid:', tarjetonInput);
-if (tarjetonInput) {
-    console.log('Name attribute:', tarjetonInput.getAttribute('name'));
-    console.log('Name property:', tarjetonInput.name);
-} 
+testBuscarOperador(); 

@@ -51,15 +51,22 @@ function App() {
   const [operadores, setOperadores] = useState([]);
 
 
+  // Estado para controlar la búsqueda
+  const [buscandoOperador, setBuscandoOperador] = useState(false);
+
   // Buscar automáticamente el nombre del operador por tarjetón
   useEffect(() => {
     const buscarOperadorPorTarjeton = async () => {
       console.log('🔍 useEffect ejecutado - tarjetón actual:', tarjeton);
+      
       if (tarjeton && tarjeton.trim() !== '') {
         console.log('🔍 Buscando operador para tarjetón:', tarjeton.trim());
+        setBuscandoOperador(true);
+        
         try {
           const operador = await operadorService.buscarPorTarjeton(tarjeton.trim());
           console.log('✅ Operador encontrado:', operador);
+          
           if (operador && operador.nombre) {
             console.log('✅ Estableciendo nombre:', operador.nombre);
             setNombre(operador.nombre);
@@ -70,13 +77,31 @@ function App() {
         } catch (err) {
           console.error('❌ Error al buscar operador:', err);
           setNombre('');
+          
+          // Mostrar mensaje de error solo si el tarjetón sigue siendo el mismo
+          if (tarjeton && tarjeton.trim() !== '') {
+            Swal.fire({
+              title: 'Operador no encontrado',
+              text: `No se encontró un operador con el tarjetón: ${tarjeton.trim()}`,
+              icon: 'warning',
+              timer: 3000,
+              showConfirmButton: false
+            });
+          }
+        } finally {
+          setBuscandoOperador(false);
         }
       } else {
         console.log('🔍 Tarjetón vacío, limpiando nombre');
         setNombre('');
+        setBuscandoOperador(false);
       }
     };
-    buscarOperadorPorTarjeton();
+
+    // Agregar un pequeño delay para evitar muchas peticiones mientras el usuario escribe
+    const timeoutId = setTimeout(buscarOperadorPorTarjeton, 500);
+    
+    return () => clearTimeout(timeoutId);
   }, [tarjeton]);
   const { navigateWithTransition } = useTransition();
   const location = useLocation();
@@ -568,15 +593,54 @@ function App() {
             </div>
             <div className="form-group">
               <label>Tarjetón</label>
-              <input
-                type="text"
-                value={tarjeton}
-                onChange={e => setTarjeton(e.target.value)}
-                placeholder="Ingrese el tarjetón del operador"
-                className={`input ${errores.tarjeton ? 'input-error' : ''}`}
-                style={{ textTransform: 'uppercase' }}
-              />
+              <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+                <input
+                  type="text"
+                  value={tarjeton}
+                  onChange={e => setTarjeton(e.target.value)}
+                  placeholder="Ingrese el tarjetón para buscar al operador"
+                  className={`input ${errores.tarjeton ? 'input-error' : ''}`}
+                  style={{ 
+                    textTransform: 'uppercase',
+                    border: tarjeton && nombre ? '2px solid #4CAF50' : '1px solid #ddd',
+                    transition: 'all 0.3s ease',
+                    paddingRight: tarjeton ? '40px' : '12px'
+                  }}
+                />
+                {tarjeton && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setTarjeton('');
+                      setNombre('');
+                    }}
+                    style={{
+                      position: 'absolute',
+                      right: '8px',
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      fontSize: '16px',
+                      color: '#999',
+                      padding: '4px'
+                    }}
+                    title="Limpiar tarjetón"
+                  >
+                    ✕
+                  </button>
+                )}
+              </div>
               {errores.tarjeton && <span className="error-message">{errores.tarjeton}</span>}
+              {buscandoOperador && (
+                <small style={{ color: '#ff9800', fontSize: '0.8rem', marginTop: '0.25rem' }}>
+                  🔍 Buscando operador...
+                </small>
+              )}
+              {tarjeton && !nombre && !buscandoOperador && (
+                <small style={{ color: '#f44336', fontSize: '0.8rem', marginTop: '0.25rem' }}>
+                  ❌ Operador no encontrado
+                </small>
+              )}
             </div>
             <div className="form-group">
               <label>Nombre del Operador</label>
@@ -584,12 +648,23 @@ function App() {
                 type="text"
                 value={nombre}
                 onChange={e => setNombre(e.target.value)}
-                placeholder="Nombre del operador (se llena automáticamente)"
+                placeholder="Se llena automáticamente al ingresar el tarjetón"
                 className={`input ${errores.nombre ? 'input-error' : ''}`}
                 readOnly
-                style={{ background: '#f7f7fa', color: '#333', fontWeight: 500 }}
+                style={{ 
+                  background: nombre ? '#e8f5e8' : '#f7f7fa', 
+                  color: '#333', 
+                  fontWeight: nombre ? 600 : 500,
+                  border: nombre ? '2px solid #4CAF50' : '1px solid #ddd',
+                  transition: 'all 0.3s ease'
+                }}
               />
               {errores.nombre && <span className="error-message">{errores.nombre}</span>}
+              {nombre && (
+                <small style={{ color: '#4CAF50', fontSize: '0.8rem', marginTop: '0.25rem' }}>
+                  ✓ Operador encontrado automáticamente
+                </small>
+              )}
             </div>
 
             <div className="form-group">
