@@ -256,6 +256,9 @@ function App() {
       return;
     }
 
+    // Capturar la hora actual al momento de enviar
+    const horaActual = new Date();
+    
     const nuevoHorario = {
       id: editandoId || Date.now(),
       ruta,
