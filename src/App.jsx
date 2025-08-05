@@ -53,9 +53,6 @@ function App() {
 
   // Estado para controlar la búsqueda
   const [buscandoOperador, setBuscandoOperador] = useState(false);
-  
-  // Estado para la hora actual en tiempo real
-  const [horaActual, setHoraActual] = useState(new Date());
 
   // Buscar automáticamente el nombre del operador por tarjetón
   useEffect(() => {
@@ -153,14 +150,7 @@ function App() {
     cargarDatos();
   }, []);
 
-  // Actualizar la hora actual cada segundo
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setHoraActual(new Date());
-    }, 1000);
 
-    return () => clearInterval(interval);
-  }, []);
 
 
 
@@ -555,7 +545,7 @@ function App() {
             {errores.corridaIni && <span className="error-message">{errores.corridaIni}</span>}
           </div>
           <div style={{ display: 'flex', gap: '1rem', width: '100%' }}>
-            <div className="form-group" style={{ flex: 1 }}>
+                        <div className="form-group" style={{ flex: 1 }}>
               <label>Hora programada</label>
               <input
                 type="text"
@@ -572,30 +562,25 @@ function App() {
               />
             </div>
             <div className="form-group" style={{ flex: 1 }}>
-              <label>Hora de salida (tiempo real)</label>
+              <label>Hora de salida (se captura automáticamente)</label>
               <div style={{ 
                 display: 'flex', 
                 alignItems: 'center', 
                 gap: '0.5rem',
-                background: '#f8f9fa',
+                background: '#e8f5e8',
                 padding: '0.75rem',
                 borderRadius: '4px',
-                border: '1px solid #dee2e6'
+                border: '1px solid #4CAF50'
               }}>
-                                 <span style={{ 
-                   fontSize: '1.2rem', 
-                   fontWeight: 'bold', 
-                   color: '#495057',
-                   fontFamily: 'monospace'
-                 }}>
-                   {horaActual.toLocaleTimeString('es-ES', { 
-                     hour: '2-digit', 
-                     minute: '2-digit',
-                     second: '2-digit',
-                     hour12: false 
-                   })}
-                 </span>
-                <span style={{ color: '#6c757d', fontSize: '0.9rem' }}>⏰</span>
+                <span style={{ 
+                  fontSize: '1rem', 
+                  fontWeight: '500', 
+                  color: '#2e7d32',
+                  fontStyle: 'italic'
+                }}>
+                  Se registrará al momento de guardar
+                </span>
+                <span style={{ color: '#4CAF50', fontSize: '1rem' }}>⏱️</span>
               </div>
             </div>
           </div>
@@ -740,13 +725,13 @@ function App() {
             <table className="table" style={{ width: '100%', minWidth: 900, tableLayout: 'fixed', borderRadius: 10, overflow: 'hidden' }}>
               <thead style={{ background: '#f3f3f7', color: '#6F2234', fontWeight: 700, fontSize: '1.05rem', borderBottom: '2px solid #e0e0e0' }}>
                 <tr>
-                  <th style={{ width: '12%', textAlign: 'center' }}>Ruta</th>
-                  <th style={{ width: '12%', textAlign: 'center' }}>Fecha</th>
-                  <th style={{ width: '12%', textAlign: 'center' }}>Hora de salida</th>
-                  <th style={{ width: '14.70%', textAlign: 'center' }}>Unidad</th>
-                  <th style={{ width: '15.5%', textAlign: 'center' }}>Tarjetón</th>
-                  <th style={{ width: '18%', textAlign: 'center' }}>Operador</th>
-                  <th style={{ width: '19%', textAlign: 'center' }}>Acciones</th>
+                  <th style={{ width: '15%', textAlign: 'center' }}>Ruta</th>
+                  <th style={{ width: '15%', textAlign: 'center' }}>Fecha</th>
+                  <th style={{ width: '15%', textAlign: 'center' }}>Hora Programada</th>
+                  <th style={{ width: '15%', textAlign: 'center' }}>Unidad</th>
+                  <th style={{ width: '15%', textAlign: 'center' }}>Tarjetón</th>
+                  <th style={{ width: '15%', textAlign: 'center' }}>Operador</th>
+                  <th style={{ width: '10%', textAlign: 'center' }}>Acciones</th>
                 </tr>
               </thead>
               <tbody>
@@ -754,7 +739,7 @@ function App() {
                   <tr key={row.id}>
                     <td style={{ textAlign: 'center' }}>{row.ruta}</td>
                     <td style={{ textAlign: 'center' }}>{row.fecha}</td>
-                    <td style={{ textAlign: 'center' }}>{row.horaSalida}</td>
+                    <td style={{ textAlign: 'center' }}>{row.horaProgramada || '-'}</td>
                     <td style={{ textAlign: 'center' }}>{row.apertura?.tipoUnidad || '-'}</td>
                     <td style={{ textAlign: 'center' }}>{row.apertura?.tarjeton || '-'}</td>
                     <td style={{ textAlign: 'center' }}>{row.apertura?.nombre || '-'}</td>
