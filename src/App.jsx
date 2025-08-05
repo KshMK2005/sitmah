@@ -29,7 +29,7 @@ function App() {
   const [ruta, setRuta] = useState('');
   const [intervalo, setIntervalo] = useState('');
   const [corridaIni, setCorridaIni] = useState('');
-  const [corridaFin, setCorridaFin] = useState('');
+  const [horaProgramada, setHoraProgramada] = useState('');
   const [salidaIni, setSalidaIni] = useState(new Date(new Date().setHours(5, 50, 0, 0)));
   const [fechaDel, setFechaDel] = useState(new Date());
   const [fechaAl, setFechaAl] = useState(new Date());
@@ -74,10 +74,21 @@ function App() {
             console.log('❌ Operador sin nombre, limpiando campo');
             setNombre('');
           }
-                 } catch (err) {
-           console.error('❌ Error al buscar operador:', err);
-           setNombre('');
-         } finally {
+        } catch (err) {
+          console.error('❌ Error al buscar operador:', err);
+          setNombre('');
+          
+          // Mostrar mensaje de error solo si el tarjetón sigue siendo el mismo
+          if (tarjeton && tarjeton.trim() !== '') {
+                         Swal.fire({
+               title: 'Operador no encontrado',
+               text: `No se encontró un operador con el tarjetón: ${tarjeton.trim()}`,
+               icon: 'warning',
+               timer: 3000,
+               showConfirmButton: false
+             });
+          }
+        } finally {
           setBuscandoOperador(false);
         }
       } else {
@@ -145,22 +156,21 @@ function App() {
   useEffect(() => {
     if (ruta && programaciones.length > 0) {
       const prog = programaciones.find(p => p.ruta === ruta);
-      if (prog) {
-        // Hora de salida
-        if (prog.horaSalida) {
-          const [h, m] = prog.horaSalida.split(':');
-          const nuevaFecha = new Date();
-          nuevaFecha.setHours(Number(h), Number(m), 0, 0);
-          setSalidaIni(nuevaFecha);
-        }
-        // Intervalo y corridas
-        setIntervalo(prog.intervalo || '');
-        setCorridaIni(prog.corridaInicial || '');
-        setCorridaFin(prog.corridaFinal || '');
-        // Mostrar número económico y tipo de unidad si existen
-        if (prog.numeroEconomico) setEconomico(prog.numeroEconomico);
-        if (prog.tipoVehiculo) setTipoUnidad(prog.tipoVehiculo);
+    if (prog) {
+      // Hora de salida
+      if (prog.horaSalida) {
+        const [h, m] = prog.horaSalida.split(':');
+        const nuevaFecha = new Date();
+        nuevaFecha.setHours(Number(h), Number(m), 0, 0);
+        setSalidaIni(nuevaFecha);
       }
+      // Intervalo y corridas
+      setIntervalo(prog.intervalo || '');
+      setCorridaIni(prog.corridaInicial || '');
+      // Mostrar número económico y tipo de unidad si existen
+      if (prog.numeroEconomico) setEconomico(prog.numeroEconomico);
+      if (prog.tipoVehiculo) setTipoUnidad(prog.tipoVehiculo);
+    }
     }
   }, [ruta, programaciones]);
 
@@ -169,7 +179,7 @@ function App() {
     setRuta('');
     setIntervalo('');
     setCorridaIni('');
-    setCorridaFin('');
+    setHoraProgramada('');
     setSalidaIni(new Date(new Date().setHours(5, 50, 0, 0)));
     setFechaDel(new Date());
     setFechaAl(new Date());
@@ -195,15 +205,7 @@ function App() {
     }
 
     if (corridaIni && (isNaN(corridaIni) || Number(corridaIni) <= 0)) {
-      nuevosErrores.corridaIni = 'La corrida inicial debe ser un número positivo';
-    }
-
-    if (corridaFin) {
-      if (isNaN(corridaFin) || Number(corridaFin) <= 0) {
-        nuevosErrores.corridaFin = 'La corrida final debe ser un número positivo';
-      } else if (corridaIni && Number(corridaFin) <= Number(corridaIni)) {
-        nuevosErrores.corridaFin = 'La corrida final debe ser mayor que la corrida inicial';
-      }
+      nuevosErrores.corridaIni = 'El número de corrida debe ser un número positivo';
     }
 
     if (fechaDel > fechaAl) {
@@ -255,7 +257,7 @@ function App() {
       horaSalida: getHoraString(salidaIni),
       intervalo: intervalo || null,
       corridaIni: corridaIni || null,
-      corridaFin: corridaFin || null,
+      horaProgramada: horaProgramada || '',
       comentario: comentario || '',
       apertura: {
         tipoUnidad,
@@ -326,7 +328,7 @@ function App() {
     setRuta(item.ruta);
     setIntervalo(item.intervalo || '');
     setCorridaIni(item.corridaIni || '');
-    setCorridaFin(item.corridaFin || '');
+    setHoraProgramada(item.horaProgramada || '');
     setFechaDel(new Date(item.fecha));
     const [hours, minutes] = item.horaSalida.split(':');
     const nuevaFecha = new Date();
@@ -503,29 +505,19 @@ function App() {
               />
               {errores.intervalo && <span className="error-message">{errores.intervalo}</span>}
             </div>
-            <div className="form-group">
-              <label>Corrida Inicial</label>
-              <input
-                type="number"
-                value={corridaIni}
-                onChange={e => setCorridaIni(e.target.value)}
-                placeholder="Corrida Inicial"
-                className={`input ${errores.corridaIni ? 'input-error' : ''}`}
-              />
-              {errores.corridaIni && <span className="error-message">{errores.corridaIni}</span>}
-            </div>
-            <div className="form-group">
-              <label>Corrida Final</label>
-              <input
-                type="number"
-                value={corridaFin}
-                onChange={e => setCorridaFin(e.target.value)}
-                placeholder="Corrida Final"
-                className={`input ${errores.corridaFin ? 'input-error' : ''}`}
-              />
-              {errores.corridaFin && <span className="error-message">{errores.corridaFin}</span>}
-            </div>
-            <div className="form-group">
+          <div className="form-group">
+            <label>No. de corrida</label>
+            <input
+              type="number"
+              value={corridaIni}
+              onChange={e => setCorridaIni(e.target.value)}
+              placeholder="No. de corrida"
+                             className={`input ${errores.corridaIni ? 'input-error' : ''}`}
+            />
+            {errores.corridaIni && <span className="error-message">{errores.corridaIni}</span>}
+          </div>
+          <div style={{ display: 'flex', gap: '1rem', width: '100%' }}>
+            <div className="form-group" style={{ flex: 1 }}>
               <label>Hora de salida</label>
               <DatePicker
                 selected={salidaIni}
@@ -538,27 +530,29 @@ function App() {
                 className="input"
               />
             </div>
-
-            <div className="form-group">
-              <label>Del</label>
-              <DatePicker
-                selected={fechaDel}
-                onChange={date => setFechaDel(date)}
-                dateFormat="yyyy-MM-dd"
-                className={`input ${errores.fechas ? 'input-error' : ''}`}
+            <div className="form-group" style={{ flex: 1 }}>
+              <label>Hora programada</label>
+              <input
+                type="text"
+                value={horaProgramada}
+                onChange={e => setHoraProgramada(e.target.value)}
+                placeholder="HH:mm"
+                className="input"
+                maxLength={5}
               />
             </div>
-
-            <div className="form-group">
-              <label>Al</label>
-              <DatePicker
-                selected={fechaAl}
-                onChange={date => setFechaAl(date)}
-                dateFormat="yyyy-MM-dd"
-                className={`input ${errores.fechas ? 'input-error' : ''}`}
-              />
-              {errores.fechas && <span className="error-message">{errores.fechas}</span>}
-            </div>
+          </div>
+          <div className="form-group">
+            <label>Del</label>
+            <DatePicker
+              selected={fechaDel}
+              onChange={date => setFechaDel(date)}
+              dateFormat="yyyy-MM-dd"
+                             className={`input ${errores.fechas ? 'input-error' : ''}`}
+            />
+          </div>
+          {/* Eliminado el segundo DatePicker ("Al") */}
+          {errores.fechas && <span className="error-message">{errores.fechas}</span>}
 
             <div className="form-group">
               <label>Tipo de Unidad</label>
@@ -588,7 +582,7 @@ function App() {
                   value={tarjeton}
                   onChange={e => setTarjeton(e.target.value)}
                   placeholder="Ingrese el tarjetón para buscar al operador"
-                  className={`input ${errores.tarjeton ? 'input-error' : ''}`}
+                                     className={`input ${errores.tarjeton ? 'input-error' : ''}`}
                   style={{ 
                     textTransform: 'uppercase',
                     border: tarjeton && nombre ? '2px solid #4CAF50' : '1px solid #ddd',
@@ -638,7 +632,7 @@ function App() {
                 value={nombre}
                 onChange={e => setNombre(e.target.value)}
                 placeholder="Se llena automáticamente al ingresar el tarjetón"
-                className={`input ${errores.nombre ? 'input-error' : ''}`}
+                                 className={`input ${errores.nombre ? 'input-error' : ''}`}
                 readOnly
                 style={{ 
                   background: nombre ? '#e8f5e8' : '#f7f7fa', 
@@ -727,5 +721,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
