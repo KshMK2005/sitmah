@@ -4,7 +4,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import './App.css';
 import './themes.css';
 import { applySavedTheme } from './utils/theme';
-// import Swal from 'sweetalert2';
+import Swal from 'sweetalert2';
 import logoSitmah from './assets/logo-sitmah.png';
 import { useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
@@ -48,28 +48,61 @@ function App() {
   const [economico, setEconomico] = useState('');
   const [tarjeton, setTarjeton] = useState('');
   const [nombre, setNombre] = useState('');
-  const [operadors, setOperadors] = useState([]);
-  const [operadorSeleccionado, setOperadorSeleccionado] = useState(null);
+  const [operadores, setOperadores] = useState([]);
 
-  // Buscar automáticamente el operador por tarjetón escrito manualmente
+
+  // Estado para controlar la búsqueda
+  const [buscandoOperador, setBuscandoOperador] = useState(false);
+
+  // Buscar automáticamente el nombre del operador por tarjetón
   useEffect(() => {
-    if (tarjeton && operadors.length > 0) {
-      const operadorEncontrado = operadors.find(op => String(op.tarjeton).toLowerCase() === String(tarjeton).toLowerCase());
-      if (operadorEncontrado) {
-        setOperadorSeleccionado({
-          value: operadorEncontrado.tarjeton,
-          label: `${operadorEncontrado.tarjeton} - ${operadorEncontrado.nombre}`
-        });
-        setNombre(operadorEncontrado.nombre);
+    const buscarOperadorPorTarjeton = async () => {
+      console.log('🔍 useEffect ejecutado - tarjetón actual:', tarjeton);
+      
+      if (tarjeton && tarjeton.trim() !== '') {
+        console.log('🔍 Buscando operador para tarjetón:', tarjeton.trim());
+        setBuscandoOperador(true);
+        
+        try {
+          const operador = await operadorService.buscarPorTarjeton(tarjeton.trim());
+          console.log('✅ Operador encontrado:', operador);
+          
+          if (operador && operador.nombre) {
+            console.log('✅ Estableciendo nombre:', operador.nombre);
+            setNombre(operador.nombre);
+          } else {
+            console.log('❌ Operador sin nombre, limpiando campo');
+            setNombre('');
+          }
+        } catch (err) {
+          console.error('❌ Error al buscar operador:', err);
+          setNombre('');
+          
+          // Mostrar mensaje de error solo si el tarjetón sigue siendo el mismo
+          if (tarjeton && tarjeton.trim() !== '') {
+            Swal.fire({
+              title: 'Operador no encontrado',
+              text: `No se encontró un operador con el tarjetón: ${tarjeton.trim()}`,
+              icon: 'warning',
+              timer: 3000,
+              showConfirmButton: false
+            });
+          }
+        } finally {
+          setBuscandoOperador(false);
+        }
       } else {
-        setOperadorSeleccionado(null);
+        console.log('🔍 Tarjetón vacío, limpiando nombre');
         setNombre('');
+        setBuscandoOperador(false);
       }
-    } else {
-      setOperadorSeleccionado(null);
-      setNombre('');
-    }
-  }, [tarjeton, operadors]);
+    };
+
+    // Agregar un pequeño delay para evitar muchas peticiones mientras el usuario escribe
+    const timeoutId = setTimeout(buscarOperadorPorTarjeton, 500);
+    
+    return () => clearTimeout(timeoutId);
+  }, [tarjeton]);
   const { navigateWithTransition } = useTransition();
   const location = useLocation();
   const role = localStorage.getItem('userRole');
@@ -95,13 +128,13 @@ function App() {
   useEffect(() => {
     const cargarDatos = async () => {
       try {
-        const [programacionesData, operadorsData] = await Promise.all([
+        const [programacionesData, operadoresData] = await Promise.all([
           programacionService.getAll(),
           operadorService.obtenerTodos()
         ]);
         
         setProgramaciones(programacionesData || []);
-        setOperadors(operadorsData || []);
+        setOperadores(operadoresData || []);
         
         // Extraer rutas únicas
         const rutasUnicas = Array.from(new Set((programacionesData || []).map(p => p.ruta)));
@@ -110,25 +143,14 @@ function App() {
         console.error('Error al cargar datos:', error);
         // Si hay error, establecer arrays vacíos
         setProgramaciones([]);
-        setOperadors([]);
+        setOperadores([]);
         setRutasDisponibles([]);
       }
     };
     cargarDatos();
   }, []);
 
-  // Efecto para establecer el operador seleccionado cuando se cargan los operadores y hay un horario en edición
-  useEffect(() => {
-    if (operadors.length > 0 && editandoId && tarjeton) {
-      const operadorEncontrado = operadors.find(op => op.tarjeton === tarjeton);
-      if (operadorEncontrado) {
-        setOperadorSeleccionado({
-          value: operadorEncontrado.tarjeton,
-          label: `${operadorEncontrado.tarjeton} - ${operadorEncontrado.nombre}`
-        });
-      }
-    }
-  }, [operadors, editandoId, tarjeton]);
+
 
   // Cuando se selecciona una ruta, poner la hora de salida, intervalo y corridas de la programación
   useEffect(() => {
@@ -167,21 +189,10 @@ function App() {
     setEconomico('');
     setTarjeton('');
     setNombre('');
-    setOperadorSeleccionado(null);
     setErrores({});
   };
 
-  // Manejar selección de operador
-  const handleOperadorChange = (option) => {
-    setOperadorSeleccionado(option);
-    if (option) {
-      setTarjeton(option.value);
-      setNombre(option.label.split(' - ')[1]); // Obtener solo el nombre
-    } else {
-      setTarjeton('');
-      setNombre('');
-    }
-  };
+
 
   const validarFormulario = () => {
     const nuevosErrores = {};
@@ -239,8 +250,12 @@ function App() {
     e.preventDefault();
 
     if (!validarFormulario()) {
-      // Aquí puedes mostrar un mensaje nativo o dejar solo el return
-      // alert('Por favor, corrige los errores en el formulario');
+      Swal.fire({
+        title: 'Error de validación',
+        text: 'Por favor, corrige los errores en el formulario',
+        icon: 'error',
+        confirmButtonText: 'Entendido'
+      });
       return;
     }
 
@@ -335,20 +350,7 @@ function App() {
     setTarjeton(item.apertura?.tarjeton || '');
     setNombre(item.apertura?.nombre || '');
     
-    // Establecer el operador seleccionado si existe
-    if (item.apertura?.tarjeton && operadors.length > 0) {
-      const operadorEncontrado = operadors.find(op => op.tarjeton === item.apertura.tarjeton);
-      if (operadorEncontrado) {
-        setOperadorSeleccionado({
-          value: operadorEncontrado.tarjeton,
-          label: `${operadorEncontrado.tarjeton} - ${operadorEncontrado.nombre}`
-        });
-      } else {
-        setOperadorSeleccionado(null);
-      }
-    } else {
-      setOperadorSeleccionado(null);
-    }
+
     
     localStorage.setItem('editandoHorarioId', item.id);
   };
@@ -591,26 +593,54 @@ function App() {
             </div>
             <div className="form-group">
               <label>Tarjetón</label>
-              <Select
-                options={operadors ? operadors.map(op => ({ 
-                  value: op.tarjeton, 
-                  label: `${op.tarjeton} - ${op.nombre}` 
-                })) : []}
-                value={operadorSeleccionado}
-                onChange={handleOperadorChange}
-                onInputChange={inputValue => setTarjeton(inputValue)}
-                inputValue={tarjeton}
-                placeholder="Buscar o escribir tarjetón"
-                isClearable
-                isSearchable
-                classNamePrefix="react-select"
-                noOptionsMessage={() => "No se encontraron operadores"}
-                loadingMessage={() => "Cargando operadores..."}
-                filterOption={(option, input) =>
-                  option.data.value.toLowerCase().includes(input.toLowerCase()) ||
-                  option.data.label.toLowerCase().includes(input.toLowerCase())
-                }
-              />
+              <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+                <input
+                  type="text"
+                  value={tarjeton}
+                  onChange={e => setTarjeton(e.target.value)}
+                  placeholder="Ingrese el tarjetón para buscar al operador"
+                  className={`input ${errores.tarjeton ? 'input-error' : ''}`}
+                  style={{ 
+                    textTransform: 'uppercase',
+                    border: tarjeton && nombre ? '2px solid #4CAF50' : '1px solid #ddd',
+                    transition: 'all 0.3s ease',
+                    paddingRight: tarjeton ? '40px' : '12px'
+                  }}
+                />
+                {tarjeton && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setTarjeton('');
+                      setNombre('');
+                    }}
+                    style={{
+                      position: 'absolute',
+                      right: '8px',
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      fontSize: '16px',
+                      color: '#999',
+                      padding: '4px'
+                    }}
+                    title="Limpiar tarjetón"
+                  >
+                    ✕
+                  </button>
+                )}
+              </div>
+              {errores.tarjeton && <span className="error-message">{errores.tarjeton}</span>}
+              {buscandoOperador && (
+                <small style={{ color: '#ff9800', fontSize: '0.8rem', marginTop: '0.25rem' }}>
+                  🔍 Buscando operador...
+                </small>
+              )}
+              {tarjeton && !nombre && !buscandoOperador && (
+                <small style={{ color: '#f44336', fontSize: '0.8rem', marginTop: '0.25rem' }}>
+                  ❌ Operador no encontrado
+                </small>
+              )}
             </div>
             <div className="form-group">
               <label>Nombre del Operador</label>
@@ -618,10 +648,25 @@ function App() {
                 type="text"
                 value={nombre}
                 onChange={e => setNombre(e.target.value)}
-                placeholder="Nombre del operador"
-                required
+                placeholder="Se llena automáticamente al ingresar el tarjetón"
+                className={`input ${errores.nombre ? 'input-error' : ''}`}
+                readOnly
+                style={{ 
+                  background: nombre ? '#e8f5e8' : '#f7f7fa', 
+                  color: '#333', 
+                  fontWeight: nombre ? 600 : 500,
+                  border: nombre ? '2px solid #4CAF50' : '1px solid #ddd',
+                  transition: 'all 0.3s ease'
+                }}
               />
+              {errores.nombre && <span className="error-message">{errores.nombre}</span>}
+              {nombre && (
+                <small style={{ color: '#4CAF50', fontSize: '0.8rem', marginTop: '0.25rem' }}>
+                  ✓ Operador encontrado automáticamente
+                </small>
+              )}
             </div>
+
             <div className="form-group">
               <label>Comentario</label>
               <textarea
