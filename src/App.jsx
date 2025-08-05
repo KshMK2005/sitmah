@@ -53,6 +53,9 @@ function App() {
 
   // Estado para controlar la búsqueda
   const [buscandoOperador, setBuscandoOperador] = useState(false);
+  
+  // Estado para la hora actual en tiempo real
+  const [horaActual, setHoraActual] = useState(new Date());
 
   // Buscar automáticamente el nombre del operador por tarjetón
   useEffect(() => {
@@ -148,6 +151,15 @@ function App() {
       }
     };
     cargarDatos();
+  }, []);
+
+  // Actualizar la hora actual cada segundo
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setHoraActual(new Date());
+    }, 1000);
+
+    return () => clearInterval(interval);
   }, []);
 
 
@@ -249,10 +261,6 @@ function App() {
       });
       return;
     }
-
-    // Capturar automáticamente la hora actual al momento de enviar
-    const horaActual = new Date();
-    setSalidaIni(horaActual);
 
     const nuevoHorario = {
       id: editandoId || Date.now(),
@@ -545,42 +553,41 @@ function App() {
           <div style={{ display: 'flex', gap: '1rem', width: '100%' }}>
             <div className="form-group" style={{ flex: 1 }}>
               <label>Hora programada</label>
-              <DatePicker
-                selected={horaProgramada ? new Date(new Date().setHours(...horaProgramada.split(':').map(Number), 0, 0, 0)) : null}
-                onChange={date => {
-                  if (date) {
-                    const hours = date.getHours().toString().padStart(2, '0');
-                    const minutes = date.getMinutes().toString().padStart(2, '0');
-                    setHoraProgramada(`${hours}:${minutes}`);
-                  } else {
-                    setHoraProgramada('');
-                  }
-                }}
-                showTimeSelect
-                showTimeSelectOnly
-                timeIntervals={5}
-                timeCaption="Hora"
-                dateFormat="HH:mm"
+              <input
+                type="text"
+                value={horaProgramada}
+                onChange={e => setHoraProgramada(e.target.value)}
+                placeholder="HH:mm"
                 className="input"
-                placeholderText="HH:mm"
-                isClearable
+                maxLength={5}
               />
             </div>
             <div className="form-group" style={{ flex: 1 }}>
-              <label>Hora de salida (automática)</label>
-              <input
-                type="text"
-                value={getHoraString(salidaIni)}
-                readOnly
-                className="input"
-                style={{ 
-                  background: '#f7f7fa', 
-                  color: '#333', 
-                  fontWeight: 500,
-                  cursor: 'not-allowed'
-                }}
-                placeholder="Se captura automáticamente"
-              />
+              <label>Hora de salida (tiempo real)</label>
+              <div style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: '0.5rem',
+                background: '#f8f9fa',
+                padding: '0.75rem',
+                borderRadius: '4px',
+                border: '1px solid #dee2e6'
+              }}>
+                                 <span style={{ 
+                   fontSize: '1.2rem', 
+                   fontWeight: 'bold', 
+                   color: '#495057',
+                   fontFamily: 'monospace'
+                 }}>
+                   {horaActual.toLocaleTimeString('es-ES', { 
+                     hour: '2-digit', 
+                     minute: '2-digit',
+                     second: '2-digit',
+                     hour12: false 
+                   })}
+                 </span>
+                <span style={{ color: '#6c757d', fontSize: '0.9rem' }}>⏰</span>
+              </div>
             </div>
           </div>
           <div className="form-group">
@@ -743,11 +750,11 @@ function App() {
                     <td style={{ textAlign: 'center' }}>{row.apertura?.tarjeton || '-'}</td>
                     <td style={{ textAlign: 'center' }}>{row.apertura?.nombre || '-'}</td>
                     <td style={{ textAlign: 'center', whiteSpace: 'nowrap', overflow: 'auto' }}>
-                      <div style={{ display: 'flex', gap: 4, justifyContent: 'center', flexWrap: 'wrap' }}>
-                        <button onClick={() => handleEdit(row)} className="btn-edit action-btn" title="Editar horario">✏</button>
-                        <button onClick={() => handleApertura(row)} className="btn-submit action-btn" style={{ padding: '0.3rem 0.5rem' }} title="Asignar unidad">🚌</button>
-                        <button onClick={() => handleDelete(row.id)} className="btn-delete action-btn" title="Eliminar horario">🗑</button>
-                      </div>
+                                              <div style={{ display: 'flex', gap: 4, justifyContent: 'center', flexWrap: 'wrap' }}>
+                          <button onClick={() => handleEdit(row)} className="btn-edit action-btn" title="Editar horario">✏</button>
+                          <button onClick={() => handleApertura(row)} className="btn-submit action-btn" style={{ padding: '0.3rem 0.5rem' }} title="Asignar unidad">🚌</button>
+                          <button onClick={() => handleDelete(row.id)} className="btn-delete action-btn" title="Eliminar horario">🗑</button>
+                        </div>
                     </td>
                   </tr>
                 ))}
