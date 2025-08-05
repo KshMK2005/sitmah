@@ -250,11 +250,15 @@ function App() {
       return;
     }
 
+    // Capturar automáticamente la hora actual al momento de enviar
+    const horaActual = new Date();
+    setSalidaIni(horaActual);
+
     const nuevoHorario = {
       id: editandoId || Date.now(),
       ruta,
       fecha: fechaDel.toISOString().slice(0, 10),
-      horaSalida: getHoraString(salidaIni),
+      horaSalida: getHoraString(horaActual),
       intervalo: intervalo || null,
       corridaIni: corridaIni || null,
       horaProgramada: horaProgramada || '',
@@ -541,47 +545,42 @@ function App() {
           <div style={{ display: 'flex', gap: '1rem', width: '100%' }}>
             <div className="form-group" style={{ flex: 1 }}>
               <label>Hora programada</label>
-              <input
-                type="text"
-                value={horaProgramada}
-                onChange={e => setHoraProgramada(e.target.value)}
-                placeholder="HH:mm"
+              <DatePicker
+                selected={horaProgramada ? new Date(new Date().setHours(...horaProgramada.split(':').map(Number), 0, 0, 0)) : null}
+                onChange={date => {
+                  if (date) {
+                    const hours = date.getHours().toString().padStart(2, '0');
+                    const minutes = date.getMinutes().toString().padStart(2, '0');
+                    setHoraProgramada(`${hours}:${minutes}`);
+                  } else {
+                    setHoraProgramada('');
+                  }
+                }}
+                showTimeSelect
+                showTimeSelectOnly
+                timeIntervals={5}
+                timeCaption="Hora"
+                dateFormat="HH:mm"
                 className="input"
-                maxLength={5}
+                placeholderText="HH:mm"
+                isClearable
               />
             </div>
             <div className="form-group" style={{ flex: 1 }}>
-              <label>Hora de salida (real)</label>
-              <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                <DatePicker
-                  selected={salidaIni}
-                  onChange={date => setSalidaIni(date)}
-                  showTimeSelect
-                  showTimeSelectOnly
-                  timeIntervals={5}
-                  timeCaption="Hora"
-                  dateFormat="HH:mm"
-                  className="input"
-                  placeholderText="Hora actual"
-                  style={{ flex: 1 }}
-                />
-                <button
-                  type="button"
-                  onClick={() => setSalidaIni(new Date())}
-                  style={{
-                    padding: '0.5rem',
-                    background: '#4CAF50',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '4px',
-                    cursor: 'pointer',
-                    fontSize: '0.8rem'
-                  }}
-                  title="Establecer hora actual"
-                >
-                  🕐
-                </button>
-              </div>
+              <label>Hora de salida (automática)</label>
+              <input
+                type="text"
+                value={getHoraString(salidaIni)}
+                readOnly
+                className="input"
+                style={{ 
+                  background: '#f7f7fa', 
+                  color: '#333', 
+                  fontWeight: 500,
+                  cursor: 'not-allowed'
+                }}
+                placeholder="Se captura automáticamente"
+              />
             </div>
           </div>
           <div className="form-group">
