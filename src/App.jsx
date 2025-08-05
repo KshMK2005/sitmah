@@ -176,6 +176,10 @@ function App() {
         nuevaFecha.setHours(Number(h), Number(m), 0, 0);
         setSalidaIni(nuevaFecha);
       }
+      // Hora programada (se establece automáticamente desde la programación)
+      if (prog.horaSalida) {
+        setHoraProgramada(prog.horaSalida);
+      }
       // Intervalo y corridas
       setIntervalo(prog.intervalo || '');
       setCorridaIni(prog.corridaInicial || '');
@@ -556,10 +560,15 @@ function App() {
               <input
                 type="text"
                 value={horaProgramada}
-                onChange={e => setHoraProgramada(e.target.value)}
-                placeholder="HH:mm"
+                readOnly
                 className="input"
-                maxLength={5}
+                style={{ 
+                  background: '#f7f7fa', 
+                  color: '#333', 
+                  fontWeight: 500,
+                  cursor: 'not-allowed'
+                }}
+                placeholder="Se llena automáticamente"
               />
             </div>
             <div className="form-group" style={{ flex: 1 }}>
