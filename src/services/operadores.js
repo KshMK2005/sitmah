@@ -35,11 +35,13 @@ export const operadorService = {
             const data = await response.json();
             console.log('Datos recibidos:', data);
             
-            if (!data || !data.operador) {
+            // Compatibilidad: aceptar data.operador o data directamente
+            let operador = data.operador || data;
+            if (!operador || !operador.nombre) {
                 throw new Error(data?.message || 'No se encontró el operador');
             }
             
-            return data.operador;
+            return operador;
         } catch (error) {
             console.error('Error en buscarPorTarjeton:', error);
             // Si es un error de timeout o red, lanzar un error más específico
