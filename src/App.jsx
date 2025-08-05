@@ -422,7 +422,7 @@ function App() {
               ruta: horario.ruta,
               intervalo: Number(horario.intervalo),
               corridaInicial: Number(horario.corridaIni),
-              corridaFinal: Number(horario.corridaFin),
+              corridaFinal: Number(horario.corridaIni), // Usar la misma corrida inicial como final
               horaSalida: horario.horaSalida.slice(0, 5), // Asegura formato HH:mm
               horaProgramada: horario.horaProgramada || '',
               tipoUnidad: (horario.apertura?.tipoUnidad || '').toUpperCase(),
