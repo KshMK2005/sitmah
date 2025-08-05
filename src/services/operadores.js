@@ -10,10 +10,12 @@ export const operadorService = {
     // Buscar operador por tarjetón
     async buscarPorTarjeton(tarjeton) {
         try {
-            console.log('Iniciando búsqueda de operador con tarjetón:', tarjeton);
-            console.log('URL de la petición:', `${API_URL}/operadores/buscar/${tarjeton}`);
+            // Normalizar: mayúsculas y sin espacios
+            const tarjetonNormalizado = String(tarjeton).trim().toUpperCase().replace(/\s+/g, '');
+            console.log('Iniciando búsqueda de operador con tarjetón:', tarjetonNormalizado);
+            console.log('URL de la petición:', `${API_URL}/operadores/buscar/${tarjetonNormalizado}`);
             
-            const response = await fetch(`${API_URL}/operadores/buscar/${tarjeton}`, {
+            const response = await fetch(`${API_URL}/operadores/buscar/${tarjetonNormalizado}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -32,6 +34,10 @@ export const operadorService = {
             
             const data = await response.json();
             console.log('Datos recibidos:', data);
+            
+            if (!data || !data.operador) {
+                throw new Error(data?.message || 'No se encontró el operador');
+            }
             
             return data.operador;
         } catch (error) {
