@@ -564,28 +564,6 @@ function App() {
                 placeholder="Se llena automáticamente"
               />
             </div>
-            <div className="form-group" style={{ flex: 1 }}>
-              <label>Hora de salida (se captura automáticamente)</label>
-              <div style={{ 
-                display: 'flex', 
-                alignItems: 'center', 
-                gap: '0.5rem',
-                background: '#e8f5e8',
-                padding: '0.75rem',
-                borderRadius: '4px',
-                border: '1px solid #4CAF50'
-              }}>
-                <span style={{ 
-                  fontSize: '1rem', 
-                  fontWeight: '500', 
-                  color: '#2e7d32',
-                  fontStyle: 'italic'
-                }}>
-                  Se registrará al momento de guardar
-                </span>
-                <span style={{ color: '#4CAF50', fontSize: '1rem' }}>⏱️</span>
-              </div>
-            </div>
           </div>
           <div className="form-group">
             <label>Del</label>

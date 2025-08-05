@@ -641,7 +641,7 @@ function Verificador() {
                                 <div className="table-cell" style={{ textAlign: 'center' }}>{ap.economico}</div>
                                 <div className="table-cell" style={{ textAlign: 'center' }}>{ap.tarjeton}</div>
                                 <div className="table-cell" style={{ textAlign: 'center' }}>{ap.corridaInicial}</div>
-                                <div className="table-cell" style={{ textAlign: 'center' }}>{ap.horaSalida}</div>
+                                <div className="table-cell" style={{ textAlign: 'center' }}>{ap.horaProgramada || ap.horaSalida}</div>
                                 <div className="table-cell" style={{ textAlign: 'center' }}>
                                     <input
                                         type="time"
