@@ -325,6 +325,111 @@ function Dashboard() {
     doc.save(`acuse_programaciones_${fecha.replace(/\//g, '-')}.pdf`);
   };
 
+  const handleAcuseVerificacionesPorFecha = (fecha, items) => {
+    const doc = new jsPDF({ orientation: 'landscape' });
+    doc.setFontSize(16);
+    doc.text('ACUSE DE VERIFICACIONES', 14, 18);
+    doc.setFontSize(11);
+    doc.text(`Fecha de generación: ${new Date().toLocaleString('es-MX')}`, 14, 26);
+    doc.text(`Fecha de la tabla: ${fecha}`, 14, 34);
+    let lastY = 40;
+
+    // Tabla principal: Verificaciones
+    const head = [[
+      'Ruta', 'Tipo Unidad', 'Económico', 'Tarjetón', 'Nombre', 'Corrida Inicial', 'Corrida Final', 'Hora Salida', 'Fecha Apertura', 'Estado', 'Motivo'
+    ]];
+    let rows = items.map(ap => [
+      ap.ruta,
+      ap.tipoUnidad,
+      ap.economico,
+      ap.tarjeton,
+      ap.nombre,
+      ap.corridaInicial,
+      ap.corridaFinal,
+      ap.horaSalida,
+      ap.fechaApertura ? new Date(ap.fechaApertura).toLocaleString('es-MX') : '-',
+      ap.estado === 'cancelado' ? 'rechazado' : (ap.estado === 'completado' || ap.estado === 'dashboard') ? 'aceptado' : 'pendiente',
+      ap.observaciones || '-'
+    ]);
+    autoTable(doc, {
+      head,
+      body: rows,
+      startY: lastY,
+      styles: { fontSize: 9 },
+      headStyles: { fillColor: [180, 58, 72] },
+      margin: { left: 14, right: 14 },
+      tableWidth: 'auto',
+      didDrawPage: (data) => {
+        lastY = data.cursor.y + 10;
+      }
+    });
+
+    // Tabla especial: Resumen por tipo de unidad
+    const tiposUnidades = ['gran viale', 'boxer', 'sprinter', 'vagoneta'];
+    // Filtrar verificados de la fecha actual
+    const verificadosDeFechaResumen = verificados.filter(v => {
+      if (!v.fechaApertura) return false;
+      const fechaV = new Date(v.fechaApertura);
+      const fechaFiltro = new Date(fecha);
+      return fechaV.getFullYear() === fechaFiltro.getFullYear() &&
+             fechaV.getMonth() === fechaFiltro.getMonth() &&
+             fechaV.getDate() === fechaFiltro.getDate();
+    });
+    // Unidades en operación: verificados con estado 'dashboard' por tipo
+    const unidadesEnOperacion = tipo => verificadosDeFechaResumen.filter(v => {
+      const tipoUnidad = (v.tipoUnidad || v.tipoVehiculo || '').toLowerCase().trim();
+      return tipoUnidad === tipo && v.estado === 'dashboard';
+    }).length;
+    // Unidades en reserva: verificados con estado 'pendiente' por tipo
+    const unidadesEnReserva = tipo => verificadosDeFechaResumen.filter(v => {
+      const tipoUnidad = (v.tipoUnidad || v.tipoVehiculo || '').toLowerCase().trim();
+      return tipoUnidad === tipo && v.estado === 'pendiente';
+    }).length;
+    // Unidades en falla (pendiente) por tipo
+    const aperturasDeFecha = aperturas.filter(a => {
+      if (!a.fechaApertura) return false;
+      const fechaA = new Date(a.fechaApertura);
+      const fechaFiltro = new Date(fecha);
+      return fechaA.getFullYear() === fechaFiltro.getFullYear() &&
+             fechaA.getMonth() === fechaFiltro.getMonth() &&
+             fechaA.getDate() === fechaFiltro.getDate();
+    });
+    const unidadesEnFalla = tipo => aperturasDeFecha.filter(a => {
+      const tipoUnidad = (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim();
+      return tipoUnidad === tipo && a.estado === 'pendiente';
+    }).length;
+    
+    const headResumen = [[
+      'Modelo',
+      'Unidades en Operación',
+      'Unidades en Reserva',
+      'Unidades con Fallas',
+    ]];
+    const rowsResumen = tiposUnidades.map(tipo => [
+      tipo.charAt(0).toUpperCase() + tipo.slice(1),
+      unidadesEnOperacion(tipo),
+      unidadesEnReserva(tipo),
+      unidadesEnFalla(tipo)
+    ]);
+    doc.setFontSize(14);
+    doc.text('Resumen por tipo de unidad', 14, lastY);
+    lastY += 6;
+    autoTable(doc, {
+      head: headResumen,
+      body: rowsResumen,
+      startY: lastY,
+      styles: { fontSize: 10 },
+      headStyles: { fillColor: [100, 180, 255] },
+      margin: { left: 14, right: 14 },
+      tableWidth: 'auto',
+      didDrawPage: (data) => {
+        lastY = data.cursor.y + 10;
+      }
+    });
+
+    doc.save(`acuse_verificaciones_${fecha.replace(/\//g, '-')}.pdf`);
+  };
+
   return (
     <div className="apertura-page" style={{ background: '#f8f9fa', minHeight: '100vh' }}>
       {/* Mostrar SIEMPRE el navbar de dashboard si el usuario es administrador */}
@@ -764,6 +869,11 @@ function Dashboard() {
                             </React.Fragment>
                           ))}
                         </div>
+                      </div>
+                      <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 12 }}>
+                        <button onClick={() => handleAcuseVerificacionesPorFecha(fecha, items)} style={{ background: '#6F2234', color: '#fff', border: 'none', borderRadius: 6, padding: '0.5rem 1.2rem', fontWeight: 600, cursor: 'pointer', fontSize: 15 }}>
+                          Generar acuse PDF de esta tabla
+                        </button>
                       </div>
                     </div>
                   ))
