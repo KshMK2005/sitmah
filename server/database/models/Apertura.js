@@ -47,6 +47,18 @@ const aperturaSchema = new mongoose.Schema({
             message: 'La hora de salida debe estar en formato HH:mm'
         }
     },
+    horaProgramada: {
+        type: String,
+        validate: {
+            validator: function(v) {
+                if (v) {
+                    return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(v);
+                }
+                return true;
+            },
+            message: 'La hora programada debe estar en formato HH:mm'
+        }
+    },
     // Campos existentes
     tipoUnidad: {
         type: String,
@@ -121,9 +133,23 @@ const aperturaSchema = new mongoose.Schema({
         trim: true,
         maxlength: [500, 'El comentario no puede exceder los 500 caracteres']
     },
+    comentarioVerificacion: {
+        type: String,
+        trim: true,
+        maxlength: [500, 'El comentario de verificación no puede exceder los 500 caracteres']
+    },
+    verificacionComponentes: {
+        type: Map,
+        of: String,
+        default: {}
+    },
     usuarioCreacion: {
         type: String,
         required: [true, 'El usuario que crea la apertura es obligatorio'],
+        trim: true
+    },
+    usuarioModificacion: {
+        type: String,
         trim: true
     },
     ultimaModificacion: {
