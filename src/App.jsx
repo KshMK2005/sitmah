@@ -58,15 +58,15 @@ function App() {
   useEffect(() => {
     const buscarOperadorPorTarjeton = async () => {
       console.log('🔍 useEffect ejecutado - tarjetón actual:', tarjeton);
-      
+
       if (tarjeton && tarjeton.trim() !== '') {
         console.log('🔍 Buscando operador para tarjetón:', tarjeton.trim());
         setBuscandoOperador(true);
-        
+
         try {
           const operador = await operadorService.buscarPorTarjeton(tarjeton.trim());
           console.log('✅ Operador encontrado:', operador);
-          
+
           if (operador && operador.nombre) {
             console.log('✅ Estableciendo nombre:', operador.nombre);
             setNombre(operador.nombre);
@@ -77,12 +77,12 @@ function App() {
         } catch (err) {
           console.error('❌ Error al buscar operador:', err);
           setNombre('');
-          
+
           // Mostrar mensaje de error solo si el tarjetón sigue siendo el mismo
           if (tarjeton && tarjeton.trim() !== '') {
             Swal.fire({
               title: 'Operador no encontrado',
-                             text: `No se encontró un operador con el tarjetón: ${tarjeton.trim()}`,
+              text: `No se encontró un operador con el tarjetón: ${tarjeton.trim()}`,
               icon: 'warning',
               timer: 3000,
               showConfirmButton: false
@@ -100,7 +100,7 @@ function App() {
 
     // Agregar un pequeño delay para evitar muchas peticiones mientras el usuario escribe
     const timeoutId = setTimeout(buscarOperadorPorTarjeton, 500);
-    
+
     return () => clearTimeout(timeoutId);
   }, [tarjeton]);
   const { navigateWithTransition } = useTransition();
@@ -132,10 +132,10 @@ function App() {
           programacionService.getAll(),
           operadorService.obtenerTodos()
         ]);
-        
+
         setProgramaciones(programacionesData || []);
         setOperadores(operadoresData || []);
-        
+
         // Extraer rutas únicas
         const rutasUnicas = Array.from(new Set((programacionesData || []).map(p => p.ruta)));
         setRutasDisponibles(rutasUnicas);
@@ -158,25 +158,25 @@ function App() {
   useEffect(() => {
     if (ruta && programaciones.length > 0) {
       const prog = programaciones.find(p => p.ruta === ruta);
-    if (prog) {
-      // Hora de salida
-      if (prog.horaSalida) {
-        const [h, m] = prog.horaSalida.split(':');
-        const nuevaFecha = new Date();
-        nuevaFecha.setHours(Number(h), Number(m), 0, 0);
-        setSalidaIni(nuevaFecha);
+      if (prog) {
+        // Hora de salida
+        if (prog.horaSalida) {
+          const [h, m] = prog.horaSalida.split(':');
+          const nuevaFecha = new Date();
+          nuevaFecha.setHours(Number(h), Number(m), 0, 0);
+          setSalidaIni(nuevaFecha);
+        }
+        // Hora programada (se establece automáticamente desde la programación)
+        if (prog.horaSalida) {
+          setHoraProgramada(prog.horaSalida);
+        }
+        // Intervalo y corridas
+        setIntervalo(prog.intervalo || '');
+        setCorridaIni(prog.corridaInicial || '');
+        // Mostrar número económico y tipo de unidad si existen
+        if (prog.numeroEconomico) setEconomico(prog.numeroEconomico);
+        if (prog.tipoVehiculo) setTipoUnidad(prog.tipoVehiculo);
       }
-      // Hora programada (se establece automáticamente desde la programación)
-      if (prog.horaSalida) {
-        setHoraProgramada(prog.horaSalida);
-      }
-      // Intervalo y corridas
-      setIntervalo(prog.intervalo || '');
-      setCorridaIni(prog.corridaInicial || '');
-      // Mostrar número económico y tipo de unidad si existen
-      if (prog.numeroEconomico) setEconomico(prog.numeroEconomico);
-      if (prog.tipoVehiculo) setTipoUnidad(prog.tipoVehiculo);
-    }
     }
   }, [ruta, programaciones]);
 
@@ -258,7 +258,7 @@ function App() {
 
     // Capturar la hora actual al momento de enviar
     const horaActual = new Date();
-    
+
     const nuevoHorario = {
       id: editandoId || Date.now(),
       ruta,
@@ -349,9 +349,9 @@ function App() {
     setEconomico(item.apertura?.economico || '');
     setTarjeton(item.apertura?.tarjeton || '');
     setNombre(item.apertura?.nombre || '');
-    
 
-    
+
+
     localStorage.setItem('editandoHorarioId', item.id);
   };
 
@@ -434,7 +434,7 @@ function App() {
               try {
                 const parsed = JSON.parse(error.message);
                 mensaje = parsed.message || parsed.error || error.message;
-              } catch {}
+              } catch { }
             }
             Swal.fire({
               title: "Error al guardar",
@@ -510,7 +510,7 @@ function App() {
         justifyContent: 'flex-start'
       }}>
         <form onSubmit={handleSubmit} className="form" style={{ marginTop: '0.5rem', marginBottom: 8, width: '100%', maxWidth: 900, background: '#fff', borderRadius: 12, boxShadow: '0 2px 12px rgba(128, 0, 32, 0.08)', padding: '2rem 2.5rem', display: 'flex', flexDirection: 'column', gap: '1.2rem', alignItems: 'center' }}>
-          <h2 style={{marginTop:'0',marginBottom:'1.2rem',color:'#6F2234'}}>Nueva Programación</h2>
+          <h2 style={{ marginTop: '0', marginBottom: '1.2rem', color: '#6F2234' }}>Nueva Programación</h2>
           <div className="form-grid-3col">
             <div className="form-group">
               <label>Ruta</label>
@@ -532,50 +532,44 @@ function App() {
                 value={intervalo}
                 onChange={e => setIntervalo(e.target.value)}
                 placeholder="Intervalo"
-                                 className={`input ${errores.intervalo ? 'input-error' : ''}`}
+                className={`input ${errores.intervalo ? 'input-error' : ''}`}
               />
               {errores.intervalo && <span className="error-message">{errores.intervalo}</span>}
             </div>
-          <div className="form-group">
-            <label>No. de corrida</label>
-            <input
-              type="number"
-              value={corridaIni}
-              onChange={e => setCorridaIni(e.target.value)}
-              placeholder="No. de corrida"
-                             className={`input ${errores.corridaIni ? 'input-error' : ''}`}
-            />
-            {errores.corridaIni && <span className="error-message">{errores.corridaIni}</span>}
-          </div>
-          <div style={{ display: 'flex', gap: '1rem', width: '100%' }}>
-                        <div className="form-group" style={{ flex: 1 }}>
-              <label>Hora programada</label>
+            <div className="form-group">
+              <label>No. de corrida</label>
               <input
-                type="text"
-                value={horaProgramada}
-                readOnly
-                className="input"
-                style={{ 
-                  background: '#f7f7fa', 
-                  color: '#333', 
-                  fontWeight: 500,
-                  cursor: 'not-allowed'
-                }}
-                placeholder="Se llena automáticamente"
+                type="number"
+                value={corridaIni}
+                onChange={e => setCorridaIni(e.target.value)}
+                placeholder="No. de corrida"
+                className={`input ${errores.corridaIni ? 'input-error' : ''}`}
+              />
+              {errores.corridaIni && <span className="error-message">{errores.corridaIni}</span>}
+            </div>
+            <div style={{ display: 'flex', gap: '1rem', width: '100%' }}>
+              <div className="form-group" style={{ flex: 1 }}>
+                <label>Hora programada</label>
+                <input
+                  type="time"
+                  value={horaProgramada}
+                  onChange={e => setHoraProgramada(e.target.value)}
+                  className="input"
+                  placeholder="HH:MM"
+                />
+              </div>
+            </div>
+            <div className="form-group">
+              <label>Del</label>
+              <DatePicker
+                selected={fechaDel}
+                onChange={date => setFechaDel(date)}
+                dateFormat="yyyy-MM-dd"
+                className={`input ${errores.fechas ? 'input-error' : ''}`}
               />
             </div>
-          </div>
-          <div className="form-group">
-            <label>Del</label>
-            <DatePicker
-              selected={fechaDel}
-              onChange={date => setFechaDel(date)}
-              dateFormat="yyyy-MM-dd"
-                             className={`input ${errores.fechas ? 'input-error' : ''}`}
-            />
-          </div>
-          {/* Eliminado el segundo DatePicker ("Al") */}
-          {errores.fechas && <span className="error-message">{errores.fechas}</span>}
+            {/* Eliminado el segundo DatePicker ("Al") */}
+            {errores.fechas && <span className="error-message">{errores.fechas}</span>}
 
             <div className="form-group">
               <label>Tipo de Unidad</label>
@@ -605,8 +599,8 @@ function App() {
                   value={tarjeton}
                   onChange={e => setTarjeton(e.target.value)}
                   placeholder="Ingrese el tarjetón para buscar al operador"
-                                     className={`input ${errores.tarjeton ? 'input-error' : ''}`}
-                  style={{ 
+                  className={`input ${errores.tarjeton ? 'input-error' : ''}`}
+                  style={{
                     textTransform: 'uppercase',
                     border: tarjeton && nombre ? '2px solid #4CAF50' : '1px solid #ddd',
                     transition: 'all 0.3s ease',
@@ -655,11 +649,11 @@ function App() {
                 value={nombre}
                 onChange={e => setNombre(e.target.value)}
                 placeholder="Se llena automáticamente al ingresar el tarjetón"
-                                 className={`input ${errores.nombre ? 'input-error' : ''}`}
+                className={`input ${errores.nombre ? 'input-error' : ''}`}
                 readOnly
-                style={{ 
-                  background: nombre ? '#e8f5e8' : '#f7f7fa', 
-                  color: '#333', 
+                style={{
+                  background: nombre ? '#e8f5e8' : '#f7f7fa',
+                  color: '#333',
                   fontWeight: nombre ? 600 : 500,
                   border: nombre ? '2px solid #4CAF50' : '1px solid #ddd',
                   transition: 'all 0.3s ease'
@@ -681,12 +675,12 @@ function App() {
                 placeholder="Comentario opcional"
                 className="input"
                 rows={2}
-                style={{width:'100%'}}
+                style={{ width: '100%' }}
               />
             </div>
           </div>
 
-          <button type="submit" className="btn-submit" style={{marginBottom: '1.2rem'}}>{editandoId !== null ? 'GUARDAR CAMBIOS' : 'SUBIR'}</button>
+          <button type="submit" className="btn-submit" style={{ marginBottom: '1.2rem' }}>{editandoId !== null ? 'GUARDAR CAMBIOS' : 'SUBIR'}</button>
           {editandoId !== null && (
             <button type="button" className="btn-delete" onClick={handleCancelEdit} style={{ marginLeft: '1rem' }}>CANCELAR</button>
           )}
@@ -725,11 +719,11 @@ function App() {
                     <td style={{ textAlign: 'center' }}>{row.apertura?.tarjeton || '-'}</td>
                     <td style={{ textAlign: 'center' }}>{row.apertura?.nombre || '-'}</td>
                     <td style={{ textAlign: 'center', whiteSpace: 'nowrap', overflow: 'auto' }}>
-                                              <div style={{ display: 'flex', gap: 4, justifyContent: 'center', flexWrap: 'wrap' }}>
-                          <button onClick={() => handleEdit(row)} className="btn-edit action-btn" title="Editar horario">✏</button>
-                          <button onClick={() => handleApertura(row)} className="btn-submit action-btn" style={{ padding: '0.3rem 0.5rem' }} title="Asignar unidad">🚌</button>
-                          <button onClick={() => handleDelete(row.id)} className="btn-delete action-btn" title="Eliminar horario">🗑</button>
-                        </div>
+                      <div style={{ display: 'flex', gap: 4, justifyContent: 'center', flexWrap: 'wrap' }}>
+                        <button onClick={() => handleEdit(row)} className="btn-edit action-btn" title="Editar horario">✏</button>
+                        <button onClick={() => handleApertura(row)} className="btn-submit action-btn" style={{ padding: '0.3rem 0.5rem' }} title="Asignar unidad">🚌</button>
+                        <button onClick={() => handleDelete(row.id)} className="btn-delete action-btn" title="Eliminar horario">🗑</button>
+                      </div>
                     </td>
                   </tr>
                 ))}
