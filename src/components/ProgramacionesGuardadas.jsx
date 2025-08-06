@@ -1,3 +1,47 @@
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+// Función para generar PDF de la tabla visible
+const generarAcusePDF = () => {
+  const doc = new jsPDF({ orientation: 'landscape' });
+  doc.setFontSize(16);
+  doc.text('Acuse de Programaciones Guardadas', 14, 16);
+  doc.setFontSize(10);
+  doc.text(`Fecha de generación: ${new Date().toLocaleString('es-MX')}`, 14, 24);
+
+  // Encabezados de la tabla
+  const head = [[
+    'Fecha',
+    'Ruta',
+    'Tipo',
+    'Unidades',
+    'Hora',
+  ]];
+
+  // Filas de la tabla (solo las visibles en la página actual)
+  const body = currentItems.map(p => [
+    formatDate(p.fechaCreacion),
+    p.ruta,
+    p.tipoVehiculo,
+    p.cantidadUnidades,
+    p.horaSalida
+  ]);
+
+  doc.autoTable({
+    head,
+    body,
+    startY: 30,
+    styles: { fontSize: 10, cellPadding: 2 },
+    headStyles: { fillColor: [111, 34, 52], textColor: 255, fontStyle: 'bold' },
+    margin: { left: 14, right: 14 },
+    theme: 'grid',
+    didDrawPage: (data) => {
+      doc.setFontSize(10);
+      doc.text(`Página ${doc.internal.getNumberOfPages()}`, data.settings.margin.left, doc.internal.pageSize.height - 10);
+    }
+  });
+
+  doc.save('acuse_programaciones.pdf');
+};
 import React, { useEffect, useState } from 'react';
 import { programacionService } from '../services/api';
 import NavbarProgramador from './NavbarProgramador';
@@ -123,7 +167,7 @@ function ProgramacionesGuardadas() {
       resultado = resultado.filter(p => p.ruta.toLowerCase().includes(filtro.ruta.toLowerCase()));
     }
     if (filtro.fecha) {
-      resultado = resultado.filter(p => p.fechaCreacion && new Date(p.fechaCreacion).toISOString().slice(0,10) === filtro.fecha);
+      resultado = resultado.filter(p => p.fechaCreacion && new Date(p.fechaCreacion).toISOString().slice(0, 10) === filtro.fecha);
     }
     setFiltradas(resultado);
     setCurrentPage(1); // Reset a la primera página cuando se aplica un filtro
@@ -133,12 +177,12 @@ function ProgramacionesGuardadas() {
   const toggleRowExpansion = (programacionId) => {
     const newExpandedRows = new Set(expandedRows);
     const newCollapsingRows = new Set(collapsingRows);
-    
+
     if (newExpandedRows.has(programacionId)) {
       // Iniciar animación de cierre
       newCollapsingRows.add(programacionId);
       setCollapsingRows(newCollapsingRows);
-      
+
       // Esperar a que termine la animación antes de ocultar
       setTimeout(() => {
         newExpandedRows.delete(programacionId);
@@ -181,7 +225,7 @@ function ProgramacionesGuardadas() {
   const getPageNumbers = () => {
     const pages = [];
     const maxVisiblePages = 5;
-    
+
     if (totalPages <= maxVisiblePages) {
       for (let i = 1; i <= totalPages; i++) {
         pages.push(i);
@@ -209,7 +253,7 @@ function ProgramacionesGuardadas() {
         pages.push(totalPages);
       }
     }
-    
+
     return pages;
   };
 
@@ -219,16 +263,16 @@ function ProgramacionesGuardadas() {
       {(!role || role !== 'administrador') && <NavbarProgramador />}
       <main className="programador-content" style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem' }}>
         {/* Header */}
-        <div style={{ 
-          background: 'linear-gradient(135deg, #6F2234 0%, #8B2E3F 100%)', 
-          borderRadius: '12px', 
-          padding: '1.5rem', 
+        <div style={{
+          background: 'linear-gradient(135deg, #6F2234 0%, #8B2E3F 100%)',
+          borderRadius: '12px',
+          padding: '1.5rem',
           marginBottom: '2rem',
           boxShadow: '0 4px 20px rgba(111, 34, 52, 0.2)'
         }}>
-          <h2 style={{ 
-            color: '#fff', 
-            fontSize: '2rem', 
+          <h2 style={{
+            color: '#fff',
+            fontSize: '2rem',
             margin: 0,
             fontWeight: '600',
             textAlign: 'center'
@@ -238,19 +282,19 @@ function ProgramacionesGuardadas() {
         </div>
 
         {/* Filtros compactos */}
-        <div style={{ 
-          display: 'flex', 
-          justifyContent: 'center', 
+        <div style={{
+          display: 'flex',
+          justifyContent: 'center',
           gap: '1rem',
           marginBottom: '2rem',
           flexWrap: 'wrap'
         }}>
-          <select 
-            value={filtro.tipoVehiculo} 
+          <select
+            value={filtro.tipoVehiculo}
             onChange={e => setFiltro(f => ({ ...f, tipoVehiculo: e.target.value }))}
-            style={{ 
-              padding: '0.5rem 1rem', 
-              borderRadius: '8px', 
+            style={{
+              padding: '0.5rem 1rem',
+              borderRadius: '8px',
               border: '2px solid #e0e0e0',
               background: '#fff',
               fontSize: '1rem',
@@ -263,27 +307,27 @@ function ProgramacionesGuardadas() {
             <option value="SPRINTER">SPRINTER</option>
             <option value="VAGONETA">VAGONETA</option>
           </select>
-          <input 
-            type="text" 
-            placeholder="Buscar por ruta" 
-            value={filtro.ruta} 
+          <input
+            type="text"
+            placeholder="Buscar por ruta"
+            value={filtro.ruta}
             onChange={e => setFiltro(f => ({ ...f, ruta: e.target.value }))}
-            style={{ 
-              padding: '0.5rem 1rem', 
-              borderRadius: '8px', 
+            style={{
+              padding: '0.5rem 1rem',
+              borderRadius: '8px',
               border: '2px solid #e0e0e0',
               background: '#fff',
               fontSize: '1rem',
               minWidth: '150px'
             }}
           />
-          <input 
-            type="date" 
-            value={filtro.fecha} 
+          <input
+            type="date"
+            value={filtro.fecha}
             onChange={e => setFiltro(f => ({ ...f, fecha: e.target.value }))}
-            style={{ 
-              padding: '0.5rem 1rem', 
-              borderRadius: '8px', 
+            style={{
+              padding: '0.5rem 1rem',
+              borderRadius: '8px',
               border: '2px solid #e0e0e0',
               background: '#fff',
               fontSize: '1rem',
@@ -292,10 +336,30 @@ function ProgramacionesGuardadas() {
           />
         </div>
 
+        {/* Botón para generar acuse PDF */}
+        <div style={{ textAlign: 'right', marginBottom: '1rem' }}>
+          <button
+            onClick={generarAcusePDF}
+            style={{
+              background: '#6F2234',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '6px',
+              padding: '0.6rem 1.4rem',
+              fontWeight: 600,
+              fontSize: '1rem',
+              cursor: 'pointer',
+              boxShadow: '0 2px 8px #6F223420',
+              marginBottom: '0.5rem'
+            }}
+          >
+            📝 Generar Acuse
+          </button>
+        </div>
         {/* Información de paginación */}
         {filtradas.length > 0 && (
-          <div style={{ 
-            textAlign: 'center', 
+          <div style={{
+            textAlign: 'center',
             marginBottom: '1rem',
             padding: '0.5rem',
             background: '#f8f9fa',
@@ -310,10 +374,10 @@ function ProgramacionesGuardadas() {
 
         {/* Tabla de programaciones */}
         {filtradas.length === 0 ? (
-          <div style={{ 
-            textAlign: 'center', 
-            padding: '3rem', 
-            background: '#f8f9fa', 
+          <div style={{
+            textAlign: 'center',
+            padding: '3rem',
+            background: '#f8f9fa',
             borderRadius: '12px',
             border: '2px dashed #dee2e6'
           }}>
@@ -322,22 +386,22 @@ function ProgramacionesGuardadas() {
             </p>
           </div>
         ) : (
-          <div style={{ 
-            background: '#fff', 
-            borderRadius: '12px', 
+          <div style={{
+            background: '#fff',
+            borderRadius: '12px',
             boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
             overflow: 'hidden'
           }}>
             {/* Tabla */}
             <div style={{ overflowX: 'auto' }}>
-              <table style={{ 
-                width: '100%', 
+              <table style={{
+                width: '100%',
                 borderCollapse: 'collapse',
                 fontSize: '0.95rem'
               }}>
                 <thead>
-                  <tr style={{ 
-                    background: '#6F2234', 
+                  <tr style={{
+                    background: '#6F2234',
                     color: '#fff'
                   }}>
                     <th style={{ padding: '1rem', textAlign: 'left', fontWeight: '600' }}>Fecha</th>
@@ -351,7 +415,7 @@ function ProgramacionesGuardadas() {
                 <tbody>
                   {currentItems.map((p, index) => (
                     <React.Fragment key={p._id || index}>
-                      <tr style={{ 
+                      <tr style={{
                         background: index % 2 === 0 ? '#fff' : '#f8f9fa',
                         borderBottom: '1px solid #e9ecef'
                       }}>
@@ -368,10 +432,10 @@ function ProgramacionesGuardadas() {
                           {p.cantidadUnidades}
                         </td>
                         <td style={{ padding: '1rem', textAlign: 'center' }}>
-                          <span style={{ 
-                            background: '#6F2234', 
-                            color: '#fff', 
-                            padding: '0.3rem 0.6rem', 
+                          <span style={{
+                            background: '#6F2234',
+                            color: '#fff',
+                            padding: '0.3rem 0.6rem',
                             borderRadius: '6px',
                             fontSize: '0.9rem',
                             fontWeight: '600'
@@ -400,31 +464,31 @@ function ProgramacionesGuardadas() {
                       </tr>
                       {/* Fila expandible con detalles */}
                       {(expandedRows.has(p._id) || collapsingRows.has(p._id)) && (
-                        <tr 
+                        <tr
                           className={`expandable-row ${collapsingRows.has(p._id) ? 'collapsing' : 'expanded'}`}
-                          style={{ 
+                          style={{
                             background: '#f8f9fa'
                           }}
                         >
                           <td colSpan="6" style={{ padding: '1.5rem' }}>
-                            <div style={{ 
-                              background: '#fff', 
-                              borderRadius: '8px', 
+                            <div style={{
+                              background: '#fff',
+                              borderRadius: '8px',
                               padding: '1.5rem',
                               boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
                             }}>
-                              <h4 style={{ 
-                                color: '#6F2234', 
+                              <h4 style={{
+                                color: '#6F2234',
                                 marginBottom: '1rem',
                                 fontSize: '1.1rem',
                                 fontWeight: '600'
                               }}>
                                 Detalles de la Programación
                               </h4>
-                              <div style={{ 
-                                display: 'grid', 
-                                gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', 
-                                gap: '1rem' 
+                              <div style={{
+                                display: 'grid',
+                                gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+                                gap: '1rem'
                               }}>
                                 <div><strong>Ruta:</strong> {p.ruta}</div>
                                 <div><strong>Tipo de Vehículo:</strong> {p.tipoVehiculo}</div>
@@ -434,8 +498,8 @@ function ProgramacionesGuardadas() {
                                 <div><strong>Corrida Final:</strong> {p.corridaFinal}</div>
                                 <div><strong>Hora de Salida:</strong> {p.horaSalida}</div>
                                 <div><strong>Programador:</strong> {p.programador || '-'}</div>
-                                <div><strong>Estado:</strong> 
-                                  <span style={{ 
+                                <div><strong>Estado:</strong>
+                                  <span style={{
                                     background: p.estado === 'activo' ? '#28a745' : '#dc3545',
                                     color: '#fff',
                                     padding: '0.2rem 0.5rem',
@@ -450,10 +514,10 @@ function ProgramacionesGuardadas() {
                               {p.horarios && p.horarios.length > 0 && (
                                 <div style={{ marginTop: '1rem' }}>
                                   <h5 style={{ color: '#6F2234', marginBottom: '0.5rem' }}>Horarios Generados:</h5>
-                                  <div style={{ 
-                                    display: 'flex', 
-                                    flexWrap: 'wrap', 
-                                    gap: '0.5rem' 
+                                  <div style={{
+                                    display: 'flex',
+                                    flexWrap: 'wrap',
+                                    gap: '0.5rem'
                                   }}>
                                     {p.horarios.map((horario, idx) => (
                                       <span key={idx} style={{
@@ -483,13 +547,13 @@ function ProgramacionesGuardadas() {
         {/* Paginación */}
         {totalPages > 1 && (
           <div className="pagination">
-            <button 
-              onClick={() => paginate(currentPage - 1)} 
+            <button
+              onClick={() => paginate(currentPage - 1)}
               disabled={currentPage === 1}
             >
               ← Anterior
             </button>
-            
+
             {getPageNumbers().map((pageNumber, index) => (
               <button
                 key={index}
@@ -501,9 +565,9 @@ function ProgramacionesGuardadas() {
                 {pageNumber}
               </button>
             ))}
-            
-            <button 
-              onClick={() => paginate(currentPage + 1)} 
+
+            <button
+              onClick={() => paginate(currentPage + 1)}
               disabled={currentPage === totalPages}
             >
               Siguiente →
