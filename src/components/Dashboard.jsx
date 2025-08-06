@@ -326,6 +326,17 @@ function Dashboard() {
   };
 
   const handleAcuseVerificacionesPorFecha = (fecha, items) => {
+    // Función para parsear fecha DD/MM/YYYY de forma confiable
+    const parseDate = (dateString) => {
+      if (!dateString) return null;
+      const parts = dateString.split('/');
+      if (parts.length === 3) {
+        // DD/MM/YYYY -> YYYY-MM-DD para crear Date object
+        return new Date(parts[2], parts[1] - 1, parts[0]);
+      }
+      return new Date(dateString);
+    };
+
     const doc = new jsPDF({ orientation: 'landscape' });
     doc.setFontSize(16);
     doc.text('ACUSE DE VERIFICACIONES', 14, 18);
@@ -333,6 +344,13 @@ function Dashboard() {
     doc.text(`Fecha de generación: ${new Date().toLocaleString('es-MX')}`, 14, 26);
     doc.text(`Fecha de la tabla: ${fecha}`, 14, 34);
     let lastY = 40;
+
+    // Parsear la fecha de filtro una sola vez
+    const fechaFiltro = parseDate(fecha);
+    if (!fechaFiltro) {
+      alert('Error al procesar la fecha');
+      return;
+    }
 
     // Tabla principal: Verificaciones
     const head = [[
@@ -347,7 +365,7 @@ function Dashboard() {
       ap.corridaInicial,
       ap.corridaFinal,
       ap.horaSalida,
-      ap.fechaApertura ? new Date(ap.fechaApertura).toLocaleString('es-MX') : '-',
+      ap.fechaApertura ? parseDate(ap.fechaApertura)?.toLocaleString('es-MX') || '' : '-',
       ap.estado === 'cancelado' ? 'rechazado' : (ap.estado === 'completado' || ap.estado === 'dashboard') ? 'aceptado' : 'pendiente',
       ap.observaciones || '-'
     ]);
@@ -366,34 +384,55 @@ function Dashboard() {
 
     // Tabla especial: Resumen por tipo de unidad
     const tiposUnidades = ['gran viale', 'boxer', 'sprinter', 'vagoneta'];
+    
+    // Filtrar programaciones de la fecha actual para obtener unidades programadas
+    const programacionesDeFecha = programaciones.filter(p => {
+      if (!p.fechaProgramacion) return false;
+      const fechaP = parseDate(p.fechaProgramacion);
+      if (!fechaP) return false;
+      return fechaP.getFullYear() === fechaFiltro.getFullYear() &&
+             fechaP.getMonth() === fechaFiltro.getMonth() &&
+             fechaP.getDate() === fechaFiltro.getDate();
+    });
+    
+    // Unidades programadas por tipo
+    const unidadesProgramadas = tipo => programacionesDeFecha.filter(p => {
+      const tipoUnidad = (p.tipoUnidad || p.tipoVehiculo || '').toLowerCase().trim();
+      return tipoUnidad === tipo;
+    }).length;
+    
     // Filtrar verificados de la fecha actual
     const verificadosDeFechaResumen = verificados.filter(v => {
       if (!v.fechaApertura) return false;
-      const fechaV = new Date(v.fechaApertura);
-      const fechaFiltro = new Date(fecha);
+      const fechaV = parseDate(v.fechaApertura);
+      if (!fechaV) return false;
       return fechaV.getFullYear() === fechaFiltro.getFullYear() &&
              fechaV.getMonth() === fechaFiltro.getMonth() &&
              fechaV.getDate() === fechaFiltro.getDate();
     });
+    
     // Unidades en operación: verificados con estado 'dashboard' por tipo
     const unidadesEnOperacion = tipo => verificadosDeFechaResumen.filter(v => {
       const tipoUnidad = (v.tipoUnidad || v.tipoVehiculo || '').toLowerCase().trim();
       return tipoUnidad === tipo && v.estado === 'dashboard';
     }).length;
+    
     // Unidades en reserva: verificados con estado 'pendiente' por tipo
     const unidadesEnReserva = tipo => verificadosDeFechaResumen.filter(v => {
       const tipoUnidad = (v.tipoUnidad || v.tipoVehiculo || '').toLowerCase().trim();
       return tipoUnidad === tipo && v.estado === 'pendiente';
     }).length;
+    
     // Unidades en falla (pendiente) por tipo
     const aperturasDeFecha = aperturas.filter(a => {
       if (!a.fechaApertura) return false;
-      const fechaA = new Date(a.fechaApertura);
-      const fechaFiltro = new Date(fecha);
+      const fechaA = parseDate(a.fechaApertura);
+      if (!fechaA) return false;
       return fechaA.getFullYear() === fechaFiltro.getFullYear() &&
              fechaA.getMonth() === fechaFiltro.getMonth() &&
              fechaA.getDate() === fechaFiltro.getDate();
     });
+    
     const unidadesEnFalla = tipo => aperturasDeFecha.filter(a => {
       const tipoUnidad = (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim();
       return tipoUnidad === tipo && a.estado === 'pendiente';
@@ -401,12 +440,14 @@ function Dashboard() {
     
     const headResumen = [[
       'Modelo',
+      'Unidades Programadas',
       'Unidades en Operación',
       'Unidades en Reserva',
       'Unidades con Fallas',
     ]];
     const rowsResumen = tiposUnidades.map(tipo => [
       tipo.charAt(0).toUpperCase() + tipo.slice(1),
+      unidadesProgramadas(tipo),
       unidadesEnOperacion(tipo),
       unidadesEnReserva(tipo),
       unidadesEnFalla(tipo)
