@@ -74,20 +74,9 @@ function App() {
             console.log('❌ Operador sin nombre, limpiando campo');
             setNombre('');
           }
-        } catch (err) {
+                } catch (err) {
           console.error('❌ Error al buscar operador:', err);
           setNombre('');
-
-          // Mostrar mensaje de error solo si el tarjetón sigue siendo el mismo
-          if (tarjeton && tarjeton.trim() !== '') {
-            Swal.fire({
-              title: 'Operador no encontrado',
-              text: `No se encontró un operador con el tarjetón: ${tarjeton.trim()}`,
-              icon: 'warning',
-              timer: 3000,
-              showConfirmButton: false
-            });
-          }
         } finally {
           setBuscandoOperador(false);
         }
