@@ -710,7 +710,6 @@ function App() {
                     <td style={{ textAlign: 'center', whiteSpace: 'nowrap', overflow: 'auto' }}>
                       <div style={{ display: 'flex', gap: 4, justifyContent: 'center', flexWrap: 'wrap' }}>
                         <button onClick={() => handleEdit(row)} className="btn-edit action-btn" title="Editar horario">✏</button>
-                        <button onClick={() => handleApertura(row)} className="btn-submit action-btn" style={{ padding: '0.3rem 0.5rem' }} title="Asignar unidad">🚌</button>
                         <button onClick={() => handleDelete(row.id)} className="btn-delete action-btn" title="Eliminar horario">🗑</button>
                       </div>
                     </td>
