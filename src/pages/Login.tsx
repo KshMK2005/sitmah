@@ -57,8 +57,9 @@ export default function Login() {
                 Swal.fire('Error', 'Contraseña incorrecta', 'error');
                 return;
             }
-            // Guardar el rol en localStorage para mantener la sesión
+            // Guardar el rol y usuario en localStorage para mantener la sesión
             localStorage.setItem('userRole', user.rol);
+            localStorage.setItem('userName', user.usuario);
             // Redirigir según el rol
             switch (user.rol) {
                 case 'apertura':

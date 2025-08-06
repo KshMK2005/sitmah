@@ -9,7 +9,8 @@ const usuarioSchema = new mongoose.Schema({
     required: true
   },
   tarjeton: { type: String },
-  correo: { type: String }
+  correo: { type: String },
+  tema: { type: String, default: 'normal' }
 });
 
 export default mongoose.model('Usuario', usuarioSchema);

@@ -159,5 +159,18 @@ export const usuarioService = {
             throw new Error(error.error || 'Error al actualizar usuario');
         }
         return response.json();
+    },
+    // Actualizar tema del usuario
+    async updateTema(usuario, tema) {
+        const response = await fetch(`${API_URL}/usuarios/${usuario}/tema`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ tema })
+        });
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.error || 'Error al actualizar tema del usuario');
+        }
+        return response.json();
     }
 };

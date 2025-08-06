@@ -32,6 +32,7 @@ function NavbarVerificador() {
     });
     if (result.isConfirmed) {
       localStorage.removeItem('userRole');
+      localStorage.removeItem('userName');
       navigateWithTransition('/home');
     }
   };

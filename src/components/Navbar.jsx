@@ -21,6 +21,7 @@ function Navbar() {
     });
     if (result.isConfirmed) {
       localStorage.removeItem('userRole');
+      localStorage.removeItem('userName');
       navigateWithTransition('/home');
     }
     // Si elige 'No', no hace nada y permanece en la página

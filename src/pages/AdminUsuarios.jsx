@@ -181,6 +181,56 @@ export default function AdminUsuarios() {
         }
     };
 
+    // Función para elegir tema con sincronización en base de datos
+    const handleElegirTema = async () => {
+        const usuarioActual = localStorage.getItem('userName');
+        
+        // Obtener el tema actual del usuario desde la base de datos
+        let temaActual = 'normal';
+        if (usuarioActual) {
+            try {
+                const userData = await usuarioService.getByUsuario(usuarioActual);
+                if (userData && userData.tema) {
+                    temaActual = userData.tema;
+                }
+            } catch (error) {
+                console.error('Error al obtener tema del usuario:', error);
+                // Si falla, usar localStorage como fallback
+                temaActual = localStorage.getItem('temaGlobal') || 'normal';
+            }
+        } else {
+            temaActual = localStorage.getItem('temaGlobal') || 'normal';
+        }
+
+        const result = await Swal.fire({
+            title: 'Selecciona un tema',
+            input: 'select',
+            inputOptions: {
+                normal: 'Normal',
+                sanvalentin: 'San Valentín',
+                navidad: 'Navidad',
+                muertos: 'Día de Muertos',
+                grises: 'Escala de grises'
+            },
+            inputPlaceholder: 'Elige un tema',
+            showCancelButton: true,
+            confirmButtonText: 'Aplicar',
+            cancelButtonText: 'Cancelar',
+            inputValue: temaActual,
+            allowOutsideClick: false
+        });
+
+        if (result.isConfirmed && result.value) {
+            try {
+                await setGlobalTheme(result.value, usuarioActual);
+                Swal.fire('Tema aplicado', 'El tema se aplicó correctamente y se sincronizó en todos tus dispositivos', 'success');
+            } catch (error) {
+                console.error('Error al aplicar tema:', error);
+                Swal.fire('Error', 'Error al aplicar el tema', 'error');
+            }
+        }
+    };
+
     return (
         <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: '#f7f7fa' }}>
             <div style={{ background: '#fff', borderRadius: 18, boxShadow: '0 2px 24px #0002', padding: 40, minWidth: 320, maxWidth: 400, width: '100%', textAlign: 'center' }}>
@@ -194,31 +244,6 @@ export default function AdminUsuarios() {
             </div>
         </div>
     );
-}
-
-function handleElegirTema() {
-  Swal.fire({
-    title: 'Selecciona un tema',
-    input: 'select',
-    inputOptions: {
-      normal: 'Normal',
-      sanvalentin: 'San Valentín',
-      navidad: 'Navidad',
-      muertos: 'Día de Muertos',
-      grises: 'Escala de grises'
-    },
-    inputPlaceholder: 'Elige un tema',
-    showCancelButton: true,
-    confirmButtonText: 'Aplicar',
-    cancelButtonText: 'Cancelar',
-    inputValue: localStorage.getItem('temaGlobal') || 'normal',
-    allowOutsideClick: false
-  }).then(result => {
-    if (result.isConfirmed && result.value) {
-      setGlobalTheme(result.value);
-      Swal.fire('Tema aplicado', 'El tema se aplicó correctamente', 'success');
-    }
-  });
 }
 
 const isGrisesTheme = () => typeof document !== 'undefined' && document.body.classList.contains('theme-grises');

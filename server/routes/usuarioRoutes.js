@@ -66,4 +66,28 @@ router.get('/tarjeton/:tarjeton', async (req, res) => {
   }
 });
 
+// Actualizar tema del usuario
+router.put('/:usuario/tema', async (req, res) => {
+  try {
+    const { tema } = req.body;
+    if (!tema) {
+      return res.status(400).json({ error: 'El tema es requerido' });
+    }
+    
+    const usuarioActualizado = await Usuario.findOneAndUpdate(
+      { usuario: req.params.usuario },
+      { $set: { tema } },
+      { new: true }
+    );
+    
+    if (!usuarioActualizado) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+    
+    res.json(usuarioActualizado);
+  } catch (err) {
+    res.status(500).json({ error: 'Error al actualizar tema del usuario', message: err.message });
+  }
+});
+
 export default router;
