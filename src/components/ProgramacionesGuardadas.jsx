@@ -1,5 +1,5 @@
-import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import { jsPDF } from 'jspdf';
+import autoTable from 'jspdf-autotable';
 import React, { useEffect, useState } from 'react';
 import { programacionService } from '../services/api';
 import NavbarProgramador from './NavbarProgramador';
@@ -217,45 +217,69 @@ function ProgramacionesGuardadas() {
 
   // Función para generar PDF de la tabla visible
   const generarAcusePDF = () => {
-    const doc = new jsPDF({ orientation: 'landscape' });
-    doc.setFontSize(16);
-    doc.text('Acuse de Programaciones Guardadas', 14, 16);
-    doc.setFontSize(10);
-    doc.text(`Fecha de generación: ${new Date().toLocaleString('es-MX')}`, 14, 24);
-
-    // Encabezados de la tabla
-    const head = [[
-      'Fecha',
-      'Ruta',
-      'Tipo',
-      'Unidades',
-      'Hora',
-    ]];
-
-    // Filas de la tabla (solo las visibles en la página actual)
-    const body = currentItems.map(p => [
-      formatDate(p.fechaCreacion),
-      p.ruta,
-      p.tipoVehiculo,
-      p.cantidadUnidades,
-      p.horaSalida
-    ]);
-
-    doc.autoTable({
-      head,
-      body,
-      startY: 30,
-      styles: { fontSize: 10, cellPadding: 2 },
-      headStyles: { fillColor: [111, 34, 52], textColor: 255, fontStyle: 'bold' },
-      margin: { left: 14, right: 14 },
-      theme: 'grid',
-      didDrawPage: (data) => {
-        doc.setFontSize(10);
-        doc.text(`Página ${doc.internal.getNumberOfPages()}`, data.settings.margin.left, doc.internal.pageSize.height - 10);
+    try {
+      console.log('Iniciando generación de PDF...');
+      console.log('Programaciones filtradas:', filtradas.length);
+      
+      if (filtradas.length === 0) {
+        alert('No hay programaciones para generar el PDF');
+        return;
       }
-    });
+      
+      const doc = new jsPDF({ orientation: 'landscape' });
+      doc.setFontSize(16);
+      doc.text('Acuse de Programaciones Guardadas', 14, 16);
+      doc.setFontSize(10);
+      doc.text(`Fecha de generación: ${new Date().toLocaleString('es-MX')}`, 14, 24);
 
-    doc.save('acuse_programaciones.pdf');
+      // Encabezados de la tabla
+      const head = [
+        ['Fecha', 'Ruta', 'Tipo', 'Unidades', 'Hora']
+      ];
+
+      // Filas de la tabla (todas las filtradas)
+      const body = filtradas.map(p => [
+        formatDate(p.fechaCreacion),
+        p.ruta,
+        p.tipoVehiculo,
+        p.cantidadUnidades,
+        p.horaSalida
+      ]);
+
+      console.log('Datos para PDF:', { head, bodyLength: body.length });
+
+      autoTable(doc, {
+        head: head,
+        body: body,
+        startY: 30,
+        styles: { 
+          fontSize: 10, 
+          cellPadding: 2 
+        },
+        headStyles: { 
+          fillColor: [111, 34, 52], 
+          textColor: 255, 
+          fontStyle: 'bold' 
+        },
+        margin: { left: 14, right: 14 },
+        theme: 'grid',
+        didDrawPage: (data) => {
+          doc.setFontSize(10);
+          doc.text(`Página ${doc.internal.getNumberOfPages()}`, data.settings.margin.left, doc.internal.pageSize.height - 10);
+        }
+      });
+
+      console.log('PDF generado, guardando...');
+      doc.save('acuse_programaciones.pdf');
+      console.log('PDF guardado exitosamente');
+      
+      // Mostrar mensaje de éxito
+      alert('PDF generado exitosamente: acuse_programaciones.pdf');
+      
+    } catch (error) {
+      console.error('Error al generar PDF:', error);
+      alert(`Error al generar PDF: ${error.message}`);
+    }
   };
 
   return (
