@@ -199,30 +199,44 @@ export default function AdminUsuarios() {
         }
 
         const result = await Swal.fire({
-            title: 'Selecciona un tema global',
+            title: 'Cambiar tema global de la aplicación',
             input: 'select',
             inputOptions: {
-                normal: 'Normal',
-                sanvalentin: 'San Valentín',
-                navidad: 'Navidad',
-                muertos: 'Día de Muertos',
-                grises: 'Escala de grises'
+                normal: 'Normal (Tema estándar)',
+                sanvalentin: 'San Valentín (Tema romántico)',
+                navidad: 'Navidad (Tema festivo)',
+                muertos: 'Día de Muertos (Tema tradicional)',
+                grises: 'Escala de grises (Tema monocromático)'
             },
-            inputPlaceholder: 'Elige un tema',
+            inputPlaceholder: 'Elige un tema para toda la aplicación',
             showCancelButton: true,
-            confirmButtonText: 'Aplicar',
+            confirmButtonText: 'Aplicar Globalmente',
             cancelButtonText: 'Cancelar',
             inputValue: temaActual,
-            allowOutsideClick: false
+            allowOutsideClick: false,
+            confirmButtonColor: '#a51d3d',
+            cancelButtonColor: '#6c757d'
         });
 
         if (result.isConfirmed && result.value) {
             try {
                 await setGlobalTheme(result.value);
-                Swal.fire('Tema aplicado', 'El tema se aplicó correctamente y se sincronizó en toda la aplicación web', 'success');
+                Swal.fire({
+                    title: '¡Tema aplicado globalmente!',
+                    text: `El tema "${result.value}" se ha aplicado a toda la aplicación y se sincronizará automáticamente con todos los usuarios en tiempo real.`,
+                    icon: 'success',
+                    confirmButtonText: 'Entendido',
+                    confirmButtonColor: '#a51d3d'
+                });
             } catch (error) {
                 console.error('Error al aplicar tema:', error);
-                Swal.fire('Error', 'Error al aplicar el tema', 'error');
+                Swal.fire({
+                    title: 'Error al aplicar tema',
+                    text: 'Hubo un problema al cambiar el tema. Por favor, intenta nuevamente.',
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar',
+                    confirmButtonColor: '#a51d3d'
+                });
             }
         }
     };
