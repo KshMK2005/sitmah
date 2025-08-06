@@ -45,12 +45,14 @@ import programacionRoutes from './routes/programacionRoutes.js';
 import aperturaRoutes from './routes/aperturaRoutes.js';
 import usuarioRoutes from './routes/usuarioRoutes.js';
 import operadorRoutes from './routes/operadorRoutes.js';
+import configuracionRoutes from './routes/configuracionRoutes.js';
 
 // Usar rutas
 app.use('/api/programacion', programacionRoutes);
 app.use('/api/apertura', aperturaRoutes);
 app.use('/api/usuarios', usuarioRoutes);
 app.use('/api/operadores', operadorRoutes);
+app.use('/api/configuracion', configuracionRoutes);
 
 // Servir archivos estáticos en producción
 if (process.env.NODE_ENV === 'production') {

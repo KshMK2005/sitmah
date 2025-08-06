@@ -3,6 +3,7 @@ import Swal from 'sweetalert2';
 import { usuarioService } from '../services/api';
 import '../themes.css';
 import { setGlobalTheme } from '../utils/theme';
+import { configuracionService } from '../services/api';
 
 export default function AdminUsuarios() {
     // SweetAlert para editar datos de usuario
@@ -181,29 +182,24 @@ export default function AdminUsuarios() {
         }
     };
 
-    // Función para elegir tema con sincronización en base de datos
+    // Función para elegir tema con sincronización global
     const handleElegirTema = async () => {
-        const usuarioActual = localStorage.getItem('userName');
-        
-        // Obtener el tema actual del usuario desde la base de datos
+        // Obtener el tema actual desde la configuración global
         let temaActual = 'normal';
-        if (usuarioActual) {
-            try {
-                const userData = await usuarioService.getByUsuario(usuarioActual);
-                if (userData && userData.tema) {
-                    temaActual = userData.tema;
-                }
-            } catch (error) {
-                console.error('Error al obtener tema del usuario:', error);
-                // Si falla, usar localStorage como fallback
+        try {
+            const configTema = await configuracionService.getByNombre('temaGlobal');
+            if (configTema && configTema.valor) {
+                temaActual = configTema.valor;
+            } else {
                 temaActual = localStorage.getItem('temaGlobal') || 'normal';
             }
-        } else {
+        } catch (error) {
+            console.error('Error al obtener tema actual:', error);
             temaActual = localStorage.getItem('temaGlobal') || 'normal';
         }
 
         const result = await Swal.fire({
-            title: 'Selecciona un tema',
+            title: 'Selecciona un tema global',
             input: 'select',
             inputOptions: {
                 normal: 'Normal',
@@ -222,8 +218,8 @@ export default function AdminUsuarios() {
 
         if (result.isConfirmed && result.value) {
             try {
-                await setGlobalTheme(result.value, usuarioActual);
-                Swal.fire('Tema aplicado', 'El tema se aplicó correctamente y se sincronizó en todos tus dispositivos', 'success');
+                await setGlobalTheme(result.value);
+                Swal.fire('Tema aplicado', 'El tema se aplicó correctamente y se sincronizó en toda la aplicación web', 'success');
             } catch (error) {
                 console.error('Error al aplicar tema:', error);
                 Swal.fire('Error', 'Error al aplicar el tema', 'error');

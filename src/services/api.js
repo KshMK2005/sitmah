@@ -174,3 +174,52 @@ export const usuarioService = {
         return response.json();
     }
 };
+
+// Servicio para configuración global
+export const configuracionService = {
+    // Obtener configuración por nombre
+    async getByNombre(nombre) {
+        const response = await fetch(`${API_URL}/configuracion/${nombre}`);
+        if (!response.ok) {
+            return null;
+        }
+        return response.json();
+    },
+    
+    // Obtener todas las configuraciones
+    async getAll() {
+        const response = await fetch(`${API_URL}/configuracion`);
+        if (!response.ok) {
+            throw new Error('Error al obtener configuraciones');
+        }
+        return response.json();
+    },
+    
+    // Crear o actualizar configuración
+    async save(nombre, valor, descripcion = '') {
+        const response = await fetch(`${API_URL}/configuracion`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ nombre, valor, descripcion })
+        });
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.error || 'Error al guardar configuración');
+        }
+        return response.json();
+    },
+    
+    // Actualizar configuración específica
+    async update(nombre, valor, descripcion = '') {
+        const response = await fetch(`${API_URL}/configuracion/${nombre}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ valor, descripcion })
+        });
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.error || 'Error al actualizar configuración');
+        }
+        return response.json();
+    }
+};

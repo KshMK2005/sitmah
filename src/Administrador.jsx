@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { useTransition } from './components/TransitionContext';
 import logoSitmah from './assets/logo-sitmah.png';
+import Swal from 'sweetalert2';
+import { setGlobalTheme } from './utils/theme';
+import { configuracionService } from './services/api';
 
 const menuOptions = [
     {
@@ -52,10 +55,56 @@ function NavbarAdministrador() {
 
     const handleLogout = () => {
         localStorage.removeItem('userRole');
+        localStorage.removeItem('userName');
         navigateWithTransition('/home');
     };
 
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
+    // Función para cambiar el tema global
+    const handleCambiarTema = async () => {
+        // Obtener el tema actual desde la configuración global
+        let temaActual = 'normal';
+        try {
+            const configTema = await configuracionService.getByNombre('temaGlobal');
+            if (configTema && configTema.valor) {
+                temaActual = configTema.valor;
+            } else {
+                temaActual = localStorage.getItem('temaGlobal') || 'normal';
+            }
+        } catch (error) {
+            console.error('Error al obtener tema actual:', error);
+            temaActual = localStorage.getItem('temaGlobal') || 'normal';
+        }
+
+        const result = await Swal.fire({
+            title: 'Cambiar tema global',
+            input: 'select',
+            inputOptions: {
+                normal: 'Normal',
+                sanvalentin: 'San Valentín',
+                navidad: 'Navidad',
+                muertos: 'Día de Muertos',
+                grises: 'Escala de grises'
+            },
+            inputPlaceholder: 'Elige un tema',
+            showCancelButton: true,
+            confirmButtonText: 'Aplicar',
+            cancelButtonText: 'Cancelar',
+            inputValue: temaActual,
+            allowOutsideClick: false
+        });
+
+        if (result.isConfirmed && result.value) {
+            try {
+                await setGlobalTheme(result.value);
+                Swal.fire('Tema aplicado', 'El tema se aplicó correctamente y se sincronizó en toda la aplicación web', 'success');
+            } catch (error) {
+                console.error('Error al aplicar tema:', error);
+                Swal.fire('Error', 'Error al aplicar el tema', 'error');
+            }
+        }
+    };
 
     // Detectar tema grises
     const isGrises = typeof document !== 'undefined' && document.body.classList.contains('theme-grises');
@@ -189,30 +238,51 @@ function NavbarAdministrador() {
                             ))}
                         </div>
                     </div>
-                    <button
-                        onClick={handleLogout}
-                        className="logout-button"
-                        style={{
-                            background: document.body.classList.contains('theme-grises') ? 'var(--gris-btn-secundario)' : '#CBB26A',
-                            color: document.body.classList.contains('theme-grises') ? 'var(--gris-btn-texto-invertido)' : '#4B0C25',
-                            border: document.body.classList.contains('theme-grises') ? '1px solid var(--gris-btn-borde)' : 'none',
-                            borderRadius: '6px',
-                            padding: '0.45rem 1.1rem',
-                            fontWeight: 'bold',
-                            fontSize: '0.98rem',
-                            marginLeft: '1.5rem',
-                            marginRight: 0,
-                            marginTop: 0,
-                            boxShadow: '0 1px 4px rgba(0,0,0,0.07)',
-                            cursor: 'pointer',
-                            minWidth: 120,
-                            maxWidth: 180,
-                            whiteSpace: 'nowrap',
-                            alignSelf: 'center',
-                        }}
-                    >
-                        Finalizar sesión
-                    </button>
+                    <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                        <button
+                            onClick={handleCambiarTema}
+                            style={{
+                                background: document.body.classList.contains('theme-grises') ? 'var(--gris-btn-secundario)' : '#a51d3d',
+                                color: document.body.classList.contains('theme-grises') ? 'var(--gris-btn-texto-invertido)' : '#fff',
+                                border: document.body.classList.contains('theme-grises') ? '1px solid var(--gris-btn-borde)' : 'none',
+                                borderRadius: '6px',
+                                padding: '0.45rem 1.1rem',
+                                fontWeight: 'bold',
+                                fontSize: '0.9rem',
+                                boxShadow: '0 1px 4px rgba(0,0,0,0.07)',
+                                cursor: 'pointer',
+                                minWidth: 100,
+                                whiteSpace: 'nowrap',
+                                alignSelf: 'center',
+                            }}
+                        >
+                            🎨 Tema
+                        </button>
+                        <button
+                            onClick={handleLogout}
+                            className="logout-button"
+                            style={{
+                                background: document.body.classList.contains('theme-grises') ? 'var(--gris-btn-secundario)' : '#CBB26A',
+                                color: document.body.classList.contains('theme-grises') ? 'var(--gris-btn-texto-invertido)' : '#4B0C25',
+                                border: document.body.classList.contains('theme-grises') ? '1px solid var(--gris-btn-borde)' : 'none',
+                                borderRadius: '6px',
+                                padding: '0.45rem 1.1rem',
+                                fontWeight: 'bold',
+                                fontSize: '0.98rem',
+                                marginLeft: 0,
+                                marginRight: 0,
+                                marginTop: 0,
+                                boxShadow: '0 1px 4px rgba(0,0,0,0.07)',
+                                cursor: 'pointer',
+                                minWidth: 120,
+                                maxWidth: 180,
+                                whiteSpace: 'nowrap',
+                                alignSelf: 'center',
+                            }}
+                        >
+                            Finalizar sesión
+                        </button>
+                    </div>
                 </div>
             </nav>
         </div>
