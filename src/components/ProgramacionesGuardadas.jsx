@@ -337,26 +337,7 @@ function ProgramacionesGuardadas() {
           />
         </div>
 
-        {/* Botón para generar acuse PDF */}
-        <div style={{ textAlign: 'right', marginBottom: '1rem' }}>
-          <button
-            onClick={generarAcusePDF}
-            style={{
-              background: '#6F2234',
-              color: '#fff',
-              border: 'none',
-              borderRadius: '6px',
-              padding: '0.6rem 1.4rem',
-              fontWeight: 600,
-              fontSize: '1rem',
-              cursor: 'pointer',
-              boxShadow: '0 2px 8px #6F223420',
-              marginBottom: '0.5rem'
-            }}
-          >
-            📝 Generar Acuse
-          </button>
-        </div>
+
         {/* Información de paginación */}
         {filtradas.length > 0 && (
           <div style={{
@@ -542,6 +523,48 @@ function ProgramacionesGuardadas() {
                 </tbody>
               </table>
             </div>
+            
+            {/* Botón para generar PDF al final de la tabla */}
+            {filtradas.length > 0 && (
+              <div style={{ 
+                padding: '1rem', 
+                borderTop: '1px solid #e9ecef',
+                background: '#f8f9fa',
+                display: 'flex',
+                justifyContent: 'center'
+              }}>
+                <button
+                  onClick={generarAcusePDF}
+                  style={{
+                    background: '#6F2234',
+                    color: '#fff',
+                    border: 'none',
+                    borderRadius: '8px',
+                    padding: '0.8rem 2rem',
+                    fontWeight: 600,
+                    fontSize: '1rem',
+                    cursor: 'pointer',
+                    boxShadow: '0 2px 8px rgba(111, 34, 52, 0.2)',
+                    transition: 'all 0.2s ease',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem'
+                  }}
+                  onMouseOver={(e) => {
+                    e.target.style.background = '#8B2E3F';
+                    e.target.style.transform = 'translateY(-1px)';
+                    e.target.style.boxShadow = '0 4px 12px rgba(111, 34, 52, 0.3)';
+                  }}
+                  onMouseOut={(e) => {
+                    e.target.style.background = '#6F2234';
+                    e.target.style.transform = 'translateY(0)';
+                    e.target.style.boxShadow = '0 2px 8px rgba(111, 34, 52, 0.2)';
+                  }}
+                >
+                  📄 Descargar PDF de la Tabla
+                </button>
+              </div>
+            )}
           </div>
         )}
 
