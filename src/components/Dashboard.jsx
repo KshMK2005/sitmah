@@ -514,6 +514,117 @@ function Dashboard() {
         {tab === 'programador' && (
           <section style={{ marginBottom: '2rem' }}>
             <h2 style={{ color: '#6F2234', textAlign: 'center' }}>Tablas de Programador</h2>
+            
+            {/* Tabla de Resumen por Tipo de Unidad */}
+            {(() => {
+              const tiposUnidades = ['gran viale', 'boxer', 'sprinter', 'vagoneta'];
+              const fechaActual = fechaFiltroTablaProgramador ? new Date(fechaFiltroTablaProgramador).toLocaleDateString() : new Date().toLocaleDateString();
+              
+              // Filtrar programaciones de la fecha actual
+              const programacionesDeFecha = programaciones.filter(p => {
+                if (!p.fechaCreacion) return false;
+                const fechaCreacion = new Date(p.fechaCreacion);
+                const fechaFiltro = new Date(fechaActual);
+                return fechaCreacion.getFullYear() === fechaFiltro.getFullYear() &&
+                       fechaCreacion.getMonth() === fechaFiltro.getMonth() &&
+                       fechaCreacion.getDate() === fechaFiltro.getDate();
+              });
+              
+              // Filtrar verificados de la fecha actual
+              const verificadosDeFechaResumen = verificados.filter(v => {
+                if (!v.fechaApertura) return false;
+                const fechaV = new Date(v.fechaApertura);
+                const fechaFiltro = new Date(fechaActual);
+                return fechaV.getFullYear() === fechaFiltro.getFullYear() &&
+                       fechaV.getMonth() === fechaFiltro.getMonth() &&
+                       fechaV.getDate() === fechaFiltro.getDate();
+              });
+              
+              // Filtrar aperturas de la fecha actual
+              const aperturasDeFecha = aperturas.filter(a => {
+                if (!a.fechaApertura) return false;
+                const fechaA = new Date(a.fechaApertura);
+                const fechaFiltro = new Date(fechaActual);
+                return fechaA.getFullYear() === fechaFiltro.getFullYear() &&
+                       fechaA.getMonth() === fechaFiltro.getMonth() &&
+                       fechaA.getDate() === fechaFiltro.getDate();
+              });
+              
+              // Funciones de cálculo
+              const unidadesProgramadas = tipo => programacionesDeFecha.filter(p => {
+                const tipoUnidad = (p.tipoUnidad || p.tipoVehiculo || '').toLowerCase().trim();
+                return tipoUnidad === tipo;
+              }).length;
+              
+              const unidadesEnOperacion = tipo => verificadosDeFechaResumen.filter(v => {
+                const tipoUnidad = (v.tipoUnidad || v.tipoVehiculo || '').toLowerCase().trim();
+                return tipoUnidad === tipo && v.estado === 'dashboard';
+              }).length;
+              
+              const unidadesEnReserva = tipo => verificadosDeFechaResumen.filter(v => {
+                const tipoUnidad = (v.tipoUnidad || v.tipoVehiculo || '').toLowerCase().trim();
+                return tipoUnidad === tipo && v.estado === 'pendiente';
+              }).length;
+              
+              const unidadesEnFalla = tipo => aperturasDeFecha.filter(a => {
+                const tipoUnidad = (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim();
+                return tipoUnidad === tipo && a.estado === 'pendiente';
+              }).length;
+              
+              return (
+                <div style={{ marginBottom: '2rem', background: '#f9f9f9', borderRadius: 8, boxShadow: '0 2px 4px #0001', padding: 16 }}>
+                  <h3 style={{ color: '#6F2234', marginBottom: '1rem', textAlign: 'center' }}>Resumen por Tipo de Unidad</h3>
+                  <div style={{ width: '100%', overflowX: 'auto' }}>
+                    <table style={{ width: '100%', borderCollapse: 'collapse', background: 'white', borderRadius: 8 }}>
+                      <thead>
+                        <tr style={{ background: '#6F2234', color: '#fff' }}>
+                          <th style={{ padding: '0.7rem', textAlign: 'center', border: '1px solid #ddd' }}>Modelo</th>
+                          <th style={{ padding: '0.7rem', textAlign: 'center', border: '1px solid #ddd' }}>Unidades Programadas</th>
+                          <th style={{ padding: '0.7rem', textAlign: 'center', border: '1px solid #ddd' }}>Unidades en Operación</th>
+                          <th style={{ padding: '0.7rem', textAlign: 'center', border: '1px solid #ddd' }}>Unidades en Reserva</th>
+                          <th style={{ padding: '0.7rem', textAlign: 'center', border: '1px solid #ddd' }}>Unidades con Fallas</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {tiposUnidades.map((tipo, index) => (
+                          <tr key={tipo} style={{ background: index % 2 === 0 ? '#fff' : '#f8f9fa' }}>
+                            <td style={{ padding: '0.7rem', textAlign: 'center', border: '1px solid #ddd', fontWeight: '600' }}>
+                              {tipo.charAt(0).toUpperCase() + tipo.slice(1)}
+                            </td>
+                            <td style={{ padding: '0.7rem', textAlign: 'center', border: '1px solid #ddd' }}>
+                              {unidadesProgramadas(tipo)}
+                            </td>
+                            <td style={{ padding: '0.7rem', textAlign: 'center', border: '1px solid #ddd', color: '#28a745', fontWeight: '600' }}>
+                              {unidadesEnOperacion(tipo)}
+                            </td>
+                            <td style={{ padding: '0.7rem', textAlign: 'center', border: '1px solid #ddd', color: '#ffc107', fontWeight: '600' }}>
+                              {unidadesEnReserva(tipo)}
+                            </td>
+                            <td style={{ padding: '0.7rem', textAlign: 'center', border: '1px solid #ddd', color: '#dc3545', fontWeight: '600' }}>
+                              {unidadesEnFalla(tipo)}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                  <div style={{ marginTop: '1rem', textAlign: 'center', fontSize: '0.9rem', color: '#666' }}>
+                    <strong>Fecha:</strong> {fechaFiltroTablaProgramador ? new Date(fechaFiltroTablaProgramador).toLocaleDateString() : new Date().toLocaleDateString()}
+                    <br />
+                    <small style={{ color: '#999' }}>
+                      Total verificados: {verificados.length} | 
+                      Total aperturas: {aperturas.length} | 
+                      Total programaciones: {programaciones.length}
+                      <br />
+                      Verificados de fecha: {verificadosDeFechaResumen.length} | 
+                      Aperturas de fecha: {aperturasDeFecha.length} | 
+                      Programaciones de fecha: {programacionesDeFecha.length}
+                    </small>
+                  </div>
+                </div>
+              );
+            })()}
+            
             {/* Filtro por fecha específica para tabla de programador */}
             <div style={{ textAlign: 'center', marginBottom: 8 }}>
               <input
