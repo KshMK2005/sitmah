@@ -326,14 +326,18 @@ function Dashboard() {
   };
 
   const handleAcuseVerificacionesPorFecha = (fecha, items) => {
-    // Función para parsear fecha DD/MM/YYYY de forma confiable
+    // Función para parsear fecha DD/MM/YYYY o ISO de forma confiable
     const parseDate = (dateString) => {
       if (!dateString) return null;
+      
+      // Si es formato DD/MM/YYYY
       const parts = dateString.split('/');
       if (parts.length === 3) {
         // DD/MM/YYYY -> YYYY-MM-DD para crear Date object
         return new Date(parts[2], parts[1] - 1, parts[0]);
       }
+      
+      // Si es formato ISO (YYYY-MM-DD) o cualquier otro formato
       return new Date(dateString);
     };
 
@@ -387,8 +391,8 @@ function Dashboard() {
     
     // Filtrar programaciones de la fecha actual para obtener unidades programadas
     const programacionesDeFecha = programaciones.filter(p => {
-      if (!p.fechaProgramacion) return false;
-      const fechaP = parseDate(p.fechaProgramacion);
+      if (!p.fechaCreacion) return false;
+      const fechaP = parseDate(p.fechaCreacion);
       if (!fechaP) return false;
       return fechaP.getFullYear() === fechaFiltro.getFullYear() &&
              fechaP.getMonth() === fechaFiltro.getMonth() &&
