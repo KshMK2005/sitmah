@@ -386,10 +386,56 @@ function Dashboard() {
       }
     });
 
-    // Tabla especial: Resumen por tipo de unidad
-    const tiposUnidades = ['gran viale', 'boxer', 'sprinter', 'vagoneta'];
-    
-    // Filtrar programaciones de la fecha actual para obtener unidades programadas
+    // --- NUEVO RESUMEN VISUAL POR MODELO ---
+    const modelos = [
+      {
+        nombre: 'GRAN VIALE',
+        tipo: 'gran viale',
+        img: require('../assets/gran_viale.png'),
+        fallas: (aperturasDeFecha) => {
+          const arr = aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === 'gran viale' && a.estado === 'pendiente');
+          return arr.map(a => `${a.economico || ''}${a.falla ? ' (' + a.falla + ')' : ''}`).join(', ') || 'Ninguna';
+        }
+      },
+      {
+        nombre: 'BÓXER',
+        tipo: 'boxer',
+        img: require('../assets/boxer.png'),
+        fallas: (aperturasDeFecha) => {
+          const arr = aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === 'boxer' && a.estado === 'pendiente');
+          return arr.map(a => `${a.economico || ''}${a.falla ? ' (' + a.falla + ')' : ''}`).join(', ') || 'Ninguna';
+        }
+      },
+      {
+        nombre: 'SPRINTER',
+        tipo: 'sprinter',
+        img: require('../assets/sprinter.png'),
+        fallas: (aperturasDeFecha) => {
+          const arr = aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === 'sprinter' && a.estado === 'pendiente');
+          return arr.map(a => `${a.economico || ''}${a.falla ? ' (' + a.falla + ')' : ''}`).join(', ') || 'Ninguna';
+        }
+      },
+      {
+        nombre: 'VAGONETA',
+        tipo: 'vagoneta',
+        img: require('../assets/vagoneta.png'),
+        fallas: (aperturasDeFecha) => {
+          const arr = aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === 'vagoneta' && a.estado === 'pendiente');
+          return arr.map(a => `${a.economico || ''}${a.falla ? ' (' + a.falla + ')' : ''}`).join(', ') || 'Ninguna';
+        }
+      },
+      {
+        nombre: 'ORIÓN',
+        tipo: 'orion',
+        img: require('../assets/orion.png'),
+        fallas: (aperturasDeFecha) => {
+          const arr = aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === 'orion' && a.estado === 'pendiente');
+          return arr.map(a => `${a.economico || ''}${a.falla ? ' (' + a.falla + ')' : ''}`).join(', ') || 'Ninguna';
+        }
+      },
+    ];
+
+    // Filtrar programaciones, verificados y aperturas de la fecha actual
     const programacionesDeFecha = programaciones.filter(p => {
       if (!p.fechaCreacion) return false;
       const fechaP = parseDate(p.fechaCreacion);
@@ -398,14 +444,6 @@ function Dashboard() {
              fechaP.getMonth() === fechaFiltro.getMonth() &&
              fechaP.getDate() === fechaFiltro.getDate();
     });
-    
-    // Unidades programadas por tipo
-    const unidadesProgramadas = tipo => programacionesDeFecha.filter(p => {
-      const tipoUnidad = (p.tipoUnidad || p.tipoVehiculo || '').toLowerCase().trim();
-      return tipoUnidad === tipo;
-    }).length;
-    
-    // Filtrar verificados de la fecha actual
     const verificadosDeFechaResumen = verificados.filter(v => {
       if (!v.fechaApertura) return false;
       const fechaV = parseDate(v.fechaApertura);
@@ -414,20 +452,6 @@ function Dashboard() {
              fechaV.getMonth() === fechaFiltro.getMonth() &&
              fechaV.getDate() === fechaFiltro.getDate();
     });
-    
-    // Unidades en operación: verificados con estado 'dashboard' por tipo
-    const unidadesEnOperacion = tipo => verificadosDeFechaResumen.filter(v => {
-      const tipoUnidad = (v.tipoUnidad || v.tipoVehiculo || '').toLowerCase().trim();
-      return tipoUnidad === tipo && v.estado === 'dashboard';
-    }).length;
-    
-    // Unidades en reserva: verificados con estado 'pendiente' por tipo
-    const unidadesEnReserva = tipo => verificadosDeFechaResumen.filter(v => {
-      const tipoUnidad = (v.tipoUnidad || v.tipoVehiculo || '').toLowerCase().trim();
-      return tipoUnidad === tipo && v.estado === 'pendiente';
-    }).length;
-    
-    // Unidades en falla (pendiente) por tipo
     const aperturasDeFecha = aperturas.filter(a => {
       if (!a.fechaApertura) return false;
       const fechaA = parseDate(a.fechaApertura);
@@ -436,35 +460,68 @@ function Dashboard() {
              fechaA.getMonth() === fechaFiltro.getMonth() &&
              fechaA.getDate() === fechaFiltro.getDate();
     });
-    
-    const unidadesEnFalla = tipo => aperturasDeFecha.filter(a => {
-      const tipoUnidad = (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim();
-      return tipoUnidad === tipo && a.estado === 'pendiente';
-    }).length;
-    
+
+    // Funciones de conteo
+    const unidadesProgramadas = tipo => programacionesDeFecha.filter(p => (p.tipoUnidad || p.tipoVehiculo || '').toLowerCase().trim() === tipo).length;
+    const unidadesEnOperacion = tipo => verificadosDeFechaResumen.filter(v => (v.tipoUnidad || v.tipoVehiculo || '').toLowerCase().trim() === tipo && v.estado === 'dashboard').length;
+    const unidadesEnReserva = tipo => verificadosDeFechaResumen.filter(v => (v.tipoUnidad || v.tipoVehiculo || '').toLowerCase().trim() === tipo && v.estado === 'pendiente').length;
+    const unidadesEnFalla = tipo => aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === tipo && a.estado === 'pendiente').length;
+
+    // Encabezados y filas para la tabla visual
     const headResumen = [[
-      'Modelo',
-      'Unidades Programadas',
-      'Unidades en Operación',
-      'Unidades en Reserva',
-      'Unidades con Fallas',
+      'MODELO',
+      'UNIDADES PROGRAMADAS',
+      'UNIDADES EN OPERACIÓN',
+      'UNIDADES EN RESERVA',
+      'UNIDADES CON FALLA',
+      'TIPO DE FALLA',
     ]];
-    const rowsResumen = tiposUnidades.map(tipo => [
-      tipo.charAt(0).toUpperCase() + tipo.slice(1),
-      unidadesProgramadas(tipo),
-      unidadesEnOperacion(tipo),
-      unidadesEnReserva(tipo),
-      unidadesEnFalla(tipo)
+    const rowsResumen = modelos.map(m => [
+      { image: m.img, name: m.nombre },
+      unidadesProgramadas(m.tipo),
+      unidadesEnOperacion(m.tipo),
+      unidadesEnReserva(m.tipo),
+      unidadesEnFalla(m.tipo),
+      m.fallas(aperturasDeFecha)
     ]);
+
     doc.setFontSize(14);
     doc.text('Resumen por tipo de unidad', 14, lastY);
     lastY += 6;
+
+    // Renderizar tabla con imágenes y formato especial
     autoTable(doc, {
       head: headResumen,
-      body: rowsResumen,
+      body: rowsResumen.map(row => [
+        { content: '', styles: { cellWidth: 28, minCellHeight: 28 }, image: row[0].image, name: row[0].name },
+        row[1],
+        row[2],
+        row[3],
+        row[4],
+        row[5]
+      ]),
       startY: lastY,
-      styles: { fontSize: 10 },
-      headStyles: { fillColor: [100, 180, 255] },
+      styles: { fontSize: 10, cellPadding: 2, valign: 'middle', halign: 'center' },
+      headStyles: { fillColor: [111, 34, 52], textColor: 255, fontStyle: 'bold' },
+      bodyStyles: { fontSize: 10, minCellHeight: 28 },
+      columnStyles: {
+        0: { cellWidth: 28, minCellHeight: 28 },
+        1: { cellWidth: 32 },
+        2: { cellWidth: 32 },
+        3: { cellWidth: 32 },
+        4: { cellWidth: 32 },
+        5: { cellWidth: 70, halign: 'left' },
+      },
+      didDrawCell: function (data) {
+        if (data.column.index === 0 && data.cell.section === 'body') {
+          const img = data.row.raw[0].image;
+          if (img) {
+            doc.addImage(img.default || img, 'PNG', data.cell.x + 2, data.cell.y + 2, 24, 24);
+            doc.setFontSize(8);
+            doc.text(data.row.raw[0].name, data.cell.x + 14, data.cell.y + 28, { align: 'center' });
+          }
+        }
+      },
       margin: { left: 14, right: 14 },
       tableWidth: 'auto',
       didDrawPage: (data) => {
