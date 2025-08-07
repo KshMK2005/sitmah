@@ -145,11 +145,13 @@ function Pendientes() {
                   No hay aperturas pendientes.
                 </div>
               ) : (
-                aperturasOrdenadas.map((ap, idx) => (
+                aperturasOrdenadas.map((ap, idx) => {
+                  const esRegresada = ap.fechaRegreso || (ap.observaciones && ap.observaciones.toUpperCase().includes('REGRESO POR'));
+                  return (
                   <div key={ap._id} className={`tabla-pendientes-row${flashId === ap._id ? ' flash-green' : ''}${flashOrangeId === ap._id ? ' flash-orange' : ''}`}
                     style={{
                       borderBottom: idx === aperturasPendientes.length - 1 ? 'none' : '1px solid #eee',
-                      background: ap.fechaRegreso ? '#ff8a80' : '#f8d7da',
+                      background: esRegresada ? '#ff8a80' : '#f8d7da',
                       fontSize: '1rem',
                       transition: 'background 0.2s',
                       borderBottomLeftRadius: idx === aperturasPendientes.length - 1 ? '12px' : '0',
@@ -157,12 +159,12 @@ function Pendientes() {
                       overflow: 'hidden',
                       padding: '0.5rem 0',
                       boxShadow: idx === aperturasPendientes.length - 1 ? '0 2px 8px rgba(0,0,0,0.03)' : 'none',
-                      borderLeft: ap.fechaRegreso ? '6px solid #b71c1c' : 'none',
+                      borderLeft: esRegresada ? '6px solid #b71c1c' : 'none',
                     }}
                   >
                     <div>
                       {ap.ruta}
-                      {ap.fechaRegreso && (
+                      {esRegresada && (
                         <div style={{ 
                           fontSize: '0.85rem', 
                           color: '#b71c1c', 
@@ -194,7 +196,8 @@ function Pendientes() {
                       <button onClick={() => handleAceptar(ap)} style={{ background: '#1bc47d', color: 'white', border: 'none', borderRadius: 6, fontWeight: 600, cursor: 'pointer' }}>Aceptar</button>
                     </div>
                   </div>
-                ))
+                );
+                })
               )
             )}
           </div>
