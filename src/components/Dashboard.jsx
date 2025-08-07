@@ -15,12 +15,7 @@ import sprinterImg from '../assets/sprinter.png';
 import vagonetaImg from '../assets/vagoneta.png';
 import orionImg from '../assets/orion.png';
 
-// Import icons for headers
-import E1Img from '../assets/E1.png';
-import E2Img from '../assets/E2.png';
-import E3Img from '../assets/E3.png';
-import E4Img from '../assets/E4.png';
-import E5Img from '../assets/E5.png';
+
 
 function Dashboard() {
   const [aperturas, setAperturas] = useState([]);
@@ -603,17 +598,10 @@ function Dashboard() {
     const unidadesEnFalla = tipo => aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === tipo && a.estado === 'pendiente').length;
 
     // Convert all images to Base64
-    const [imageData, E1Base64, E2Base64, E3Base64, E4Base64, E5Base64] = await Promise.all([
-      Promise.all(modelos.map(async (m) => {
-        const imgBase64 = await imageUrlToBase64(m.img);
-        return { text: m.nombre, img: imgBase64 };
-      })),
-      imageUrlToBase64(E1Img),
-      imageUrlToBase64(E2Img),
-      imageUrlToBase64(E3Img),
-      imageUrlToBase64(E4Img),
-      imageUrlToBase64(E5Img)
-    ]);
+    const imageData = await Promise.all(modelos.map(async (m) => {
+      const imgBase64 = await imageUrlToBase64(m.img);
+      return { text: m.nombre, img: imgBase64 };
+    }));
 
     // Calcular totales
     const totalProgramadas = modelos.reduce((sum, m) => sum + unidadesProgramadas(m.tipo), 0);
@@ -674,23 +662,6 @@ function Dashboard() {
       margin: { left: 14, right: 14 },
       tableWidth: 'auto',
       didDrawCell: (data) => {
-        // Draw header icons
-        if (data.row.section === 'head' && data.column.index > 0) {
-          const iconMap = [null, E1Base64, E2Base64, E3Base64, E4Base64, E5Base64];
-          const icon = iconMap[data.column.index];
-          if (icon) {
-            try {
-              const imgWidth = 12;
-              const imgHeight = 12;
-              const x = data.cell.x + (data.cell.width - imgWidth) / 2;
-              const y = data.cell.y + data.cell.height - imgHeight - 2; // Position icon at bottom of header
-              doc.addImage(icon, 'PNG', x, y, imgWidth, imgHeight);
-            } catch (error) {
-              console.error('Error drawing header icon:', error);
-            }
-          }
-        }
-        
         // Draw vehicle images and names in body rows
         if (data.row.section === 'body' && data.column.index === 0 && data.row.index < imageData.length) {
           const imgInfo = imageData[data.row.index];
