@@ -157,17 +157,18 @@ function Pendientes() {
                       overflow: 'hidden',
                       padding: '0.5rem 0',
                       boxShadow: idx === aperturasPendientes.length - 1 ? '0 2px 8px rgba(0,0,0,0.03)' : 'none',
-                      borderLeft: ap.fechaRegreso ? '4px solid #b71c1c' : 'none',
+                      borderLeft: ap.fechaRegreso ? '6px solid #b71c1c' : 'none',
                     }}
                   >
                     <div>
                       {ap.ruta}
                       {ap.fechaRegreso && (
                         <div style={{ 
-                          fontSize: '0.7rem', 
-                          color: '#dc3545', 
-                          fontWeight: 'bold',
-                          marginTop: '2px'
+                          fontSize: '0.85rem', 
+                          color: '#b71c1c', 
+                          fontWeight: 700,
+                          marginTop: '4px',
+                          letterSpacing: '0.5px'
                         }}>
                           🔄 REGRESADA
                         </div>
