@@ -179,11 +179,17 @@ export const usuarioService = {
 export const configuracionService = {
     // Obtener configuración por nombre
     async getByNombre(nombre) {
-        const response = await fetch(`${API_URL}/configuracion/${nombre}`);
-        if (!response.ok) {
+        try {
+            const response = await fetch(`${API_URL}/configuracion/${nombre}`);
+            if (!response.ok) {
+                console.warn(`Configuración ${nombre} no encontrada, usando valor por defecto`);
+                return null;
+            }
+            return response.json();
+        } catch (error) {
+            console.warn(`Error al obtener configuración ${nombre}:`, error.message);
             return null;
         }
-        return response.json();
     },
     
     // Obtener todas las configuraciones

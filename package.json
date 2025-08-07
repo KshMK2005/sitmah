@@ -14,7 +14,9 @@
     "health-check": "node health-check.js",
     "prestart": "npm run health-check",
     "clean": "node clean-and-build.js",
-    "rebuild": "npm run clean"
+    "rebuild": "npm run clean",
+    "init-config": "node initConfig.js",
+    "init-config-local": "node initConfigLocal.js"
   },
   "dependencies": {
     "@types/react-router-dom": "^5.3.3",
