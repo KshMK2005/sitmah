@@ -4,7 +4,6 @@ import autoTable from 'jspdf-autotable';
 import { aperturaService, programacionService } from '../services/api';
 import '../Apertura.css';
 import { useLocation } from 'react-router-dom';
-import logoSitmah from '../assets/logo-sitmah.png';
 import DashboardNavbar from './DashboardNavbar';
 import DashboardCharts from './DashboardCharts';
 import { Bar, Pie } from 'react-chartjs-2';
@@ -391,7 +390,6 @@ function Dashboard() {
       {
         nombre: 'GRAN VIALE',
         tipo: 'gran viale',
-        img: new URL('../assets/gran_viale.png', import.meta.url).href,
         fallas: (aperturasDeFecha) => {
           const arr = aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === 'gran viale' && a.estado === 'pendiente');
           return arr.map(a => `${a.economico || ''}${a.falla ? ' (' + a.falla + ')' : ''}`).join(', ') || 'Ninguna';
@@ -400,7 +398,6 @@ function Dashboard() {
       {
         nombre: 'BÓXER',
         tipo: 'boxer',
-        img: new URL('../assets/boxer.png', import.meta.url).href,
         fallas: (aperturasDeFecha) => {
           const arr = aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === 'boxer' && a.estado === 'pendiente');
           return arr.map(a => `${a.economico || ''}${a.falla ? ' (' + a.falla + ')' : ''}`).join(', ') || 'Ninguna';
@@ -409,7 +406,6 @@ function Dashboard() {
       {
         nombre: 'SPRINTER',
         tipo: 'sprinter',
-        img: new URL('../assets/sprinter.png', import.meta.url).href,
         fallas: (aperturasDeFecha) => {
           const arr = aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === 'sprinter' && a.estado === 'pendiente');
           return arr.map(a => `${a.economico || ''}${a.falla ? ' (' + a.falla + ')' : ''}`).join(', ') || 'Ninguna';
@@ -418,7 +414,6 @@ function Dashboard() {
       {
         nombre: 'VAGONETA',
         tipo: 'vagoneta',
-        img: new URL('../assets/vagoneta.png', import.meta.url).href,
         fallas: (aperturasDeFecha) => {
           const arr = aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === 'vagoneta' && a.estado === 'pendiente');
           return arr.map(a => `${a.economico || ''}${a.falla ? ' (' + a.falla + ')' : ''}`).join(', ') || 'Ninguna';
@@ -427,7 +422,6 @@ function Dashboard() {
       {
         nombre: 'ORIÓN',
         tipo: 'orion',
-        img: new URL('../assets/orion.png', import.meta.url).href,
         fallas: (aperturasDeFecha) => {
           const arr = aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === 'orion' && a.estado === 'pendiente');
           return arr.map(a => `${a.economico || ''}${a.falla ? ' (' + a.falla + ')' : ''}`).join(', ') || 'Ninguna';
@@ -477,7 +471,7 @@ function Dashboard() {
       'TIPO DE FALLA',
     ]];
     const rowsResumen = modelos.map(m => [
-      { image: m.img, name: m.nombre },
+      m.nombre,
       unidadesProgramadas(m.tipo),
       unidadesEnOperacion(m.tipo),
       unidadesEnReserva(m.tipo),
@@ -489,38 +483,21 @@ function Dashboard() {
     doc.text('Resumen por tipo de unidad', 14, lastY);
     lastY += 6;
 
-    // Renderizar tabla con imágenes y formato especial
+    // Renderizar tabla sin imágenes
     autoTable(doc, {
       head: headResumen,
-      body: rowsResumen.map(row => [
-        { content: '', styles: { cellWidth: 28, minCellHeight: 28 }, image: row[0].image, name: row[0].name },
-        row[1],
-        row[2],
-        row[3],
-        row[4],
-        row[5]
-      ]),
+      body: rowsResumen,
       startY: lastY,
       styles: { fontSize: 10, cellPadding: 2, valign: 'middle', halign: 'center' },
       headStyles: { fillColor: [111, 34, 52], textColor: 255, fontStyle: 'bold' },
       bodyStyles: { fontSize: 10, minCellHeight: 28 },
       columnStyles: {
-        0: { cellWidth: 28, minCellHeight: 28 },
+        0: { cellWidth: 40 },
         1: { cellWidth: 32 },
         2: { cellWidth: 32 },
         3: { cellWidth: 32 },
         4: { cellWidth: 32 },
         5: { cellWidth: 70, halign: 'left' },
-      },
-      didDrawCell: function (data) {
-        if (data.column.index === 0 && data.cell.section === 'body') {
-          const img = data.row.raw[0].image;
-          if (img) {
-            doc.addImage(img.default || img, 'PNG', data.cell.x + 2, data.cell.y + 2, 24, 24);
-            doc.setFontSize(8);
-            doc.text(data.row.raw[0].name, data.cell.x + 14, data.cell.y + 28, { align: 'center' });
-          }
-        }
       },
       margin: { left: 14, right: 14 },
       tableWidth: 'auto',
