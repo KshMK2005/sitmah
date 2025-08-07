@@ -391,7 +391,7 @@ function Dashboard() {
       {
         nombre: 'GRAN VIALE',
         tipo: 'gran viale',
-        img: require('../assets/gran_viale.png'),
+        img: new URL('../assets/gran_viale.png', import.meta.url).href,
         fallas: (aperturasDeFecha) => {
           const arr = aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === 'gran viale' && a.estado === 'pendiente');
           return arr.map(a => `${a.economico || ''}${a.falla ? ' (' + a.falla + ')' : ''}`).join(', ') || 'Ninguna';
@@ -400,7 +400,7 @@ function Dashboard() {
       {
         nombre: 'BÓXER',
         tipo: 'boxer',
-        img: require('../assets/boxer.png'),
+        img: new URL('../assets/boxer.png', import.meta.url).href,
         fallas: (aperturasDeFecha) => {
           const arr = aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === 'boxer' && a.estado === 'pendiente');
           return arr.map(a => `${a.economico || ''}${a.falla ? ' (' + a.falla + ')' : ''}`).join(', ') || 'Ninguna';
@@ -409,7 +409,7 @@ function Dashboard() {
       {
         nombre: 'SPRINTER',
         tipo: 'sprinter',
-        img: require('../assets/sprinter.png'),
+        img: new URL('../assets/sprinter.png', import.meta.url).href,
         fallas: (aperturasDeFecha) => {
           const arr = aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === 'sprinter' && a.estado === 'pendiente');
           return arr.map(a => `${a.economico || ''}${a.falla ? ' (' + a.falla + ')' : ''}`).join(', ') || 'Ninguna';
@@ -418,7 +418,7 @@ function Dashboard() {
       {
         nombre: 'VAGONETA',
         tipo: 'vagoneta',
-        img: require('../assets/vagoneta.png'),
+        img: new URL('../assets/vagoneta.png', import.meta.url).href,
         fallas: (aperturasDeFecha) => {
           const arr = aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === 'vagoneta' && a.estado === 'pendiente');
           return arr.map(a => `${a.economico || ''}${a.falla ? ' (' + a.falla + ')' : ''}`).join(', ') || 'Ninguna';
@@ -427,7 +427,7 @@ function Dashboard() {
       {
         nombre: 'ORIÓN',
         tipo: 'orion',
-        img: require('../assets/orion.png'),
+        img: new URL('../assets/orion.png', import.meta.url).href,
         fallas: (aperturasDeFecha) => {
           const arr = aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === 'orion' && a.estado === 'pendiente');
           return arr.map(a => `${a.economico || ''}${a.falla ? ' (' + a.falla + ')' : ''}`).join(', ') || 'Ninguna';
