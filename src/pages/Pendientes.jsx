@@ -148,7 +148,7 @@ function Pendientes() {
                 aperturasOrdenadas.map((ap, idx) => {
                   const esRegresada = ap.fechaRegreso || (ap.observaciones && ap.observaciones.toUpperCase().includes('REGRESO POR'));
                   return (
-                  <div key={ap._id} className={`tabla-pendientes-row${flashId === ap._id ? ' flash-green' : ''}${flashOrangeId === ap._id ? ' flash-orange' : ''}`}
+                  <div key={ap._id} className={`tabla-pendientes-row${esRegresada ? ' regresada' : ''}${flashId === ap._id ? ' flash-green' : ''}${flashOrangeId === ap._id ? ' flash-orange' : ''}`}
                     style={{
                       borderBottom: idx === aperturasPendientes.length - 1 ? 'none' : (esRegresada ? '1px solid #ff8a80' : '1px solid #eee'),
                       background: esRegresada ? '#ff8a80' : '#f8d7da',
