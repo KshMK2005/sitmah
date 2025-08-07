@@ -149,7 +149,7 @@ function Pendientes() {
                   <div key={ap._id} className={`tabla-pendientes-row${flashId === ap._id ? ' flash-green' : ''}${flashOrangeId === ap._id ? ' flash-orange' : ''}`}
                     style={{
                       borderBottom: idx === aperturasPendientes.length - 1 ? 'none' : '1px solid #eee',
-                      background: ap.fechaRegreso ? '#ffebee' : (idx % 2 === 0 ? '#fff' : '#f8f9fa'),
+                      background: ap.fechaRegreso ? '#ffcdd2' : (idx % 2 === 0 ? '#fff' : '#f8f9fa'),
                       fontSize: '1rem',
                       transition: 'background 0.2s',
                       borderBottomLeftRadius: idx === aperturasPendientes.length - 1 ? '12px' : '0',
@@ -157,7 +157,7 @@ function Pendientes() {
                       overflow: 'hidden',
                       padding: '0.5rem 0',
                       boxShadow: idx === aperturasPendientes.length - 1 ? '0 2px 8px rgba(0,0,0,0.03)' : 'none',
-                      borderLeft: ap.fechaRegreso ? '4px solid #dc3545' : 'none',
+                      borderLeft: ap.fechaRegreso ? '4px solid #b71c1c' : 'none',
                     }}
                   >
                     <div>

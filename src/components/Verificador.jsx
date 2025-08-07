@@ -102,7 +102,7 @@ function Verificador() {
     // Función para obtener el color de fondo según el estado
     const getEstadoColor = (estado, retraso, fechaRegreso) => {
         // Si tiene fecha de regreso, es una unidad regresada por falla técnica
-        if (fechaRegreso) return '#ffebee'; // Rojo muy claro para unidades regresadas
+        if (fechaRegreso) return '#ffcdd2'; // Rojo más intenso para unidades regresadas
         
         if (retraso) return '#fff3cd'; // Amarillo claro para retrasos
         switch (estado) {
