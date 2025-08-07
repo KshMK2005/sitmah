@@ -503,13 +503,19 @@ function Dashboard() {
     const rowsResumen = await Promise.all(modelos.map(async (m) => {
       const imgBase64 = await imageUrlToBase64(m.img);
       return [
-        { text: m.nombre, img: imgBase64 },
+        '', // Empty string for first column - didDrawCell will handle the content
         unidadesProgramadas(m.tipo),
         unidadesEnOperacion(m.tipo),
         unidadesEnReserva(m.tipo),
         unidadesEnFalla(m.tipo),
         m.fallas(aperturasDeFecha)
       ];
+    }));
+
+    // Store image data separately for didDrawCell
+    const imageData = await Promise.all(modelos.map(async (m) => {
+      const imgBase64 = await imageUrlToBase64(m.img);
+      return { text: m.nombre, img: imgBase64 };
     }));
 
     doc.setFontSize(14);
@@ -535,25 +541,25 @@ function Dashboard() {
       margin: { left: 14, right: 14 },
       tableWidth: 'auto',
       didDrawCell: (data) => {
-        // Draw images and text in the first column
-        if (data.column.index === 0 && data.row.index < rowsResumen.length) {
-          const rowData = rowsResumen[data.row.index];
-          if (rowData && rowData[0] && rowData[0].img) {
+        // Only draw in body rows, not header
+        if (data.row.section === 'body' && data.column.index === 0 && data.row.index < imageData.length) {
+          const imgInfo = imageData[data.row.index];
+          if (imgInfo && imgInfo.img) {
             try {
               // Draw image at the top of the cell
               const imgWidth = 18;
               const imgHeight = 18;
               const x = data.cell.x + (data.cell.width - imgWidth) / 2;
               const y = data.cell.y + 2; // Position image at top with small margin
-              doc.addImage(rowData[0].img, 'PNG', x, y, imgWidth, imgHeight);
+              doc.addImage(imgInfo.img, 'PNG', x, y, imgWidth, imgHeight);
               
               // Draw vehicle name below the image
-              if (rowData[0].text) {
+              if (imgInfo.text) {
                 doc.setFontSize(8);
                 doc.setTextColor(0, 0, 0);
                 const textX = data.cell.x + data.cell.width / 2;
                 const textY = data.cell.y + imgHeight + 8; // Position text below image
-                doc.text(rowData[0].text, textX, textY, { align: 'center' });
+                doc.text(imgInfo.text, textX, textY, { align: 'center' });
               }
             } catch (error) {
               console.error('Error drawing image or text:', error);
