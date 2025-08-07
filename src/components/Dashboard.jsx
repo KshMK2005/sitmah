@@ -8,6 +8,13 @@ import DashboardNavbar from './DashboardNavbar';
 import DashboardCharts from './DashboardCharts';
 import { Bar, Pie } from 'react-chartjs-2';
 
+// Import images for PDF generation
+import granVialeImg from '../assets/gran_viale.png';
+import boxerImg from '../assets/boxer.png';
+import sprinterImg from '../assets/sprinter.png';
+import vagonetaImg from '../assets/vagoneta.png';
+import orionImg from '../assets/orion.png';
+
 function Dashboard() {
   const [aperturas, setAperturas] = useState([]);
   const [programaciones, setProgramaciones] = useState([]);
@@ -324,7 +331,24 @@ function Dashboard() {
     doc.save(`acuse_programaciones_${fecha.replace(/\//g, '-')}.pdf`);
   };
 
-  const handleAcuseVerificacionesPorFecha = (fecha, items) => {
+  // Helper function to convert image URL to Base64
+  const imageUrlToBase64 = async (url) => {
+    try {
+      const response = await fetch(url);
+      const blob = await response.blob();
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+      });
+    } catch (error) {
+      console.error('Error converting image to Base64:', error);
+      return null;
+    }
+  };
+
+  const handleAcuseVerificacionesPorFecha = async (fecha, items) => {
     // Función para parsear fecha DD/MM/YYYY o ISO de forma confiable
     const parseDate = (dateString) => {
       if (!dateString) return null;
@@ -390,6 +414,7 @@ function Dashboard() {
       {
         nombre: 'GRAN VIALE',
         tipo: 'gran viale',
+        img: granVialeImg,
         fallas: (aperturasDeFecha) => {
           const arr = aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === 'gran viale' && a.estado === 'pendiente');
           return arr.map(a => `${a.economico || ''}${a.falla ? ' (' + a.falla + ')' : ''}`).join(', ') || 'Ninguna';
@@ -398,6 +423,7 @@ function Dashboard() {
       {
         nombre: 'BÓXER',
         tipo: 'boxer',
+        img: boxerImg,
         fallas: (aperturasDeFecha) => {
           const arr = aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === 'boxer' && a.estado === 'pendiente');
           return arr.map(a => `${a.economico || ''}${a.falla ? ' (' + a.falla + ')' : ''}`).join(', ') || 'Ninguna';
@@ -406,6 +432,7 @@ function Dashboard() {
       {
         nombre: 'SPRINTER',
         tipo: 'sprinter',
+        img: sprinterImg,
         fallas: (aperturasDeFecha) => {
           const arr = aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === 'sprinter' && a.estado === 'pendiente');
           return arr.map(a => `${a.economico || ''}${a.falla ? ' (' + a.falla + ')' : ''}`).join(', ') || 'Ninguna';
@@ -414,6 +441,7 @@ function Dashboard() {
       {
         nombre: 'VAGONETA',
         tipo: 'vagoneta',
+        img: vagonetaImg,
         fallas: (aperturasDeFecha) => {
           const arr = aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === 'vagoneta' && a.estado === 'pendiente');
           return arr.map(a => `${a.economico || ''}${a.falla ? ' (' + a.falla + ')' : ''}`).join(', ') || 'Ninguna';
@@ -422,6 +450,7 @@ function Dashboard() {
       {
         nombre: 'ORIÓN',
         tipo: 'orion',
+        img: orionImg,
         fallas: (aperturasDeFecha) => {
           const arr = aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === 'orion' && a.estado === 'pendiente');
           return arr.map(a => `${a.economico || ''}${a.falla ? ' (' + a.falla + ')' : ''}`).join(', ') || 'Ninguna';
@@ -470,20 +499,24 @@ function Dashboard() {
       'UNIDADES CON FALLA',
       'TIPO DE FALLA',
     ]];
-    const rowsResumen = modelos.map(m => [
-      m.nombre,
-      unidadesProgramadas(m.tipo),
-      unidadesEnOperacion(m.tipo),
-      unidadesEnReserva(m.tipo),
-      unidadesEnFalla(m.tipo),
-      m.fallas(aperturasDeFecha)
-    ]);
+    // Convert images to Base64 and create rows with image data
+    const rowsResumen = await Promise.all(modelos.map(async (m) => {
+      const imgBase64 = await imageUrlToBase64(m.img);
+      return [
+        { text: m.nombre, img: imgBase64 },
+        unidadesProgramadas(m.tipo),
+        unidadesEnOperacion(m.tipo),
+        unidadesEnReserva(m.tipo),
+        unidadesEnFalla(m.tipo),
+        m.fallas(aperturasDeFecha)
+      ];
+    }));
 
     doc.setFontSize(14);
     doc.text('Resumen por tipo de unidad', 14, lastY);
     lastY += 6;
 
-    // Renderizar tabla sin imágenes
+    // Renderizar tabla con imágenes
     autoTable(doc, {
       head: headResumen,
       body: rowsResumen,
@@ -492,7 +525,7 @@ function Dashboard() {
       headStyles: { fillColor: [111, 34, 52], textColor: 255, fontStyle: 'bold' },
       bodyStyles: { fontSize: 10, minCellHeight: 28 },
       columnStyles: {
-        0: { cellWidth: 40 },
+        0: { cellWidth: 28, minCellHeight: 28 },
         1: { cellWidth: 32 },
         2: { cellWidth: 32 },
         3: { cellWidth: 32 },
@@ -501,6 +534,25 @@ function Dashboard() {
       },
       margin: { left: 14, right: 14 },
       tableWidth: 'auto',
+      didDrawCell: (data) => {
+        // Draw images in the first column
+        if (data.column.index === 0 && data.row.index < rowsResumen.length) {
+          const cellData = rowsResumen[data.row.index][0];
+          if (cellData && cellData.img) {
+            try {
+              const img = new Image();
+              img.src = cellData.img;
+              const imgWidth = 20;
+              const imgHeight = 20;
+              const x = data.cell.x + (data.cell.width - imgWidth) / 2;
+              const y = data.cell.y + (data.cell.height - imgHeight) / 2;
+              doc.addImage(cellData.img, 'PNG', x, y, imgWidth, imgHeight);
+            } catch (error) {
+              console.error('Error drawing image:', error);
+            }
+          }
+        }
+      },
       didDrawPage: (data) => {
         lastY = data.cursor.y + 10;
       }
