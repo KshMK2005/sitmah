@@ -1,7 +1,7 @@
 {
   "name": "sitmah",
   "private": true,
-  "version": "1.0.4",
+  "version": "1.0.5",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -18,7 +18,8 @@
     "init-config": "node initConfig.js",
     "init-config-local": "node initConfigLocal.js",
     "init-config-remote": "node initConfigRemote.js",
-    "check-status": "node checkStatus.js"
+    "check-status": "node checkStatus.js",
+    "vercel-build": "npm run build"
   },
   "dependencies": {
     "@types/react-router-dom": "^5.3.3",

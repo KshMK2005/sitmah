@@ -5,7 +5,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import connectDB from '../src/database/config.js';
 
-// SITMAH v1.0.4 - Revertir a configuración estable antes de verificador
+// SITMAH v1.0.5 - Configuración para archivos estáticos en Vercel
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -58,26 +58,8 @@ app.use('/api/usuarios', usuarioRoutes);
 app.use('/api/operadores', operadorRoutes);
 app.use('/api/configuracion', configuracionRoutes);
 
-// Servir archivos estáticos en producción
-if (process.env.NODE_ENV === 'production') {
-    // Servir archivos estáticos desde la carpeta dist
-    app.use(express.static(path.join(__dirname, '../dist'), {
-        setHeaders: (res, path) => {
-            if (path.endsWith('.js')) {
-                res.setHeader('Content-Type', 'application/javascript');
-            } else if (path.endsWith('.css')) {
-                res.setHeader('Content-Type', 'text/css');
-            } else if (path.endsWith('.html')) {
-                res.setHeader('Content-Type', 'text/html');
-            }
-        }
-    }));
-
-    // Manejar todas las rutas de React
-    app.get('*', (req, res) => {
-        res.sendFile(path.join(__dirname, '../dist/index.html'));
-    });
-}
+// En Vercel, los archivos estáticos se manejan automáticamente
+// No necesitamos servir archivos estáticos desde el servidor
 
 // Manejador de errores
 app.use((err, req, res, next) => {
