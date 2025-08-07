@@ -12,7 +12,9 @@
     "server": "node server/index.js",
     "dev:full": "concurrently \"npm run server\" \"npm run dev\"",
     "health-check": "node health-check.js",
-    "prestart": "npm run health-check"
+    "prestart": "npm run health-check",
+    "clean": "node clean-and-build.js",
+    "rebuild": "npm run clean"
   },
   "dependencies": {
     "@types/react-router-dom": "^5.3.3",

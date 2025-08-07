@@ -57,7 +57,17 @@ app.use('/api/configuracion', configuracionRoutes);
 // Servir archivos estáticos en producción
 if (process.env.NODE_ENV === 'production') {
     // Servir archivos estáticos desde la carpeta dist
-    app.use(express.static(path.join(__dirname, '../dist')));
+    app.use(express.static(path.join(__dirname, '../dist'), {
+        setHeaders: (res, path) => {
+            if (path.endsWith('.js')) {
+                res.setHeader('Content-Type', 'application/javascript');
+            } else if (path.endsWith('.css')) {
+                res.setHeader('Content-Type', 'text/css');
+            } else if (path.endsWith('.html')) {
+                res.setHeader('Content-Type', 'text/html');
+            }
+        }
+    }));
 
     // Manejar todas las rutas de React
     app.get('*', (req, res) => {
