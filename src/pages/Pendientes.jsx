@@ -150,7 +150,7 @@ function Pendientes() {
                   return (
                   <div key={ap._id} className={`tabla-pendientes-row${flashId === ap._id ? ' flash-green' : ''}${flashOrangeId === ap._id ? ' flash-orange' : ''}`}
                     style={{
-                      borderBottom: idx === aperturasPendientes.length - 1 ? 'none' : '1px solid #eee',
+                      borderBottom: idx === aperturasPendientes.length - 1 ? 'none' : (esRegresada ? '1px solid #ff8a80' : '1px solid #eee'),
                       background: esRegresada ? '#ff8a80' : '#f8d7da',
                       fontSize: '1rem',
                       transition: 'background 0.2s',
