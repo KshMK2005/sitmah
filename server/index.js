@@ -5,7 +5,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import connectDB from '../src/database/config.js';
 
-// SITMAH v1.0.5 - Configuración para archivos estáticos en Vercel
+// SITMAH v1.0.6 - Corrección de SweetAlert2 en producción
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

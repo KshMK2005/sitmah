@@ -2,6 +2,9 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
 import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
+// Importación global de SweetAlert2 para asegurar disponibilidad
+import Swal from 'sweetalert2';
+window.Swal = Swal;
 import Home from './pages/Home';
 import Login from './pages/Login';
 import App from './App.jsx';
