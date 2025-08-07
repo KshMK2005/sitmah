@@ -735,10 +735,10 @@ function Dashboard() {
           // Redraw text in white
           doc.setTextColor(255, 255, 255);
           doc.setFontSize(10);
-          doc.setFontStyle('bold');
+          doc.setFont(doc.getFont().fontName, 'bold');
           doc.text(data.cell.text[0], data.cell.x + data.cell.width / 2, data.cell.y + data.cell.height / 2 + 3, { align: 'center' });
           // Reset font style
-          doc.setFontStyle('normal');
+          doc.setFont(doc.getFont().fontName, 'normal');
         }
       },
       didDrawPage: (data) => {
