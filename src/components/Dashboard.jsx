@@ -15,6 +15,13 @@ import sprinterImg from '../assets/sprinter.png';
 import vagonetaImg from '../assets/vagoneta.png';
 import orionImg from '../assets/orion.png';
 
+// Import icons for headers
+import E1Img from '../assets/E1.png';
+import E2Img from '../assets/E2.png';
+import E3Img from '../assets/E3.png';
+import E4Img from '../assets/E4.png';
+import E5Img from '../assets/E5.png';
+
 function Dashboard() {
   const [aperturas, setAperturas] = useState([]);
   const [programaciones, setProgramaciones] = useState([]);
@@ -595,6 +602,25 @@ function Dashboard() {
     const unidadesEnReserva = tipo => verificadosDeFechaResumen.filter(v => (v.tipoUnidad || v.tipoVehiculo || '').toLowerCase().trim() === tipo && v.estado === 'pendiente').length;
     const unidadesEnFalla = tipo => aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === tipo && a.estado === 'pendiente').length;
 
+    // Convert all images to Base64
+    const [imageData, E1Base64, E2Base64, E3Base64, E4Base64, E5Base64] = await Promise.all([
+      Promise.all(modelos.map(async (m) => {
+        const imgBase64 = await imageUrlToBase64(m.img);
+        return { text: m.nombre, img: imgBase64 };
+      })),
+      imageUrlToBase64(E1Img),
+      imageUrlToBase64(E2Img),
+      imageUrlToBase64(E3Img),
+      imageUrlToBase64(E4Img),
+      imageUrlToBase64(E5Img)
+    ]);
+
+    // Calcular totales
+    const totalProgramadas = modelos.reduce((sum, m) => sum + unidadesProgramadas(m.tipo), 0);
+    const totalOperacion = modelos.reduce((sum, m) => sum + unidadesEnOperacion(m.tipo), 0);
+    const totalReserva = modelos.reduce((sum, m) => sum + unidadesEnReserva(m.tipo), 0);
+    const totalFallas = modelos.reduce((sum, m) => sum + unidadesEnFalla(m.tipo), 0);
+
     // Encabezados y filas para la tabla visual
     const headResumen = [[
       'MODELO',
@@ -604,24 +630,26 @@ function Dashboard() {
       'UNIDADES CON FALLA',
       'TIPO DE FALLA',
     ]];
-    // Convert images to Base64 and create rows with image data
-    const rowsResumen = await Promise.all(modelos.map(async (m) => {
-      const imgBase64 = await imageUrlToBase64(m.img);
-      return [
-        '', // Empty string for first column - didDrawCell will handle the content
-        unidadesProgramadas(m.tipo),
-        unidadesEnOperacion(m.tipo),
-        unidadesEnReserva(m.tipo),
-        unidadesEnFalla(m.tipo),
-        m.fallas(aperturasDeFecha)
-      ];
-    }));
+    
+    // Filas de datos
+    const rowsResumen = modelos.map((m) => [
+      '', // Empty string for first column - didDrawCell will handle the content
+      unidadesProgramadas(m.tipo),
+      unidadesEnOperacion(m.tipo),
+      unidadesEnReserva(m.tipo),
+      unidadesEnFalla(m.tipo),
+      m.fallas(aperturasDeFecha)
+    ]);
 
-    // Store image data separately for didDrawCell
-    const imageData = await Promise.all(modelos.map(async (m) => {
-      const imgBase64 = await imageUrlToBase64(m.img);
-      return { text: m.nombre, img: imgBase64 };
-    }));
+    // Agregar fila de totales
+    rowsResumen.push([
+      'TOTALES',
+      totalProgramadas,
+      totalOperacion,
+      totalReserva,
+      totalFallas,
+      ''
+    ]);
 
     doc.setFontSize(14);
     doc.text('Resumen por tipo de unidad', 14, lastY);
@@ -636,17 +664,34 @@ function Dashboard() {
       headStyles: { fillColor: [111, 34, 52], textColor: 255, fontStyle: 'bold' },
       bodyStyles: { fontSize: 10, minCellHeight: 28 },
       columnStyles: {
-        0: { cellWidth: 35, minCellHeight: 35 },
-        1: { cellWidth: 32 },
-        2: { cellWidth: 32 },
-        3: { cellWidth: 32 },
-        4: { cellWidth: 32 },
-        5: { cellWidth: 70, halign: 'center' },
+        0: { cellWidth: 35, minCellHeight: 35, fillColor: [111, 34, 52] }, // Dark maroon for MODELO
+        1: { cellWidth: 32, fillColor: [111, 34, 52] }, // Dark maroon for UNIDADES PROGRAMADAS
+        2: { cellWidth: 32, fillColor: [111, 34, 52] }, // Dark maroon for UNIDADES EN OPERACIÓN
+        3: { cellWidth: 32, fillColor: [111, 34, 52] }, // Dark maroon for UNIDADES EN RESERVA
+        4: { cellWidth: 32, fillColor: [255, 215, 0] }, // Golden for UNIDADES CON FALLA
+        5: { cellWidth: 70, halign: 'center', fillColor: [255, 215, 0] }, // Golden for TIPO DE FALLA
       },
       margin: { left: 14, right: 14 },
       tableWidth: 'auto',
       didDrawCell: (data) => {
-        // Only draw in body rows, not header
+        // Draw header icons
+        if (data.row.section === 'head' && data.column.index > 0) {
+          const iconMap = [null, E1Base64, E2Base64, E3Base64, E4Base64, E5Base64];
+          const icon = iconMap[data.column.index];
+          if (icon) {
+            try {
+              const imgWidth = 12;
+              const imgHeight = 12;
+              const x = data.cell.x + (data.cell.width - imgWidth) / 2;
+              const y = data.cell.y + data.cell.height - imgHeight - 2; // Position icon at bottom of header
+              doc.addImage(icon, 'PNG', x, y, imgWidth, imgHeight);
+            } catch (error) {
+              console.error('Error drawing header icon:', error);
+            }
+          }
+        }
+        
+        // Draw vehicle images and names in body rows
         if (data.row.section === 'body' && data.column.index === 0 && data.row.index < imageData.length) {
           const imgInfo = imageData[data.row.index];
           if (imgInfo && imgInfo.img) {
@@ -670,6 +715,30 @@ function Dashboard() {
               console.error('Error drawing image or text:', error);
             }
           }
+        }
+        
+        // Apply golden background for falla columns in body only (header colors are set in columnStyles)
+        if ((data.column.index === 4 || data.column.index === 5) && data.row.section === 'body') {
+          // Golden background for body cells
+          doc.setFillColor(255, 248, 220); // Light golden background
+          doc.rect(data.cell.x, data.cell.y, data.cell.width, data.cell.height, 'F');
+          // Redraw text in black
+          doc.setTextColor(0, 0, 0);
+          doc.setFontSize(10);
+          doc.text(data.cell.text[0], data.cell.x + data.cell.width / 2, data.cell.y + data.cell.height / 2 + 3, { align: 'center' });
+        }
+        
+        // Apply dark maroon background for TOTALES row
+        if (data.row.section === 'body' && data.row.index === modelos.length) {
+          doc.setFillColor(111, 34, 52); // Dark maroon
+          doc.rect(data.cell.x, data.cell.y, data.cell.width, data.cell.height, 'F');
+          // Redraw text in white
+          doc.setTextColor(255, 255, 255);
+          doc.setFontSize(10);
+          doc.setFontStyle('bold');
+          doc.text(data.cell.text[0], data.cell.x + data.cell.width / 2, data.cell.y + data.cell.height / 2 + 3, { align: 'center' });
+          // Reset font style
+          doc.setFontStyle('normal');
         }
       },
       didDrawPage: (data) => {
