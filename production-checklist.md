@@ -79,8 +79,14 @@ npm start
 
 ## 🆘 Contacto de Emergencia
 - **Desarrollador**: AntonioMK
-- **Sistema**: SITMAH v1.0
+- **Sistema**: SITMAH v1.0.1
 - **Fecha de Lanzamiento**: Mañana en la madrugada
+
+## 🚀 **Cambios Recientes v1.0.1:**
+- ✅ **Configuración automática** implementada
+- ✅ **Regreso de unidades** funcional
+- ✅ **Manejo robusto de errores** mejorado
+- ✅ **Despliegue Vercel** optimizado
 
 ---
 **¡El sistema está optimizado y listo para producción! 🎉** 

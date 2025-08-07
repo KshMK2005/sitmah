@@ -5,6 +5,8 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import connectDB from '../src/database/config.js';
 
+// SITMAH v1.0.1 - Actualización de configuración automática
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
