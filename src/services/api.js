@@ -227,5 +227,18 @@ export const configuracionService = {
             throw new Error(error.error || 'Error al actualizar configuración');
         }
         return response.json();
+    },
+    
+    // Inicializar configuración por defecto
+    async init() {
+        const response = await fetch(`${API_URL}/configuracion/init`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+        });
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.error || 'Error al inicializar configuración');
+        }
+        return response.json();
     }
 };

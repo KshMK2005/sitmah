@@ -82,4 +82,45 @@ router.put('/:nombre', async (req, res) => {
   }
 });
 
+// Endpoint para inicializar configuración por defecto
+router.post('/init', async (req, res) => {
+  try {
+    const configuraciones = [
+      {
+        nombre: 'temaGlobal',
+        valor: 'normal',
+        descripcion: 'Tema global de la aplicación (normal, sanvalentin, navidad, muertos)'
+      },
+      {
+        nombre: 'version',
+        valor: '1.0.0',
+        descripcion: 'Versión actual del sistema'
+      },
+      {
+        nombre: 'mantenimiento',
+        valor: 'false',
+        descripcion: 'Modo mantenimiento del sistema'
+      }
+    ];
+
+    const resultados = [];
+    
+    for (const config of configuraciones) {
+      const resultado = await Configuracion.findOneAndUpdate(
+        { nombre: config.nombre },
+        config,
+        { upsert: true, new: true }
+      );
+      resultados.push(resultado);
+    }
+
+    res.json({
+      message: 'Configuración inicializada correctamente',
+      configuraciones: resultados
+    });
+  } catch (err) {
+    res.status(500).json({ error: 'Error al inicializar configuración', message: err.message });
+  }
+});
+
 export default router; 

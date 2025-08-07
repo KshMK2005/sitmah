@@ -35,9 +35,17 @@ export async function applySavedTheme() {
       // Si no hay configuración global, usar localStorage como fallback
       temaGuardado = localStorage.getItem('temaGlobal') || 'normal';
       console.log(`🎨 Aplicando tema desde localStorage: ${temaGuardado}`);
+      
+      // Intentar crear la configuración automáticamente
+      try {
+        await configuracionService.save('temaGlobal', temaGuardado, 'Tema global de la aplicación');
+        console.log('✅ Configuración temaGlobal creada automáticamente');
+      } catch (saveError) {
+        console.warn('⚠️ No se pudo crear configuración automáticamente:', saveError.message);
+      }
     }
   } catch (error) {
-    console.error('Error al obtener tema de la configuración global:', error);
+    console.warn('⚠️ Error al obtener tema de la configuración global, usando localStorage:', error.message);
     // Si falla, usar localStorage como fallback
     temaGuardado = localStorage.getItem('temaGlobal') || 'normal';
     console.log(`🎨 Aplicando tema desde localStorage (fallback): ${temaGuardado}`);

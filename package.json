@@ -16,7 +16,9 @@
     "clean": "node clean-and-build.js",
     "rebuild": "npm run clean",
     "init-config": "node initConfig.js",
-    "init-config-local": "node initConfigLocal.js"
+    "init-config-local": "node initConfigLocal.js",
+    "init-config-remote": "node initConfigRemote.js",
+    "check-status": "node checkStatus.js"
   },
   "dependencies": {
     "@types/react-router-dom": "^5.3.3",
