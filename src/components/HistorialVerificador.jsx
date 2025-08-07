@@ -132,50 +132,56 @@ function HistorialVerificador() {
   // Función para regresar apertura a verificación
   const handleRegresarAVerificacion = async (ap) => {
     try {
-      const { value: motivo } = await Swal.fire({
+      const { value: formValues } = await Swal.fire({
         title: 'Regresar a Verificación',
         html: `
-          <div style="text-align: left; margin-bottom: 1rem;">
-            <p><strong>Unidad:</strong> ${ap.economico}</p>
-            <p><strong>Ruta:</strong> ${ap.ruta}</p>
-            <p><strong>Operador:</strong> ${ap.nombre}</p>
-            <p><strong>Tarjetón:</strong> ${ap.tarjeton}</p>
+          <div style="text-align:left;margin-bottom:1rem;">
+            <label style="display:block;margin-bottom:6px;"><strong>Unidad:</strong><input id="swal-unidad" type="text" value="${ap.economico ?? ''}" style="width:100%;padding:4px;margin-top:4px;border:1px solid #ccc;border-radius:4px;"/></label>
+            <label style="display:block;margin-bottom:6px;"><strong>Ruta:</strong><input id="swal-ruta" type="text" value="${ap.ruta ?? ''}" style="width:100%;padding:4px;margin-top:4px;border:1px solid #ccc;border-radius:4px;"/></label>
+            <label style="display:block;margin-bottom:6px;"><strong>Operador:</strong><input id="swal-operador" type="text" value="${ap.nombre ?? ''}" style="width:100%;padding:4px;margin-top:4px;border:1px solid #ccc;border-radius:4px;"/></label>
+            <label style="display:block;margin-bottom:6px;"><strong>Tarjetón:</strong><input id="swal-tarjeton" type="text" value="${ap.tarjeton ?? ''}" style="width:100%;padding:4px;margin-top:4px;border:1px solid #ccc;border-radius:4px;"/></label>
+            <label style="display:block;margin-bottom:6px;"><strong>Hora Programada:</strong><input id="swal-horaprogramada" type="time" value="${ap.horaProgramada ?? ''}" style="width:100%;padding:4px;margin-top:4px;border:1px solid #ccc;border-radius:4px;"/></label>
+            <label style="display:block;margin-bottom:6px;"><strong>Tipo Unidad:</strong><input id="swal-tipounidad" type="text" value="${ap.tipoUnidad ?? ''}" style="width:100%;padding:4px;margin-top:4px;border:1px solid #ccc;border-radius:4px;"/></label>
           </div>
-          <textarea 
-            id="swal-motivo-regreso" 
-            placeholder="Especifica el motivo del regreso (falla técnica, llanta ponchada, etc.)..." 
-            style="width: 100%; min-height: 100px; padding: 8px; border: 1px solid #ccc; border-radius: 4px; resize: vertical;"
-          ></textarea>
+          <textarea id="swal-motivo-regreso" placeholder="Especifica el motivo del regreso (falla técnica, llanta ponchada, etc.)..." style="width:100%;min-height:100px;padding:8px;border:1px solid #ccc;border-radius:4px;resize:vertical;"></textarea>
         `,
-        showCancelButton: true,
-        confirmButtonColor: '#dc3545',
-        cancelButtonColor: '#6F2234',
-        confirmButtonText: 'Regresar a Verificación',
-        cancelButtonText: 'Cancelar',
         focusConfirm: false,
+        showCancelButton: true,
         preConfirm: () => {
-          const motivo = document.getElementById('swal-motivo-regreso').value;
-          if (!motivo.trim()) {
+          const unidad = document.getElementById('swal-unidad').value.trim();
+          const ruta = document.getElementById('swal-ruta').value.trim();
+          const operador = document.getElementById('swal-operador').value.trim();
+          const tarjeton = document.getElementById('swal-tarjeton').value.trim();
+          const horaProgramada = document.getElementById('swal-horaprogramada').value;
+          const tipoUnidad = document.getElementById('swal-tipounidad').value.trim();
+          const motivo = document.getElementById('swal-motivo-regreso').value.trim();
+          if (!motivo) {
             Swal.showValidationMessage('Debes especificar el motivo del regreso');
             return false;
           }
-          return motivo;
-        },
-        didOpen: () => {
-          setTimeout(() => {
-            const textarea = document.getElementById('swal-motivo-regreso');
-            if (textarea) textarea.focus();
-          }, 100);
+          return { unidad, ruta, operador, tarjeton, horaProgramada, tipoUnidad, motivo };
         }
       });
 
-      if (motivo) {
-        await aperturaService.update(ap._id, {
+      if (formValues) {
+        // Desestructurar valores
+        const { unidad, ruta, operador, tarjeton, horaProgramada, tipoUnidad, motivo } = formValues;
+
+        // Construir objeto de actualización
+        const updateData = {
+          economico: unidad,
+          ruta,
+          nombre: operador,
+          tarjeton,
+          horaProgramada,
+          tipoUnidad,
           estado: 'pendiente',
           observaciones: `REGRESO POR FALLA TÉCNICA: ${motivo}`,
           usuarioModificacion: localStorage.getItem('userName') || 'verificador',
           fechaRegreso: new Date().toISOString()
-        });
+        };
+
+        await aperturaService.update(ap._id, updateData);
 
         Swal.fire({
           title: '¡Regresado!',
@@ -187,7 +193,7 @@ function HistorialVerificador() {
 
         // Recargar datos
         const data = await aperturaService.getAll();
-        setAperturas(data.filter(ap => ['completado', 'cancelado', 'dashboard', 'retrasado'].includes(ap.estado)));
+        setAperturas(data.filter(item => ['completado', 'cancelado', 'dashboard', 'retrasado'].includes(item.estado)));
       }
     } catch (error) {
       Swal.fire({
