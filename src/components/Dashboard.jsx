@@ -417,7 +417,28 @@ function Dashboard() {
         img: granVialeImg,
               fallas: (aperturasDeFecha) => {
         const arr = aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === 'gran viale' && a.estado === 'pendiente');
-        return arr.map(a => a.economico || '').join(', ') || 'Ninguna';
+        if (arr.length === 0) return 'Ninguna';
+        
+        // Extraer tipo de falla de observaciones
+        const fallasConTipo = arr.map(a => {
+          const economico = a.economico || '';
+          let tipoFalla = '';
+          
+          if (a.observaciones && a.observaciones.includes('REGRESO POR FALLA TÉCNICA:')) {
+            tipoFalla = a.observaciones.split('REGRESO POR FALLA TÉCNICA:')[1]?.trim() || '';
+          }
+          
+          return tipoFalla ? `${economico} (${tipoFalla})` : economico;
+        });
+        
+        // Si todas tienen el mismo tipo de falla, agrupar
+        const tiposUnicos = [...new Set(fallasConTipo.map(f => f.includes('(') ? f.split('(')[1]?.split(')')[0] : ''))];
+        if (tiposUnicos.length === 1 && tiposUnicos[0]) {
+          const economicos = arr.map(a => a.economico || '').join(', ');
+          return `${economicos} (${tiposUnicos[0]})`;
+        }
+        
+        return fallasConTipo.join(', ');
       }
       },
       {
@@ -426,7 +447,28 @@ function Dashboard() {
         img: boxerImg,
               fallas: (aperturasDeFecha) => {
         const arr = aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === 'boxer' && a.estado === 'pendiente');
-        return arr.map(a => a.economico || '').join(', ') || 'Ninguna';
+        if (arr.length === 0) return 'Ninguna';
+        
+        // Extraer tipo de falla de observaciones
+        const fallasConTipo = arr.map(a => {
+          const economico = a.economico || '';
+          let tipoFalla = '';
+          
+          if (a.observaciones && a.observaciones.includes('REGRESO POR FALLA TÉCNICA:')) {
+            tipoFalla = a.observaciones.split('REGRESO POR FALLA TÉCNICA:')[1]?.trim() || '';
+          }
+          
+          return tipoFalla ? `${economico} (${tipoFalla})` : economico;
+        });
+        
+        // Si todas tienen el mismo tipo de falla, agrupar
+        const tiposUnicos = [...new Set(fallasConTipo.map(f => f.includes('(') ? f.split('(')[1]?.split(')')[0] : ''))];
+        if (tiposUnicos.length === 1 && tiposUnicos[0]) {
+          const economicos = arr.map(a => a.economico || '').join(', ');
+          return `${economicos} (${tiposUnicos[0]})`;
+        }
+        
+        return fallasConTipo.join(', ');
       }
       },
       {
@@ -435,7 +477,28 @@ function Dashboard() {
         img: sprinterImg,
               fallas: (aperturasDeFecha) => {
         const arr = aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === 'sprinter' && a.estado === 'pendiente');
-        return arr.map(a => a.economico || '').join(', ') || 'Ninguna';
+        if (arr.length === 0) return 'Ninguna';
+        
+        // Extraer tipo de falla de observaciones
+        const fallasConTipo = arr.map(a => {
+          const economico = a.economico || '';
+          let tipoFalla = '';
+          
+          if (a.observaciones && a.observaciones.includes('REGRESO POR FALLA TÉCNICA:')) {
+            tipoFalla = a.observaciones.split('REGRESO POR FALLA TÉCNICA:')[1]?.trim() || '';
+          }
+          
+          return tipoFalla ? `${economico} (${tipoFalla})` : economico;
+        });
+        
+        // Si todas tienen el mismo tipo de falla, agrupar
+        const tiposUnicos = [...new Set(fallasConTipo.map(f => f.includes('(') ? f.split('(')[1]?.split(')')[0] : ''))];
+        if (tiposUnicos.length === 1 && tiposUnicos[0]) {
+          const economicos = arr.map(a => a.economico || '').join(', ');
+          return `${economicos} (${tiposUnicos[0]})`;
+        }
+        
+        return fallasConTipo.join(', ');
       }
       },
       {
@@ -444,7 +507,28 @@ function Dashboard() {
         img: vagonetaImg,
               fallas: (aperturasDeFecha) => {
         const arr = aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === 'vagoneta' && a.estado === 'pendiente');
-        return arr.map(a => a.economico || '').join(', ') || 'Ninguna';
+        if (arr.length === 0) return 'Ninguna';
+        
+        // Extraer tipo de falla de observaciones
+        const fallasConTipo = arr.map(a => {
+          const economico = a.economico || '';
+          let tipoFalla = '';
+          
+          if (a.observaciones && a.observaciones.includes('REGRESO POR FALLA TÉCNICA:')) {
+            tipoFalla = a.observaciones.split('REGRESO POR FALLA TÉCNICA:')[1]?.trim() || '';
+          }
+          
+          return tipoFalla ? `${economico} (${tipoFalla})` : economico;
+        });
+        
+        // Si todas tienen el mismo tipo de falla, agrupar
+        const tiposUnicos = [...new Set(fallasConTipo.map(f => f.includes('(') ? f.split('(')[1]?.split(')')[0] : ''))];
+        if (tiposUnicos.length === 1 && tiposUnicos[0]) {
+          const economicos = arr.map(a => a.economico || '').join(', ');
+          return `${economicos} (${tiposUnicos[0]})`;
+        }
+        
+        return fallasConTipo.join(', ');
       }
       },
       {
@@ -453,7 +537,28 @@ function Dashboard() {
         img: orionImg,
               fallas: (aperturasDeFecha) => {
         const arr = aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === 'orion' && a.estado === 'pendiente');
-        return arr.map(a => a.economico || '').join(', ') || 'Ninguna';
+        if (arr.length === 0) return 'Ninguna';
+        
+        // Extraer tipo de falla de observaciones
+        const fallasConTipo = arr.map(a => {
+          const economico = a.economico || '';
+          let tipoFalla = '';
+          
+          if (a.observaciones && a.observaciones.includes('REGRESO POR FALLA TÉCNICA:')) {
+            tipoFalla = a.observaciones.split('REGRESO POR FALLA TÉCNICA:')[1]?.trim() || '';
+          }
+          
+          return tipoFalla ? `${economico} (${tipoFalla})` : economico;
+        });
+        
+        // Si todas tienen el mismo tipo de falla, agrupar
+        const tiposUnicos = [...new Set(fallasConTipo.map(f => f.includes('(') ? f.split('(')[1]?.split(')')[0] : ''))];
+        if (tiposUnicos.length === 1 && tiposUnicos[0]) {
+          const economicos = arr.map(a => a.economico || '').join(', ');
+          return `${economicos} (${tiposUnicos[0]})`;
+        }
+        
+        return fallasConTipo.join(', ');
       }
       },
     ];
@@ -536,7 +641,7 @@ function Dashboard() {
         2: { cellWidth: 32 },
         3: { cellWidth: 32 },
         4: { cellWidth: 32 },
-        5: { cellWidth: 70, halign: 'left' },
+        5: { cellWidth: 70, halign: 'center' },
       },
       margin: { left: 14, right: 14 },
       tableWidth: 'auto',
