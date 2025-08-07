@@ -628,7 +628,7 @@ function Verificador() {
                                 padding: '0.5rem 0',
                                 boxShadow: idx === aperturasOrdenadas.length - 1 ? '0 2px 8px rgba(0,0,0,0.03)' : 'none',
                                 cursor: 'pointer',
-                                borderLeft: ap.retraso ? '4px solid #ffc107' : 'none',
+                                borderLeft: ap.fechaRegreso ? '4px solid #b71c1c' : (ap.retraso ? '4px solid #ffc107' : 'none'),
                             }}
                                 onMouseOver={e => e.currentTarget.style.background = '#d4edda'}
                                 onMouseOut={e => e.currentTarget.style.background = getEstadoColor(ap.estado, ap.retraso, ap.fechaRegreso)}
