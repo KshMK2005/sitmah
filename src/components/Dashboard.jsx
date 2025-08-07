@@ -537,16 +537,14 @@ function Dashboard() {
       didDrawCell: (data) => {
         // Draw images in the first column
         if (data.column.index === 0 && data.row.index < rowsResumen.length) {
-          const cellData = rowsResumen[data.row.index][0];
-          if (cellData && cellData.img) {
+          const rowData = rowsResumen[data.row.index];
+          if (rowData && rowData[0] && rowData[0].img) {
             try {
-              const img = new Image();
-              img.src = cellData.img;
               const imgWidth = 20;
               const imgHeight = 20;
               const x = data.cell.x + (data.cell.width - imgWidth) / 2;
               const y = data.cell.y + (data.cell.height - imgHeight) / 2;
-              doc.addImage(cellData.img, 'PNG', x, y, imgWidth, imgHeight);
+              doc.addImage(rowData[0].img, 'PNG', x, y, imgWidth, imgHeight);
             } catch (error) {
               console.error('Error drawing image:', error);
             }
