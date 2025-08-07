@@ -5,7 +5,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import connectDB from '../src/database/config.js';
 
-// SITMAH v1.0.3 - Corrección final de despliegue Vercel - Eliminación de archivos api problemáticos
+// SITMAH v1.0.4 - Revertir a configuración estable antes de verificador
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -20,54 +20,8 @@ console.log('NODE_ENV:', process.env.NODE_ENV);
 
 // Conectar a la base de datos
 console.log('Intentando conectar a la base de datos...');
-connectDB().then(async () => {
+connectDB().then(() => {
     console.log('✅ Base de datos conectada');
-    
-    // Inicializar configuración por defecto si es necesario
-    if (process.env.NODE_ENV === 'production') {
-        try {
-            const Configuracion = (await import('./database/models/Configuracion.js')).default;
-            
-            // Verificar si existe la configuración temaGlobal
-            const temaGlobal = await Configuracion.findOne({ nombre: 'temaGlobal' });
-            if (!temaGlobal) {
-                console.log('🔧 Inicializando configuración por defecto...');
-                
-                const configuraciones = [
-                    {
-                        nombre: 'temaGlobal',
-                        valor: 'normal',
-                        descripcion: 'Tema global de la aplicación (normal, sanvalentin, navidad, muertos)'
-                    },
-                    {
-                        nombre: 'version',
-                        valor: '1.0.0',
-                        descripcion: 'Versión actual del sistema'
-                    },
-                    {
-                        nombre: 'mantenimiento',
-                        valor: 'false',
-                        descripcion: 'Modo mantenimiento del sistema'
-                    }
-                ];
-                
-                for (const config of configuraciones) {
-                    await Configuracion.findOneAndUpdate(
-                        { nombre: config.nombre },
-                        config,
-                        { upsert: true, new: true }
-                    );
-                }
-                
-                console.log('✅ Configuración inicializada correctamente');
-            } else {
-                console.log('✅ Configuración ya existe');
-            }
-        } catch (error) {
-            console.error('⚠️ Error al inicializar configuración:', error.message);
-            // No fallar el servidor por este error
-        }
-    }
 }).catch(err => {
     console.error('Error al conectar a la base de datos:', err);
     process.exit(1);
