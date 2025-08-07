@@ -102,6 +102,9 @@ const aperturaSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
+    fechaRegreso: {
+        type: Date
+    },
     estado: {
         type: String,
         enum: ['pendiente', 'completado', 'cancelado', 'enviado', 'dashboard', 'retrasado'],

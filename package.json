@@ -10,7 +10,9 @@
     "preview": "vite preview",
     "start": "node server/index.js",
     "server": "node server/index.js",
-    "dev:full": "concurrently \"npm run server\" \"npm run dev\""
+    "dev:full": "concurrently \"npm run server\" \"npm run dev\"",
+    "health-check": "node health-check.js",
+    "prestart": "npm run health-check"
   },
   "dependencies": {
     "@types/react-router-dom": "^5.3.3",

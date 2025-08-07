@@ -370,6 +370,9 @@ function App() {
       cancelButtonColor: "#CBB26A"
     }).then(async (result) => {
       if (result.isConfirmed) {
+        let errores = [];
+        let exitosos = 0;
+        
         for (const horario of schedules) {
           try {
             // Buscar la programación correspondiente a la ruta
@@ -416,6 +419,7 @@ function App() {
               fechaApertura: new Date().toISOString(),
               usuarioCreacion: 'sistema'
             });
+            exitosos++;
           } catch (error) {
             let mensaje = error?.response?.data?.message || error.message || "Ocurrió un error al guardar el horario";
             // Si el error es un objeto Error con un mensaje JSON, intentar parsear
@@ -425,27 +429,38 @@ function App() {
                 mensaje = parsed.message || parsed.error || error.message;
               } catch { }
             }
-            Swal.fire({
-              title: "Error al guardar",
-              text: mensaje,
-              icon: "error",
-              confirmButtonText: "Entendido"
-            });
-            return; // Detener el guardado si hay error
+            errores.push(`Ruta ${horario.ruta}: ${mensaje}`);
           }
         }
-        setSchedules([]);
-        localStorage.removeItem(STORAGE_KEY);
-        limpiarFormulario();
-        setEditandoId(null);
-        setFiltro('');
-        Swal.fire({
-          title: "¡Guardado!",
-          text: "Los horarios se han enviado a verificador correctamente",
-          icon: "success",
-          timer: 1500,
-          showConfirmButton: false
-        });
+        
+        // Mostrar resultado final
+        if (errores.length > 0) {
+          Swal.fire({
+            title: "Guardado parcial",
+            html: `
+              <p>✅ ${exitosos} horarios guardados exitosamente</p>
+              <p>❌ ${errores.length} errores:</p>
+              <ul style="text-align: left; max-height: 200px; overflow-y: auto;">
+                ${errores.map(err => `<li>${err}</li>`).join('')}
+              </ul>
+            `,
+            icon: "warning",
+            confirmButtonText: "Entendido"
+          });
+        } else {
+          setSchedules([]);
+          localStorage.removeItem(STORAGE_KEY);
+          limpiarFormulario();
+          setEditandoId(null);
+          setFiltro('');
+          Swal.fire({
+            title: "¡Guardado!",
+            text: "Los horarios se han enviado a verificador correctamente",
+            icon: "success",
+            timer: 1500,
+            showConfirmButton: false
+          });
+        }
       }
     });
   };

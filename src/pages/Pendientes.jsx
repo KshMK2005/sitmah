@@ -149,7 +149,7 @@ function Pendientes() {
                   <div key={ap._id} className={`tabla-pendientes-row${flashId === ap._id ? ' flash-green' : ''}${flashOrangeId === ap._id ? ' flash-orange' : ''}`}
                     style={{
                       borderBottom: idx === aperturasPendientes.length - 1 ? 'none' : '1px solid #eee',
-                      background: idx % 2 === 0 ? '#fff' : '#f8f9fa',
+                      background: ap.fechaRegreso ? '#ffebee' : (idx % 2 === 0 ? '#fff' : '#f8f9fa'),
                       fontSize: '1rem',
                       transition: 'background 0.2s',
                       borderBottomLeftRadius: idx === aperturasPendientes.length - 1 ? '12px' : '0',
@@ -157,9 +157,22 @@ function Pendientes() {
                       overflow: 'hidden',
                       padding: '0.5rem 0',
                       boxShadow: idx === aperturasPendientes.length - 1 ? '0 2px 8px rgba(0,0,0,0.03)' : 'none',
+                      borderLeft: ap.fechaRegreso ? '4px solid #dc3545' : 'none',
                     }}
                   >
-                    <div>{ap.ruta}</div>
+                    <div>
+                      {ap.ruta}
+                      {ap.fechaRegreso && (
+                        <div style={{ 
+                          fontSize: '0.7rem', 
+                          color: '#dc3545', 
+                          fontWeight: 'bold',
+                          marginTop: '2px'
+                        }}>
+                          🔄 REGRESADA
+                        </div>
+                      )}
+                    </div>
                     <div>{ap.economico}</div>
                     <div>{ap.tarjeton}</div>
                     <div>{ap.corridaInicial}</div>
@@ -203,6 +216,18 @@ function Pendientes() {
                 <input name="corridaInicial" value={form.corridaInicial || ''} onChange={handleFormChange} placeholder="Corrida Inicial" type="number" style={{ padding: 8, borderRadius: 6, border: '1px solid #ccc' }} />
                 <label htmlFor="horaSalida">Salida Programada</label>
                 <input name="horaSalida" value={form.horaSalida || ''} onChange={handleFormChange} placeholder="Salida Programada" type="time" style={{ padding: 8, borderRadius: 6, border: '1px solid #ccc' }} />
+                {form.fechaRegreso && (
+                  <>
+                    <label htmlFor="observaciones">Motivo de Regreso</label>
+                    <textarea 
+                      name="observaciones" 
+                      value={form.observaciones || ''} 
+                      onChange={handleFormChange} 
+                      placeholder="Motivo del regreso..." 
+                      style={{ padding: 8, borderRadius: 6, border: '1px solid #ccc', minHeight: '60px', resize: 'vertical' }} 
+                    />
+                  </>
+                )}
               </div>
               <div style={{ display: 'flex', gap: 12, marginTop: 24, justifyContent: 'flex-end' }}>
                 <button onClick={handleGuardarEdicion} style={{ background: '#6F2234', color: 'white', border: 'none', borderRadius: 6, padding: '0.5rem 1.2rem', fontWeight: 600, cursor: 'pointer' }}>Guardar</button>

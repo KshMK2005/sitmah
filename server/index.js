@@ -68,9 +68,23 @@ if (process.env.NODE_ENV === 'production') {
 // Manejador de errores
 app.use((err, req, res, next) => {
     console.error('Error en el servidor:', err);
+    
+    // Evitar exponer detalles internos en producción
+    const isProduction = process.env.NODE_ENV === 'production';
+    
     res.status(500).json({
         error: 'Error interno del servidor',
-        message: err.message
+        message: isProduction ? 'Ha ocurrido un error interno' : err.message,
+        timestamp: new Date().toISOString()
+    });
+});
+
+// Manejador para rutas no encontradas
+app.use('*', (req, res) => {
+    res.status(404).json({
+        error: 'Ruta no encontrada',
+        message: `La ruta ${req.originalUrl} no existe`,
+        timestamp: new Date().toISOString()
     });
 });
 

@@ -100,7 +100,10 @@ function Verificador() {
     };
 
     // Función para obtener el color de fondo según el estado
-    const getEstadoColor = (estado, retraso) => {
+    const getEstadoColor = (estado, retraso, fechaRegreso) => {
+        // Si tiene fecha de regreso, es una unidad regresada por falla técnica
+        if (fechaRegreso) return '#ffebee'; // Rojo muy claro para unidades regresadas
+        
         if (retraso) return '#fff3cd'; // Amarillo claro para retrasos
         switch (estado) {
             case 'completado': return '#d4edda'; // Verde claro
@@ -615,7 +618,7 @@ function Verificador() {
                                 gridTemplateColumns: 'repeat(9, 1fr)',
                                 alignItems: 'center',
                                 borderBottom: idx === aperturasOrdenadas.length - 1 ? 'none' : '1px solid #eee',
-                                background: getEstadoColor(ap.estado, ap.retraso),
+                                background: getEstadoColor(ap.estado, ap.retraso, ap.fechaRegreso),
                                 fontSize: '1rem',
                                 minWidth: '1050px',
                                 transition: 'background 0.2s',
@@ -628,7 +631,7 @@ function Verificador() {
                                 borderLeft: ap.retraso ? '4px solid #ffc107' : 'none',
                             }}
                                 onMouseOver={e => e.currentTarget.style.background = '#d4edda'}
-                                onMouseOut={e => e.currentTarget.style.background = getEstadoColor(ap.estado, ap.retraso)}
+                                onMouseOut={e => e.currentTarget.style.background = getEstadoColor(ap.estado, ap.retraso, ap.fechaRegreso)}
                             >
                                 <div className="table-cell" style={{ textAlign: 'center' }}>
                                     <button
@@ -637,7 +640,19 @@ function Verificador() {
                                         title="Verificar componentes"
                                     >▼</button>
                                 </div>
-                                <div className="table-cell" style={{ textAlign: 'center' }}>{ap.ruta}</div>
+                                <div className="table-cell" style={{ textAlign: 'center' }}>
+                                    {ap.ruta}
+                                    {ap.fechaRegreso && (
+                                        <div style={{ 
+                                            fontSize: '0.7rem', 
+                                            color: '#dc3545', 
+                                            fontWeight: 'bold',
+                                            marginTop: '2px'
+                                        }}>
+                                            🔄 REGRESADA
+                                        </div>
+                                    )}
+                                </div>
                                 <div className="table-cell" style={{ textAlign: 'center' }}>{ap.economico}</div>
                                 <div className="table-cell" style={{ textAlign: 'center' }}>{ap.tarjeton}</div>
                                 <div className="table-cell" style={{ textAlign: 'center' }}>{ap.corridaInicial}</div>
@@ -694,7 +709,7 @@ function Verificador() {
                                         title="Editar apertura"
                                     >Editar</button>
                                     {/* Modal de edición */}
-                                    {editando && (
+                                    {editando === ap._id && (
                                         <div style={{
                                             position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(0,0,0,0.25)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center'
                                         }}>
@@ -709,8 +724,8 @@ function Verificador() {
                                                     <input name="tarjeton" value={form.tarjeton || ''} onChange={handleFormChange} placeholder="Tarjetón" style={{ padding: 8, borderRadius: 6, border: '1px solid #ccc' }} />
                                                     <label htmlFor="corridaInicial">Corrida Inicial</label>
                                                     <input name="corridaInicial" value={form.corridaInicial || ''} onChange={handleFormChange} placeholder="Corrida Inicial" type="number" style={{ padding: 8, borderRadius: 6, border: '1px solid #ccc' }} />
-                                                    <label htmlFor="horaSalida">Salida Programada</label>
-                                                    <input name="horaSalida" value={form.horaSalida || ''} onChange={handleFormChange} placeholder="Salida Programada" type="time" style={{ padding: 8, borderRadius: 6, border: '1px solid #ccc' }} />
+                                                    <label htmlFor="horaProgramada">Hora Programada</label>
+                                                    <input name="horaProgramada" value={form.horaProgramada || ''} onChange={handleFormChange} placeholder="Hora Programada" type="time" style={{ padding: 8, borderRadius: 6, border: '1px solid #ccc' }} />
                                                 </div>
                                                 <div style={{ display: 'flex', gap: 12, marginTop: 24, justifyContent: 'flex-end' }}>
                                                     <button onClick={handleGuardarEdicion} style={{ background: '#6F2234', color: 'white', border: 'none', borderRadius: 6, padding: '0.5rem 1.2rem', fontWeight: 600, cursor: 'pointer' }}>Guardar</button>

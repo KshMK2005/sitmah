@@ -129,6 +129,75 @@ function HistorialVerificador() {
     }
   };
 
+  // Función para regresar apertura a verificación
+  const handleRegresarAVerificacion = async (ap) => {
+    try {
+      const { value: motivo } = await Swal.fire({
+        title: 'Regresar a Verificación',
+        html: `
+          <div style="text-align: left; margin-bottom: 1rem;">
+            <p><strong>Unidad:</strong> ${ap.economico}</p>
+            <p><strong>Ruta:</strong> ${ap.ruta}</p>
+            <p><strong>Operador:</strong> ${ap.nombre}</p>
+            <p><strong>Tarjetón:</strong> ${ap.tarjeton}</p>
+          </div>
+          <textarea 
+            id="swal-motivo-regreso" 
+            placeholder="Especifica el motivo del regreso (falla técnica, llanta ponchada, etc.)..." 
+            style="width: 100%; min-height: 100px; padding: 8px; border: 1px solid #ccc; border-radius: 4px; resize: vertical;"
+          ></textarea>
+        `,
+        showCancelButton: true,
+        confirmButtonColor: '#dc3545',
+        cancelButtonColor: '#6F2234',
+        confirmButtonText: 'Regresar a Verificación',
+        cancelButtonText: 'Cancelar',
+        focusConfirm: false,
+        preConfirm: () => {
+          const motivo = document.getElementById('swal-motivo-regreso').value;
+          if (!motivo.trim()) {
+            Swal.showValidationMessage('Debes especificar el motivo del regreso');
+            return false;
+          }
+          return motivo;
+        },
+        didOpen: () => {
+          setTimeout(() => {
+            const textarea = document.getElementById('swal-motivo-regreso');
+            if (textarea) textarea.focus();
+          }, 100);
+        }
+      });
+
+      if (motivo) {
+        await aperturaService.update(ap._id, {
+          estado: 'pendiente',
+          observaciones: `REGRESO POR FALLA TÉCNICA: ${motivo}`,
+          usuarioModificacion: localStorage.getItem('userName') || 'verificador',
+          fechaRegreso: new Date().toISOString()
+        });
+
+        Swal.fire({
+          title: '¡Regresado!',
+          text: 'La unidad ha sido regresada a verificación',
+          icon: 'success',
+          timer: 2000,
+          showConfirmButton: false
+        });
+
+        // Recargar datos
+        const data = await aperturaService.getAll();
+        setAperturas(data.filter(ap => ['completado', 'cancelado', 'dashboard', 'retrasado'].includes(ap.estado)));
+      }
+    } catch (error) {
+      Swal.fire({
+        title: 'Error',
+        text: 'No se pudo regresar la unidad a verificación',
+        icon: 'error'
+      });
+    }
+  };
+
   // Función para generar números de página
   const getPageNumbers = () => {
     const pages = [];
@@ -357,6 +426,25 @@ function HistorialVerificador() {
                          ap.estado === 'retrasado' ? 'Retrasado' :
                          ap.estado === 'completado' ? 'Completado' : ap.estado}
                       </span>
+                      {ap.estado === 'dashboard' && (
+                        <button
+                          onClick={() => handleRegresarAVerificacion(ap)}
+                          style={{
+                            background: '#dc3545',
+                            color: '#fff',
+                            border: 'none',
+                            borderRadius: '3px',
+                            padding: '0.2rem 0.4rem',
+                            fontSize: '0.75rem',
+                            fontWeight: '600',
+                            cursor: 'pointer',
+                            transition: 'all 0.2s ease'
+                          }}
+                          title="Regresar a verificación por falla técnica"
+                        >
+                          🔄 Regresar
+                        </button>
+                      )}
                       <button
                         onClick={() => toggleRowExpansion(ap._id)}
                         style={{
