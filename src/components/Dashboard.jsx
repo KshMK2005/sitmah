@@ -415,46 +415,46 @@ function Dashboard() {
         nombre: 'GRAN VIALE',
         tipo: 'gran viale',
         img: granVialeImg,
-        fallas: (aperturasDeFecha) => {
-          const arr = aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === 'gran viale' && a.estado === 'pendiente');
-          return arr.map(a => `${a.economico || ''}${a.falla ? ' (' + a.falla + ')' : ''}`).join(', ') || 'Ninguna';
-        }
+              fallas: (aperturasDeFecha) => {
+        const arr = aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === 'gran viale' && a.estado === 'pendiente');
+        return arr.map(a => a.economico || '').join(', ') || 'Ninguna';
+      }
       },
       {
         nombre: 'BÓXER',
         tipo: 'boxer',
         img: boxerImg,
-        fallas: (aperturasDeFecha) => {
-          const arr = aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === 'boxer' && a.estado === 'pendiente');
-          return arr.map(a => `${a.economico || ''}${a.falla ? ' (' + a.falla + ')' : ''}`).join(', ') || 'Ninguna';
-        }
+              fallas: (aperturasDeFecha) => {
+        const arr = aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === 'boxer' && a.estado === 'pendiente');
+        return arr.map(a => a.economico || '').join(', ') || 'Ninguna';
+      }
       },
       {
         nombre: 'SPRINTER',
         tipo: 'sprinter',
         img: sprinterImg,
-        fallas: (aperturasDeFecha) => {
-          const arr = aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === 'sprinter' && a.estado === 'pendiente');
-          return arr.map(a => `${a.economico || ''}${a.falla ? ' (' + a.falla + ')' : ''}`).join(', ') || 'Ninguna';
-        }
+              fallas: (aperturasDeFecha) => {
+        const arr = aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === 'sprinter' && a.estado === 'pendiente');
+        return arr.map(a => a.economico || '').join(', ') || 'Ninguna';
+      }
       },
       {
         nombre: 'VAGONETA',
         tipo: 'vagoneta',
         img: vagonetaImg,
-        fallas: (aperturasDeFecha) => {
-          const arr = aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === 'vagoneta' && a.estado === 'pendiente');
-          return arr.map(a => `${a.economico || ''}${a.falla ? ' (' + a.falla + ')' : ''}`).join(', ') || 'Ninguna';
-        }
+              fallas: (aperturasDeFecha) => {
+        const arr = aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === 'vagoneta' && a.estado === 'pendiente');
+        return arr.map(a => a.economico || '').join(', ') || 'Ninguna';
+      }
       },
       {
         nombre: 'ORIÓN',
         tipo: 'orion',
         img: orionImg,
-        fallas: (aperturasDeFecha) => {
-          const arr = aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === 'orion' && a.estado === 'pendiente');
-          return arr.map(a => `${a.economico || ''}${a.falla ? ' (' + a.falla + ')' : ''}`).join(', ') || 'Ninguna';
-        }
+              fallas: (aperturasDeFecha) => {
+        const arr = aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === 'orion' && a.estado === 'pendiente');
+        return arr.map(a => a.economico || '').join(', ') || 'Ninguna';
+      }
       },
     ];
 
@@ -525,7 +525,7 @@ function Dashboard() {
       headStyles: { fillColor: [111, 34, 52], textColor: 255, fontStyle: 'bold' },
       bodyStyles: { fontSize: 10, minCellHeight: 28 },
       columnStyles: {
-        0: { cellWidth: 28, minCellHeight: 28 },
+        0: { cellWidth: 35, minCellHeight: 35 },
         1: { cellWidth: 32 },
         2: { cellWidth: 32 },
         3: { cellWidth: 32 },
@@ -535,18 +535,28 @@ function Dashboard() {
       margin: { left: 14, right: 14 },
       tableWidth: 'auto',
       didDrawCell: (data) => {
-        // Draw images in the first column
+        // Draw images and text in the first column
         if (data.column.index === 0 && data.row.index < rowsResumen.length) {
           const rowData = rowsResumen[data.row.index];
           if (rowData && rowData[0] && rowData[0].img) {
             try {
-              const imgWidth = 20;
-              const imgHeight = 20;
+              // Draw image at the top of the cell
+              const imgWidth = 18;
+              const imgHeight = 18;
               const x = data.cell.x + (data.cell.width - imgWidth) / 2;
-              const y = data.cell.y + (data.cell.height - imgHeight) / 2;
+              const y = data.cell.y + 2; // Position image at top with small margin
               doc.addImage(rowData[0].img, 'PNG', x, y, imgWidth, imgHeight);
+              
+              // Draw vehicle name below the image
+              if (rowData[0].text) {
+                doc.setFontSize(8);
+                doc.setTextColor(0, 0, 0);
+                const textX = data.cell.x + data.cell.width / 2;
+                const textY = data.cell.y + imgHeight + 8; // Position text below image
+                doc.text(rowData[0].text, textX, textY, { align: 'center' });
+              }
             } catch (error) {
-              console.error('Error drawing image:', error);
+              console.error('Error drawing image or text:', error);
             }
           }
         }
