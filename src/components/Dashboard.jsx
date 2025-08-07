@@ -690,8 +690,8 @@ function Dashboard() {
         
         // Apply golden background for falla columns in body only (header colors are set in columnStyles)
         if ((data.column.index === 4 || data.column.index === 5) && data.row.section === 'body') {
-          // Golden background for body cells
-          doc.setFillColor(255, 248, 220); // Light golden background
+          // Golden background for body cells - use same golden color as header
+          doc.setFillColor(255, 215, 0); // Same golden color as columnStyles
           doc.rect(data.cell.x, data.cell.y, data.cell.width, data.cell.height, 'F');
           // Redraw text in black
           doc.setTextColor(0, 0, 0);
