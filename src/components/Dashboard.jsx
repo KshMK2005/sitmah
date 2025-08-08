@@ -1036,8 +1036,8 @@ function Dashboard() {
             })()}
             {/* Lógica de filtrado para tablas: prioridad: fecha específica > semana > mes, y solo mostrar registros verificados */}
             {(() => {
-              // Excluir registros con estado 'dashboard' ya que son temporales y solo deben aparecer en Verificador
-              let itemsFiltrados = aperturas.filter(ap => ap.estado === 'completado' || ap.estado === 'cancelado' || ap.estado === 'pendiente');
+              // Incluir registros con estado 'apertura' para edición, y otros estados verificados
+              let itemsFiltrados = aperturas.filter(ap => ap.estado === 'apertura' || ap.estado === 'completado' || ap.estado === 'cancelado' || ap.estado === 'pendiente');
               if (fechaFiltroAperturaTabla) {
                 // Filtrar por fecha exacta (solo día)
                 itemsFiltrados = itemsFiltrados.filter(a => {

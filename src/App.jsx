@@ -549,13 +549,13 @@ function App() {
       const handleCleanupImportedData = async () => {
         try {
           const result = await Swal.fire({
-            title: '¿Eliminar datos del 8 de agosto?',
-            text: 'Esto eliminará TODOS los registros del 8 de agosto (2025-08-08). ¿Estás seguro?',
+            title: '¿Eliminar TODOS los datos del 8 de agosto?',
+            text: 'Esto eliminará TODOS los registros del 8 de agosto (2025-08-08) de TODAS las secciones. ¿Estás seguro?',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#d33',
             cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Sí, eliminar',
+            confirmButtonText: 'Sí, eliminar todo',
             cancelButtonText: 'Cancelar'
           });
 
@@ -564,8 +564,8 @@ function App() {
               const response = await aperturaService.deleteByDate('2025-08-08');
               
               Swal.fire(
-                'Eliminados',
-                response.message,
+                'Eliminados completamente',
+                `${response.message}. Los datos han sido eliminados de todas las secciones.`,
                 'success'
               );
 
@@ -627,7 +627,7 @@ function App() {
               corridaInicial: parseInt(item.corridaInicial || programacion?.corridaInicial || programacionPorRuta?.corridaInicial || '1'),
               corridaFinal: parseInt(item.corridaFinal || programacion?.corridaFinal || programacionPorRuta?.corridaFinal || '1'),
               fechaApertura: item.fechaApertura,
-              estado: 'dashboard',
+              estado: 'apertura',
               comentario: item.comentario || '',
               observaciones: item.comentario || ''
             };
@@ -742,7 +742,7 @@ function App() {
               marginLeft: '10px'
             }}
           >
-            🗑️ Eliminar Datos 8 de Agosto
+            🗑️ Eliminar TODOS los datos del 8 de agosto
           </button>
 
           <input
@@ -1066,7 +1066,7 @@ function App() {
                 <h4 style={{ margin: '0 0 8px 0', color: '#6F2234' }}>ℹ️ Información de Importación:</h4>
                 <ul style={{ margin: 0, paddingLeft: '20px' }}>
                   <li><strong>Hora de Salida:</strong> Si no está en el Excel, se buscará automáticamente en las programaciones</li>
-                  <li><strong>Estado:</strong> Todas las unidades se importarán con estado "dashboard" (pendientes de verificación)</li>
+                  <li><strong>Estado:</strong> Todas las unidades se importarán con estado "apertura" (para edición antes de verificación)</li>
                   <li><strong>Fecha:</strong> Se usará la fecha actual como fecha de apertura</li>
                   <li><strong>Campos faltantes:</strong> Se rellenarán automáticamente desde las programaciones existentes</li>
                 </ul>
