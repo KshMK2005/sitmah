@@ -90,8 +90,8 @@ function Verificador() {
 
     const filtrarAperturas = () => {
         return aperturas.filter(ap => {
-            // Mostrar aperturas con estado 'completado', 'retrasado' y 'dashboard' para verificación
-            if (!['completado', 'retrasado', 'dashboard'].includes(ap.estado)) return false;
+            // Mostrar aperturas con estado 'completado' y 'pendiente' para verificación
+            if (!['completado', 'retrasado'].includes(ap.estado)) return false;
             const cumpleRuta = !filtros.ruta || ap.ruta.toLowerCase().includes(filtros.ruta.toLowerCase());
             const cumpleTipo = !filtros.tipoUnidad || ap.tipoUnidad === filtros.tipoUnidad;
             const cumpleFecha = !filtros.fecha || new Date(ap.fechaApertura).toLocaleDateString() === new Date(filtros.fecha).toLocaleDateString();
@@ -217,6 +217,12 @@ function Verificador() {
     function VerificacionComponentesModal({ ap, validaciones, marcarValidacion, onGuardar }) {
         const [_, setRerender] = useState(0); // Para forzar rerender
         const [comentario, setComentario] = useState(validaciones[ap._id]?.comentarioVerificacion || ap.comentarioVerificacion || '');
+        // Ciclos perdidos
+        const ciclosOptions = [
+            '1', '1/2', '2', '2/2', '3', '3/2',
+            '4', '4/2', '5', '5/2', '6'
+        ];
+        const [ciclosPerdidos, setCiclosPerdidos] = useState(validaciones[ap._id]?.ciclosPerdidos || ap.ciclosPerdidos || '');
         const campos = [
             { label: 'Luces delanteras, traseras e internas', campo: 'Luces delanteras traseras e internas' },
             { label: 'Condiciones de neumáticos', campo: 'Condiciones de neumáticos' },
@@ -243,6 +249,23 @@ function Verificador() {
                 background: '#f8f9fa',
                 borderRadius: 12,
             }}>
+                {/* Apartado de ciclos perdidos */}
+                <div style={{ marginBottom: 18, width: '100%', display: 'flex', justifyContent: 'center' }}>
+                    <label style={{ fontWeight: 600, color: '#6F2234', marginRight: 10 }}>Ciclos perdidos:</label>
+                    <select
+                        value={ciclosPerdidos}
+                        onChange={e => {
+                            setCiclosPerdidos(e.target.value);
+                            marcarValidacion(ap._id, 'ciclosPerdidos', e.target.value);
+                        }}
+                        style={{ padding: '0.4rem 1rem', borderRadius: 6, border: '1px solid #ccc', minWidth: 120 }}
+                    >
+                        <option value="">Selecciona...</option>
+                        {ciclosOptions.map(opt => (
+                            <option key={opt} value={opt}>{opt}</option>
+                        ))}
+                    </select>
+                </div>
                 <div style={{
                     display: 'flex',
                     flexWrap: 'wrap',

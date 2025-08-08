@@ -1087,9 +1087,16 @@ function Dashboard() {
                               <div style={{ padding: '0.5rem', borderBottom: '1px solid #ececec', background: idx % 2 === 0 ? '#fff' : '#f8f9fa', fontWeight: 500 }}>{ap.horaSalida}</div>
                               <div style={{ padding: '0.5rem', borderBottom: '1px solid #ececec', background: idx % 2 === 0 ? '#fff' : '#f8f9fa', fontWeight: 500 }}>{ap.createdAt ? new Date(ap.createdAt).toLocaleString('es-MX', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '-'}</div>
                               <div style={{ padding: '0.5rem', borderBottom: '1px solid #ececec', background: idx % 2 === 0 ? '#fff' : '#f8f9fa', fontWeight: 500 }}>{ap.estado === 'cancelado' ? 'rechazado' : (ap.estado === 'completado' || ap.estado === 'dashboard') ? 'aceptado' : 'pendiente'}</div>
+                              <div style={{ padding: '0.5rem', borderBottom: '1px solid #ececec', background: idx % 2 === 0 ? '#fff' : '#f8f9fa', fontWeight: 500 }}>{ap.observaciones || '-'}</div>
+                              <div style={{ padding: '0.5rem', borderBottom: '1px solid #ececec', background: idx % 2 === 0 ? '#fff' : '#f8f9fa', fontWeight: 500 }}>{ap.ciclosPerdidos || '-'}</div>
                             </React.Fragment>
                           ))}
                         </div>
+                      </div>
+                      <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 12 }}>
+                        <button onClick={() => handleAcuseVerificacionesPorFecha(fecha, items)} style={{ background: '#6F2234', color: '#fff', border: 'none', borderRadius: 6, padding: '0.5rem 1.2rem', fontWeight: 600, cursor: 'pointer', fontSize: 15 }}>
+                          Generar acuse PDF de esta tabla
+                        </button>
                       </div>
                     </div>
                   ))
@@ -1152,6 +1159,7 @@ function Dashboard() {
                           <div style={{ fontWeight: 700, color: '#6F2234', padding: '0.7rem 0.5rem', borderBottom: '2px solid #ececec', background: '#f3f3f7' }}>Fecha Apertura</div>
                           <div style={{ fontWeight: 700, color: '#6F2234', padding: '0.7rem 0.5rem', borderBottom: '2px solid #ececec', background: '#f3f3f7' }}>Estado</div>
                           <div style={{ fontWeight: 700, color: '#6F2234', padding: '0.7rem 0.5rem', borderBottom: '2px solid #ececec', background: '#f3f3f7' }}>Motivo</div>
+                          <div style={{ fontWeight: 700, color: '#6F2234', padding: '0.7rem 0.5rem', borderBottom: '2px solid #ececec', background: '#f3f3f7' }}>Ciclos perdidos</div>
                           {/* Filas */}
                           {items.map((ap, idx) => (
                             <React.Fragment key={ap._id}>
@@ -1166,6 +1174,7 @@ function Dashboard() {
                               <div style={{ padding: '0.5rem', borderBottom: '1px solid #ececec', background: idx % 2 === 0 ? '#fff' : '#f8f9fa', fontWeight: 500 }}>{ap.fechaApertura ? new Date(ap.fechaApertura).toLocaleString('es-MX', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '-'}</div>
                               <div style={{ padding: '0.5rem', borderBottom: '1px solid #ececec', background: idx % 2 === 0 ? '#fff' : '#f8f9fa', fontWeight: 500 }}>{ap.estado === 'cancelado' ? 'rechazado' : (ap.estado === 'completado' || ap.estado === 'dashboard') ? 'aceptado' : 'pendiente'}</div>
                               <div style={{ padding: '0.5rem', borderBottom: '1px solid #ececec', background: idx % 2 === 0 ? '#fff' : '#f8f9fa', fontWeight: 500 }}>{ap.observaciones || '-'}</div>
+                              <div style={{ padding: '0.5rem', borderBottom: '1px solid #ececec', background: idx % 2 === 0 ? '#fff' : '#f8f9fa', fontWeight: 500 }}>{ap.ciclosPerdidos || '-'}</div>
                             </React.Fragment>
                           ))}
                         </div>
@@ -1181,10 +1190,7 @@ function Dashboard() {
             })()}
           </section>
         )}
-        {/* Se eliminó el tab de componentes verificados del dashboard */}
       </main>
     </div>
   );
 }
-
-export default Dashboard;
