@@ -107,7 +107,7 @@ const aperturaSchema = new mongoose.Schema({
     },
     estado: {
         type: String,
-        enum: ['pendiente', 'completado', 'cancelado', 'enviado', 'dashboard', 'retrasado'],
+        enum: ['pendiente', 'completado', 'cancelado', 'enviado', 'dashboard', 'retrasado', 'apertura'],
         default: 'pendiente'
     },
     retraso: {

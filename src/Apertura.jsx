@@ -172,11 +172,26 @@ function Apertura() {
     } catch (error) {
       console.error('❌ Error al crear apertura:', error);
       console.error('❌ Mensaje de error:', error.message);
+      console.error('❌ Datos que causaron el error:', aperturaData);
+      
+      let errorMessage = error.message || 'Error al crear la apertura';
+      
+      // Si el error es muy largo, truncarlo
+      if (errorMessage.length > 200) {
+        errorMessage = errorMessage.substring(0, 200) + '...';
+      }
       
       Swal.fire({
-        title: 'Error',
-        text: error.message || 'Error al crear la apertura',
-        icon: 'error'
+        title: 'Error al crear apertura',
+        html: `
+          <p><strong>Error:</strong> ${errorMessage}</p>
+          <p><strong>Datos enviados:</strong></p>
+          <pre style="font-size: 12px; text-align: left; max-height: 150px; overflow-y: auto; background: #f5f5f5; padding: 10px; border-radius: 4px;">
+${JSON.stringify(aperturaData, null, 2)}
+          </pre>
+        `,
+        icon: 'error',
+        width: '600px'
       });
     }
   };
@@ -441,6 +456,10 @@ function Apertura() {
                 <option value="URBANO">URBANO</option>
                 <option value="SUBURBANO">SUBURBANO</option>
                 <option value="INTERMUNICIPAL">INTERMUNICIPAL</option>
+                <option value="GRAN VIALE">GRAN VIALE</option>
+                <option value="BOXER">BOXER</option>
+                <option value="SPRINTER">SPRINTER</option>
+                <option value="VAGONETA">VAGONETA</option>
               </select>
             </div>
             <div className="form-group">

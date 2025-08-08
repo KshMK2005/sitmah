@@ -75,7 +75,8 @@ export const aperturaService = {
         });
         if (!response.ok) {
             const error = await response.json();
-            throw new Error(error.error || 'Error al crear apertura');
+            console.log('❌ Error response from server:', error);
+            throw new Error(error.message || error.error || 'Error al crear apertura');
         }
         return response.json();
     },
