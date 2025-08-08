@@ -338,6 +338,23 @@ function Apertura() {
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
           <button
             type="button"
+            onClick={() => alert('¡Botón funcionando!')}
+            style={{
+              background: '#FF0000',
+              color: 'white',
+              border: 'none',
+              borderRadius: '8px',
+              padding: '20px 40px',
+              fontSize: '20px',
+              fontWeight: 'bold',
+              cursor: 'pointer',
+              marginBottom: '1rem'
+            }}
+          >
+            🚨 BOTÓN DE PRUEBA - CLICK AQUÍ
+          </button>
+          <button
+            type="button"
             onClick={() => document.getElementById('fileInput').click()}
             style={{
               background: '#6F2234',
