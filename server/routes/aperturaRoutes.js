@@ -242,6 +242,34 @@ router.post('/agregar-estado', async (req, res) => {
     }
 });
 
+// Endpoint para mover aperturas a completado temporalmente
+router.post('/move-to-completado', async (req, res) => {
+    try {
+        const { estado } = req.body;
+        
+        // Mover todas las aperturas que estén en en_verificacion a completado
+        const result = await Apertura.updateMany(
+            { estado: 'en_verificacion' },
+            { 
+                $set: { 
+                    estado: estado || 'completado',
+                    ultimaModificacion: {
+                        usuario: 'sistema',
+                        fecha: new Date()
+                    }
+                }
+            }
+        );
+        
+        res.json({ 
+            message: `Se movieron ${result.modifiedCount} aperturas a completado`,
+            modifiedCount: result.modifiedCount
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
 // Crear una nueva apertura
 router.post('/', validarApertura, async (req, res) => {
     try {
