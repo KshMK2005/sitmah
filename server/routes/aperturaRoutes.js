@@ -96,6 +96,37 @@ router.get('/modelo-info', async (req, res) => {
     }
 });
 
+// Endpoint para actualizar el modelo dinámicamente
+router.post('/actualizar-modelo', async (req, res) => {
+    try {
+        const schema = Apertura.schema;
+        
+        // Actualizar enum de tipoUnidad
+        if (schema.path('tipoUnidad')) {
+            schema.path('tipoUnidad').enumValues = [
+                'URBANO', 'SUBURBANO', 'INTERMUNICIPAL', 'GRAN VIALE', 
+                'BOXER', 'SPRINTER', 'VAGONETA', 'ORION'
+            ];
+        }
+        
+        // Actualizar enum de estado
+        if (schema.path('estado')) {
+            schema.path('estado').enumValues = [
+                'pendiente', 'completado', 'cancelado', 'enviado', 
+                'dashboard', 'retrasado', 'apertura'
+            ];
+        }
+        
+        res.json({ 
+            message: 'Modelo actualizado dinámicamente',
+            tipoUnidad: schema.path('tipoUnidad').enumValues,
+            estado: schema.path('estado').enumValues
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
 // Crear una nueva apertura
 router.post('/', validarApertura, async (req, res) => {
     try {
