@@ -581,11 +581,11 @@ function App() {
 
             aperturaData = {
               programacionId: programacionFinal?._id || programaciones[0]?._id,
-              ruta: item.ruta,
-              tipoUnidad: item.tipoUnidad.toUpperCase(),
-              economico: item.economico.toString(),
-              tarjeton: item.tarjeton.toString(),
-              nombre: item.nombre,
+              ruta: item.ruta.trim(),
+              tipoUnidad: item.tipoUnidad.trim().toUpperCase(),
+              economico: item.economico.toString().trim(),
+              tarjeton: item.tarjeton.toString().trim(),
+              nombre: item.nombre.trim(),
               // Prioridad: Excel > Programación exacta > Programación por ruta > Fallback
               horaSalida: item.horaSalida || programacion?.horaSalida || programacionPorRuta?.horaSalida || '04:30',
               horaProgramada: item.horaSalida || programacion?.horaSalida || programacionPorRuta?.horaSalida || '04:30',
@@ -594,8 +594,8 @@ function App() {
               corridaFinal: parseInt(item.corridaFinal || programacion?.corridaFinal || programacionPorRuta?.corridaFinal || '1'),
               fechaApertura: item.fechaApertura,
               estado: 'apertura',
-              comentario: item.comentario || '',
-              observaciones: item.comentario || ''
+              comentario: item.comentario ? item.comentario.trim() : '',
+              observaciones: item.comentario ? item.comentario.trim() : ''
             };
 
             console.log('🚀 Enviando datos a la API:', aperturaData);

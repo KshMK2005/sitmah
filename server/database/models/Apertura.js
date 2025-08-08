@@ -63,7 +63,7 @@ const aperturaSchema = new mongoose.Schema({
     tipoUnidad: {
         type: String,
         required: [true, 'El tipo de unidad es obligatorio'],
-        enum: ['URBANO', 'SUBURBANO', 'INTERMUNICIPAL', 'GRAN VIALE', 'BOXER', 'SPRINTER', 'VAGONETA']
+        enum: ['URBANO', 'SUBURBANO', 'INTERMUNICIPAL', 'GRAN VIALE', 'BOXER', 'SPRINTER', 'VAGONETA', 'ORION']
     },
     economico: {
         type: String,

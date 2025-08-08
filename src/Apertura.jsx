@@ -126,11 +126,11 @@ function Apertura() {
       // Preparar datos para crear la apertura
       const aperturaData = {
         programacionId: programacion._id,
-        ruta: formData.ruta,
-        tipoUnidad: formData.tipoUnidad.toUpperCase(),
-        economico: formData.economico.toString().toUpperCase(),
-        tarjeton: formData.tarjeton.toString().toUpperCase(),
-        nombre: formData.nombre,
+        ruta: formData.ruta.trim(),
+        tipoUnidad: formData.tipoUnidad.trim().toUpperCase(),
+        economico: formData.economico.toString().trim().toUpperCase(),
+        tarjeton: formData.tarjeton.toString().trim().toUpperCase(),
+        nombre: formData.nombre.trim(),
         horaSalida: formData.horaSalida || programacion.horaSalida || '04:30',
         horaProgramada: formData.horaSalida || programacion.horaSalida || '04:30',
         intervalo: parseInt(formData.intervalo || programacion.intervalo || '15'),
@@ -138,8 +138,8 @@ function Apertura() {
         corridaFinal: parseInt(formData.corridaFinal || programacion.corridaFinal || '1'),
         fechaApertura: new Date().toISOString(),
         estado: 'dashboard',
-        comentario: formData.comentario || '',
-        observaciones: formData.comentario || ''
+        comentario: formData.comentario ? formData.comentario.trim() : '',
+        observaciones: formData.comentario ? formData.comentario.trim() : ''
       };
 
       console.log('🚀 Enviando datos a la API:', aperturaData);
@@ -460,6 +460,7 @@ ${JSON.stringify(aperturaData, null, 2)}
                 <option value="BOXER">BOXER</option>
                 <option value="SPRINTER">SPRINTER</option>
                 <option value="VAGONETA">VAGONETA</option>
+                <option value="ORION">ORION</option>
               </select>
             </div>
             <div className="form-group">
