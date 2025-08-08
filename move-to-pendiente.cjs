@@ -1,0 +1,69 @@
+const https = require('https');
+
+console.log('🔄 Moviendo aperturas a estado pendiente (estado válido)...');
+
+const moveToPendiente = () => {
+  return new Promise((resolve, reject) => {
+    const postData = JSON.stringify({
+      estado: 'pendiente'
+    });
+    
+    const req = https.request({
+      hostname: 'sitmah.vercel.app',
+      port: 443,
+      path: '/api/apertura/move-to-pendiente',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(postData)
+      },
+      timeout: 10000
+    }, (res) => {
+      let data = '';
+      
+      res.on('data', (chunk) => {
+        data += chunk;
+      });
+      
+      res.on('end', () => {
+        try {
+          const result = JSON.parse(data);
+          console.log('✅ Aperturas movidas a pendiente exitosamente');
+          console.log('📋 Resultado:', result);
+          resolve(result);
+        } catch (error) {
+          console.log('❌ Error parseando respuesta:', error.message);
+          console.log('📄 Respuesta del servidor:', data);
+          reject(error);
+        }
+      });
+    });
+
+    req.on('error', (err) => {
+      console.log('❌ Error conectando al servidor:', err.message);
+      reject(err);
+    });
+
+    req.on('timeout', () => {
+      console.log('⏰ Timeout conectando al servidor');
+      req.destroy();
+      reject(new Error('Timeout'));
+    });
+
+    req.write(postData);
+    req.end();
+  });
+};
+
+async function main() {
+  try {
+    await moveToPendiente();
+    console.log('');
+    console.log('🎉 ¡Aperturas movidas a estado pendiente!');
+    console.log('📋 Ahora deberían aparecer en el Verificador sin errores');
+  } catch (error) {
+    console.error('❌ Error durante el movimiento:', error.message);
+  }
+}
+
+main(); 

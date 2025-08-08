@@ -270,6 +270,34 @@ router.post('/move-to-completado', async (req, res) => {
     }
 });
 
+// Endpoint para mover aperturas a pendiente (estado válido)
+router.post('/move-to-pendiente', async (req, res) => {
+    try {
+        const { estado } = req.body;
+        
+        // Mover todas las aperturas que estén en en_verificacion a pendiente
+        const result = await Apertura.updateMany(
+            { estado: 'en_verificacion' },
+            { 
+                $set: { 
+                    estado: estado || 'pendiente',
+                    ultimaModificacion: {
+                        usuario: 'sistema',
+                        fecha: new Date()
+                    }
+                }
+            }
+        );
+        
+        res.json({ 
+            message: `Se movieron ${result.modifiedCount} aperturas a pendiente`,
+            modifiedCount: result.modifiedCount
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
 // Crear una nueva apertura
 router.post('/', validarApertura, async (req, res) => {
     try {
