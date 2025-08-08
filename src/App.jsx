@@ -744,23 +744,7 @@ function App() {
           >
             📊 Cargar Excel Masivo
           </button>
-          <button
-            type="button"
-            onClick={handleCleanupImportedData}
-            style={{
-              background: '#dc3545',
-              color: 'white',
-              border: 'none',
-              borderRadius: '8px',
-              padding: '12px 24px',
-              fontSize: '16px',
-              fontWeight: 'bold',
-              cursor: 'pointer',
-              marginBottom: '1rem'
-            }}
-          >
-            🗑️ Eliminar Datos 8 de Agosto
-          </button>
+
           <input
             id="fileInput"
             type="file"

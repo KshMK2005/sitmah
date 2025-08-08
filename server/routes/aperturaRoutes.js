@@ -194,28 +194,6 @@ router.patch('/:id/estado', async (req, res) => {
     }
 });
 
-// Eliminar una apertura (solo si está pendiente)
-router.delete('/:id', async (req, res) => {
-    try {
-        const apertura = await Apertura.findById(req.params.id);
-        
-        if (!apertura) {
-            return res.status(404).json({ message: 'Apertura no encontrada' });
-        }
-
-        if (apertura.estado !== 'pendiente') {
-            return res.status(400).json({ 
-                message: 'Solo se pueden eliminar aperturas en estado pendiente' 
-            });
-        }
-
-        await Apertura.deleteOne({ _id: req.params.id });
-        res.json({ message: 'Apertura eliminada correctamente' });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-});
-
 // Eliminar aperturas por fecha (para limpiar datos de prueba)
 router.delete('/deleteByDate', async (req, res) => {
     try {
@@ -244,6 +222,28 @@ router.delete('/deleteByDate', async (req, res) => {
             message: `Se eliminaron ${result.deletedCount} aperturas del ${fecha}`,
             deletedCount: result.deletedCount
         });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+// Eliminar una apertura (solo si está pendiente)
+router.delete('/:id', async (req, res) => {
+    try {
+        const apertura = await Apertura.findById(req.params.id);
+        
+        if (!apertura) {
+            return res.status(404).json({ message: 'Apertura no encontrada' });
+        }
+
+        if (apertura.estado !== 'pendiente') {
+            return res.status(400).json({ 
+                message: 'Solo se pueden eliminar aperturas en estado pendiente' 
+            });
+        }
+
+        await Apertura.deleteOne({ _id: req.params.id });
+        res.json({ message: 'Apertura eliminada correctamente' });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
