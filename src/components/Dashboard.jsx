@@ -629,13 +629,13 @@ function Dashboard() {
       m.fallas(aperturasDeFecha)
     ]);
 
-    // Agregar fila de totales
+    // Agregar fila de totales con formato descriptivo
     rowsResumen.push([
       'TOTALES',
-      totalProgramadas,
-      totalOperacion,
-      totalReserva,
-      totalFallas,
+      `${totalProgramadas} UNIDADES PROGRAMADAS`,
+      `${totalOperacion} UNIDADES EN OPERACIÓN`,
+      `${totalReserva} UNIDADES EN RESERVA`,
+      `${totalFallas} UNIDADES CON FALLA`,
       totalFallas > 0 ? `${totalFallas} UNIDADES` : 'Ninguna'
     ]);
 
@@ -649,24 +649,24 @@ function Dashboard() {
       body: rowsResumen,
       startY: lastY,
       styles: { fontSize: 10, cellPadding: 2, valign: 'middle', halign: 'center' },
-      headStyles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' }, // Encabezados blancos por defecto
+      headStyles: { fillColor: [111, 34, 52], textColor: 255, fontStyle: 'bold' }, // Encabezados vino por defecto
       bodyStyles: { fontSize: 10, minCellHeight: 28 },
       columnStyles: {
         0: { cellWidth: 35, minCellHeight: 35 },
         1: { cellWidth: 32 },
         2: { cellWidth: 32 },
         3: { cellWidth: 32 },
-        4: { cellWidth: 32, fillColor: [203, 178, 106] }, // UNIDADES CON FALLA - golden (#CBB26A)
-        5: { cellWidth: 70, halign: 'center', fillColor: [203, 178, 106] }, // TIPO DE FALLA - golden (#CBB26A)
+        4: { cellWidth: 32 }, // UNIDADES CON FALLA - blanco
+        5: { cellWidth: 70, halign: 'center' }, // TIPO DE FALLA - blanco
       },
       margin: { left: 14, right: 14 },
       tableWidth: 'auto',
       didDrawCell: (data) => {
-        // Colorear encabezados de UNIDADES CON FALLA y TIPO DE FALLA en vino
+        // Colorear encabezados de UNIDADES CON FALLA y TIPO DE FALLA en dorado
         if (data.row.section === 'head' && (data.column.index === 4 || data.column.index === 5)) {
-          doc.setFillColor(111, 34, 52); // Color vino
+          doc.setFillColor(203, 178, 106); // Color dorado (#CBB26A)
           doc.rect(data.cell.x, data.cell.y, data.cell.width, data.cell.height, 'F');
-          doc.setTextColor(255, 255, 255); // Texto blanco
+          doc.setTextColor(0, 0, 0); // Texto negro
           doc.setFontSize(10);
           doc.setFont(doc.getFont().fontName, 'bold');
           doc.text(data.cell.text[0], data.cell.x + data.cell.width / 2, data.cell.y + data.cell.height / 2 + 3, { align: 'center' });
@@ -706,17 +706,11 @@ function Dashboard() {
           
           // Texto en blanco y negrita
           doc.setTextColor(255, 255, 255);
-          doc.setFontSize(10);
+          doc.setFontSize(9);
           doc.setFont(doc.getFont().fontName, 'bold');
           
-          // Si es la primera columna, escribir "TOTALES"
-          if (data.column.index === 0) {
-            doc.text('TOTALES', data.cell.x + data.cell.width / 2, data.cell.y + data.cell.height / 2 + 3, { align: 'center' });
-          } 
-          // Para las demás columnas, mostrar el número
-          else {
-            doc.text(data.cell.text[0], data.cell.x + data.cell.width / 2, data.cell.y + data.cell.height / 2 + 3, { align: 'center' });
-          }
+          // Mostrar el texto descriptivo completo
+          doc.text(data.cell.text[0], data.cell.x + data.cell.width / 2, data.cell.y + data.cell.height / 2 + 3, { align: 'center' });
           
           // Reset font style
           doc.setFont(doc.getFont().fontName, 'normal');
