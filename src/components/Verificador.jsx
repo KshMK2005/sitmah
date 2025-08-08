@@ -98,6 +98,15 @@ function Verificador() {
         });
     };
 
+    // Función para manejar errores de estado inválido
+    const handleEstadoError = (ap) => {
+        // Si el estado es en_verificacion pero no es válido, mostrarlo como pendiente
+        if (ap.estado === 'en_verificacion') {
+            return 'pendiente';
+        }
+        return ap.estado;
+    };
+
     // Función para obtener el color de fondo según el estado
     const getEstadoColor = (estado, retraso, fechaRegreso) => {
         // Si tiene fecha de regreso, es una unidad regresada por falla técnica
@@ -640,7 +649,7 @@ function Verificador() {
                                 gridTemplateColumns: 'repeat(9, 1fr)',
                                 alignItems: 'center',
                                 borderBottom: idx === aperturasOrdenadas.length - 1 ? 'none' : '1px solid #eee',
-                                background: getEstadoColor(ap.estado, ap.retraso, ap.fechaRegreso),
+                                background: getEstadoColor(handleEstadoError(ap), ap.retraso, ap.fechaRegreso),
                                 fontSize: '1rem',
                                 minWidth: '1050px',
                                 transition: 'background 0.2s',
@@ -653,7 +662,7 @@ function Verificador() {
                                 borderLeft: ap.fechaRegreso ? '4px solid #b71c1c' : (ap.retraso ? '4px solid #ffc107' : 'none'),
                             }}
                                 onMouseOver={e => e.currentTarget.style.background = '#d4edda'}
-                                onMouseOut={e => e.currentTarget.style.background = getEstadoColor(ap.estado, ap.retraso, ap.fechaRegreso)}
+                                onMouseOut={e => e.currentTarget.style.background = getEstadoColor(handleEstadoError(ap), ap.retraso, ap.fechaRegreso)}
                             >
                                 <div className="table-cell" style={{ textAlign: 'center' }}>
                                     <button
