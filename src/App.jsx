@@ -546,41 +546,7 @@ function App() {
   };
 
       // Función para limpiar datos importados
-      const handleCleanupImportedData = async () => {
-        try {
-          const result = await Swal.fire({
-            title: '¿Eliminar TODOS los datos del 8 de agosto?',
-            text: 'Esto eliminará TODOS los registros del 8 de agosto (2025-08-08) de TODAS las secciones. ¿Estás seguro?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Sí, eliminar todo',
-            cancelButtonText: 'Cancelar'
-          });
 
-          if (result.isConfirmed) {
-            try {
-              const response = await aperturaService.deleteByDate('2025-08-08');
-              
-              Swal.fire(
-                'Eliminados completamente',
-                `${response.message}. Los datos han sido eliminados de todas las secciones.`,
-                'success'
-              );
-
-              // Recargar aperturas
-              cargarAperturas();
-            } catch (error) {
-              console.error('Error eliminando por fecha:', error);
-              Swal.fire('Error', 'Error al eliminar datos por fecha', 'error');
-            }
-          }
-        } catch (error) {
-          console.error('Error en limpieza:', error);
-          Swal.fire('Error', 'Error al eliminar datos', 'error');
-        }
-      };
 
       const handleBulkImport = async () => {
     if (importData.length === 0) return;
@@ -726,24 +692,7 @@ function App() {
           >
             📊 Cargar Excel Masivo
           </button>
-          <button
-            type="button"
-            onClick={handleCleanupImportedData}
-            style={{
-              background: '#dc3545',
-              color: 'white',
-              border: 'none',
-              borderRadius: '8px',
-              padding: '12px 24px',
-              fontSize: '16px',
-              fontWeight: 'bold',
-              cursor: 'pointer',
-              marginBottom: '1rem',
-              marginLeft: '10px'
-            }}
-          >
-            🗑️ Eliminar TODOS los datos del 8 de agosto
-          </button>
+
 
           <input
             id="fileInput"

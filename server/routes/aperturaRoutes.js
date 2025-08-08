@@ -203,9 +203,16 @@ router.delete('/deleteByDate', async (req, res) => {
             return res.status(400).json({ message: 'Fecha requerida' });
         }
 
+        // Crear rango de fechas para el día completo
+        const fechaInicio = new Date(fecha + 'T00:00:00.000Z');
+        const fechaFin = new Date(fecha + 'T23:59:59.999Z');
+
         // Buscar aperturas de la fecha especificada
         const aperturas = await Apertura.find({ 
-            fechaApertura: fecha 
+            fechaApertura: {
+                $gte: fechaInicio,
+                $lte: fechaFin
+            }
         });
 
         if (aperturas.length === 0) {
@@ -216,7 +223,12 @@ router.delete('/deleteByDate', async (req, res) => {
         }
 
         // Eliminar todas las aperturas de esa fecha
-        const result = await Apertura.deleteMany({ fechaApertura: fecha });
+        const result = await Apertura.deleteMany({ 
+            fechaApertura: {
+                $gte: fechaInicio,
+                $lte: fechaFin
+            }
+        });
         
         res.json({ 
             message: `Se eliminaron ${result.deletedCount} aperturas del ${fecha}`,
