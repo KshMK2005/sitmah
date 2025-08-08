@@ -596,8 +596,8 @@ function App() {
               tarjeton: item.tarjeton.toString().trim(),
               nombre: item.nombre.trim(),
               // Prioridad: Excel > Programación exacta > Programación por ruta > Fallback
-              horaSalida: item.horaSalida || programacion?.horaSalida || programacionPorRuta?.horaSalida || '04:30',
-              horaProgramada: item.horaSalida || programacion?.horaSalida || programacionPorRuta?.horaSalida || '04:30',
+              horaSalida: item.horaSalida || programacion?.horaSalida || programacionPorRuta?.horaSalida || '05:30',
+              horaProgramada: item.horaSalida || programacion?.horaSalida || programacionPorRuta?.horaSalida || '05:30',
               intervalo: parseInt(item.intervalo || programacion?.intervalo || programacionPorRuta?.intervalo || '15'),
               corridaInicial: parseInt(item.corridaInicial || programacion?.corridaInicial || programacionPorRuta?.corridaInicial || '1'),
               corridaFinal: parseInt(item.corridaFinal || programacion?.corridaFinal || programacionPorRuta?.corridaFinal || '1'),

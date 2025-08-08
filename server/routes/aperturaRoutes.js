@@ -127,6 +127,34 @@ router.post('/actualizar-modelo', async (req, res) => {
     }
 });
 
+// Endpoint para actualizar todas las aperturas pendientes
+router.post('/update-pendientes', async (req, res) => {
+    try {
+        const { estado, horaProgramada } = req.body;
+        
+        const result = await Apertura.updateMany(
+            { estado: 'pendiente' },
+            { 
+                $set: { 
+                    estado: estado || 'dashboard',
+                    horaProgramada: horaProgramada || '05:30',
+                    ultimaModificacion: {
+                        usuario: 'sistema',
+                        fecha: new Date()
+                    }
+                }
+            }
+        );
+        
+        res.json({ 
+            message: `Se actualizaron ${result.modifiedCount} aperturas pendientes`,
+            modifiedCount: result.modifiedCount
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
 // Crear una nueva apertura
 router.post('/', validarApertura, async (req, res) => {
     try {

@@ -30,19 +30,8 @@ function Pendientes() {
   const [flashOrangeId, setFlashOrangeId] = useState(() => {
     return localStorage.getItem('flashPendienteId') || null;
   });
-  const [currentTime, setCurrentTime] = useState(new Date());
-
   useEffect(() => {
     cargarPendientes();
-  }, []);
-
-  // Reloj en tiempo real
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
-
-    return () => clearInterval(timer);
   }, []);
 
   useEffect(() => {
@@ -114,14 +103,7 @@ function Pendientes() {
     setEditando(null);
   };
 
-  // Función para formatear la hora actual
-  const formatCurrentTime = () => {
-    const hours = currentTime.getHours().toString().padStart(2, '0');
-    const minutes = currentTime.getMinutes().toString().padStart(2, '0');
-    return `${hours}:${minutes}`;
-  };
-
-  // Función para actualizar la hora de salida en tiempo real
+  // Función para actualizar la hora de salida
   const handleHoraSalidaChange = async (apId, nuevaHora) => {
     try {
       await aperturaService.update(apId, { 
@@ -221,26 +203,12 @@ function Pendientes() {
                     <div>{ap.corridaInicial}</div>
                     <div>{ap.horaSalida || '-'}</div>
                     <div>
-                      <div style={{ 
-                        fontSize: '0.9rem', 
-                        color: '#666', 
-                        marginBottom: '4px',
-                        fontWeight: 'bold'
-                      }}>
-                        Hora Actual: {formatCurrentTime()}
-                      </div>
                       <input
                         type="time"
-                        value={ap.horaSalida || formatCurrentTime()}
+                        value={ap.horaSalida || ''}
                         onChange={e => {
                           const nuevaHora = e.target.value;
                           handleHoraSalidaChange(ap._id, nuevaHora);
-                        }}
-                        style={{
-                          padding: '4px 8px',
-                          borderRadius: '4px',
-                          border: '1px solid #ccc',
-                          fontSize: '0.9rem'
                         }}
                       />
                     </div>
