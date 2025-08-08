@@ -155,6 +155,33 @@ router.post('/update-pendientes', async (req, res) => {
     }
 });
 
+// Endpoint para mover aperturas del dashboard al verificador
+router.post('/move-to-verificador', async (req, res) => {
+    try {
+        const { estado } = req.body;
+        
+        const result = await Apertura.updateMany(
+            { estado: 'dashboard' },
+            { 
+                $set: { 
+                    estado: estado || 'pendiente',
+                    ultimaModificacion: {
+                        usuario: 'sistema',
+                        fecha: new Date()
+                    }
+                }
+            }
+        );
+        
+        res.json({ 
+            message: `Se movieron ${result.modifiedCount} aperturas al Verificador`,
+            modifiedCount: result.modifiedCount
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
 // Crear una nueva apertura
 router.post('/', validarApertura, async (req, res) => {
     try {
