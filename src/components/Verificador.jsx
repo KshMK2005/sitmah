@@ -33,12 +33,33 @@ function Verificador() {
     async function handleGuardarEdicion() {
         try {
             const { _id, ...rest } = form;
-            await aperturaService.update(editando, rest);
-            Swal.fire({ title: 'Guardado', text: 'Registro actualizado', icon: 'success', timer: 1200, showConfirmButton: false });
+            const aperturaActualizada = await aperturaService.update(editando, rest);
+            
+            // Actualizar el estado local inmediatamente
+            setAperturas(prevAperturas => 
+                prevAperturas.map(ap => 
+                    ap._id === editando 
+                        ? { ...ap, ...rest, ultimaModificacion: aperturaActualizada.ultimaModificacion }
+                        : ap
+                )
+            );
+            
+            Swal.fire({ 
+                title: '¡Guardado!', 
+                text: 'Los cambios se han guardado correctamente', 
+                icon: 'success', 
+                timer: 1500, 
+                showConfirmButton: false 
+            });
             setEditando(null);
-            cargarAperturas();
+            setForm({});
         } catch (error) {
-            Swal.fire({ title: 'Error', text: 'No se pudo guardar', icon: 'error' });
+            console.error('Error al guardar:', error);
+            Swal.fire({ 
+                title: 'Error', 
+                text: error.message || 'No se pudo guardar los cambios', 
+                icon: 'error' 
+            });
         }
     }
     function handleCancelarEdicion() {
