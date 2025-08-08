@@ -113,7 +113,7 @@ router.post('/actualizar-modelo', async (req, res) => {
         if (schema.path('estado')) {
             schema.path('estado').enumValues = [
                 'pendiente', 'completado', 'cancelado', 'enviado', 
-                'dashboard', 'retrasado', 'apertura'
+                'dashboard', 'retrasado', 'apertura', 'en_verificacion'
             ];
         }
         
@@ -215,6 +215,28 @@ router.get('/verificar-retrasos', async (req, res) => {
     try {
         const resultado = await Apertura.verificarRetrasos();
         res.json(resultado);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+// Endpoint para agregar nuevo estado al modelo
+router.post('/agregar-estado', async (req, res) => {
+    try {
+        const { nuevoEstado } = req.body;
+        const schema = Apertura.schema;
+        
+        if (schema.path('estado') && nuevoEstado) {
+            // Agregar el nuevo estado al enum si no existe
+            if (!schema.path('estado').enumValues.includes(nuevoEstado)) {
+                schema.path('estado').enumValues.push(nuevoEstado);
+            }
+        }
+        
+        res.json({ 
+            message: `Estado '${nuevoEstado}' agregado al modelo`,
+            estadosActuales: schema.path('estado').enumValues
+        });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
