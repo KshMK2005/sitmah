@@ -50,15 +50,17 @@ function App() {
   const [tarjeton, setTarjeton] = useState('');
   const [nombre, setNombre] = useState('');
   const [operadores, setOperadores] = useState([]);
+  const [aperturas, setAperturas] = useState([]);
 
 
   // Estado para controlar la búsqueda
   const [buscandoOperador, setBuscandoOperador] = useState(false);
   
-  // Estados para importador masivo
-  const [showImportModal, setShowImportModal] = useState(false);
-  const [importData, setImportData] = useState([]);
-  const [importing, setImporting] = useState(false);
+        // Estados para importador masivo
+      const [showImportModal, setShowImportModal] = useState(false);
+      const [importData, setImportData] = useState([]);
+      const [importing, setImporting] = useState(false);
+      const [showCleanupModal, setShowCleanupModal] = useState(false);
 
   // Buscar automáticamente el nombre del operador por tarjetón
   useEffect(() => {
@@ -123,13 +125,15 @@ function App() {
   useEffect(() => {
     const cargarDatos = async () => {
       try {
-        const [programacionesData, operadoresData] = await Promise.all([
+        const [programacionesData, operadoresData, aperturasData] = await Promise.all([
           programacionService.getAll(),
-          operadorService.obtenerTodos()
+          operadorService.obtenerTodos(),
+          aperturaService.getAll()
         ]);
 
         setProgramaciones(programacionesData || []);
         setOperadores(operadoresData || []);
+        setAperturas(aperturasData || []);
 
         // Extraer rutas únicas
         const rutasUnicas = Array.from(new Set((programacionesData || []).map(p => p.ruta)));
@@ -139,11 +143,22 @@ function App() {
         // Si hay error, establecer arrays vacíos
         setProgramaciones([]);
         setOperadores([]);
+        setAperturas([]);
         setRutasDisponibles([]);
       }
     };
     cargarDatos();
   }, []);
+
+  // Función para recargar aperturas
+  const cargarAperturas = async () => {
+    try {
+      const aperturasData = await aperturaService.getAll();
+      setAperturas(aperturasData || []);
+    } catch (error) {
+      console.error('Error al cargar aperturas:', error);
+    }
+  };
 
 
 
@@ -554,9 +569,60 @@ function App() {
       }
     };
     reader.readAsArrayBuffer(file);
-  };
+        };
 
-  const handleBulkImport = async () => {
+      // Función para limpiar datos importados
+      const handleCleanupImportedData = async () => {
+        try {
+          const result = await Swal.fire({
+            title: '¿Eliminar datos importados?',
+            text: 'Esto eliminará TODOS los registros con estado "dashboard" de hoy. ¿Estás seguro?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+          });
+
+          if (result.isConfirmed) {
+            const today = new Date().toISOString().split('T')[0];
+            const aperturasHoy = aperturas.filter(ap => 
+              ap.estado === 'dashboard' && 
+              ap.fechaApertura === today
+            );
+
+            if (aperturasHoy.length === 0) {
+              Swal.fire('Info', 'No hay datos importados de hoy para eliminar', 'info');
+              return;
+            }
+
+            let deletedCount = 0;
+            for (const ap of aperturasHoy) {
+              try {
+                await aperturaService.delete(ap._id);
+                deletedCount++;
+              } catch (error) {
+                console.error('Error eliminando apertura:', ap._id, error);
+              }
+            }
+
+            Swal.fire(
+              'Eliminados',
+              `Se eliminaron ${deletedCount} registros importados`,
+              'success'
+            );
+
+            // Recargar aperturas
+            cargarAperturas();
+          }
+        } catch (error) {
+          console.error('Error en limpieza:', error);
+          Swal.fire('Error', 'Error al eliminar datos', 'error');
+        }
+      };
+
+      const handleBulkImport = async () => {
     if (importData.length === 0) return;
 
     setImporting(true);
@@ -700,10 +766,28 @@ function App() {
               fontSize: '16px',
               fontWeight: 'bold',
               cursor: 'pointer',
-              marginBottom: '1rem'
+              marginBottom: '1rem',
+              marginRight: '1rem'
             }}
           >
             📊 Cargar Excel Masivo
+          </button>
+          <button
+            type="button"
+            onClick={handleCleanupImportedData}
+            style={{
+              background: '#dc3545',
+              color: 'white',
+              border: 'none',
+              borderRadius: '8px',
+              padding: '12px 24px',
+              fontSize: '16px',
+              fontWeight: 'bold',
+              cursor: 'pointer',
+              marginBottom: '1rem'
+            }}
+          >
+            🗑️ Limpiar Datos Importados
           </button>
           <input
             id="fileInput"
