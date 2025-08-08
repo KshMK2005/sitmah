@@ -1,0 +1,6 @@
+Ruta,TipoUnidad,Economico,Tarjeton,Operador,FechaServicio,Observaciones
+R-1,gran viale,1234,TV-001,Juan Perez,2025-08-08,
+R-2,boxer,5678,TV-002,Ana Lopez,2025-08-08,
+R-3,sprinter,9012,TV-003,Carlos Ruiz,2025-08-08,
+R-1,gran viale,3456,TV-004,Laura Diaz,2025-08-08,
+R-2,boxer,7890,TV-005,Mario Soto,2025-08-08,Unidad de reserva

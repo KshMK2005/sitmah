@@ -594,8 +594,14 @@ function Dashboard() {
     // Funciones de conteo
     const unidadesProgramadas = tipo => programacionesDeFecha.filter(p => (p.tipoUnidad || p.tipoVehiculo || '').toLowerCase().trim() === tipo).length;
     const unidadesEnOperacion = tipo => verificadosDeFechaResumen.filter(v => (v.tipoUnidad || v.tipoVehiculo || '').toLowerCase().trim() === tipo && v.estado === 'dashboard').length;
-    const unidadesEnReserva = tipo => verificadosDeFechaResumen.filter(v => (v.tipoUnidad || v.tipoVehiculo || '').toLowerCase().trim() === tipo && v.estado === 'pendiente').length;
     const unidadesEnFalla = tipo => aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === tipo && a.estado === 'pendiente').length;
+    const unidadesEnReserva = tipo => {
+      const programadas = unidadesProgramadas(tipo);
+      const operacion = unidadesEnOperacion(tipo);
+      const fallas = unidadesEnFalla(tipo);
+      const reserva = programadas - (operacion + fallas);
+      return reserva > 0 ? reserva : 0;
+    };
 
     // Convert all images to Base64
     const imageData = await Promise.all(modelos.map(async (m) => {
