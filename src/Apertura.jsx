@@ -95,28 +95,90 @@ function Apertura() {
     cargarProgramaciones();
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Cargar horarios actuales
-    const horariosGuardados = JSON.parse(localStorage.getItem('horariosActuales') || '[]');
-
-    // Actualizar el horario específico
-    const horariosActualizados = horariosGuardados.map(h => {
-      if (h.id === horarioId) {
-        return {
-          ...h,
-          apertura: formData
-        };
+    try {
+      // Validar que tenemos los datos necesarios
+      if (!formData.tipoUnidad || !formData.economico || !formData.tarjeton || !formData.nombre) {
+        Swal.fire({
+          title: 'Error',
+          text: 'Por favor completa todos los campos obligatorios',
+          icon: 'error'
+        });
+        return;
       }
-      return h;
-    });
 
-    // Guardar en localStorage
-    localStorage.setItem('horariosActuales', JSON.stringify(horariosActualizados));
+      // Buscar programación correspondiente
+      const programacion = programaciones.find(p => 
+        p.ruta.toLowerCase().trim() === formData.ruta.toLowerCase().trim()
+      );
 
-    alert('Datos de apertura guardados correctamente');
-    navigateWithTransition('/horarios');
+      if (!programacion) {
+        Swal.fire({
+          title: 'Error',
+          text: 'No se encontró una programación válida para la ruta: ' + formData.ruta,
+          icon: 'error'
+        });
+        return;
+      }
+
+      // Preparar datos para crear la apertura
+      const aperturaData = {
+        programacionId: programacion._id,
+        ruta: formData.ruta,
+        tipoUnidad: formData.tipoUnidad.toUpperCase(),
+        economico: formData.economico.toString().toUpperCase(),
+        tarjeton: formData.tarjeton.toString().toUpperCase(),
+        nombre: formData.nombre,
+        horaSalida: formData.horaSalida || programacion.horaSalida || '04:30',
+        horaProgramada: formData.horaSalida || programacion.horaSalida || '04:30',
+        intervalo: parseInt(formData.intervalo || programacion.intervalo || '15'),
+        corridaInicial: parseInt(formData.corridaInicial || programacion.corridaInicial || '1'),
+        corridaFinal: parseInt(formData.corridaFinal || programacion.corridaFinal || '1'),
+        fechaApertura: new Date().toISOString(),
+        estado: 'dashboard',
+        comentario: formData.comentario || '',
+        observaciones: formData.comentario || ''
+      };
+
+      console.log('🚀 Enviando datos a la API:', aperturaData);
+
+      // Crear la apertura en la base de datos
+      await aperturaService.create(aperturaData);
+
+      // Actualizar localStorage también
+      const horariosGuardados = JSON.parse(localStorage.getItem('horariosActuales') || '[]');
+      const horariosActualizados = horariosGuardados.map(h => {
+        if (h.id === horarioId) {
+          return {
+            ...h,
+            apertura: formData
+          };
+        }
+        return h;
+      });
+      localStorage.setItem('horariosActuales', JSON.stringify(horariosActualizados));
+
+      Swal.fire({
+        title: '¡Éxito!',
+        text: 'Apertura creada correctamente',
+        icon: 'success',
+        timer: 1500,
+        showConfirmButton: false
+      });
+
+      navigateWithTransition('/horarios');
+    } catch (error) {
+      console.error('❌ Error al crear apertura:', error);
+      console.error('❌ Mensaje de error:', error.message);
+      
+      Swal.fire({
+        title: 'Error',
+        text: error.message || 'Error al crear la apertura',
+        icon: 'error'
+      });
+    }
   };
 
   const handleChange = (e) => {
@@ -336,23 +398,6 @@ function Apertura() {
         </div>
         {/* Botón de importación masiva */}
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-          <button
-            type="button"
-            onClick={() => alert('¡Botón funcionando!')}
-            style={{
-              background: '#FF0000',
-              color: 'white',
-              border: 'none',
-              borderRadius: '8px',
-              padding: '20px 40px',
-              fontSize: '20px',
-              fontWeight: 'bold',
-              cursor: 'pointer',
-              marginBottom: '1rem'
-            }}
-          >
-            🚨 BOTÓN DE PRUEBA - CLICK AQUÍ
-          </button>
           <button
             type="button"
             onClick={() => document.getElementById('fileInput').click()}
