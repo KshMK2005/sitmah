@@ -90,8 +90,7 @@ function Verificador() {
 
     const filtrarAperturas = () => {
         return aperturas.filter(ap => {
-            // Mostrar aperturas con estado 'en_verificacion', 'pendiente', 'completado' y 'retrasado' para verificación
-            if (!['en_verificacion', 'pendiente', 'completado', 'retrasado'].includes(ap.estado)) return false;
+            // Mostrar todas las aperturas para verificación (sin validar estado)
             const cumpleRuta = !filtros.ruta || ap.ruta.toLowerCase().includes(filtros.ruta.toLowerCase());
             const cumpleTipo = !filtros.tipoUnidad || ap.tipoUnidad === filtros.tipoUnidad;
             const cumpleFecha = !filtros.fecha || new Date(ap.fechaApertura).toLocaleDateString() === new Date(filtros.fecha).toLocaleDateString();
