@@ -652,27 +652,16 @@ function Dashboard() {
       headStyles: { fillColor: [111, 34, 52], textColor: 255, fontStyle: 'bold' },
       bodyStyles: { fontSize: 10, minCellHeight: 28 },
       columnStyles: {
-        0: { cellWidth: 35, minCellHeight: 35 }, // MODELO - header color set by headStyles
-        1: { cellWidth: 32 }, // UNIDADES PROGRAMADAS - header color set by headStyles
-        2: { cellWidth: 32 }, // UNIDADES EN OPERACIÓN - header color set by headStyles
-        3: { cellWidth: 32 }, // UNIDADES EN RESERVA - header color set by headStyles
-        4: { cellWidth: 32 }, // UNIDADES CON FALLA - header color set by headStyles
-        5: { cellWidth: 70, halign: 'center' }, // TIPO DE FALLA - header color set by headStyles
+        0: { cellWidth: 35, minCellHeight: 35 },
+        1: { cellWidth: 32 },
+        2: { cellWidth: 32 },
+        3: { cellWidth: 32 },
+        4: { cellWidth: 32, fillColor: [255, 215, 0] }, // UNIDADES CON FALLA - golden
+        5: { cellWidth: 70, halign: 'center', fillColor: [255, 215, 0] }, // TIPO DE FALLA - golden
       },
       margin: { left: 14, right: 14 },
       tableWidth: 'auto',
       didDrawCell: (data) => {
-        // Apply golden background for falla columns in header
-        if ((data.column.index === 4 || data.column.index === 5) && data.row.section === 'head') {
-          doc.setFillColor(255, 215, 0); // Golden color for header
-          doc.rect(data.cell.x, data.cell.y, data.cell.width, data.cell.height, 'F');
-          // Redraw text in black and bold
-          doc.setTextColor(0, 0, 0);
-          doc.setFontSize(10);
-          doc.setFont(doc.getFont().fontName, 'bold');
-          doc.text(data.cell.text[0], data.cell.x + data.cell.width / 2, data.cell.y + data.cell.height / 2 + 3, { align: 'center' });
-        }
-        
         // Draw vehicle images and names in body rows
         if (data.row.section === 'body' && data.column.index === 0 && data.row.index < imageData.length) {
           const imgInfo = imageData[data.row.index];
@@ -697,17 +686,6 @@ function Dashboard() {
               console.error('Error drawing image or text:', error);
             }
           }
-        }
-        
-        // Apply golden background for falla columns in body only (header colors are set in columnStyles)
-        if ((data.column.index === 4 || data.column.index === 5) && data.row.section === 'body') {
-          // Golden background for body cells - use same golden color as header
-          doc.setFillColor(255, 215, 0); // Same golden color as columnStyles
-          doc.rect(data.cell.x, data.cell.y, data.cell.width, data.cell.height, 'F');
-          // Redraw text in black
-          doc.setTextColor(0, 0, 0);
-          doc.setFontSize(10);
-          doc.text(data.cell.text[0], data.cell.x + data.cell.width / 2, data.cell.y + data.cell.height / 2 + 3, { align: 'center' });
         }
         
         // Apply dark maroon background for TOTALES row
