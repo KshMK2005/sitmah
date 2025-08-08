@@ -182,6 +182,34 @@ router.post('/move-to-verificador', async (req, res) => {
     }
 });
 
+// Endpoint para mover aperturas a estado estable en verificador
+router.post('/move-to-verificacion-stable', async (req, res) => {
+    try {
+        const { estado } = req.body;
+        
+        // Mover todas las aperturas que estén en pendiente o dashboard a en_verificacion
+        const result = await Apertura.updateMany(
+            { estado: { $in: ['pendiente', 'dashboard'] } },
+            { 
+                $set: { 
+                    estado: estado || 'en_verificacion',
+                    ultimaModificacion: {
+                        usuario: 'sistema',
+                        fecha: new Date()
+                    }
+                }
+            }
+        );
+        
+        res.json({ 
+            message: `Se movieron ${result.modifiedCount} aperturas a estado estable en Verificador`,
+            modifiedCount: result.modifiedCount
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
 // Crear una nueva apertura
 router.post('/', validarApertura, async (req, res) => {
     try {

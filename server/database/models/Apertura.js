@@ -105,11 +105,11 @@ const aperturaSchema = new mongoose.Schema({
     fechaRegreso: {
         type: Date
     },
-    estado: {
-        type: String,
-        enum: ['pendiente', 'completado', 'cancelado', 'enviado', 'dashboard', 'retrasado', 'apertura'],
-        default: 'pendiente'
-    },
+            estado: {
+            type: String,
+            enum: ['pendiente', 'completado', 'cancelado', 'enviado', 'dashboard', 'retrasado', 'apertura', 'en_verificacion'],
+            default: 'pendiente'
+        },
     retraso: {
         type: Boolean,
         default: false
