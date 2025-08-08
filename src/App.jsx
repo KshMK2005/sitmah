@@ -514,53 +514,27 @@ function App() {
         const worksheet = workbook.Sheets[sheetName];
         const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
-        // Filtrar filas vacías y procesar datos
-        const processedData = jsonData
-          .filter(row => row.length > 0 && row.some(cell => cell && cell.toString().trim() !== ''))
-          .filter(row => {
-            // Filtrar filas que contengan datos de unidades (tienen económico y tarjetón)
-            const hasEconomico = row[2] && row[2].toString().trim() !== '';
-            const hasTarjeton = row[3] && row[3].toString().trim() !== '';
-            const hasNombre = row[4] && row[4].toString().trim() !== '';
-            return hasEconomico && hasTarjeton && hasNombre;
-          })
-          .map(row => {
-            // Mapear tipos de unidad del Excel a los valores esperados por la API
-            const tipoUnidadExcel = (row[0] || '').toLowerCase().trim();
-            let tipoUnidadMapeado = 'URBANO'; // valor por defecto
-            
-            if (tipoUnidadExcel.includes('gran viale')) {
-              tipoUnidadMapeado = 'GRAN VIALE';
-            } else if (tipoUnidadExcel.includes('boxer')) {
-              tipoUnidadMapeado = 'BOXER';
-            } else if (tipoUnidadExcel.includes('sprinter')) {
-              tipoUnidadMapeado = 'SPRINTER';
-            } else if (tipoUnidadExcel.includes('vagoneta')) {
-              tipoUnidadMapeado = 'VAGONETA';
-            } else if (tipoUnidadExcel.includes('orion')) {
-              tipoUnidadMapeado = 'URBANO'; // Orion se mapea a URBANO
-            }
-            
-            return {
-              tipoUnidad: tipoUnidadMapeado,
-              ruta: row[1] || '',
-              economico: row[2] || '',
-              tarjeton: row[3] || '',
-              nombre: row[4] || '',
-              // Campos que se rellenarán automáticamente
-              horaSalida: '',
-              intervalo: '',
-              corridaInicial: '',
-              corridaFinal: '',
-              fechaApertura: new Date().toISOString().split('T')[0],
-              estado: 'dashboard'
-            };
-          });
+        // Filtrar filas que tengan datos relevantes
+        const filteredData = jsonData.filter(row => 
+          row.length >= 5 && 
+          row[0] && row[1] && row[2] && row[3] && row[4] // TIPO DE UNIDAD, RUTA, ECONOMICO, TARJETON, NOMBRE
+        );
 
-        setImportData(processedData);
+        // Mapear las columnas del Excel
+        const mappedData = filteredData.map(row => ({
+          tipoUnidad: row[0] || '', // TIPO DE UNIDAD
+          ruta: row[1] || '', // RUTA
+          economico: row[2] || '', // ECONOMICO
+          tarjeton: row[3] || '', // TARJETON
+          nombre: row[4] || '', // NOMBRE
+          horaSalida: row[5] || '', // HORA_SALIDA (nueva columna opcional)
+          comentario: row[6] || '' // COMENTARIO (opcional)
+        }));
+
+        setImportData(mappedData);
         setShowImportModal(true);
       } catch (error) {
-        console.error('Error al procesar archivo:', error);
+        console.error('Error al procesar el archivo:', error);
         Swal.fire({
           title: 'Error',
           text: 'Error al procesar el archivo Excel',
@@ -569,7 +543,7 @@ function App() {
       }
     };
     reader.readAsArrayBuffer(file);
-        };
+  };
 
       // Función para limpiar datos importados
       const handleCleanupImportedData = async () => {
@@ -631,32 +605,41 @@ function App() {
       let errorCount = 0;
 
                       for (const item of importData) {
-          let aperturaData = null; // Declarar fuera del try para que esté disponible en el catch
+          let aperturaData = null;
           try {
-            // Buscar programación correspondiente para rellenar campos faltantes
+            // Buscar programación correspondiente por ruta y tipo de unidad
             const programacion = programaciones.find(p => 
-              p.ruta === item.ruta && 
-              (p.tipoUnidad || p.tipoVehiculo || '').toUpperCase().trim() === item.tipoUnidad
+              p.ruta.toLowerCase().trim() === item.ruta.toLowerCase().trim() &&
+              (p.tipoUnidad || p.tipoVehiculo || '').toLowerCase().trim() === item.tipoUnidad.toLowerCase().trim()
             );
 
-            // Si no encuentra programación, usar la primera disponible o crear una temporal
-            let programacionId = programacion?._id;
-            if (!programacionId && programaciones.length > 0) {
-              programacionId = programaciones[0]._id; // Usar la primera programación disponible
-            }
+            // Si no encuentra programación exacta, buscar solo por ruta
+            const programacionPorRuta = !programacion ? programaciones.find(p => 
+              p.ruta.toLowerCase().trim() === item.ruta.toLowerCase().trim()
+            ) : null;
+
+            // Usar la programación encontrada o la primera disponible como fallback
+            const programacionFinal = programacion || programacionPorRuta || programaciones[0];
+
+            console.log('🔍 Buscando programación para:', {
+              ruta: item.ruta,
+              tipoUnidad: item.tipoUnidad,
+              programacionEncontrada: programacion ? 'Exacta' : programacionPorRuta ? 'Por ruta' : 'Fallback'
+            });
 
             aperturaData = {
-              programacionId: programacionId, // Campo obligatorio
+              programacionId: programacionFinal?._id || programaciones[0]?._id,
               ruta: item.ruta,
               tipoUnidad: item.tipoUnidad.toUpperCase(),
               economico: item.economico.toString(),
               tarjeton: item.tarjeton.toString(),
               nombre: item.nombre,
-              horaSalida: item.horaSalida || programacion?.horaSalida || '04:30',
-              horaProgramada: item.horaSalida || programacion?.horaSalida || '04:30',
-              intervalo: parseInt(item.intervalo || programacion?.intervalo || '15'),
-              corridaInicial: parseInt(item.corridaInicial || programacion?.corridaInicial || '1'),
-              corridaFinal: parseInt(item.corridaFinal || programacion?.corridaFinal || '1'),
+              // Prioridad: Excel > Programación exacta > Programación por ruta > Fallback
+              horaSalida: item.horaSalida || programacion?.horaSalida || programacionPorRuta?.horaSalida || '04:30',
+              horaProgramada: item.horaSalida || programacion?.horaSalida || programacionPorRuta?.horaSalida || '04:30',
+              intervalo: parseInt(item.intervalo || programacion?.intervalo || programacionPorRuta?.intervalo || '15'),
+              corridaInicial: parseInt(item.corridaInicial || programacion?.corridaInicial || programacionPorRuta?.corridaInicial || '1'),
+              corridaFinal: parseInt(item.corridaFinal || programacion?.corridaFinal || programacionPorRuta?.corridaFinal || '1'),
               fechaApertura: item.fechaApertura,
               estado: 'dashboard',
               comentario: item.comentario || '',
@@ -667,6 +650,7 @@ function App() {
             console.log('🔍 Tipo de unidad:', aperturaData.tipoUnidad);
             console.log('🔍 Económico:', aperturaData.economico);
             console.log('🔍 Tarjetón:', aperturaData.tarjeton);
+            console.log('🕐 Hora de salida asignada:', aperturaData.horaSalida);
 
             await aperturaService.create(aperturaData);
             successCount++;
@@ -1066,6 +1050,8 @@ function App() {
                       <th style={{ padding: '8px', border: '1px solid #ddd', textAlign: 'left' }}>Económico</th>
                       <th style={{ padding: '8px', border: '1px solid #ddd', textAlign: 'left' }}>Tarjetón</th>
                       <th style={{ padding: '8px', border: '1px solid #ddd', textAlign: 'left' }}>Operador</th>
+                      <th style={{ padding: '8px', border: '1px solid #ddd', textAlign: 'left' }}>Hora Salida</th>
+                      <th style={{ padding: '8px', border: '1px solid #ddd', textAlign: 'left' }}>Comentario</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -1076,6 +1062,16 @@ function App() {
                         <td style={{ padding: '8px', border: '1px solid #ddd' }}>{item.economico}</td>
                         <td style={{ padding: '8px', border: '1px solid #ddd' }}>{item.tarjeton}</td>
                         <td style={{ padding: '8px', border: '1px solid #ddd' }}>{item.nombre}</td>
+                        <td style={{ padding: '8px', border: '1px solid #ddd' }}>
+                          {item.horaSalida || 
+                            <span style={{ color: '#999', fontStyle: 'italic' }}>Se asignará automáticamente</span>
+                          }
+                        </td>
+                        <td style={{ padding: '8px', border: '1px solid #ddd' }}>
+                          {item.comentario || 
+                            <span style={{ color: '#999', fontStyle: 'italic' }}>-</span>
+                          }
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -1085,6 +1081,23 @@ function App() {
                     ... y {importData.length - 10} unidades más
                   </p>
                 )}
+              </div>
+
+              {/* Información adicional */}
+              <div style={{ 
+                background: '#f8f9fa', 
+                padding: '1rem', 
+                borderRadius: '8px', 
+                marginBottom: '1rem',
+                fontSize: '14px'
+              }}>
+                <h4 style={{ margin: '0 0 8px 0', color: '#6F2234' }}>ℹ️ Información de Importación:</h4>
+                <ul style={{ margin: 0, paddingLeft: '20px' }}>
+                  <li><strong>Hora de Salida:</strong> Si no está en el Excel, se buscará automáticamente en las programaciones</li>
+                  <li><strong>Estado:</strong> Todas las unidades se importarán con estado "dashboard" (pendientes de verificación)</li>
+                  <li><strong>Fecha:</strong> Se usará la fecha actual como fecha de apertura</li>
+                  <li><strong>Campos faltantes:</strong> Se rellenarán automáticamente desde las programaciones existentes</li>
+                </ul>
               </div>
 
               {/* Botones de acción */}
