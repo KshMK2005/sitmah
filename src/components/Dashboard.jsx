@@ -700,12 +700,12 @@ function Dashboard() {
         
         // Formato especial para la fila de TOTALES
         if (data.row.section === 'body' && data.row.index === modelos.length) {
-          // Fondo vino para toda la fila
-          doc.setFillColor(111, 34, 52);
+          // Fondo blanco para toda la fila (no vino)
+          doc.setFillColor(255, 255, 255);
           doc.rect(data.cell.x, data.cell.y, data.cell.width, data.cell.height, 'F');
           
-          // Texto en blanco y negrita
-          doc.setTextColor(255, 255, 255);
+          // Texto en negro y negrita
+          doc.setTextColor(0, 0, 0);
           doc.setFontSize(9);
           doc.setFont(doc.getFont().fontName, 'bold');
           
