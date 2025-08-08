@@ -564,15 +564,22 @@ function App() {
       let successCount = 0;
       let errorCount = 0;
 
-      for (const item of importData) {
-        try {
-          // Buscar programación correspondiente para rellenar campos faltantes
-          const programacion = programaciones.find(p => 
-            p.ruta === item.ruta && 
-            (p.tipoUnidad || p.tipoVehiculo || '').toUpperCase().trim() === item.tipoUnidad
-          );
+              for (const item of importData) {
+          try {
+            // Buscar programación correspondiente para rellenar campos faltantes
+            const programacion = programaciones.find(p => 
+              p.ruta === item.ruta && 
+              (p.tipoUnidad || p.tipoVehiculo || '').toUpperCase().trim() === item.tipoUnidad
+            );
 
-          const aperturaData = {
+            // Si no encuentra programación, usar la primera disponible o crear una temporal
+            let programacionId = programacion?._id;
+            if (!programacionId && programaciones.length > 0) {
+              programacionId = programaciones[0]._id; // Usar la primera programación disponible
+            }
+
+            const aperturaData = {
+              programacionId: programacionId, // Campo obligatorio
             ruta: item.ruta,
             tipoUnidad: item.tipoUnidad.toUpperCase(),
             economico: item.economico.toString(),
@@ -589,10 +596,17 @@ function App() {
             observaciones: item.comentario || ''
           };
 
+          console.log('🚀 Enviando datos a la API:', aperturaData);
+          console.log('🔍 Tipo de unidad:', aperturaData.tipoUnidad);
+          console.log('🔍 Económico:', aperturaData.economico);
+          console.log('🔍 Tarjetón:', aperturaData.tarjeton);
+
           await aperturaService.create(aperturaData);
           successCount++;
         } catch (error) {
-          console.error('Error al crear apertura:', error);
+          console.error('❌ Error al crear apertura:', error);
+          console.error('❌ Mensaje de error:', error.message);
+          console.error('❌ Datos que causaron el error:', aperturaData);
           errorCount++;
         }
       }
