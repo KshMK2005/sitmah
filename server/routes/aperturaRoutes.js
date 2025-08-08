@@ -210,6 +210,16 @@ router.post('/move-to-verificacion-stable', async (req, res) => {
     }
 });
 
+// Endpoint para verificar retrasos
+router.get('/verificar-retrasos', async (req, res) => {
+    try {
+        const resultado = await Apertura.verificarRetrasos();
+        res.json(resultado);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
 // Crear una nueva apertura
 router.post('/', validarApertura, async (req, res) => {
     try {
@@ -308,7 +318,7 @@ router.patch('/:id/estado', async (req, res) => {
             return res.status(404).json({ message: 'Apertura no encontrada' });
         }
 
-        if (!['pendiente', 'completado', 'cancelado', 'dashboard'].includes(estado)) {
+        if (!['pendiente', 'completado', 'cancelado', 'dashboard', 'en_verificacion'].includes(estado)) {
             return res.status(400).json({ message: 'Estado no válido' });
         }
 

@@ -203,7 +203,7 @@ aperturaSchema.statics.verificarRetrasos = async function() {
     
     // Buscar aperturas que deberían haber salido pero no han sido marcadas como completadas
     const aperturasRetrasadas = await this.find({
-        estado: { $in: ['pendiente', 'enviado'] },
+        estado: { $in: ['pendiente', 'enviado', 'en_verificacion'] },
         retraso: false
     });
     
