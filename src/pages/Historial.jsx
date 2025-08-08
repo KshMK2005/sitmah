@@ -579,7 +579,6 @@ function Historial({ adminMode, programadorMode }) {
               <span
                 key={index}
                 style={{ 
-                  color: '#6F2234', 
                   fontWeight: 'bold', 
                   fontSize: '1rem', 
                   cursor: 'pointer', 
