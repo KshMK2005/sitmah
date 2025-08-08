@@ -579,10 +579,19 @@ function App() {
               programacionEncontrada: programacion ? 'Exacta' : programacionPorRuta ? 'Por ruta' : 'Fallback'
             });
 
+            // Función temporal para mapear ORION a un valor válido
+            const mapearTipoUnidad = (tipo) => {
+              const tipoLimpio = tipo.trim().toUpperCase();
+              if (tipoLimpio === 'ORION') {
+                return 'URBANO'; // Mapear temporalmente ORION a URBANO
+              }
+              return tipoLimpio;
+            };
+
             aperturaData = {
               programacionId: programacionFinal?._id || programaciones[0]?._id,
               ruta: item.ruta.trim(),
-              tipoUnidad: item.tipoUnidad.trim().toUpperCase(),
+              tipoUnidad: mapearTipoUnidad(item.tipoUnidad),
               economico: item.economico.toString().trim(),
               tarjeton: item.tarjeton.toString().trim(),
               nombre: item.nombre.trim(),
@@ -593,7 +602,7 @@ function App() {
               corridaInicial: parseInt(item.corridaInicial || programacion?.corridaInicial || programacionPorRuta?.corridaInicial || '1'),
               corridaFinal: parseInt(item.corridaFinal || programacion?.corridaFinal || programacionPorRuta?.corridaFinal || '1'),
               fechaApertura: item.fechaApertura,
-              estado: 'dashboard',
+              estado: 'pendiente',
               comentario: item.comentario ? item.comentario.trim() : '',
               observaciones: item.comentario ? item.comentario.trim() : ''
             };

@@ -123,11 +123,20 @@ function Apertura() {
         return;
       }
 
+      // Función temporal para mapear ORION a un valor válido
+      const mapearTipoUnidad = (tipo) => {
+        const tipoLimpio = tipo.trim().toUpperCase();
+        if (tipoLimpio === 'ORION') {
+          return 'URBANO'; // Mapear temporalmente ORION a URBANO
+        }
+        return tipoLimpio;
+      };
+
       // Preparar datos para crear la apertura
       const aperturaData = {
         programacionId: programacion._id,
         ruta: formData.ruta.trim(),
-        tipoUnidad: formData.tipoUnidad.trim().toUpperCase(),
+        tipoUnidad: mapearTipoUnidad(formData.tipoUnidad),
         economico: formData.economico.toString().trim().toUpperCase(),
         tarjeton: formData.tarjeton.toString().trim().toUpperCase(),
         nombre: formData.nombre.trim(),
@@ -137,7 +146,7 @@ function Apertura() {
         corridaInicial: parseInt(formData.corridaInicial || programacion.corridaInicial || '1'),
         corridaFinal: parseInt(formData.corridaFinal || programacion.corridaFinal || '1'),
         fechaApertura: new Date().toISOString(),
-        estado: 'dashboard',
+        estado: 'pendiente',
         comentario: formData.comentario ? formData.comentario.trim() : '',
         observaciones: formData.comentario ? formData.comentario.trim() : ''
       };
