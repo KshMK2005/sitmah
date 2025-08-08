@@ -649,7 +649,7 @@ function Dashboard() {
       body: rowsResumen,
       startY: lastY,
       styles: { fontSize: 10, cellPadding: 2, valign: 'middle', halign: 'center' },
-      headStyles: { fillColor: [111, 34, 52], textColor: 255, fontStyle: 'bold' },
+      headStyles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' }, // Encabezados blancos por defecto
       bodyStyles: { fontSize: 10, minCellHeight: 28 },
       columnStyles: {
         0: { cellWidth: 35, minCellHeight: 35 },
@@ -662,6 +662,16 @@ function Dashboard() {
       margin: { left: 14, right: 14 },
       tableWidth: 'auto',
       didDrawCell: (data) => {
+        // Colorear encabezados de UNIDADES CON FALLA y TIPO DE FALLA en vino
+        if (data.row.section === 'head' && (data.column.index === 4 || data.column.index === 5)) {
+          doc.setFillColor(111, 34, 52); // Color vino
+          doc.rect(data.cell.x, data.cell.y, data.cell.width, data.cell.height, 'F');
+          doc.setTextColor(255, 255, 255); // Texto blanco
+          doc.setFontSize(10);
+          doc.setFont(doc.getFont().fontName, 'bold');
+          doc.text(data.cell.text[0], data.cell.x + data.cell.width / 2, data.cell.y + data.cell.height / 2 + 3, { align: 'center' });
+        }
+
         // Draw vehicle images and names in body rows
         if (data.row.section === 'body' && data.column.index === 0 && data.row.index < imageData.length) {
           const imgInfo = imageData[data.row.index];
@@ -688,15 +698,26 @@ function Dashboard() {
           }
         }
         
-        // Apply dark maroon background for TOTALES row
+        // Formato especial para la fila de TOTALES
         if (data.row.section === 'body' && data.row.index === modelos.length) {
-          doc.setFillColor(111, 34, 52); // Dark maroon
+          // Fondo vino para toda la fila
+          doc.setFillColor(111, 34, 52);
           doc.rect(data.cell.x, data.cell.y, data.cell.width, data.cell.height, 'F');
-          // Redraw text in white
+          
+          // Texto en blanco y negrita
           doc.setTextColor(255, 255, 255);
           doc.setFontSize(10);
           doc.setFont(doc.getFont().fontName, 'bold');
-          doc.text(data.cell.text[0], data.cell.x + data.cell.width / 2, data.cell.y + data.cell.height / 2 + 3, { align: 'center' });
+          
+          // Si es la primera columna, escribir "TOTALES"
+          if (data.column.index === 0) {
+            doc.text('TOTALES', data.cell.x + data.cell.width / 2, data.cell.y + data.cell.height / 2 + 3, { align: 'center' });
+          } 
+          // Para las demás columnas, mostrar el número
+          else {
+            doc.text(data.cell.text[0], data.cell.x + data.cell.width / 2, data.cell.y + data.cell.height / 2 + 3, { align: 'center' });
+          }
+          
           // Reset font style
           doc.setFont(doc.getFont().fontName, 'normal');
         }
