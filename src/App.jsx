@@ -509,20 +509,38 @@ function App() {
             const hasNombre = row[4] && row[4].toString().trim() !== '';
             return hasEconomico && hasTarjeton && hasNombre;
           })
-          .map(row => ({
-            tipoUnidad: (row[0] || '').toLowerCase().trim(),
-            ruta: row[1] || '',
-            economico: row[2] || '',
-            tarjeton: row[3] || '',
-            nombre: row[4] || '',
-            // Campos que se rellenarán automáticamente
-            horaSalida: '',
-            intervalo: '',
-            corridaInicial: '',
-            corridaFinal: '',
-            fechaApertura: new Date().toISOString().split('T')[0],
-            estado: 'dashboard'
-          }));
+          .map(row => {
+            // Mapear tipos de unidad del Excel a los valores esperados por la API
+            const tipoUnidadExcel = (row[0] || '').toLowerCase().trim();
+            let tipoUnidadMapeado = 'URBANO'; // valor por defecto
+            
+            if (tipoUnidadExcel.includes('gran viale')) {
+              tipoUnidadMapeado = 'GRAN VIALE';
+            } else if (tipoUnidadExcel.includes('boxer')) {
+              tipoUnidadMapeado = 'BOXER';
+            } else if (tipoUnidadExcel.includes('sprinter')) {
+              tipoUnidadMapeado = 'SPRINTER';
+            } else if (tipoUnidadExcel.includes('vagoneta')) {
+              tipoUnidadMapeado = 'VAGONETA';
+            } else if (tipoUnidadExcel.includes('orion')) {
+              tipoUnidadMapeado = 'URBANO'; // Orion se mapea a URBANO
+            }
+            
+            return {
+              tipoUnidad: tipoUnidadMapeado,
+              ruta: row[1] || '',
+              economico: row[2] || '',
+              tarjeton: row[3] || '',
+              nombre: row[4] || '',
+              // Campos que se rellenarán automáticamente
+              horaSalida: '',
+              intervalo: '',
+              corridaInicial: '',
+              corridaFinal: '',
+              fechaApertura: new Date().toISOString().split('T')[0],
+              estado: 'dashboard'
+            };
+          });
 
         setImportData(processedData);
         setShowImportModal(true);
@@ -551,18 +569,24 @@ function App() {
           // Buscar programación correspondiente para rellenar campos faltantes
           const programacion = programaciones.find(p => 
             p.ruta === item.ruta && 
-            (p.tipoUnidad || p.tipoVehiculo || '').toLowerCase().trim() === item.tipoUnidad
+            (p.tipoUnidad || p.tipoVehiculo || '').toUpperCase().trim() === item.tipoUnidad
           );
 
           const aperturaData = {
-            ...item,
+            ruta: item.ruta,
+            tipoUnidad: item.tipoUnidad.toUpperCase(),
+            economico: item.economico.toString(),
+            tarjeton: item.tarjeton.toString(),
+            nombre: item.nombre,
             horaSalida: item.horaSalida || programacion?.horaSalida || '04:30',
-            intervalo: item.intervalo || programacion?.intervalo || '15',
-            corridaInicial: item.corridaInicial || programacion?.corridaInicial || '1',
-            corridaFinal: item.corridaFinal || programacion?.corridaFinal || '1',
+            horaProgramada: item.horaSalida || programacion?.horaSalida || '04:30',
+            intervalo: parseInt(item.intervalo || programacion?.intervalo || '15'),
+            corridaInicial: parseInt(item.corridaInicial || programacion?.corridaInicial || '1'),
+            corridaFinal: parseInt(item.corridaFinal || programacion?.corridaFinal || '1'),
             fechaApertura: item.fechaApertura,
             estado: 'dashboard',
-            comentario: item.comentario || ''
+            comentario: item.comentario || '',
+            observaciones: item.comentario || ''
           };
 
           await aperturaService.create(aperturaData);
