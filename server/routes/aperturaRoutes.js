@@ -216,4 +216,37 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
+// Eliminar aperturas por fecha (para limpiar datos de prueba)
+router.delete('/deleteByDate', async (req, res) => {
+    try {
+        const { fecha } = req.body;
+        
+        if (!fecha) {
+            return res.status(400).json({ message: 'Fecha requerida' });
+        }
+
+        // Buscar aperturas de la fecha especificada
+        const aperturas = await Apertura.find({ 
+            fechaApertura: fecha 
+        });
+
+        if (aperturas.length === 0) {
+            return res.json({ 
+                message: 'No se encontraron aperturas para eliminar', 
+                deletedCount: 0 
+            });
+        }
+
+        // Eliminar todas las aperturas de esa fecha
+        const result = await Apertura.deleteMany({ fechaApertura: fecha });
+        
+        res.json({ 
+            message: `Se eliminaron ${result.deletedCount} aperturas del ${fecha}`,
+            deletedCount: result.deletedCount
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
 export default router;

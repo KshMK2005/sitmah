@@ -113,6 +113,28 @@ export const aperturaService = {
             throw new Error('Error al obtener aperturas por estado');
         }
         return response.json();
+    },
+
+    async delete(id) {
+        const response = await fetch(`${API_URL}/apertura/${id}`, {
+            method: 'DELETE'
+        });
+        if (!response.ok) {
+            throw new Error('Error al eliminar apertura');
+        }
+        return response.json();
+    },
+
+    async deleteByDate(fecha) {
+        const response = await fetch(`${API_URL}/apertura/deleteByDate`, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ fecha })
+        });
+        if (!response.ok) {
+            throw new Error('Error al eliminar aperturas por fecha');
+        }
+        return response.json();
     }
 };
 
