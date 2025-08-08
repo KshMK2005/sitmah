@@ -17,6 +17,7 @@ import { aperturaService } from './services/api';
 import { operadorService } from './services/operadores';
 import LluviaSanValentin from './components/LluviaSanValentin';
 import LluviaNavidad from './components/LluviaNavidad';
+import * as XLSX from 'xlsx';
 
 // Clave constante para localStorage
 const STORAGE_KEY = 'horariosActuales';
@@ -53,6 +54,11 @@ function App() {
 
   // Estado para controlar la búsqueda
   const [buscandoOperador, setBuscandoOperador] = useState(false);
+  
+  // Estados para importador masivo
+  const [showImportModal, setShowImportModal] = useState(false);
+  const [importData, setImportData] = useState([]);
+  const [importing, setImporting] = useState(false);
 
   // Buscar automáticamente el nombre del operador por tarjetón
   useEffect(() => {
@@ -479,6 +485,117 @@ function App() {
     });
   };
 
+  // Funciones para importador masivo
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+        const sheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[sheetName];
+        const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+        // Filtrar filas vacías y procesar datos
+        const processedData = jsonData
+          .filter(row => row.length > 0 && row.some(cell => cell && cell.toString().trim() !== ''))
+          .filter(row => {
+            // Filtrar filas que contengan datos de unidades (tienen económico y tarjetón)
+            const hasEconomico = row[2] && row[2].toString().trim() !== '';
+            const hasTarjeton = row[3] && row[3].toString().trim() !== '';
+            const hasNombre = row[4] && row[4].toString().trim() !== '';
+            return hasEconomico && hasTarjeton && hasNombre;
+          })
+          .map(row => ({
+            tipoUnidad: (row[0] || '').toLowerCase().trim(),
+            ruta: row[1] || '',
+            economico: row[2] || '',
+            tarjeton: row[3] || '',
+            nombre: row[4] || '',
+            // Campos que se rellenarán automáticamente
+            horaSalida: '',
+            intervalo: '',
+            corridaInicial: '',
+            corridaFinal: '',
+            fechaApertura: new Date().toISOString().split('T')[0],
+            estado: 'dashboard'
+          }));
+
+        setImportData(processedData);
+        setShowImportModal(true);
+      } catch (error) {
+        console.error('Error al procesar archivo:', error);
+        Swal.fire({
+          title: 'Error',
+          text: 'Error al procesar el archivo Excel',
+          icon: 'error'
+        });
+      }
+    };
+    reader.readAsArrayBuffer(file);
+  };
+
+  const handleBulkImport = async () => {
+    if (importData.length === 0) return;
+
+    setImporting(true);
+    try {
+      let successCount = 0;
+      let errorCount = 0;
+
+      for (const item of importData) {
+        try {
+          // Buscar programación correspondiente para rellenar campos faltantes
+          const programacion = programaciones.find(p => 
+            p.ruta === item.ruta && 
+            (p.tipoUnidad || p.tipoVehiculo || '').toLowerCase().trim() === item.tipoUnidad
+          );
+
+          const aperturaData = {
+            ...item,
+            horaSalida: item.horaSalida || programacion?.horaSalida || '04:30',
+            intervalo: item.intervalo || programacion?.intervalo || '15',
+            corridaInicial: item.corridaInicial || programacion?.corridaInicial || '1',
+            corridaFinal: item.corridaFinal || programacion?.corridaFinal || '1',
+            fechaApertura: item.fechaApertura,
+            estado: 'dashboard',
+            comentario: item.comentario || ''
+          };
+
+          await aperturaService.create(aperturaData);
+          successCount++;
+        } catch (error) {
+          console.error('Error al crear apertura:', error);
+          errorCount++;
+        }
+      }
+
+      Swal.fire({
+        title: 'Importación completada',
+        html: `
+          <p>✅ <strong>${successCount}</strong> aperturas creadas exitosamente</p>
+          ${errorCount > 0 ? `<p>❌ <strong>${errorCount}</strong> errores</p>` : ''}
+        `,
+        icon: 'success'
+      });
+
+      setShowImportModal(false);
+      setImportData([]);
+    } catch (error) {
+      console.error('Error en importación masiva:', error);
+      Swal.fire({
+        title: 'Error',
+        text: 'Error durante la importación masiva',
+        icon: 'error'
+      });
+    } finally {
+      setImporting(false);
+    }
+  };
+
   // Detectar tema sanvalentin
   const [tema, setTema] = useState(localStorage.getItem('temaGlobal') || 'normal');
   useEffect(() => {
@@ -513,6 +630,54 @@ function App() {
         minHeight: '90vh',
         justifyContent: 'flex-start'
       }}>
+        {/* Botón de importación masiva */}
+        <div style={{ textAlign: 'center', marginBottom: '1rem', width: '100%', maxWidth: 900 }}>
+          <button
+            type="button"
+            onClick={() => alert('¡Botón funcionando!')}
+            style={{
+              background: '#FF0000',
+              color: 'white',
+              border: 'none',
+              borderRadius: '8px',
+              padding: '20px 40px',
+              fontSize: '20px',
+              fontWeight: 'bold',
+              cursor: 'pointer',
+              marginBottom: '1rem'
+            }}
+          >
+            🚨 BOTÓN DE PRUEBA - CLICK AQUÍ
+          </button>
+          <button
+            type="button"
+            onClick={() => document.getElementById('fileInput').click()}
+            style={{
+              background: '#6F2234',
+              color: 'white',
+              border: 'none',
+              borderRadius: '8px',
+              padding: '12px 24px',
+              fontSize: '16px',
+              fontWeight: 'bold',
+              cursor: 'pointer',
+              marginBottom: '1rem'
+            }}
+          >
+            📊 Cargar Excel Masivo
+          </button>
+          <input
+            id="fileInput"
+            type="file"
+            accept=".xlsx,.xls,.csv"
+            onChange={handleFileUpload}
+            style={{ display: 'none' }}
+          />
+          <p style={{ fontSize: '14px', color: '#666', margin: '0' }}>
+            Sube un archivo Excel con las programaciones diarias
+          </p>
+        </div>
+
         <form onSubmit={handleSubmit} className="form" style={{ marginTop: '0.5rem', marginBottom: 8, width: '100%', maxWidth: 900, background: '#fff', borderRadius: 12, boxShadow: '0 2px 12px rgba(128, 0, 32, 0.08)', padding: '2rem 2.5rem', display: 'flex', flexDirection: 'column', gap: '1.2rem', alignItems: 'center' }}>
           <h2 style={{ marginTop: '0', marginBottom: '1.2rem', color: '#6F2234' }}>Nueva Programación</h2>
           <div className="form-grid-3col">
@@ -737,6 +902,100 @@ function App() {
             <button className="btn-submit" onClick={handleSaveToDatabase}>GUARDAR A LA BASE DE DATOS</button>
           </div>
         </div>
+
+        {/* Modal de previsualización de importación masiva */}
+        {showImportModal && (
+          <div style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            zIndex: 1000
+          }}>
+            <div style={{
+              background: 'white',
+              borderRadius: '12px',
+              padding: '2rem',
+              maxWidth: '90vw',
+              maxHeight: '90vh',
+              overflow: 'auto',
+              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)'
+            }}>
+              <h3 style={{ color: '#6F2234', marginBottom: '1rem', textAlign: 'center' }}>
+                📊 Previsualización de Importación Masiva
+              </h3>
+              <p style={{ marginBottom: '1rem', textAlign: 'center', color: '#666' }}>
+                Se encontraron <strong>{importData.length}</strong> unidades para importar
+              </p>
+              
+              {/* Tabla de previsualización */}
+              <div style={{ marginBottom: '1.5rem', maxHeight: '400px', overflow: 'auto' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
+                  <thead>
+                    <tr style={{ background: '#6F2234', color: 'white' }}>
+                      <th style={{ padding: '8px', border: '1px solid #ddd', textAlign: 'left' }}>Tipo</th>
+                      <th style={{ padding: '8px', border: '1px solid #ddd', textAlign: 'left' }}>Ruta</th>
+                      <th style={{ padding: '8px', border: '1px solid #ddd', textAlign: 'left' }}>Económico</th>
+                      <th style={{ padding: '8px', border: '1px solid #ddd', textAlign: 'left' }}>Tarjetón</th>
+                      <th style={{ padding: '8px', border: '1px solid #ddd', textAlign: 'left' }}>Operador</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {importData.slice(0, 10).map((item, index) => (
+                      <tr key={index} style={{ background: index % 2 === 0 ? '#f9f9f9' : 'white' }}>
+                        <td style={{ padding: '8px', border: '1px solid #ddd' }}>{item.tipoUnidad}</td>
+                        <td style={{ padding: '8px', border: '1px solid #ddd' }}>{item.ruta}</td>
+                        <td style={{ padding: '8px', border: '1px solid #ddd' }}>{item.economico}</td>
+                        <td style={{ padding: '8px', border: '1px solid #ddd' }}>{item.tarjeton}</td>
+                        <td style={{ padding: '8px', border: '1px solid #ddd' }}>{item.nombre}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                {importData.length > 10 && (
+                  <p style={{ textAlign: 'center', marginTop: '8px', color: '#666', fontSize: '12px' }}>
+                    ... y {importData.length - 10} unidades más
+                  </p>
+                )}
+              </div>
+
+              {/* Botones de acción */}
+              <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+                <button
+                  onClick={() => setShowImportModal(false)}
+                  style={{
+                    padding: '10px 20px',
+                    border: '1px solid #ccc',
+                    borderRadius: '6px',
+                    background: 'white',
+                    cursor: 'pointer'
+                  }}
+                >
+                  Cancelar
+                </button>
+                <button
+                  onClick={handleBulkImport}
+                  disabled={importing}
+                  style={{
+                    padding: '10px 20px',
+                    border: 'none',
+                    borderRadius: '6px',
+                    background: importing ? '#ccc' : '#6F2234',
+                    color: 'white',
+                    cursor: importing ? 'not-allowed' : 'pointer'
+                  }}
+                >
+                  {importing ? 'Importando...' : 'Confirmar Importación'}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
     </div>
   );
