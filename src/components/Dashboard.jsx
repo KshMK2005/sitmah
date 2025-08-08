@@ -636,7 +636,7 @@ function Dashboard() {
       totalOperacion,
       totalReserva,
       totalFallas,
-      ''
+      totalFallas > 0 ? `${totalFallas} UNIDADES` : 'Ninguna'
     ]);
 
     doc.setFontSize(14);
@@ -656,8 +656,8 @@ function Dashboard() {
         1: { cellWidth: 32 },
         2: { cellWidth: 32 },
         3: { cellWidth: 32 },
-        4: { cellWidth: 32, fillColor: [255, 215, 0] }, // UNIDADES CON FALLA - golden
-        5: { cellWidth: 70, halign: 'center', fillColor: [255, 215, 0] }, // TIPO DE FALLA - golden
+        4: { cellWidth: 32, fillColor: [203, 178, 106] }, // UNIDADES CON FALLA - golden (#CBB26A)
+        5: { cellWidth: 70, halign: 'center', fillColor: [203, 178, 106] }, // TIPO DE FALLA - golden (#CBB26A)
       },
       margin: { left: 14, right: 14 },
       tableWidth: 'auto',
