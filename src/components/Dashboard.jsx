@@ -77,6 +77,36 @@ function Dashboard() {
     }
   };
 
+  // Función para eliminar una apertura
+  const handleDeleteApertura = async (id) => {
+    if (window.confirm('¿Estás seguro de que quieres eliminar esta apertura? Esta acción no se puede deshacer.')) {
+      try {
+        await aperturaService.delete(id);
+        // Recargar datos después de eliminar
+        cargarDatos();
+        alert('Apertura eliminada correctamente');
+      } catch (error) {
+        console.error('Error al eliminar apertura:', error);
+        alert('Error al eliminar la apertura');
+      }
+    }
+  };
+
+  // Función para eliminar una programación
+  const handleDeleteProgramacion = async (id) => {
+    if (window.confirm('¿Estás seguro de que quieres eliminar esta programación? Esta acción no se puede deshacer.')) {
+      try {
+        await programacionService.delete(id);
+        // Recargar datos después de eliminar
+        cargarDatos();
+        alert('Programación eliminada correctamente');
+      } catch (error) {
+        console.error('Error al eliminar programación:', error);
+        alert('Error al eliminar la programación');
+      }
+    }
+  };
+
   // Datos para gráficas individuales
   const chartData = {
     programaciones: {
@@ -959,13 +989,14 @@ function Dashboard() {
                     <div key={fecha} style={{ marginBottom: '2rem', background: '#f9f9f9', borderRadius: 8, boxShadow: '0 2px 4px #0001', padding: 16 }}>
                       <h3 style={{ color: '#6F2234', marginBottom: 8 }}>Fecha: {fecha}</h3>
                       <div style={{ width: '100%' }}>
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 0, background: 'white', borderRadius: 8, width: '100%', minWidth: 'unset' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 0, background: 'white', borderRadius: 8, width: '100%', minWidth: 'unset' }}>
                           {/* Encabezados */}
                           <div style={{ fontWeight: 700, color: '#6F2234', padding: '0.7rem 0.5rem', borderBottom: '2px solid #ececec', background: '#f3f3f7' }}>Ruta</div>
                           <div style={{ fontWeight: 700, color: '#6F2234', padding: '0.7rem 0.5rem', borderBottom: '2px solid #ececec', background: '#f3f3f7' }}>Tipo Unidad</div>
                           <div style={{ fontWeight: 700, color: '#6F2234', padding: '0.7rem 0.5rem', borderBottom: '2px solid #ececec', background: '#f3f3f7' }}>Corrida Inicial</div>
                           <div style={{ fontWeight: 700, color: '#6F2234', padding: '0.7rem 0.5rem', borderBottom: '2px solid #ececec', background: '#f3f3f7' }}>Corrida Final</div>
                           <div style={{ fontWeight: 700, color: '#6F2234', padding: '0.7rem 0.5rem', borderBottom: '2px solid #ececec', background: '#f3f3f7' }}>Hora Salida</div>
+                          <div style={{ fontWeight: 700, color: '#6F2234', padding: '0.7rem 0.5rem', borderBottom: '2px solid #ececec', background: '#f3f3f7' }}>Acciones</div>
                           {/* Filas */}
                           {items.map((pr, idx) => (
                             <React.Fragment key={pr._id}>
@@ -974,6 +1005,23 @@ function Dashboard() {
                               <div style={{ padding: '0.5rem', borderBottom: '1px solid #ececec', background: idx % 2 === 0 ? '#fff' : '#f8f9fa', fontWeight: 500 }}>{pr.corridaInicial}</div>
                               <div style={{ padding: '0.5rem', borderBottom: '1px solid #ececec', background: idx % 2 === 0 ? '#fff' : '#f9f9fa', fontWeight: 500 }}>{pr.corridaFinal}</div>
                               <div style={{ padding: '0.5rem', borderBottom: '1px solid #ececec', background: idx % 2 === 0 ? '#fff' : '#f9f9fa', fontWeight: 500 }}>{pr.horaSalida}</div>
+                              <div style={{ padding: '0.5rem', borderBottom: '1px solid #ececec', background: idx % 2 === 0 ? '#fff' : '#f9f9fa', fontWeight: 500, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                <button
+                                  onClick={() => handleDeleteProgramacion(pr._id)}
+                                  style={{
+                                    background: '#dc3545',
+                                    color: 'white',
+                                    border: 'none',
+                                    borderRadius: '4px',
+                                    padding: '0.3rem 0.6rem',
+                                    cursor: 'pointer',
+                                    fontSize: '12px'
+                                  }}
+                                  title="Eliminar programación"
+                                >
+                                  🗑️
+                                </button>
+                              </div>
                             </React.Fragment>
                           ))}
                         </div>
@@ -1063,7 +1111,7 @@ function Dashboard() {
                     <div key={fecha} style={{ marginBottom: '2rem', background: '#f9f9f9', borderRadius: 8, boxShadow: '0 2px 4px #0001', padding: 16 }}>
                       <h3 style={{ color: '#6F2234', marginBottom: 8 }}>Fecha de aprobación: {fecha}</h3>
                       <div style={{ width: '100%' }}>
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)', gap: 0, background: 'white', borderRadius: 8, width: '100%', minWidth: 'unset' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(13, 1fr)', gap: 0, background: 'white', borderRadius: 8, width: '100%', minWidth: 'unset' }}>
                           {/* Encabezados */}
                           <div style={{ fontWeight: 700, color: '#6F2234', padding: '0.7rem 0.5rem', borderBottom: '2px solid #ececec', background: '#f3f3f7' }}>Ruta</div>
                           <div style={{ fontWeight: 700, color: '#6F2234', padding: '0.7rem 0.5rem', borderBottom: '2px solid #ececec', background: '#f3f3f7' }}>Tipo Unidad</div>
@@ -1077,6 +1125,7 @@ function Dashboard() {
                           <div style={{ fontWeight: 700, color: '#6F2234', padding: '0.7rem 0.5rem', borderBottom: '2px solid #ececec', background: '#f3f3f7' }}>Estado</div>
                           <div style={{ fontWeight: 700, color: '#6F2234', padding: '0.7rem 0.5rem', borderBottom: '2px solid #ececec', background: '#f3f3f7' }}>Observaciones</div>
                           <div style={{ fontWeight: 700, color: '#6F2234', padding: '0.7rem 0.5rem', borderBottom: '2px solid #ececec', background: '#f3f3f7' }}>Ciclos Perdidos</div>
+                          <div style={{ fontWeight: 700, color: '#6F2234', padding: '0.7rem 0.5rem', borderBottom: '2px solid #ececec', background: '#f3f3f7' }}>Acciones</div>
                           {/* Filas */}
                           {items.sort((a, b) => new Date(b.ultimaModificacion?.fecha || b.updatedAt || b.createdAt) - new Date(a.ultimaModificacion?.fecha || a.updatedAt || a.createdAt)).map((ap, idx) => (
                             <React.Fragment key={ap._id}>
@@ -1092,6 +1141,23 @@ function Dashboard() {
                               <div style={{ padding: '0.5rem', borderBottom: '1px solid #ececec', background: idx % 2 === 0 ? '#fff' : '#f8f9fa', fontWeight: 500 }}>{ap.estado === 'cancelado' ? 'rechazado' : (ap.estado === 'completado' || ap.estado === 'dashboard') ? 'aceptado' : 'pendiente'}</div>
                               <div style={{ padding: '0.5rem', borderBottom: '1px solid #ececec', background: idx % 2 === 0 ? '#fff' : '#f8f9fa', fontWeight: 500 }}>{ap.observaciones || '-'}</div>
                               <div style={{ padding: '0.5rem', borderBottom: '1px solid #ececec', background: idx % 2 === 0 ? '#fff' : '#f8f9fa', fontWeight: 500 }}>{ap.ciclosPerdidos || '-'}</div>
+                              <div style={{ padding: '0.5rem', borderBottom: '1px solid #ececec', background: idx % 2 === 0 ? '#fff' : '#f8f9fa', fontWeight: 500, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                <button
+                                  onClick={() => handleDeleteApertura(ap._id)}
+                                  style={{
+                                    background: '#dc3545',
+                                    color: 'white',
+                                    border: 'none',
+                                    borderRadius: '4px',
+                                    padding: '0.3rem 0.6rem',
+                                    cursor: 'pointer',
+                                    fontSize: '12px'
+                                  }}
+                                  title="Eliminar apertura"
+                                >
+                                  🗑️
+                                </button>
+                              </div>
                             </React.Fragment>
                           ))}
                         </div>
@@ -1149,7 +1215,7 @@ function Dashboard() {
                     <div key={fecha} style={{ marginBottom: '2rem', background: '#f9f9f9', borderRadius: 8, boxShadow: '0 2px 4px #0001', padding: 16 }}>
                       <h3 style={{ color: '#6F2234', marginBottom: 8 }}>Fecha: {fecha}</h3>
                       <div style={{ width: '100%' }}>
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)', gap: 0, background: 'white', borderRadius: 8, width: '100%', minWidth: 'unset', marginBottom: 16 }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(13, 1fr)', gap: 0, background: 'white', borderRadius: 8, width: '100%', minWidth: 'unset', marginBottom: 16 }}>
                           {/* Encabezados */}
                           <div style={{ fontWeight: 700, color: '#6F2234', padding: '0.7rem 0.5rem', borderBottom: '2px solid #ececec', background: '#f3f3f7' }}>Ruta</div>
                           <div style={{ fontWeight: 700, color: '#6F2234', padding: '0.7rem 0.5rem', borderBottom: '2px solid #ececec', background: '#f3f3f7' }}>Tipo Unidad</div>
@@ -1163,6 +1229,7 @@ function Dashboard() {
                           <div style={{ fontWeight: 700, color: '#6F2234', padding: '0.7rem 0.5rem', borderBottom: '2px solid #ececec', background: '#f3f3f7' }}>Estado</div>
                           <div style={{ fontWeight: 700, color: '#6F2234', padding: '0.7rem 0.5rem', borderBottom: '2px solid #ececec', background: '#f3f3f7' }}>Motivo</div>
                           <div style={{ fontWeight: 700, color: '#6F2234', padding: '0.7rem 0.5rem', borderBottom: '2px solid #ececec', background: '#f3f3f7' }}>Ciclos perdidos</div>
+                          <div style={{ fontWeight: 700, color: '#6F2234', padding: '0.7rem 0.5rem', borderBottom: '2px solid #ececec', background: '#f3f3f7' }}>Acciones</div>
                           {/* Filas */}
                           {items.map((ap, idx) => (
                             <React.Fragment key={ap._id}>
@@ -1178,6 +1245,23 @@ function Dashboard() {
                               <div style={{ padding: '0.5rem', borderBottom: '1px solid #ececec', background: idx % 2 === 0 ? '#fff' : '#f8f9fa', fontWeight: 500 }}>{ap.estado === 'cancelado' ? 'rechazado' : (ap.estado === 'completado' || ap.estado === 'dashboard') ? 'aceptado' : 'pendiente'}</div>
                               <div style={{ padding: '0.5rem', borderBottom: '1px solid #ececec', background: idx % 2 === 0 ? '#fff' : '#f8f9fa', fontWeight: 500 }}>{ap.observaciones || '-'}</div>
                               <div style={{ padding: '0.5rem', borderBottom: '1px solid #ececec', background: idx % 2 === 0 ? '#fff' : '#f8f9fa', fontWeight: 500 }}>{ap.ciclosPerdidos || '-'}</div>
+                              <div style={{ padding: '0.5rem', borderBottom: '1px solid #ececec', background: idx % 2 === 0 ? '#fff' : '#f8f9fa', fontWeight: 500, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                <button
+                                  onClick={() => handleDeleteApertura(ap._id)}
+                                  style={{
+                                    background: '#dc3545',
+                                    color: 'white',
+                                    border: 'none',
+                                    borderRadius: '4px',
+                                    padding: '0.3rem 0.6rem',
+                                    cursor: 'pointer',
+                                    fontSize: '12px'
+                                  }}
+                                  title="Eliminar apertura"
+                                >
+                                  🗑️
+                                </button>
+                              </div>
                             </React.Fragment>
                           ))}
                         </div>
