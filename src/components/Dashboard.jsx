@@ -1063,7 +1063,7 @@ function Dashboard() {
                     <div key={fecha} style={{ marginBottom: '2rem', background: '#f9f9f9', borderRadius: 8, boxShadow: '0 2px 4px #0001', padding: 16 }}>
                       <h3 style={{ color: '#6F2234', marginBottom: 8 }}>Fecha de aprobación: {fecha}</h3>
                       <div style={{ width: '100%' }}>
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(10, 1fr)', gap: 0, background: 'white', borderRadius: 8, width: '100%', minWidth: 'unset' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)', gap: 0, background: 'white', borderRadius: 8, width: '100%', minWidth: 'unset' }}>
                           {/* Encabezados */}
                           <div style={{ fontWeight: 700, color: '#6F2234', padding: '0.7rem 0.5rem', borderBottom: '2px solid #ececec', background: '#f3f3f7' }}>Ruta</div>
                           <div style={{ fontWeight: 700, color: '#6F2234', padding: '0.7rem 0.5rem', borderBottom: '2px solid #ececec', background: '#f3f3f7' }}>Tipo Unidad</div>
@@ -1075,6 +1075,8 @@ function Dashboard() {
                           <div style={{ fontWeight: 700, color: '#6F2234', padding: '0.7rem 0.5rem', borderBottom: '2px solid #ececec', background: '#f3f3f7' }}>Hora Salida</div>
                           <div style={{ fontWeight: 700, color: '#6F2234', padding: '0.7rem 0.5rem', borderBottom: '2px solid #ececec', background: '#f3f3f7' }}>Fecha Creación</div>
                           <div style={{ fontWeight: 700, color: '#6F2234', padding: '0.7rem 0.5rem', borderBottom: '2px solid #ececec', background: '#f3f3f7' }}>Estado</div>
+                          <div style={{ fontWeight: 700, color: '#6F2234', padding: '0.7rem 0.5rem', borderBottom: '2px solid #ececec', background: '#f3f3f7' }}>Observaciones</div>
+                          <div style={{ fontWeight: 700, color: '#6F2234', padding: '0.7rem 0.5rem', borderBottom: '2px solid #ececec', background: '#f3f3f7' }}>Ciclos Perdidos</div>
                           {/* Filas */}
                           {items.sort((a, b) => new Date(b.ultimaModificacion?.fecha || b.updatedAt || b.createdAt) - new Date(a.ultimaModificacion?.fecha || a.updatedAt || a.createdAt)).map((ap, idx) => (
                             <React.Fragment key={ap._id}>
