@@ -602,7 +602,7 @@ function App() {
               corridaInicial: parseInt(item.corridaInicial || programacion?.corridaInicial || programacionPorRuta?.corridaInicial || '1'),
               corridaFinal: parseInt(item.corridaFinal || programacion?.corridaFinal || programacionPorRuta?.corridaFinal || '1'),
               fechaApertura: item.fechaApertura,
-              estado: 'pendiente',
+              estado: 'dashboard',
               comentario: item.comentario ? item.comentario.trim() : '',
               observaciones: item.comentario ? item.comentario.trim() : ''
             };

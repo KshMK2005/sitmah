@@ -30,9 +30,19 @@ function Pendientes() {
   const [flashOrangeId, setFlashOrangeId] = useState(() => {
     return localStorage.getItem('flashPendienteId') || null;
   });
+  const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
     cargarPendientes();
+  }, []);
+
+  // Reloj en tiempo real
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(timer);
   }, []);
 
   useEffect(() => {
@@ -102,6 +112,36 @@ function Pendientes() {
 
   const handleCancelarEdicion = () => {
     setEditando(null);
+  };
+
+  // Función para formatear la hora actual
+  const formatCurrentTime = () => {
+    const hours = currentTime.getHours().toString().padStart(2, '0');
+    const minutes = currentTime.getMinutes().toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
+  };
+
+  // Función para actualizar la hora de salida en tiempo real
+  const handleHoraSalidaChange = async (apId, nuevaHora) => {
+    try {
+      await aperturaService.update(apId, { 
+        horaSalida: nuevaHora,
+        usuarioModificacion: localStorage.getItem('userName') || 'verificador'
+      });
+      
+      // Actualizar el estado local
+      setAperturasPendientes(prev => prev.map(a => 
+        a._id === apId ? { ...a, horaSalida: nuevaHora } : a
+      ));
+    } catch (error) {
+      console.error('Error al actualizar hora de salida:', error);
+      Swal.fire({
+        title: 'Error',
+        text: 'No se pudo actualizar la hora de salida',
+        icon: 'error',
+        timer: 2000
+      });
+    }
   };
 
   const aperturasOrdenadas = [...aperturasPendientes].sort((a, b) => {
@@ -181,12 +221,26 @@ function Pendientes() {
                     <div>{ap.corridaInicial}</div>
                     <div>{ap.horaSalida || '-'}</div>
                     <div>
+                      <div style={{ 
+                        fontSize: '0.9rem', 
+                        color: '#666', 
+                        marginBottom: '4px',
+                        fontWeight: 'bold'
+                      }}>
+                        Hora Actual: {formatCurrentTime()}
+                      </div>
                       <input
                         type="time"
-                        value={ap.horaSalida || ''}
+                        value={ap.horaSalida || formatCurrentTime()}
                         onChange={e => {
                           const nuevaHora = e.target.value;
-                          setAperturasPendientes(prev => prev.map(a => a._id === ap._id ? { ...a, horaSalida: nuevaHora } : a));
+                          handleHoraSalidaChange(ap._id, nuevaHora);
+                        }}
+                        style={{
+                          padding: '4px 8px',
+                          borderRadius: '4px',
+                          border: '1px solid #ccc',
+                          fontSize: '0.9rem'
                         }}
                       />
                     </div>

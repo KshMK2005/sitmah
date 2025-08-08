@@ -146,7 +146,7 @@ function Apertura() {
         corridaInicial: parseInt(formData.corridaInicial || programacion.corridaInicial || '1'),
         corridaFinal: parseInt(formData.corridaFinal || programacion.corridaFinal || '1'),
         fechaApertura: new Date().toISOString(),
-        estado: 'pendiente',
+        estado: 'dashboard',
         comentario: formData.comentario ? formData.comentario.trim() : '',
         observaciones: formData.comentario ? formData.comentario.trim() : ''
       };
