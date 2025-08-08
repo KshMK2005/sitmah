@@ -73,6 +73,29 @@ router.get('/estadisticas', async (req, res) => {
     }
 });
 
+// Endpoint temporal para verificar el modelo
+router.get('/modelo-info', async (req, res) => {
+    try {
+        const schema = Apertura.schema;
+        const tipoUnidadEnum = schema.path('tipoUnidad').enumValues;
+        const estadoEnum = schema.path('estado').enumValues;
+        
+        res.json({
+            tipoUnidad: {
+                enum: tipoUnidadEnum,
+                required: schema.path('tipoUnidad').isRequired
+            },
+            estado: {
+                enum: estadoEnum,
+                required: schema.path('estado').isRequired,
+                default: schema.path('estado').defaultValue
+            }
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
 // Crear una nueva apertura
 router.post('/', validarApertura, async (req, res) => {
     try {
