@@ -549,8 +549,8 @@ function App() {
       const handleCleanupImportedData = async () => {
         try {
           const result = await Swal.fire({
-            title: '¿Eliminar datos importados?',
-            text: 'Esto eliminará TODOS los registros con estado "dashboard" de hoy. ¿Estás seguro?',
+            title: '¿Eliminar datos del 8 de agosto?',
+            text: 'Esto eliminará TODOS los registros del 8 de agosto (2025-08-08). ¿Estás seguro?',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#d33',
@@ -560,35 +560,21 @@ function App() {
           });
 
           if (result.isConfirmed) {
-            const today = new Date().toISOString().split('T')[0];
-            const aperturasHoy = aperturas.filter(ap => 
-              ap.estado === 'dashboard' && 
-              ap.fechaApertura === today
-            );
+            try {
+              const response = await aperturaService.deleteByDate('2025-08-08');
+              
+              Swal.fire(
+                'Eliminados',
+                response.message,
+                'success'
+              );
 
-            if (aperturasHoy.length === 0) {
-              Swal.fire('Info', 'No hay datos importados de hoy para eliminar', 'info');
-              return;
+              // Recargar aperturas
+              cargarAperturas();
+            } catch (error) {
+              console.error('Error eliminando por fecha:', error);
+              Swal.fire('Error', 'Error al eliminar datos por fecha', 'error');
             }
-
-            let deletedCount = 0;
-            for (const ap of aperturasHoy) {
-              try {
-                await aperturaService.delete(ap._id);
-                deletedCount++;
-              } catch (error) {
-                console.error('Error eliminando apertura:', ap._id, error);
-              }
-            }
-
-            Swal.fire(
-              'Eliminados',
-              `Se eliminaron ${deletedCount} registros importados`,
-              'success'
-            );
-
-            // Recargar aperturas
-            cargarAperturas();
           }
         } catch (error) {
           console.error('Error en limpieza:', error);
@@ -721,23 +707,7 @@ function App() {
       }}>
         {/* Botón de importación masiva */}
         <div style={{ textAlign: 'center', marginBottom: '1rem', width: '100%', maxWidth: 900 }}>
-          <button
-            type="button"
-            onClick={() => alert('¡Botón funcionando!')}
-            style={{
-              background: '#FF0000',
-              color: 'white',
-              border: 'none',
-              borderRadius: '8px',
-              padding: '20px 40px',
-              fontSize: '20px',
-              fontWeight: 'bold',
-              cursor: 'pointer',
-              marginBottom: '1rem'
-            }}
-          >
-            🚨 BOTÓN DE PRUEBA - CLICK AQUÍ
-          </button>
+
           <button
             type="button"
             onClick={() => document.getElementById('fileInput').click()}
@@ -772,7 +742,7 @@ function App() {
               marginLeft: '10px'
             }}
           >
-            🗑️ Limpiar Datos Importados
+            🗑️ Eliminar Datos 8 de Agosto
           </button>
 
           <input
