@@ -63,10 +63,8 @@ function Dashboard() {
     try {
       const aperturasData = await aperturaService.getAll();
       setAperturas(aperturasData);
-      // Mostrar aperturas verificadas: completado, cancelado, pendiente y dashboard (temporales)
-      setVerificados(aperturasData.filter(ap =>
-        ap.estado === 'completado' || ap.estado === 'cancelado' || ap.estado === 'pendiente' || ap.estado === 'dashboard')
-      );
+      // Mostrar solo verificados (aceptados/rechazados), no incluir 'pendiente' ni 'apertura' ni 'dashboard'
+      setVerificados(aperturasData.filter(ap => ap.estado === 'completado' || ap.estado === 'cancelado'));
       if (programacionService && programacionService.getAll) {
         const programacionesData = await programacionService.getAll();
         setProgramaciones(programacionesData);
@@ -310,7 +308,7 @@ function Dashboard() {
         ap.corridaFinal,
         ap.horaSalida,
         ap.fechaApertura ? new Date(ap.fechaApertura).toLocaleString('es-MX') : '-',
-        ap.estado === 'cancelado' ? 'rechazado' : (ap.estado === 'completado' || ap.estado === 'dashboard') ? 'aceptado' : 'pendiente',
+        ap.estado === 'cancelado' ? 'rechazado' : (ap.estado === 'completado') ? 'aceptado' : 'pendiente',
         ap.observaciones || '-'
       ]);
       autoTable(doc, {
@@ -345,7 +343,7 @@ function Dashboard() {
         ap.corridaFinal,
         ap.horaSalida,
         ap.createdAt ? new Date(ap.createdAt).toLocaleString('es-MX') : '-',
-        ap.estado === 'cancelado' ? 'rechazado' : (ap.estado === 'completado' || ap.estado === 'dashboard') ? 'aceptado' : 'pendiente'
+        ap.estado === 'cancelado' ? 'rechazado' : (ap.estado === 'completado') ? 'aceptado' : 'pendiente'
       ]);
       autoTable(doc, {
         head: headAp,
@@ -623,8 +621,8 @@ function Dashboard() {
 
     // Funciones de conteo
     const unidadesProgramadas = tipo => programacionesDeFecha.filter(p => (p.tipoUnidad || p.tipoVehiculo || '').toLowerCase().trim() === tipo).length;
-    const unidadesEnOperacion = tipo => verificadosDeFechaResumen.filter(v => (v.tipoUnidad || v.tipoVehiculo || '').toLowerCase().trim() === tipo && v.estado === 'dashboard').length;
-    const unidadesEnFalla = tipo => aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === tipo && a.estado === 'pendiente').length;
+    const unidadesEnOperacion = tipo => verificadosDeFechaResumen.filter(v => (v.tipoUnidad || v.tipoVehiculo || '').toLowerCase().trim() === tipo && v.estado === 'completado').length;
+    const unidadesEnFalla = tipo => aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === tipo && (a.estado === 'pendiente' || a.estado === 'apertura')).length;
     const unidadesEnReserva = tipo => {
       const programadas = unidadesProgramadas(tipo);
       const operacion = unidadesEnOperacion(tipo);

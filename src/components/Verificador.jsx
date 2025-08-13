@@ -32,10 +32,10 @@ function Verificador() {
     }
     async function handleGuardarEdicion() {
         try {
-            const { _id, ...rest } = form;
+            const { _id, estado, ...rest } = form; // Excluir estado para no cambiarlo
             const aperturaActualizada = await aperturaService.update(editando, rest);
             
-            // Actualizar el estado local inmediatamente
+            // Actualizar el estado local inmediatamente (mantener el estado original)
             setAperturas(prevAperturas => 
                 prevAperturas.map(ap => 
                     ap._id === editando 

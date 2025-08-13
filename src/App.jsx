@@ -514,21 +514,27 @@ function App() {
         const worksheet = workbook.Sheets[sheetName];
         const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
-        // Filtrar filas que tengan datos relevantes
-        const filteredData = jsonData.filter(row => 
-          row.length >= 5 && 
-          row[0] && row[1] && row[2] && row[3] && row[4] // TIPO DE UNIDAD, RUTA, ECONOMICO, TARJETON, NOMBRE
-        );
+        // Filtrar filas que tengan datos relevantes y excluir encabezados
+        const filteredData = jsonData.filter(row => {
+          if (!row || row.length === 0) return false;
+          const c0 = String(row[0] || '').toLowerCase();
+          const c2 = String(row[2] || '').toLowerCase();
+          const c3 = String(row[3] || '').toLowerCase();
+          const c4 = String(row[4] || '').toLowerCase();
+          const looksHeader = c0.includes('tipo') || c2.includes('economico') || c3.includes('tarjeton') || c4.includes('nombre');
+          if (looksHeader) return false;
+          return row.length >= 5 && row[0] && row[1] && row[2] && row[3] && row[4];
+        });
 
-        // Mapear las columnas del Excel
+        // Mapear y normalizar columnas del Excel
         const mappedData = filteredData.map(row => ({
-          tipoUnidad: row[0] || '', // TIPO DE UNIDAD
-          ruta: row[1] || '', // RUTA
-          economico: row[2] || '', // ECONOMICO
-          tarjeton: row[3] || '', // TARJETON
-          nombre: row[4] || '', // NOMBRE
-          horaSalida: row[5] || '', // HORA_SALIDA (nueva columna opcional)
-          comentario: row[6] || '' // COMENTARIO (opcional)
+          tipoUnidad: String(row[0] || '').trim(),
+          ruta: String(row[1] || '').trim(),
+          economico: String(row[2] || '').trim().toUpperCase(),
+          tarjeton: String(row[3] || '').trim().toUpperCase(),
+          nombre: String(row[4] || '').trim(),
+          horaSalida: String(row[5] || '').trim(),
+          comentario: String(row[6] || '').trim()
         }));
 
         setImportData(mappedData);
@@ -579,32 +585,35 @@ function App() {
               programacionEncontrada: programacion ? 'Exacta' : programacionPorRuta ? 'Por ruta' : 'Fallback'
             });
 
-            // Función temporal para mapear ORION a un valor válido
-            const mapearTipoUnidad = (tipo) => {
-              const tipoLimpio = tipo.trim().toUpperCase();
-              if (tipoLimpio === 'ORION') {
-                return 'URBANO'; // Mapear temporalmente ORION a URBANO
-              }
-              return tipoLimpio;
+            // Normalización de tipo unidad a MAYÚSCULAS (se admite ORION)
+            const mapearTipoUnidad = (tipo) => String(tipo || '').trim().toUpperCase();
+
+            const formatToHHmm = (val) => {
+              if (!val) return '';
+              const parts = String(val).split(':');
+              const hh = String(parts[0] || '').padStart(2, '0');
+              const mm = String(parts[1] || '00').padStart(2, '0');
+              return `${hh}:${mm}`;
             };
 
             aperturaData = {
               programacionId: programacionFinal?._id || programaciones[0]?._id,
-              ruta: item.ruta.trim(),
+              ruta: String(item.ruta || '').trim(),
               tipoUnidad: mapearTipoUnidad(item.tipoUnidad),
-              economico: item.economico.toString().trim(),
-              tarjeton: item.tarjeton.toString().trim(),
-              nombre: item.nombre.trim(),
+              economico: String(item.economico || '').trim().toUpperCase(),
+              tarjeton: String(item.tarjeton || '').trim().toUpperCase(),
+              nombre: String(item.nombre || '').trim(),
               // Prioridad: Excel > Programación exacta > Programación por ruta > Fallback
-              horaSalida: item.horaSalida || programacion?.horaSalida || programacionPorRuta?.horaSalida || '05:30',
-              horaProgramada: item.horaSalida || programacion?.horaSalida || programacionPorRuta?.horaSalida || '05:30',
+              horaSalida: formatToHHmm(item.horaSalida || programacion?.horaSalida || programacionPorRuta?.horaSalida || '05:30'),
+              horaProgramada: formatToHHmm(item.horaSalida || programacion?.horaSalida || programacionPorRuta?.horaSalida || '05:30'),
               intervalo: parseInt(item.intervalo || programacion?.intervalo || programacionPorRuta?.intervalo || '15'),
               corridaInicial: parseInt(item.corridaInicial || programacion?.corridaInicial || programacionPorRuta?.corridaInicial || '1'),
               corridaFinal: parseInt(item.corridaFinal || programacion?.corridaFinal || programacionPorRuta?.corridaFinal || '1'),
-              fechaApertura: item.fechaApertura,
-              estado: 'dashboard',
-              comentario: item.comentario ? item.comentario.trim() : '',
-              observaciones: item.comentario ? item.comentario.trim() : ''
+              fechaApertura: item.fechaApertura || new Date().toISOString(),
+              estado: 'pendiente',
+              comentario: String(item.comentario || '').trim(),
+              observaciones: String(item.comentario || '').trim(),
+              usuarioCreacion: localStorage.getItem('userName') || 'sistema'
             };
 
             console.log('🚀 Enviando datos a la API:', aperturaData);

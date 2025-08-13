@@ -123,14 +123,8 @@ function Apertura() {
         return;
       }
 
-      // Función temporal para mapear ORION a un valor válido
-      const mapearTipoUnidad = (tipo) => {
-        const tipoLimpio = tipo.trim().toUpperCase();
-        if (tipoLimpio === 'ORION') {
-          return 'URBANO'; // Mapear temporalmente ORION a URBANO
-        }
-        return tipoLimpio;
-      };
+      // Normalizar tipo de unidad a MAYÚSCULAS (se admite ORION)
+      const mapearTipoUnidad = (tipo) => String(tipo || '').trim().toUpperCase();
 
       // Preparar datos para crear la apertura
       const aperturaData = {
@@ -146,9 +140,10 @@ function Apertura() {
         corridaInicial: parseInt(formData.corridaInicial || programacion.corridaInicial || '1'),
         corridaFinal: parseInt(formData.corridaFinal || programacion.corridaFinal || '1'),
         fechaApertura: new Date().toISOString(),
-        estado: 'dashboard',
+         estado: 'pendiente',
         comentario: formData.comentario ? formData.comentario.trim() : '',
-        observaciones: formData.comentario ? formData.comentario.trim() : ''
+        observaciones: formData.comentario ? formData.comentario.trim() : '',
+        usuarioCreacion: localStorage.getItem('userName') || 'sistema'
       };
 
       console.log('🚀 Enviando datos a la API:', aperturaData);
@@ -298,11 +293,18 @@ ${JSON.stringify(aperturaData, null, 2)}
         const worksheet = workbook.Sheets[sheetName];
         const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
-        // Filtrar filas vacías y procesar datos
+        // Filtrar filas vacías, excluir encabezados y procesar datos
         const processedData = jsonData
           .filter(row => row.length > 0 && row.some(cell => cell && cell.toString().trim() !== ''))
           .filter(row => {
-            // Filtrar filas que contengan datos de unidades (tienen económico y tarjetón)
+            // Excluir posibles filas de encabezado
+            const c0 = String(row[0] || '').toLowerCase();
+            const c2 = String(row[2] || '').toLowerCase();
+            const c3 = String(row[3] || '').toLowerCase();
+            const c4 = String(row[4] || '').toLowerCase();
+            const looksHeader = c0.includes('tipo') || c2.includes('economico') || c3.includes('tarjeton') || c4.includes('nombre');
+            if (looksHeader) return false;
+            // Filtrar filas que contengan datos de unidades (tienen económico y tarjetón y nombre)
             const hasEconomico = row[2] && row[2].toString().trim() !== '';
             const hasTarjeton = row[3] && row[3].toString().trim() !== '';
             const hasNombre = row[4] && row[4].toString().trim() !== '';
@@ -310,16 +312,16 @@ ${JSON.stringify(aperturaData, null, 2)}
           })
           .map(row => ({
             tipoUnidad: (row[0] || '').toLowerCase().trim(),
-            ruta: row[1] || '',
-            economico: row[2] || '',
-            tarjeton: row[3] || '',
-            nombre: row[4] || '',
+            ruta: (row[1] || '').toString().trim(),
+            economico: (row[2] || '').toString().trim().toUpperCase(),
+            tarjeton: (row[3] || '').toString().trim().toUpperCase(),
+            nombre: (row[4] || '').toString().trim(),
             // Campos que se rellenarán automáticamente
             horaSalida: '',
             intervalo: '',
             corridaInicial: '',
             corridaFinal: '',
-            fechaApertura: new Date().toISOString().split('T')[0],
+            fechaApertura: new Date().toISOString(),
             estado: 'dashboard'
           }));
 
@@ -349,19 +351,35 @@ ${JSON.stringify(aperturaData, null, 2)}
         try {
           // Buscar programación correspondiente para rellenar campos faltantes
           const programacion = programaciones.find(p => 
-            p.ruta === item.ruta && 
-            (p.tipoUnidad || p.tipoVehiculo || '').toLowerCase().trim() === item.tipoUnidad
+            (p.ruta || '').toLowerCase().trim() === (item.ruta || '').toLowerCase().trim() && 
+            (p.tipoUnidad || p.tipoVehiculo || '').toLowerCase().trim() === (item.tipoUnidad || '').toLowerCase().trim()
           );
 
+          const formatToHHmm = (val) => {
+            if (!val) return '';
+            const parts = String(val).split(':');
+            const hh = String(parts[0] || '').padStart(2, '0');
+            const mm = String(parts[1] || '00').padStart(2, '0');
+            return `${hh}:${mm}`;
+          };
+
           const aperturaData = {
-            ...item,
-            horaSalida: item.horaSalida || programacion?.horaSalida || '04:30',
-            intervalo: item.intervalo || programacion?.intervalo || '15',
-            corridaInicial: item.corridaInicial || programacion?.corridaInicial || '1',
-            corridaFinal: item.corridaFinal || programacion?.corridaFinal || '1',
-            fechaApertura: item.fechaApertura,
+            programacionId: programacion?._id || programacionPorRuta?._id || programaciones[0]?._id,
+            ruta: (item.ruta || '').toString().trim(),
+            tipoUnidad: (item.tipoUnidad || '').toString().trim().toUpperCase() === 'ORION' ? 'URBANO' : (item.tipoUnidad || '').toString().trim().toUpperCase(),
+            economico: (item.economico || '').toString().trim().toUpperCase(),
+            tarjeton: (item.tarjeton || '').toString().trim().toUpperCase(),
+            nombre: (item.nombre || '').toString().trim(),
+            horaSalida: formatToHHmm(item.horaSalida || programacion?.horaSalida || '05:30'),
+            horaProgramada: formatToHHmm(item.horaSalida || programacion?.horaSalida || '05:30'),
+            intervalo: parseInt(item.intervalo || programacion?.intervalo || '15'),
+            corridaInicial: parseInt(item.corridaInicial || programacion?.corridaInicial || '1'),
+            corridaFinal: parseInt(item.corridaFinal || programacion?.corridaFinal || '1'),
+            fechaApertura: item.fechaApertura || new Date().toISOString(),
             estado: 'dashboard',
-            comentario: item.comentario || ''
+            comentario: (item.comentario || '').toString().trim(),
+            observaciones: (item.comentario || '').toString().trim(),
+            usuarioCreacion: localStorage.getItem('userName') || 'sistema'
           };
 
           await aperturaService.create(aperturaData);
