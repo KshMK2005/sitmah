@@ -409,35 +409,7 @@ function Dashboard() {
       return;
     }
 
-    // Tabla principal: Verificaciones
-    const head = [[
-      'Ruta', 'Tipo Unidad', 'Económico', 'Tarjetón', 'Nombre', 'Corrida Inicial', 'Corrida Final', 'Hora Salida', 'Fecha Apertura', 'Estado', 'Motivo'
-    ]];
-    let rows = items.map(ap => [
-      ap.ruta,
-      ap.tipoUnidad,
-      ap.economico,
-      ap.tarjeton,
-      ap.nombre,
-      ap.corridaInicial,
-      ap.corridaFinal,
-      ap.horaSalida,
-      ap.fechaApertura ? parseDate(ap.fechaApertura)?.toLocaleString('es-MX') || '' : '-',
-      ap.estado === 'cancelado' ? 'rechazado' : (ap.estado === 'completado' || ap.estado === 'dashboard') ? 'aceptado' : 'pendiente',
-      ap.observaciones || '-'
-    ]);
-    autoTable(doc, {
-      head,
-      body: rows,
-      startY: lastY,
-      styles: { fontSize: 9 },
-      headStyles: { fillColor: [180, 58, 72] },
-      margin: { left: 14, right: 14 },
-      tableWidth: 'auto',
-      didDrawPage: (data) => {
-        lastY = data.cursor.y + 10;
-      }
-    });
+    // Eliminamos la tabla detallada por elemento; usaremos solo el resumen visual con imágenes
 
     // --- NUEVO RESUMEN VISUAL POR MODELO ---
     const modelos = [
