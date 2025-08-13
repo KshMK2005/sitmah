@@ -271,8 +271,8 @@ function Dashboard() {
       unidadesEnFalla(tipo)
     ]);
     doc.setFontSize(14);
-    doc.text('Resumen por tipo de unidad', 14, lastY);
-    lastY += 6;
+    doc.text('Resumen por tipo de unidad', 10, lastY);
+    lastY += 4;
     autoTable(doc, {
       head: headResumen,
       body: rowsResumen,
@@ -654,18 +654,18 @@ function Dashboard() {
       head: headResumen,
       body: rowsResumen,
       startY: lastY,
-      styles: { fontSize: 10, cellPadding: 2, valign: 'middle', halign: 'center' },
+      styles: { fontSize: 9, cellPadding: 1.5, valign: 'middle', halign: 'center' },
       headStyles: { fillColor: [111, 34, 52], textColor: 255, fontStyle: 'bold' }, // Encabezados vino por defecto
-      bodyStyles: { fontSize: 10, minCellHeight: 28 },
+      bodyStyles: { fontSize: 9, minCellHeight: 20 },
       columnStyles: {
-        0: { cellWidth: 35, minCellHeight: 35 },
-        1: { cellWidth: 32 },
-        2: { cellWidth: 32 },
-        3: { cellWidth: 32 },
-        4: { cellWidth: 32 }, // UNIDADES CON FALLA - blanco
-        5: { cellWidth: 70, halign: 'center' }, // TIPO DE FALLA - blanco
+        0: { cellWidth: 30, minCellHeight: 26 },
+        1: { cellWidth: 28 },
+        2: { cellWidth: 28 },
+        3: { cellWidth: 28 },
+        4: { cellWidth: 28 }, // UNIDADES CON FALLA - blanco
+        5: { cellWidth: 64, halign: 'center' }, // TIPO DE FALLA - blanco
       },
-      margin: { left: 14, right: 14 },
+      margin: { left: 8, right: 8 },
       tableWidth: 'auto',
       didDrawCell: (data) => {
         // Colorear encabezados de UNIDADES CON FALLA y TIPO DE FALLA en dorado
@@ -684,18 +684,18 @@ function Dashboard() {
           if (imgInfo && imgInfo.img) {
             try {
               // Draw image at the top of the cell
-              const imgWidth = 18;
-              const imgHeight = 18;
+              const imgWidth = 16;
+              const imgHeight = 16;
               const x = data.cell.x + (data.cell.width - imgWidth) / 2;
               const y = data.cell.y + 2; // Position image at top with small margin
               doc.addImage(imgInfo.img, 'PNG', x, y, imgWidth, imgHeight);
               
               // Draw vehicle name below the image
               if (imgInfo.text) {
-                doc.setFontSize(8);
+                doc.setFontSize(7.5);
                 doc.setTextColor(0, 0, 0);
                 const textX = data.cell.x + data.cell.width / 2;
-                const textY = data.cell.y + imgHeight + 8; // Position text below image
+                const textY = data.cell.y + imgHeight + 7; // Position text below image
                 doc.text(imgInfo.text, textX, textY, { align: 'center' });
               }
             } catch (error) {
