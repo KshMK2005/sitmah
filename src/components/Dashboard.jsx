@@ -200,7 +200,7 @@ function Dashboard() {
   // --- FUNCIONES PARA PDF ACUSE ---
   // Acuse para tabla de programador por fecha (todas las tablas en la misma página)
   const handleAcuseProgramadorPorFecha = (fecha, items) => {
-    const doc = new jsPDF({ orientation: 'landscape' });
+    const doc = new jsPDF({ orientation: 'landscape', format: 'letter', unit: 'mm' });
     doc.setFontSize(16);
     doc.text('ACUSE DE PROGRAMACIONES VERIFICADAS', 14, 18);
     doc.setFontSize(11);
@@ -228,7 +228,7 @@ function Dashboard() {
       startY: lastY,
       styles: { fontSize: 10 },
       headStyles: { fillColor: [111, 34, 52] },
-      margin: { left: 14, right: 14 },
+      margin: { left: 10, right: 10 },
       tableWidth: 'auto',
       didDrawPage: (data) => {
         lastY = data.cursor.y + 10;
@@ -396,11 +396,11 @@ function Dashboard() {
 
     const doc = new jsPDF({ orientation: 'landscape' });
     doc.setFontSize(16);
-    doc.text('ACUSE DE VERIFICACIONES', 14, 18);
+    doc.text('ACUSE DE VERIFICACIONES', 12, 18);
     doc.setFontSize(11);
-    doc.text(`Fecha de generación: ${new Date().toLocaleString('es-MX')}`, 14, 26);
-    doc.text(`Fecha de la tabla: ${fecha}`, 14, 34);
-    let lastY = 40;
+    doc.text(`Fecha de generación: ${new Date().toLocaleString('es-MX')}`, 12, 26);
+    doc.text(`Fecha de la tabla: ${fecha}`, 12, 34);
+    let lastY = 38;
 
     // Parsear la fecha de filtro una sola vez
     const fechaFiltro = parseDate(fecha);
