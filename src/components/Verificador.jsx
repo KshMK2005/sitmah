@@ -111,10 +111,11 @@ function Verificador() {
 
     const filtrarAperturas = () => {
         return aperturas.filter(ap => {
-            // Mostrar todas las aperturas para verificación (sin validar estado)
-            const cumpleRuta = !filtros.ruta || ap.ruta.toLowerCase().includes(filtros.ruta.toLowerCase());
+            // Solo elementos que requieren verificación: 'apertura' (nuevos) y 'pendiente' (regresados)
+            if (!(ap.estado === 'apertura' || ap.estado === 'pendiente')) return false;
+            const cumpleRuta = !filtros.ruta || (ap.ruta || '').toLowerCase().includes(filtros.ruta.toLowerCase());
             const cumpleTipo = !filtros.tipoUnidad || ap.tipoUnidad === filtros.tipoUnidad;
-            const cumpleFecha = !filtros.fecha || new Date(ap.fechaApertura).toLocaleDateString() === new Date(filtros.fecha).toLocaleDateString();
+            const cumpleFecha = !filtros.fecha || (ap.fechaApertura && new Date(ap.fechaApertura).toLocaleDateString() === new Date(filtros.fecha).toLocaleDateString());
             return cumpleRuta && cumpleTipo && cumpleFecha;
         });
     };
@@ -131,12 +132,13 @@ function Verificador() {
     // Función para obtener el color de fondo según el estado
     const getEstadoColor = (estado, retraso, fechaRegreso) => {
         // Si tiene fecha de regreso, es una unidad regresada por falla técnica
-        if (fechaRegreso) return '#ffcdd2'; // Rojo más intenso para unidades regresadas
+        if (fechaRegreso) return '#ff8a80'; // Rojo intenso para regresadas
         
         if (retraso) return '#fff3cd'; // Amarillo claro para retrasos
         switch (estado) {
             case 'completado': return '#d4edda'; // Verde claro
-            case 'pendiente': return '#f8d7da'; // Rojo claro
+            case 'pendiente': return '#ff8a80'; // Rojo intenso
+            case 'apertura': return '#f3f3f7'; // Gris claro para nuevos
             case 'retrasado': return '#fff3cd'; // Amarillo claro
             case 'dashboard': return '#cce5ff'; // Azul claro
             default: return '#f8f9fa'; // Gris claro
@@ -550,7 +552,7 @@ function Verificador() {
     const role = localStorage.getItem('userRole');
 
     // Calcular cantidad de aperturas pendientes
-    const pendientes = aperturas.filter(ap => ap.estado === 'pendiente');
+    const pendientes = aperturas.filter(ap => ap.estado === 'apertura' || ap.estado === 'pendiente');
 
     return (
         <div className="apertura-page" style={{ background: '#f8f9fa' }}>

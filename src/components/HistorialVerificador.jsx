@@ -62,8 +62,8 @@ function HistorialVerificador() {
     const cargarAperturas = async () => {
       try {
         const data = await aperturaService.getAll();
-        // Mostrar aperturas verificadas (completado/cancelado) y regresadas (retrasado)
-        setAperturas(data.filter(ap => ['completado', 'cancelado', 'retrasado'].includes(ap.estado)));
+        // Mostrar solo verificadas (completado/cancelado). Las regresadas van a 'pendiente' y no deben verse aquí
+        setAperturas(data.filter(ap => ['completado', 'cancelado'].includes(ap.estado)));
       } catch (error) {
         setAperturas([]);
       }

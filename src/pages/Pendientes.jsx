@@ -47,8 +47,8 @@ function Pendientes() {
     setLoading(true);
     try {
       const data = await aperturaService.getAll();
-      // Mostrar solo las aperturas en etapa de aprobación manual
-      setAperturasPendientes(data.filter(ap => ap.estado === 'apertura'));
+      // Mostrar solo 'apertura' (nuevos) o 'pendiente' (regresados por falla técnica)
+      setAperturasPendientes(data.filter(ap => ap.estado === 'apertura' || ap.estado === 'pendiente'));
     } catch (error) {
       Swal.fire({
         title: 'Error',
@@ -176,10 +176,10 @@ function Pendientes() {
                 aperturasOrdenadas.map((ap, idx) => {
                   const esRegresada = ap.fechaRegreso || (ap.observaciones && ap.observaciones.toUpperCase().includes('REGRESO POR'));
                   return (
-                  <div key={ap._id} className={`tabla-pendientes-row${esRegresada ? ' regresada' : ''}${flashId === ap._id ? ' flash-green' : ''}${flashOrangeId === ap._id ? ' flash-orange' : ''}`}
+                   <div key={ap._id} className={`tabla-pendientes-row${esRegresada || ap.estado==='pendiente' ? ' regresada' : ''}${flashId === ap._id ? ' flash-green' : ''}${flashOrangeId === ap._id ? ' flash-orange' : ''}`}
                     style={{
-                      borderBottom: idx === aperturasPendientes.length - 1 ? 'none' : (esRegresada ? '1px solid #ff8a80' : '1px solid #eee'),
-                      background: esRegresada ? '#ff8a80' : '#f8d7da',
+                      borderBottom: idx === aperturasPendientes.length - 1 ? 'none' : ((esRegresada || ap.estado==='pendiente') ? '1px solid #ff8a80' : '1px solid #eee'),
+                      background: (esRegresada || ap.estado==='pendiente') ? '#ff8a80' : '#f8d7da',
                       fontSize: '1rem',
                       transition: 'background 0.2s',
                       borderBottomLeftRadius: idx === aperturasPendientes.length - 1 ? '12px' : '0',
