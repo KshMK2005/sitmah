@@ -47,7 +47,7 @@ const aperturaSchema = new mongoose.Schema({
     tipoUnidad: {
         type: String,
         required: [true, 'El tipo de unidad es obligatorio'],
-        enum: ['URBANO', 'SUBURBANO', 'INTERMUNICIPAL', 'GRAN VIALE', 'BOXER', 'SPRINTER', 'VAGONETA']
+        enum: ['URBANO', 'SUBURBANO', 'INTERMUNICIPAL', 'GRAN VIALE', 'BOXER', 'SPRINTER', 'VAGONETA', 'ORION']
     },
     economico: {
         type: String,
@@ -88,7 +88,7 @@ const aperturaSchema = new mongoose.Schema({
     },
     estado: {
         type: String,
-        enum: ['pendiente', 'completado', 'cancelado', 'enviado', 'dashboard'],
+        enum: ['pendiente', 'apertura', 'en_verificacion', 'completado', 'cancelado', 'enviado', 'dashboard'],
         default: 'pendiente'
     },
     observaciones: {

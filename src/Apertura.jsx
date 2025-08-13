@@ -127,6 +127,12 @@ function Apertura() {
       const mapearTipoUnidad = (tipo) => String(tipo || '').trim().toUpperCase();
 
       // Preparar datos para crear la apertura
+      const toHHmm = (val) => {
+        if (!val) return '';
+        const [h = '00', m = '00'] = String(val).split(':');
+        return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+      };
+
       const aperturaData = {
         programacionId: programacion._id,
         ruta: formData.ruta.trim(),
@@ -134,8 +140,8 @@ function Apertura() {
         economico: formData.economico.toString().trim().toUpperCase(),
         tarjeton: formData.tarjeton.toString().trim().toUpperCase(),
         nombre: formData.nombre.trim(),
-        horaSalida: formData.horaSalida || programacion.horaSalida || '05:30',
-        horaProgramada: formData.horaSalida || programacion.horaSalida || '05:30',
+        horaSalida: toHHmm(formData.horaSalida || programacion.horaSalida || '05:30'),
+        horaProgramada: toHHmm(formData.horaSalida || programacion.horaSalida || '05:30'),
         intervalo: parseInt(formData.intervalo || programacion.intervalo || '15'),
         corridaInicial: parseInt(formData.corridaInicial || programacion.corridaInicial || '1'),
         corridaFinal: parseInt(formData.corridaFinal || programacion.corridaFinal || '1'),
