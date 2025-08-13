@@ -610,7 +610,7 @@ function App() {
               corridaInicial: parseInt(item.corridaInicial || programacion?.corridaInicial || programacionPorRuta?.corridaInicial || '1'),
               corridaFinal: parseInt(item.corridaFinal || programacion?.corridaFinal || programacionPorRuta?.corridaFinal || '1'),
               fechaApertura: item.fechaApertura || new Date().toISOString(),
-              estado: 'pendiente',
+              estado: 'apertura',
               comentario: String(item.comentario || '').trim(),
               observaciones: String(item.comentario || '').trim(),
               usuarioCreacion: localStorage.getItem('userName') || 'sistema'

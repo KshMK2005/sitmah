@@ -63,7 +63,7 @@ function Dashboard() {
     try {
       const aperturasData = await aperturaService.getAll();
       setAperturas(aperturasData);
-      // Mostrar solo verificados (aceptados/rechazados), no incluir 'pendiente' ni 'apertura' ni 'dashboard'
+      // Mostrar solo verificados (aceptados/rechazados): 'completado' y 'cancelado'
       setVerificados(aperturasData.filter(ap => ap.estado === 'completado' || ap.estado === 'cancelado'));
       if (programacionService && programacionService.getAll) {
         const programacionesData = await programacionService.getAll();

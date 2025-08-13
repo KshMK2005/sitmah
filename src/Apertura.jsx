@@ -145,8 +145,8 @@ function Apertura() {
         intervalo: parseInt(formData.intervalo || programacion.intervalo || '15'),
         corridaInicial: parseInt(formData.corridaInicial || programacion.corridaInicial || '1'),
         corridaFinal: parseInt(formData.corridaFinal || programacion.corridaFinal || '1'),
-        fechaApertura: new Date().toISOString(),
-         estado: 'pendiente',
+         fechaApertura: new Date().toISOString(),
+         estado: 'apertura',
         comentario: formData.comentario ? formData.comentario.trim() : '',
         observaciones: formData.comentario ? formData.comentario.trim() : '',
         usuarioCreacion: localStorage.getItem('userName') || 'sistema'
@@ -328,7 +328,7 @@ ${JSON.stringify(aperturaData, null, 2)}
             corridaInicial: '',
             corridaFinal: '',
             fechaApertura: new Date().toISOString(),
-            estado: 'dashboard'
+            estado: 'apertura'
           }));
 
         setImportData(processedData);
