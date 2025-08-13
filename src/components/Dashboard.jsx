@@ -394,13 +394,13 @@ function Dashboard() {
       return new Date(dateString);
     };
 
-    const doc = new jsPDF({ orientation: 'landscape' });
+    const doc = new jsPDF({ orientation: 'portrait', format: 'letter', unit: 'mm' });
     doc.setFontSize(16);
-    doc.text('ACUSE DE VERIFICACIONES', 12, 18);
+    doc.text('ACUSE DE VERIFICACIONES', 12, 14);
     doc.setFontSize(11);
-    doc.text(`Fecha de generación: ${new Date().toLocaleString('es-MX')}`, 12, 26);
-    doc.text(`Fecha de la tabla: ${fecha}`, 12, 34);
-    let lastY = 38;
+    doc.text(`Fecha de generación: ${new Date().toLocaleString('es-MX')}`, 12, 20);
+    doc.text(`Fecha de la tabla: ${fecha}`, 12, 27);
+    let lastY = 30;
 
     // Parsear la fecha de filtro una sola vez
     const fechaFiltro = parseDate(fecha);
@@ -646,26 +646,26 @@ function Dashboard() {
     ]);
 
     doc.setFontSize(14);
-    doc.text('Resumen por tipo de unidad', 14, lastY);
-    lastY += 6;
+    doc.text('Resumen por tipo de unidad', 10, lastY);
+    lastY += 4;
 
     // Renderizar tabla con imágenes
     autoTable(doc, {
       head: headResumen,
       body: rowsResumen,
       startY: lastY,
-      styles: { fontSize: 9, cellPadding: 1.5, valign: 'middle', halign: 'center' },
+      styles: { fontSize: 9, cellPadding: 1.2, valign: 'middle', halign: 'center' },
       headStyles: { fillColor: [111, 34, 52], textColor: 255, fontStyle: 'bold' }, // Encabezados vino por defecto
-      bodyStyles: { fontSize: 9, minCellHeight: 20 },
+      bodyStyles: { fontSize: 9, minCellHeight: 18 },
       columnStyles: {
-        0: { cellWidth: 30, minCellHeight: 26 },
-        1: { cellWidth: 28 },
-        2: { cellWidth: 28 },
-        3: { cellWidth: 28 },
-        4: { cellWidth: 28 }, // UNIDADES CON FALLA - blanco
-        5: { cellWidth: 64, halign: 'center' }, // TIPO DE FALLA - blanco
+        0: { cellWidth: 24, minCellHeight: 24 },
+        1: { cellWidth: 24 },
+        2: { cellWidth: 24 },
+        3: { cellWidth: 24 },
+        4: { cellWidth: 24 }, // UNIDADES CON FALLA - blanco
+        5: { cellWidth: 62, halign: 'center' }, // TIPO DE FALLA - blanco
       },
-      margin: { left: 8, right: 8 },
+      margin: { left: 10, right: 10 },
       tableWidth: 'auto',
       didDrawCell: (data) => {
         // Colorear encabezados de UNIDADES CON FALLA y TIPO DE FALLA en dorado
