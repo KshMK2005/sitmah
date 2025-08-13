@@ -111,8 +111,7 @@ function Verificador() {
 
     const filtrarAperturas = () => {
         return aperturas.filter(ap => {
-            // Solo elementos que requieren verificación: 'apertura' (nuevos) y 'pendiente' (regresados)
-            if (!(ap.estado === 'apertura' || ap.estado === 'pendiente')) return false;
+            // En la página principal mostramos TODO (pero el contador y la sección Pendientes son exclusivos)
             const cumpleRuta = !filtros.ruta || (ap.ruta || '').toLowerCase().includes(filtros.ruta.toLowerCase());
             const cumpleTipo = !filtros.tipoUnidad || ap.tipoUnidad === filtros.tipoUnidad;
             const cumpleFecha = !filtros.fecha || (ap.fechaApertura && new Date(ap.fechaApertura).toLocaleDateString() === new Date(filtros.fecha).toLocaleDateString());
@@ -552,7 +551,8 @@ function Verificador() {
     const role = localStorage.getItem('userRole');
 
     // Calcular cantidad de aperturas pendientes
-    const pendientes = aperturas.filter(ap => ap.estado === 'apertura' || ap.estado === 'pendiente');
+    // Contador: mostrar solo regresados (pendiente)
+    const pendientes = aperturas.filter(ap => ap.estado === 'pendiente');
 
     return (
         <div className="apertura-page" style={{ background: '#f8f9fa' }}>

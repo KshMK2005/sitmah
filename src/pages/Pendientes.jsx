@@ -47,8 +47,8 @@ function Pendientes() {
     setLoading(true);
     try {
       const data = await aperturaService.getAll();
-      // Mostrar solo 'apertura' (nuevos) o 'pendiente' (regresados por falla técnica)
-      setAperturasPendientes(data.filter(ap => ap.estado === 'apertura' || ap.estado === 'pendiente'));
+      // Solo elementos REGRESADOS para esta sección exclusiva
+      setAperturasPendientes(data.filter(ap => ap.estado === 'pendiente'));
     } catch (error) {
       Swal.fire({
         title: 'Error',
