@@ -169,7 +169,7 @@ function Verificador() {
             }).then(async (result) => {
                 if (result.isConfirmed) {
                     await aperturaService.update(id, {
-                        estado: 'dashboard',
+                        estado: 'completado',
                         usuarioModificacion: localStorage.getItem('userName') || 'verificador'
                     });
                     setFlashId(id); // Marcar para animar
