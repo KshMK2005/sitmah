@@ -154,7 +154,7 @@ aperturaSchema.statics.verificarDisponibilidad = async function(economico, tarje
             { economico: economico },
             { tarjeton: tarjeton }
         ],
-        estado: { $in: ['pendiente', 'completado'] }
+        estado: { $in: ['apertura', 'pendiente', 'en_verificacion'] }
     };
     if (ignoreId) {
         query._id = { $ne: ignoreId };

@@ -47,7 +47,8 @@ function Pendientes() {
     setLoading(true);
     try {
       const data = await aperturaService.getAll();
-      setAperturasPendientes(data.filter(ap => ap.estado === 'pendiente'));
+      // Mostrar solo las aperturas en etapa de aprobación manual
+      setAperturasPendientes(data.filter(ap => ap.estado === 'apertura'));
     } catch (error) {
       Swal.fire({
         title: 'Error',
@@ -65,11 +66,15 @@ function Pendientes() {
 
   const handleAceptar = async (ap) => {
     try {
-      await aperturaService.update(ap._id, { estado: 'dashboard' });
+      // Aprobar: mover a 'completado' para que aparezca en dashboard/verificador
+      await aperturaService.update(ap._id, { 
+        estado: 'completado',
+        usuarioModificacion: localStorage.getItem('userName') || 'verificador'
+      });
       setFlashId(ap._id); // Marcar para animar (verde, aunque ya no se verá porque desaparece)
       localStorage.setItem('flashAperturaId', ap._id); // Guardar para la página principal
       setTimeout(() => setFlashId(null), 5000);
-      Swal.fire({ title: 'Enviado a dashboard', text: 'El registro fue enviado al dashboard', icon: 'success', timer: 1200, showConfirmButton: false });
+      Swal.fire({ title: 'Aprobado', text: 'El registro fue enviado a verificador', icon: 'success', timer: 1200, showConfirmButton: false });
       setTimeout(() => cargarPendientes(), 500);
     } catch (error) {
       Swal.fire({ title: 'Error', text: 'No se pudo aceptar el registro', icon: 'error' });
@@ -87,7 +92,8 @@ function Pendientes() {
       const { _id, createdAt, updatedAt, __v, ultimaModificacion, ...rest } = form;
       const datosAEnviar = {
         ...rest,
-        estado: 'pendiente',
+        // Mantener en etapa de aprobación
+        estado: 'apertura',
         usuarioModificacion: localStorage.getItem('userName') || 'verificador'
       };
       await aperturaService.update(editando, datosAEnviar);
