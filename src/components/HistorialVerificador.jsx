@@ -135,12 +135,18 @@ function HistorialVerificador() {
       const { value: formValues } = await Swal.fire({
         title: 'Regresar a Verificación',
         html: `
-          <div style="text-align:left;margin-bottom:1rem;">
+           <div style="text-align:left;margin-bottom:1rem;">
             <label style="display:block;margin-bottom:6px;"><strong>Unidad:</strong><input id="swal-unidad" type="text" value="${ap.economico ?? ''}" style="width:100%;padding:4px;margin-top:4px;border:1px solid #ccc;border-radius:4px;"/></label>
             <label style="display:block;margin-bottom:6px;"><strong>Ruta:</strong><input id="swal-ruta" type="text" value="${ap.ruta ?? ''}" style="width:100%;padding:4px;margin-top:4px;border:1px solid #ccc;border-radius:4px;"/></label>
             <label style="display:block;margin-bottom:6px;"><strong>Operador:</strong><input id="swal-operador" type="text" value="${ap.nombre ?? ''}" style="width:100%;padding:4px;margin-top:4px;border:1px solid #ccc;border-radius:4px;"/></label>
             <label style="display:block;margin-bottom:6px;"><strong>Tarjetón:</strong><input id="swal-tarjeton" type="text" value="${ap.tarjeton ?? ''}" style="width:100%;padding:4px;margin-top:4px;border:1px solid #ccc;border-radius:4px;"/></label>
             <label style="display:block;margin-bottom:6px;"><strong>Hora Programada:</strong><input id="swal-horaprogramada" type="time" value="${ap.horaProgramada ?? ''}" style="width:100%;padding:4px;margin-top:4px;border:1px solid #ccc;border-radius:4px;"/></label>
+             <label style="display:block;margin-bottom:6px;"><strong>Hora de Salida:</strong><input id="swal-horasalida" type="time" value="${ap.horaSalida ?? ''}" style="width:100%;padding:4px;margin-top:4px;border:1px solid #ccc;border-radius:4px;"/></label>
+             <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
+               <label style="display:block;margin-bottom:6px;"><strong>Corrida Inicial:</strong><input id="swal-corrida-inicial" type="number" value="${ap.corridaInicial ?? ''}" style="width:100%;padding:4px;margin-top:4px;border:1px solid #ccc;border-radius:4px;"/></label>
+               <label style="display:block;margin-bottom:6px;"><strong>Corrida Final:</strong><input id="swal-corrida-final" type="number" value="${ap.corridaFinal ?? ''}" style="width:100%;padding:4px;margin-top:4px;border:1px solid #ccc;border-radius:4px;"/></label>
+               <label style="display:block;margin-bottom:6px;"><strong>Intervalo:</strong><input id="swal-intervalo" type="number" value="${ap.intervalo ?? ''}" style="width:100%;padding:4px;margin-top:4px;border:1px solid #ccc;border-radius:4px;"/></label>
+             </div>
             <label style="display:block;margin-bottom:6px;"><strong>Tipo Unidad:</strong><input id="swal-tipounidad" type="text" value="${ap.tipoUnidad ?? ''}" style="width:100%;padding:4px;margin-top:4px;border:1px solid #ccc;border-radius:4px;"/></label>
           </div>
           <textarea id="swal-motivo-regreso" placeholder="Especifica el motivo del regreso (falla técnica, llanta ponchada, etc.)..." style="width:100%;min-height:100px;padding:8px;border:1px solid #ccc;border-radius:4px;resize:vertical;"></textarea>
@@ -153,19 +159,29 @@ function HistorialVerificador() {
           const operador = document.getElementById('swal-operador').value.trim();
           const tarjeton = document.getElementById('swal-tarjeton').value.trim();
           const horaProgramada = document.getElementById('swal-horaprogramada').value;
+          const horaSalida = (document.getElementById('swal-horasalida')?.value || '').trim();
+          const corridaInicial = (document.getElementById('swal-corrida-inicial')?.value || '').trim();
+          const corridaFinal = (document.getElementById('swal-corrida-final')?.value || '').trim();
+          const intervalo = (document.getElementById('swal-intervalo')?.value || '').trim();
           const tipoUnidad = document.getElementById('swal-tipounidad').value.trim();
           const motivo = document.getElementById('swal-motivo-regreso').value.trim();
           if (!motivo) {
             Swal.showValidationMessage('Debes especificar el motivo del regreso');
             return false;
           }
-          return { unidad, ruta, operador, tarjeton, horaProgramada, tipoUnidad, motivo };
+          return { unidad, ruta, operador, tarjeton, horaProgramada, horaSalida, corridaInicial, corridaFinal, intervalo, tipoUnidad, motivo };
         }
       });
 
       if (formValues) {
         // Desestructurar valores
-        const { unidad, ruta, operador, tarjeton, horaProgramada, tipoUnidad, motivo } = formValues;
+        const { unidad, ruta, operador, tarjeton, horaProgramada, horaSalida, corridaInicial, corridaFinal, intervalo, tipoUnidad, motivo } = formValues;
+
+        const toHHmm = (val) => {
+          if (!val) return '';
+          const [h='00',m='00'] = String(val).split(':');
+          return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+        };
 
         // Construir objeto de actualización
         const updateData = {
@@ -173,7 +189,11 @@ function HistorialVerificador() {
           ruta,
           nombre: operador,
           tarjeton,
-          horaProgramada,
+          horaProgramada: toHHmm(horaProgramada),
+          horaSalida: toHHmm(horaSalida || ap.horaSalida),
+          corridaInicial: corridaInicial ? Number(corridaInicial) : ap.corridaInicial,
+          corridaFinal: corridaFinal ? Number(corridaFinal) : ap.corridaFinal,
+          intervalo: intervalo ? Number(intervalo) : ap.intervalo,
           tipoUnidad,
           estado: 'pendiente',
           observaciones: `REGRESO POR FALLA TÉCNICA: ${motivo}`,
@@ -418,56 +438,41 @@ function HistorialVerificador() {
                         {formatDate(ap.fechaApertura)} - {ap.horaSalida}
                       </p>
                     </div>
-                    <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                      <span style={{ 
-                        background: getEstadoColor(ap.estado), 
-                        color: '#fff', 
-                        padding: '0.2rem 0.4rem', 
-                        borderRadius: '3px',
-                        fontSize: '0.75rem',
-                        fontWeight: '600'
-                      }}>
-                        {ap.estado === 'cancelado' ? 'Rechazado' :
-                         ap.estado === 'dashboard' ? 'Aprobado' :
-                         ap.estado === 'retrasado' ? 'Retrasado' :
-                         ap.estado === 'completado' ? 'Completado' : ap.estado}
-                      </span>
-                      {ap.estado === 'dashboard' && (
-                        <button
-                          onClick={() => handleRegresarAVerificacion(ap)}
-                          style={{
-                            background: '#dc3545',
-                            color: '#fff',
-                            border: 'none',
-                            borderRadius: '3px',
-                            padding: '0.2rem 0.4rem',
-                            fontSize: '0.75rem',
-                            fontWeight: '600',
-                            cursor: 'pointer',
-                            transition: 'all 0.2s ease'
-                          }}
-                          title="Regresar a verificación por falla técnica"
-                        >
-                          🔄 Regresar
-                        </button>
-                      )}
-                      <button
-                        onClick={() => toggleRowExpansion(ap._id)}
-                        style={{
-                          background: expandedRows.has(ap._id) ? '#8B2E3F' : '#6F2234',
-                          color: '#fff',
-                          border: 'none',
-                          borderRadius: '3px',
-                          padding: '0.3rem 0.6rem',
-                          cursor: 'pointer',
-                          fontSize: '0.75rem',
-                          fontWeight: '500',
-                          transition: 'all 0.2s ease'
-                        }}
-                      >
-                        {expandedRows.has(ap._id) ? '🔽 Ocultar' : '🔍 Ver'}
-                      </button>
-                    </div>
+          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+            <button
+              onClick={() => handleRegresarAVerificacion(ap)}
+              style={{
+                background: '#dc3545',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '3px',
+                padding: '0.25rem 0.5rem',
+                fontSize: '0.8rem',
+                fontWeight: '700',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease'
+              }}
+              title="Regresar a verificación por falla técnica"
+            >
+              🔄 Regresar
+            </button>
+            <button
+              onClick={() => toggleRowExpansion(ap._id)}
+              style={{
+                background: expandedRows.has(ap._id) ? '#8B2E3F' : '#6F2234',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '3px',
+                padding: '0.3rem 0.6rem',
+                cursor: 'pointer',
+                fontSize: '0.75rem',
+                fontWeight: '500',
+                transition: 'all 0.2s ease'
+              }}
+            >
+              {expandedRows.has(ap._id) ? '🔽 Ocultar' : '✏ Editar'}
+            </button>
+          </div>
                   </div>
 
                   {/* Detalles expandibles */}

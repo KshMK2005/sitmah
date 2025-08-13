@@ -382,7 +382,7 @@ ${JSON.stringify(aperturaData, null, 2)}
             corridaInicial: parseInt(item.corridaInicial || programacion?.corridaInicial || '1'),
             corridaFinal: parseInt(item.corridaFinal || programacion?.corridaFinal || '1'),
             fechaApertura: item.fechaApertura || new Date().toISOString(),
-            estado: 'dashboard',
+            estado: 'apertura',
             comentario: (item.comentario || '').toString().trim(),
             observaciones: (item.comentario || '').toString().trim(),
             usuarioCreacion: localStorage.getItem('userName') || 'sistema'
