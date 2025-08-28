@@ -30,7 +30,7 @@ const router = createBrowserRouter([
     element: <TransitionLayout><ProtectedRoute><Pendientes /></ProtectedRoute></TransitionLayout>,
     path: '/pendientes',
   },
-  { path: '/', element: <Home /> },
+  { path: '/', element: <Login /> },
   { path: '/home', element: <Home /> },
   { path: '/login', element: <Login /> },
   {
