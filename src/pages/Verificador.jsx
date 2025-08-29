@@ -621,7 +621,7 @@ const handleTarjetonBlur = async (id, value) => {
             ...prev,
             [id]: {
                 ...prev[id],
-                nombre: '',
+                nombre: 'NO SE ENCONTRÓ',
                 buscando: false
             }
         }));
@@ -777,19 +777,19 @@ return (
                                     value={editRows[ap._id]?.nombre || ''}
                                     readOnly
                                     placeholder="Operador"
-                                    style={{ padding: 6, borderRadius: 6, border: '1px solid #ccc', width: 180, textAlign: 'center', background: editRows[ap._id]?.nombre ? '#e8f5e8' : '#f7f7fa', fontWeight: editRows[ap._id]?.nombre ? 600 : 500, color: '#333' }}
+                                    style={{ padding: 6, borderRadius: 6, border: '1px solid #ccc', width: 180, textAlign: 'center', background: editRows[ap._id]?.nombre && editRows[ap._id]?.nombre !== 'NO SE ENCONTRÓ' ? '#e8f5e8' : '#f7f7fa', fontWeight: editRows[ap._id]?.nombre && editRows[ap._id]?.nombre !== 'NO SE ENCONTRÓ' ? 600 : 500, color: editRows[ap._id]?.nombre === 'NO SE ENCONTRÓ' ? '#f44336' : '#333' }}
                                 />
                                 {editRows[ap._id]?.buscando && (
                                     <small style={{ color: '#ff9800', fontSize: '0.8rem', marginTop: '0.25rem', display: 'block' }}>
                                         🔍 Buscando operador...
                                     </small>
                                 )}
-                                {editRows[ap._id]?.tarjeton && !editRows[ap._id]?.nombre && !editRows[ap._id]?.buscando && (
+                                {editRows[ap._id]?.nombre === 'NO SE ENCONTRÓ' && !editRows[ap._id]?.buscando && (
                                     <small style={{ color: '#f44336', fontSize: '0.8rem', marginTop: '0.25rem', display: 'block' }}>
                                         ❌ Operador no encontrado
                                     </small>
                                 )}
-                                {editRows[ap._id]?.nombre && (
+                                {editRows[ap._id]?.nombre && editRows[ap._id]?.nombre !== 'NO SE ENCONTRÓ' && (
                                     <small style={{ color: '#4CAF50', fontSize: '0.8rem', marginTop: '0.25rem', display: 'block' }}>
                                         ✓ Operador encontrado automáticamente
                                     </small>
