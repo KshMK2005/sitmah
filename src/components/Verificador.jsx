@@ -591,7 +591,7 @@ const pendientes = aperturas.filter(ap => ap.estado === 'pendiente');
 const [editRows, setEditRows] = useState({});
 
 // Permitir edición libre y buscar operador solo al salir del input
-const handleTarjetonChange = (id, value) => {
+function handleTarjetonChange(id, value) {
     setEditRows(prev => ({
         ...prev,
         [id]: {
@@ -599,9 +599,9 @@ const handleTarjetonChange = (id, value) => {
             tarjeton: value
         }
     }));
-};
+}
 
-const handleTarjetonBlur = async (id, value) => {
+async function handleTarjetonBlur(id, value) {
     setEditRows(prev => ({
         ...prev,
         [id]: {
@@ -630,30 +630,20 @@ const handleTarjetonBlur = async (id, value) => {
             }
         }));
     }
-};
+}
 
-// Inicializar solo filas nuevas en editRows, sin sobrescribir cambios del usuario
+// Inicializar los valores editables al cargar aperturas
 useEffect(() => {
-    setEditRows(prev => {
-        const updated = { ...prev };
-        aperturasOrdenadas.forEach(ap => {
-            if (!updated[ap._id]) {
-                updated[ap._id] = {
-                    tarjeton: ap.tarjeton || '',
-                    nombre: ap.nombre || '',
-                    buscando: false
-                };
-            }
-        });
-        // Opcional: limpiar filas que ya no existen en aperturasOrdenadas
-        Object.keys(updated).forEach(id => {
-            if (!aperturasOrdenadas.find(ap => ap._id === id)) {
-                delete updated[id];
-            }
-        });
-        return updated;
+    const initial = {};
+    aperturas.forEach(ap => {
+        initial[ap._id] = {
+            tarjeton: ap.tarjeton || '',
+            nombre: ap.nombre || '',
+            buscando: false
+        };
     });
-}, [aperturasOrdenadas]);
+    setEditRows(initial);
+}, [aperturas]);
 
 return (
     <div className="apertura-page" style={{ background: '#f8f9fa' }}>
