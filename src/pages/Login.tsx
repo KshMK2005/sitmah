@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './style.css';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import ojoImg from '../assets/ojo.png';
+// import ojoImg from '../assets/ojo.png';
 import { usuarioService } from '../services/api';
 
 export default function Login() {
@@ -149,7 +149,7 @@ export default function Login() {
                                     style={{ width: '100%', paddingRight: 40, boxSizing: 'border-box' }}
                                 />
                                 <img
-                                    src={ojoImg}
+                                    src="/src/assets/ojo.png"
                                     alt="Mostrar contraseña"
                                     onClick={() => setShowPassword((v) => !v)}
                                     style={{ position: 'absolute', right: 12, top: '37%', transform: 'translateY(-50%)', width: 22, height: 22, cursor: 'pointer', opacity: showPassword ? 1 : 0.7, zIndex: 2, background: '#fff' }}
