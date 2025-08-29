@@ -142,9 +142,24 @@ function Apertura() {
         nombre: formData.nombre.trim(),
         horaSalida: (() => {
           const now = new Date();
-          const hh = String(now.getHours()).padStart(2, '0');
-          const mm = String(now.getMinutes()).padStart(2, '0');
-          return `${hh}:${mm}`;
+          console.log('📅 [INDIVIDUAL] Fecha completa:', now);
+          console.log('🌍 [INDIVIDUAL] Zona horaria:', now.getTimezoneOffset(), 'minutos');
+          console.log('📍 [INDIVIDUAL] Fecha ISO:', now.toISOString());
+          console.log('📍 [INDIVIDUAL] Fecha local:', now.toLocaleString());
+          
+          const hours = now.getHours();
+          const minutes = now.getMinutes();
+          const seconds = now.getSeconds();
+          
+          console.log('⏰ [INDIVIDUAL] Hora raw:', hours, 'Minutos raw:', minutes, 'Segundos raw:', seconds);
+          
+          const hh = String(hours).padStart(2, '0');
+          const mm = String(minutes).padStart(2, '0');
+          const formatted = `${hh}:${mm}`;
+          
+          console.log('✅ [INDIVIDUAL] HORA FINAL GENERADA:', formatted);
+          
+          return formatted;
         })(), // Hora actual real
         horaProgramada: toHHmm(formData.horaSalida || programacion.horaSalida || '05:30'),
         intervalo: parseInt(formData.intervalo || programacion.intervalo || '15'),
@@ -160,10 +175,26 @@ function Apertura() {
       // Función para asegurar formato HH:mm
       const ensureHHmm = (timeStr) => {
         if (!timeStr) return '00:00';
-        const parts = String(timeStr).trim().split(':');
-        const hh = String(parts[0] || '00').padStart(2, '0');
-        const mm = String(parts[1] || '00').padStart(2, '0');
-        return `${hh}:${mm}`;
+        
+        console.log('🔧 Normalizando hora (individual):', timeStr);
+        
+        // Limpiar la cadena y reemplazar caracteres problemáticos
+        const cleanStr = String(timeStr).trim().replace(/[^\d:]/g, ''); // Solo dígitos y ':'
+        const parts = cleanStr.split(':');
+        
+        let hours = parseInt(parts[0]) || 0;
+        let minutes = parseInt(parts[1]) || 0;
+        
+        // Validar rangos
+        if (hours < 0 || hours > 23) hours = 0;
+        if (minutes < 0 || minutes > 59) minutes = 0;
+        
+        const hh = String(hours).padStart(2, '0');
+        const mm = String(minutes).padStart(2, '0');
+        const result = `${hh}:${mm}`;
+        
+        console.log('🔧 Resultado normalizado (individual):', result);
+        return result;
       };
 
       // Normalizar las horas antes de enviar
@@ -410,10 +441,23 @@ ${JSON.stringify(aperturaData, null, 2)}
 
           const getCurrentTimeFormatted = () => {
             const now = new Date();
-            const hh = String(now.getHours()).padStart(2, '0');
-            const mm = String(now.getMinutes()).padStart(2, '0');
+            console.log('📅 Fecha completa:', now);
+            console.log('🌍 Zona horaria:', now.getTimezoneOffset(), 'minutos');
+            console.log('📍 Fecha ISO:', now.toISOString());
+            console.log('📍 Fecha local:', now.toLocaleString());
+            
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const seconds = now.getSeconds();
+            
+            console.log('⏰ Hora raw:', hours, 'Minutos raw:', minutes, 'Segundos raw:', seconds);
+            
+            const hh = String(hours).padStart(2, '0');
+            const mm = String(minutes).padStart(2, '0');
             const formatted = `${hh}:${mm}`;
-            console.log('🕐 Generando hora actual:', formatted);
+            
+            console.log('✅ HORA FINAL GENERADA:', formatted);
+            
             return formatted;
           };
 
@@ -450,10 +494,26 @@ ${JSON.stringify(aperturaData, null, 2)}
           // Función para asegurar formato HH:mm
           const ensureHHmm = (timeStr) => {
             if (!timeStr) return '00:00';
-            const parts = String(timeStr).trim().split(':');
-            const hh = String(parts[0] || '00').padStart(2, '0');
-            const mm = String(parts[1] || '00').padStart(2, '0');
-            return `${hh}:${mm}`;
+            
+            console.log('🔧 Normalizando hora (masivo):', timeStr);
+            
+            // Limpiar la cadena y reemplazar caracteres problemáticos
+            const cleanStr = String(timeStr).trim().replace(/[^\d:]/g, ''); // Solo dígitos y ':'
+            const parts = cleanStr.split(':');
+            
+            let hours = parseInt(parts[0]) || 0;
+            let minutes = parseInt(parts[1]) || 0;
+            
+            // Validar rangos
+            if (hours < 0 || hours > 23) hours = 0;
+            if (minutes < 0 || minutes > 59) minutes = 0;
+            
+            const hh = String(hours).padStart(2, '0');
+            const mm = String(minutes).padStart(2, '0');
+            const result = `${hh}:${mm}`;
+            
+            console.log('🔧 Resultado normalizado (masivo):', result);
+            return result;
           };
 
           // Normalizar las horas antes de enviar
