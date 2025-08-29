@@ -38,58 +38,12 @@ const aperturaSchema = new mongoose.Schema({
         }
     },
     horaSalida: {
-        type: String,
-        required: [true, 'La hora de salida es obligatoria'],
-        // VALIDACIÓN ULTRA PERMISIVA - que pase cualquier cosa
-        validate: {
-            validator: function(v) {
-                // Si tiene algo, que pase
-                return v && v.toString().trim().length > 0;
-            },
-            message: 'La hora de salida no puede estar vacía'
-        },
-        // Middleware pre-save para normalizar la hora (pero sin fallar)
-        set: function(v) {
-            if (!v) return '00:00';
-            
-            try {
-                const parts = String(v).trim().split(/[:.]/); // Acepta : o .
-                const hh = String(parts[0] || '00').padStart(2, '0');
-                const mm = String(parts[1] || '00').padStart(2, '0');
-                const normalized = `${hh}:${mm}`;
-                console.log('🔧 Normalizando hora de salida (permisivo):', v, '->', normalized);
-                return normalized;
-            } catch (error) {
-                console.log('⚠️ Error normalizando hora, usando valor original:', v);
-                return v; // Si falla, usar el valor original
-            }
-        }
+        type: String
+        // SIN VALIDACIONES - que pase cualquier cosa
     },
     horaProgramada: {
-        type: String,
-        // VALIDACIÓN ULTRA PERMISIVA - acepta cualquier cosa o nada
-        validate: {
-            validator: function(v) {
-                return true; // Acepta cualquier cosa
-            },
-            message: 'La hora programada es válida'
-        },
-        // Middleware pre-save para normalizar la hora (pero sin fallar)
-        set: function(v) {
-            if (!v) return v;
-            
-            try {
-                const parts = String(v).trim().split(/[:.]/); // Acepta : o .
-                const hh = String(parts[0] || '00').padStart(2, '0');
-                const mm = String(parts[1] || '00').padStart(2, '0');
-                const normalized = `${hh}:${mm}`;
-                console.log('🔧 Normalizando hora programada (permisivo):', v, '->', normalized);
-                return normalized;
-            } catch (error) {
-                console.log('⚠️ Error normalizando hora programada, usando valor original:', v);
-                return v; // Si falla, usar el valor original
-            }
-        }
+        type: String
+        // SIN VALIDACIONES - que pase cualquier cosa
     },
     // Campos existentes
     tipoUnidad: {
@@ -147,29 +101,8 @@ const aperturaSchema = new mongoose.Schema({
         default: false
     },
     horaRealSalida: {
-        type: String,
-        validate: {
-            validator: function(v) {
-                return true; // Acepta cualquier cosa
-            },
-            message: 'La hora real de salida es válida'
-        },
-        // Middleware pre-save para normalizar
-        set: function(v) {
-            if (!v) return v;
-            
-            try {
-                const parts = String(v).trim().split(/[:.]/); // Acepta : o .
-                const hh = String(parts[0] || '00').padStart(2, '0');
-                const mm = String(parts[1] || '00').padStart(2, '0');
-                const normalized = `${hh}:${mm}`;
-                console.log('🔧 Normalizando hora real salida:', v, '->', normalized);
-                return normalized;
-            } catch (error) {
-                console.log('⚠️ Error normalizando hora real salida, usando valor original:', v);
-                return v;
-            }
-        }
+        type: String
+        // SIN VALIDACIONES - que pase cualquier cosa
     },
     observaciones: {
         type: String,

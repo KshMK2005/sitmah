@@ -10,7 +10,7 @@ import operadorRoutes from './routes/operadorRoutes.js';
 import usuarioRoutes from './routes/usuarioRoutes.js';
 import configuracionRoutes from './routes/configuracionRoutes.js';
 
-// FORZAR REINICIO DEL SERVIDOR - Todas las validaciones de hora ultra permisivas - v2.2
+// FORZAR REINICIO DEL SERVIDOR - BYPASS TOTAL DE VALIDACIONES DE HORA - v3.0
 dotenv.config();
 
 const app = express();
