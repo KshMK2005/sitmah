@@ -1,30 +1,3 @@
-// Guardar cambios de tarjetón y operador en la base de datos por fila
-const handleGuardarFila = async (ap) => {
-    try {
-        const tarjeton = editRows[ap._id]?.tarjeton || '';
-        const nombre = editRows[ap._id]?.nombre || '';
-        await aperturaService.update(ap._id, {
-            ...ap,
-            tarjeton,
-            nombre,
-            usuarioModificacion: localStorage.getItem('userName') || 'verificador'
-        });
-        await cargarAperturas();
-        Swal.fire({
-            title: '¡Guardado!',
-            text: 'Los cambios se han guardado correctamente',
-            icon: 'success',
-            timer: 1200,
-            showConfirmButton: false
-        });
-    } catch (error) {
-        Swal.fire({
-            title: 'Error',
-            text: error.message || 'No se pudo guardar los cambios',
-            icon: 'error'
-        });
-    }
-};
 import React, { useState, useEffect } from 'react';
 import { useTransition } from './TransitionContext';
 import { aperturaService } from '../services/api';
@@ -53,9 +26,34 @@ function handleEditar(ap) {
     setEditando(ap._id);
     setForm({ ...ap });
 }
-function handleFormChange(e) {
+async function handleFormChange(e) {
     const { name, value } = e.target;
     setForm(prev => ({ ...prev, [name]: value }));
+    
+    // Si cambió el tarjetón, buscar el operador automáticamente
+    if (name === 'tarjeton') {
+        console.log('🔍 Tarjetón cambiado a:', value);
+        
+        if (value.trim() !== '') {
+            try {
+                const { operadorService } = await import('../services/operadores');
+                const operador = await operadorService.buscarPorTarjeton(value.trim());
+                
+                if (operador && operador.nombre) {
+                    console.log('✅ Operador encontrado:', operador.nombre);
+                    setForm(prev => ({ ...prev, nombre: operador.nombre }));
+                } else {
+                    console.log('❌ Operador no encontrado para tarjetón:', value);
+                    setForm(prev => ({ ...prev, nombre: 'Operador no encontrado' }));
+                }
+            } catch (error) {
+                console.error('Error buscando operador:', error);
+                setForm(prev => ({ ...prev, nombre: 'Error al buscar operador' }));
+            }
+        } else {
+            setForm(prev => ({ ...prev, nombre: '' }));
+        }
+    }
 }
 async function handleGuardarEdicion() {
     try {
