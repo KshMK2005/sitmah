@@ -66,9 +66,9 @@ function Pendientes() {
 
   const handleAceptar = async (ap) => {
     try {
-      // Aprobar: mover a 'completado' para que aparezca en dashboard/verificador
+      // Aprobar: mover a 'dashboard' para que aparezca en dashboard/verificador
       await aperturaService.update(ap._id, { 
-        estado: 'completado',
+        estado: 'dashboard',
         usuarioModificacion: localStorage.getItem('userName') || 'verificador'
       });
       setFlashId(ap._id); // Marcar para animar (verde, aunque ya no se verá porque desaparece)

@@ -140,7 +140,12 @@ function Apertura() {
         economico: formData.economico.toString().trim().toUpperCase(),
         tarjeton: formData.tarjeton.toString().trim().toUpperCase(),
         nombre: formData.nombre.trim(),
-        horaSalida: toHHmm(new Date().toTimeString().slice(0, 5)), // Hora actual real
+        horaSalida: (() => {
+          const now = new Date();
+          const hh = String(now.getHours()).padStart(2, '0');
+          const mm = String(now.getMinutes()).padStart(2, '0');
+          return `${hh}:${mm}`;
+        })(), // Hora actual real
         horaProgramada: toHHmm(formData.horaSalida || programacion.horaSalida || '05:30'),
         intervalo: parseInt(formData.intervalo || programacion.intervalo || '15'),
         corridaInicial: parseInt(formData.corridaInicial || programacion.corridaInicial || '1'),
@@ -364,8 +369,18 @@ ${JSON.stringify(aperturaData, null, 2)}
           const formatToHHmm = (val) => {
             if (!val) return '';
             const parts = String(val).split(':');
-            const hh = String(parts[0] || '').padStart(2, '0');
+            const hh = String(parts[0] || '00').padStart(2, '0');
             const mm = String(parts[1] || '00').padStart(2, '0');
+            // Validar que sean números válidos
+            if (isNaN(parseInt(hh)) || isNaN(parseInt(mm))) return '00:00';
+            if (parseInt(hh) > 23 || parseInt(mm) > 59) return '00:00';
+            return `${hh}:${mm}`;
+          };
+
+          const getCurrentTimeFormatted = () => {
+            const now = new Date();
+            const hh = String(now.getHours()).padStart(2, '0');
+            const mm = String(now.getMinutes()).padStart(2, '0');
             return `${hh}:${mm}`;
           };
 
@@ -376,7 +391,7 @@ ${JSON.stringify(aperturaData, null, 2)}
             economico: (item.economico || '').toString().trim().toUpperCase(),
             tarjeton: (item.tarjeton || '').toString().trim().toUpperCase(),
             nombre: (item.nombre || '').toString().trim(),
-            horaSalida: formatToHHmm(new Date().toTimeString().slice(0, 5)), // Hora actual real
+            horaSalida: getCurrentTimeFormatted(), // Hora actual real
             horaProgramada: formatToHHmm(item.horaSalida || programacion?.horaSalida || '05:30'),
             intervalo: parseInt(item.intervalo || programacion?.intervalo || '15'),
             corridaInicial: parseInt(item.corridaInicial || programacion?.corridaInicial || '1'),
