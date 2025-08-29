@@ -628,17 +628,27 @@ const handleTarjetonBlur = async (id, value) => {
     }
 };
 
-// Inicializar los valores editables al cargar aperturas
+// Inicializar solo filas nuevas en editRows, sin sobrescribir cambios del usuario
 useEffect(() => {
-    const initial = {};
-    aperturasOrdenadas.forEach(ap => {
-        initial[ap._id] = {
-            tarjeton: ap.tarjeton || '',
-            nombre: ap.nombre || '',
-            buscando: false
-        };
+    setEditRows(prev => {
+        const updated = { ...prev };
+        aperturasOrdenadas.forEach(ap => {
+            if (!updated[ap._id]) {
+                updated[ap._id] = {
+                    tarjeton: ap.tarjeton || '',
+                    nombre: ap.nombre || '',
+                    buscando: false
+                };
+            }
+        });
+        // Opcional: limpiar filas que ya no existen en aperturasOrdenadas
+        Object.keys(updated).forEach(id => {
+            if (!aperturasOrdenadas.find(ap => ap._id === id)) {
+                delete updated[id];
+            }
+        });
+        return updated;
     });
-    setEditRows(initial);
 }, [aperturasOrdenadas]);
 
 return (
