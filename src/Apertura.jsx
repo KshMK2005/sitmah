@@ -157,10 +157,16 @@ function Apertura() {
         usuarioCreacion: localStorage.getItem('userName') || 'sistema'
       };
 
-      console.log('🚀 Enviando datos a la API:', aperturaData);
+                console.log('🚀 Datos completos antes de enviar:', JSON.stringify(aperturaData, null, 2));
+          console.log('🔍 Validando formato de hora:', {
+            horaSalida: aperturaData.horaSalida,
+            horaProgramada: aperturaData.horaProgramada,
+            horaSalidaRegex: /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(aperturaData.horaSalida),
+            horaProgramadaRegex: /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(aperturaData.horaProgramada)
+          });
 
-      // Crear la apertura en la base de datos
-      await aperturaService.create(aperturaData);
+          // Crear la apertura en la base de datos
+          await aperturaService.create(aperturaData);
 
       // Actualizar localStorage también
       const horariosGuardados = JSON.parse(localStorage.getItem('horariosActuales') || '[]');
@@ -367,13 +373,25 @@ ${JSON.stringify(aperturaData, null, 2)}
           );
 
           const formatToHHmm = (val) => {
-            if (!val) return '';
-            const parts = String(val).split(':');
+            if (!val || val === '' || val === null || val === undefined) {
+              return '00:00'; // Valor por defecto válido
+            }
+            
+            const cleanVal = String(val).trim();
+            if (!cleanVal) return '00:00';
+            
+            const parts = cleanVal.split(':');
             const hh = String(parts[0] || '00').padStart(2, '0');
             const mm = String(parts[1] || '00').padStart(2, '0');
+            
             // Validar que sean números válidos
-            if (isNaN(parseInt(hh)) || isNaN(parseInt(mm))) return '00:00';
-            if (parseInt(hh) > 23 || parseInt(mm) > 59) return '00:00';
+            const hhNum = parseInt(hh);
+            const mmNum = parseInt(mm);
+            
+            if (isNaN(hhNum) || isNaN(mmNum)) return '00:00';
+            if (hhNum < 0 || hhNum > 23) return '00:00';
+            if (mmNum < 0 || mmNum > 59) return '00:00';
+            
             return `${hh}:${mm}`;
           };
 
@@ -384,6 +402,17 @@ ${JSON.stringify(aperturaData, null, 2)}
             return `${hh}:${mm}`;
           };
 
+          const horaSalidaGenerada = getCurrentTimeFormatted();
+          let horaProgramadaGenerada = formatToHHmm(item.horaSalida || programacion?.horaSalida || '05:30');
+          
+          // Asegurar que nunca esté vacío
+          if (!horaProgramadaGenerada || horaProgramadaGenerada === '') {
+            horaProgramadaGenerada = '05:30';
+          }
+
+          console.log('🕐 Hora de salida generada:', horaSalidaGenerada);
+          console.log('🕐 Hora programada generada:', horaProgramadaGenerada);
+
           const aperturaData = {
             programacionId: programacion?._id || programacionPorRuta?._id || programaciones[0]?._id,
             ruta: (item.ruta || '').toString().trim(),
@@ -391,8 +420,8 @@ ${JSON.stringify(aperturaData, null, 2)}
             economico: (item.economico || '').toString().trim().toUpperCase(),
             tarjeton: (item.tarjeton || '').toString().trim().toUpperCase(),
             nombre: (item.nombre || '').toString().trim(),
-            horaSalida: getCurrentTimeFormatted(), // Hora actual real
-            horaProgramada: formatToHHmm(item.horaSalida || programacion?.horaSalida || '05:30'),
+            horaSalida: horaSalidaGenerada, // Hora actual real
+            horaProgramada: horaProgramadaGenerada,
             intervalo: parseInt(item.intervalo || programacion?.intervalo || '15'),
             corridaInicial: parseInt(item.corridaInicial || programacion?.corridaInicial || '1'),
             corridaFinal: parseInt(item.corridaFinal || programacion?.corridaFinal || '1'),
@@ -402,6 +431,14 @@ ${JSON.stringify(aperturaData, null, 2)}
             observaciones: (item.comentario || '').toString().trim(),
             usuarioCreacion: localStorage.getItem('userName') || 'sistema'
           };
+
+          console.log('📦 Importación masiva - Datos antes de enviar:', JSON.stringify(aperturaData, null, 2));
+          console.log('🔍 Validando formato de horas en masivo:', {
+            horaSalida: aperturaData.horaSalida,
+            horaProgramada: aperturaData.horaProgramada,
+            horaSalidaRegex: /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(aperturaData.horaSalida || ''),
+            horaProgramadaRegex: /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(aperturaData.horaProgramada || '')
+          });
 
           await aperturaService.create(aperturaData);
           successCount++;
