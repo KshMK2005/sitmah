@@ -815,7 +815,78 @@ function Verificador() {
                                         }}
                                         title="Editar apertura"
                                     >Editar</button>
-                                    {/* ...modal y botón pendiente igual... */}
+                                    
+                                    {/* Modal de edición */}
+                                    {editando === ap._id && (
+                                        <div style={{
+                                            position: 'fixed', 
+                                            top: 0, 
+                                            left: 0, 
+                                            width: '100vw', 
+                                            height: '100vh', 
+                                            background: 'rgba(0,0,0,0.5)', 
+                                            zIndex: 9999, 
+                                            display: 'flex', 
+                                            alignItems: 'center', 
+                                            justifyContent: 'center'
+                                        }}>
+                                            <div style={{ 
+                                                background: 'white', 
+                                                borderRadius: 12, 
+                                                padding: 32, 
+                                                minWidth: 400, 
+                                                maxWidth: 500,
+                                                boxShadow: '0 4px 20px rgba(0,0,0,0.3)' 
+                                            }}>
+                                                <h3 style={{ color: '#6F2234', marginBottom: 20, textAlign: 'center' }}>Editar Apertura</h3>
+                                                <div style={{ display: 'flex', flexDirection: 'column', gap: 15 }}>
+                                                    <div>
+                                                        <label style={{ display: 'block', marginBottom: 5, fontWeight: 600 }}>Ruta</label>
+                                                        <input name="ruta" value={form.ruta || ''} onChange={handleFormChange} 
+                                                               style={{ width: '100%', padding: 10, borderRadius: 6, border: '1px solid #ddd' }} />
+                                                    </div>
+                                                    <div>
+                                                        <label style={{ display: 'block', marginBottom: 5, fontWeight: 600 }}>Económico</label>
+                                                        <input name="economico" value={form.economico || ''} onChange={handleFormChange} 
+                                                               style={{ width: '100%', padding: 10, borderRadius: 6, border: '1px solid #ddd' }} />
+                                                    </div>
+                                                    <div>
+                                                        <label style={{ display: 'block', marginBottom: 5, fontWeight: 600 }}>Tarjetón</label>
+                                                        <input name="tarjeton" value={form.tarjeton || ''} onChange={handleFormChange} 
+                                                               style={{ width: '100%', padding: 10, borderRadius: 6, border: '1px solid #ddd' }} />
+                                                    </div>
+                                                    <div>
+                                                        <label style={{ display: 'block', marginBottom: 5, fontWeight: 600 }}>Nombre del Operador</label>
+                                                        <input name="nombre" value={form.nombre || ''} onChange={handleFormChange} 
+                                                               style={{ width: '100%', padding: 10, borderRadius: 6, border: '1px solid #ddd', 
+                                                                       background: '#f8f9fa', color: '#6F2234', fontWeight: 600 }} />
+                                                    </div>
+                                                    <div>
+                                                        <label style={{ display: 'block', marginBottom: 5, fontWeight: 600 }}>Corrida Inicial</label>
+                                                        <input name="corridaInicial" value={form.corridaInicial || ''} onChange={handleFormChange} 
+                                                               type="number" style={{ width: '100%', padding: 10, borderRadius: 6, border: '1px solid #ddd' }} />
+                                                    </div>
+                                                    <div>
+                                                        <label style={{ display: 'block', marginBottom: 5, fontWeight: 600 }}>Hora Programada</label>
+                                                        <input name="horaProgramada" value={form.horaProgramada || ''} onChange={handleFormChange} 
+                                                               type="time" style={{ width: '100%', padding: 10, borderRadius: 6, border: '1px solid #ddd' }} />
+                                                    </div>
+                                                </div>
+                                                <div style={{ display: 'flex', gap: 15, marginTop: 25, justifyContent: 'center' }}>
+                                                    <button onClick={handleGuardarEdicion} 
+                                                            style={{ background: '#6F2234', color: 'white', border: 'none', borderRadius: 8, 
+                                                                    padding: '12px 24px', fontWeight: 600, cursor: 'pointer' }}>
+                                                        Guardar
+                                                    </button>
+                                                    <button onClick={handleCancelarEdicion} 
+                                                            style={{ background: '#ccc', color: '#333', border: 'none', borderRadius: 8, 
+                                                                    padding: '12px 24px', fontWeight: 600, cursor: 'pointer' }}>
+                                                        Cancelar
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         ))}
