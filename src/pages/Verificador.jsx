@@ -26,78 +26,30 @@ function Verificador() {
         setEditando(ap._id);
         setForm({ ...ap });
     }
-    async function handleFormChange(e) {
+    function handleFormChange(e) {
         const { name, value } = e.target;
-        if (name === 'tarjeton') {
-            setForm(prev => ({ ...prev, tarjeton: value }));
-            // Buscar el nombre del operador en tiempo real
-            if (value.trim() !== '') {
-                try {
-                    const operador = await import('../services/operadores').then(mod => mod.operadorService.buscarPorTarjeton(value.trim()));
-                    if (operador && operador.nombre) {
-                        setForm(prev => ({ ...prev, nombre: operador.nombre }));
-                    } else {
-                        setForm(prev => ({ ...prev, nombre: 'Operador no encontrado' }));
-                    }
-                } catch {
-                    setForm(prev => ({ ...prev, nombre: 'Error al buscar operador' }));
-                }
-            } else {
-                setForm(prev => ({ ...prev, nombre: '' }));
-            }
-        } else {
-            setForm(prev => ({ ...prev, [name]: value }));
-        }
+        setForm(prev => ({ ...prev, [name]: value }));
     }
     async function handleGuardarEdicion() {
         try {
             const { _id, estado, ...rest } = form; // Excluir estado para no cambiarlo
-            let nombreOperador = undefined;
-            // Buscar el original
-            const aperturaOriginal = aperturas.find(ap => ap._id === editando);
-            // Solo buscar el nombre si el tarjetón fue modificado
-            if (aperturaOriginal && rest.tarjeton && rest.tarjeton.trim() !== '' && rest.tarjeton.trim() !== (aperturaOriginal.tarjeton || '').trim()) {
-                try {
-                    const operador = await import('../services/operadores').then(mod => mod.operadorService.buscarPorTarjeton(rest.tarjeton.trim()));
-                    if (operador && operador.nombre) {
-                        nombreOperador = operador.nombre;
-                    } else {
-                        Swal.fire({
-                            title: 'Error',
-                            text: 'No se encontró un operador con ese tarjetón. Verifica el número.',
-                            icon: 'error'
-                        });
-                        return;
-                    }
-                } catch (err) {
-                    Swal.fire({
-                        title: 'Error',
-                        text: 'No se encontró un operador con ese tarjetón. Verifica el número.',
-                        icon: 'error'
-                    });
-                    return;
-                }
+            // Buscar operador por tarjetón antes de guardar
+            let operador = null;
+            try {
+                operador = await import('../services/operadores').then(mod => mod.operadorService.buscarPorTarjeton(rest.tarjeton));
+            } catch (err) {
+                console.warn('No se encontró operador para el tarjetón:', rest.tarjeton);
             }
-            // Si no se modificó el tarjetón, mantener el nombre actual
-            if (typeof nombreOperador === 'undefined') {
-                nombreOperador = aperturaOriginal ? aperturaOriginal.nombre : '';
-            }
-            // Validar nombre antes de guardar (permitir casos especiales como "Operador no encontrado")
-            if (!nombreOperador || (nombreOperador.length < 3 && !nombreOperador.includes('no encontrado') && !nombreOperador.includes('Error'))) {
-                Swal.fire({
-                    title: 'Error',
-                    text: 'El nombre del operador es inválido o no se encontró.',
-                    icon: 'error'
-                });
-                return;
-            }
-            // Actualizar en la base de datos incluyendo el nombre
-            const aperturaActualizada = await aperturaService.update(editando, { ...rest, nombre: nombreOperador });
+            // Guardar apertura con el operador encontrado
+            const aperturaActualizada = await aperturaService.update(editando, {
+                ...rest,
+                nombre: operador?.nombre || '-',
+            });
             // Actualizar el estado local inmediatamente (mantener el estado original)
             setAperturas(prevAperturas => 
                 prevAperturas.map(ap => 
                     ap._id === editando 
-                        ? { ...ap, ...rest, nombre: nombreOperador, ultimaModificacion: aperturaActualizada.ultimaModificacion }
+                        ? { ...ap, ...rest, nombre: operador?.nombre || '-', ultimaModificacion: aperturaActualizada.ultimaModificacion }
                         : ap
                 )
             );
@@ -767,19 +719,15 @@ function Verificador() {
                                 <div className="table-cell" style={{ textAlign: 'center' }}>{ap.corridaInicial}</div>
                                 <div className="table-cell" style={{ textAlign: 'center' }}>{ap.horaProgramada || 'N/A'}</div>
                                 <div className="table-cell" style={{ textAlign: 'center' }}>
-                                    <span style={{ 
-                                        display: 'inline-block',
-                                        padding: '4px 8px',
-                                        backgroundColor: '#f8f9fa',
-                                        border: '1px solid #e9ecef',
-                                        borderRadius: '4px',
-                                        color: '#495057',
-                                        fontSize: '0.9rem',
-                                        fontWeight: '500',
-                                        minWidth: '70px'
-                                    }}>
-                                        {ap.horaSalida || 'No registrada'}
-                                    </span>
+                                    <input
+                                        type="time"
+                                        value={ap.horaSalida || ''}
+                                        onChange={e => {
+                                            const nuevaHora = e.target.value;
+                                            setAperturas(prev => prev.map(a => a._id === ap._id ? { ...a, horaSalida: nuevaHora } : a));
+                                        }}
+                                        style={{ padding: 4, borderRadius: 4, border: '1px solid #ccc', width: 110 }}
+                                    />
                                 </div>
                                 <div className="table-cell" style={{ textAlign: 'center' }}>{ap.nombre || '-'}</div>
                                 <div className="table-cell" style={{ textAlign: 'center', display: 'flex', gap: '0.3rem', flexWrap: 'wrap', justifyContent: 'center' }}>
@@ -835,8 +783,6 @@ function Verificador() {
                                                     <input name="economico" value={form.economico || ''} onChange={handleFormChange} placeholder="Económico" style={{ padding: 8, borderRadius: 6, border: '1px solid #ccc' }} />
                                                     <label htmlFor="tarjeton">Tarjetón</label>
                                                     <input name="tarjeton" value={form.tarjeton || ''} onChange={handleFormChange} placeholder="Tarjetón" style={{ padding: 8, borderRadius: 6, border: '1px solid #ccc' }} />
-                                                    <label htmlFor="nombre">Nombre de operador</label>
-                                                    <input name="nombre" value={form.nombre || ''} readOnly style={{ padding: 8, borderRadius: 6, border: '1px solid #ccc', background: '#f3f3f3', color: '#6F2234', fontWeight: 600 }} />
                                                     <label htmlFor="corridaInicial">Corrida Inicial</label>
                                                     <input name="corridaInicial" value={form.corridaInicial || ''} onChange={handleFormChange} placeholder="Corrida Inicial" type="number" style={{ padding: 8, borderRadius: 6, border: '1px solid #ccc' }} />
                                                     <label htmlFor="horaProgramada">Hora Programada</label>

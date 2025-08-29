@@ -342,8 +342,13 @@ ${JSON.stringify(aperturaData, null, 2)}
 
   // Funciones para importador masivo
   const handleFileUpload = (event) => {
+    console.log('📁 ARCHIVO SELECCIONADO');
     const file = event.target.files[0];
-    if (!file) return;
+    if (!file) {
+      console.log('❌ No hay archivo seleccionado');
+      return;
+    }
+    console.log('📄 Archivo:', file.name, 'Tamaño:', file.size);
 
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -386,7 +391,10 @@ ${JSON.stringify(aperturaData, null, 2)}
             estado: 'apertura'
           }));
 
+        console.log('📊 DATOS PROCESADOS:', processedData.length, 'elementos');
+        console.log('📝 Primeros 3 elementos:', processedData.slice(0, 3));
         setImportData(processedData);
+        console.log('🎭 MOSTRANDO MODAL DE IMPORTACIÓN');
         setShowImportModal(true);
       } catch (error) {
         console.error('Error al procesar archivo:', error);
@@ -402,6 +410,10 @@ ${JSON.stringify(aperturaData, null, 2)}
 
   const handleBulkImport = async () => {
     if (importData.length === 0) return;
+
+    console.log('🚀 INICIANDO IMPORTACIÓN MASIVA');
+    console.log('📊 Cantidad de elementos:', importData.length);
+    console.log('⏰ Hora actual del sistema:', new Date().toLocaleString());
 
     setImporting(true);
     try {
@@ -526,6 +538,13 @@ ${JSON.stringify(aperturaData, null, 2)}
             horaProgramada: aperturaData.horaProgramada,
             horaSalidaRegex: /^([01][0-9]|2[0-3]):[0-5][0-9]$/.test(aperturaData.horaSalida || ''),
             horaProgramadaRegex: /^([01][0-9]|2[0-3]):[0-5][0-9]$/.test(aperturaData.horaProgramada || '')
+          });
+
+          console.log('🌐 A PUNTO DE ENVIAR AL SERVIDOR:', {
+            ruta: aperturaData.ruta,
+            economico: aperturaData.economico,
+            horaSalida: aperturaData.horaSalida,
+            horaProgramada: aperturaData.horaProgramada
           });
 
           await aperturaService.create(aperturaData);
@@ -790,7 +809,10 @@ ${JSON.stringify(aperturaData, null, 2)}
                   Cancelar
                 </button>
                 <button
-                  onClick={handleBulkImport}
+                  onClick={() => {
+                    console.log('🔥 BOTÓN IMPORTAR CLICKEADO');
+                    handleBulkImport();
+                  }}
                   disabled={importing}
                   style={{
                     padding: '10px 20px',
