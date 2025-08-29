@@ -37,10 +37,10 @@ function Verificador() {
                     if (operador && operador.nombre) {
                         setForm(prev => ({ ...prev, nombre: operador.nombre }));
                     } else {
-                        setForm(prev => ({ ...prev, nombre: '' }));
+                        setForm(prev => ({ ...prev, nombre: 'Operador no encontrado' }));
                     }
                 } catch {
-                    setForm(prev => ({ ...prev, nombre: '' }));
+                    setForm(prev => ({ ...prev, nombre: 'Error al buscar operador' }));
                 }
             } else {
                 setForm(prev => ({ ...prev, nombre: '' }));
@@ -82,11 +82,11 @@ function Verificador() {
             if (typeof nombreOperador === 'undefined') {
                 nombreOperador = aperturaOriginal ? aperturaOriginal.nombre : '';
             }
-            // Validar nombre antes de guardar
-            if (!nombreOperador || nombreOperador.length < 3 || nombreOperador.length > 100) {
+            // Validar nombre antes de guardar (permitir casos especiales como "Operador no encontrado")
+            if (!nombreOperador || (nombreOperador.length < 3 && !nombreOperador.includes('no encontrado') && !nombreOperador.includes('Error'))) {
                 Swal.fire({
                     title: 'Error',
-                    text: 'El nombre del operador es inválido. Debe tener entre 3 y 100 caracteres.',
+                    text: 'El nombre del operador es inválido o no se encontró.',
                     icon: 'error'
                 });
                 return;
@@ -767,15 +767,19 @@ function Verificador() {
                                 <div className="table-cell" style={{ textAlign: 'center' }}>{ap.corridaInicial}</div>
                                 <div className="table-cell" style={{ textAlign: 'center' }}>{ap.horaProgramada || 'N/A'}</div>
                                 <div className="table-cell" style={{ textAlign: 'center' }}>
-                                    <input
-                                        type="time"
-                                        value={ap.horaSalida || ''}
-                                        onChange={e => {
-                                            const nuevaHora = e.target.value;
-                                            setAperturas(prev => prev.map(a => a._id === ap._id ? { ...a, horaSalida: nuevaHora } : a));
-                                        }}
-                                        style={{ padding: 4, borderRadius: 4, border: '1px solid #ccc', width: 110 }}
-                                    />
+                                    <span style={{ 
+                                        display: 'inline-block',
+                                        padding: '4px 8px',
+                                        backgroundColor: '#f8f9fa',
+                                        border: '1px solid #e9ecef',
+                                        borderRadius: '4px',
+                                        color: '#495057',
+                                        fontSize: '0.9rem',
+                                        fontWeight: '500',
+                                        minWidth: '70px'
+                                    }}>
+                                        {ap.horaSalida || 'No registrada'}
+                                    </span>
                                 </div>
                                 <div className="table-cell" style={{ textAlign: 'center' }}>{ap.nombre || '-'}</div>
                                 <div className="table-cell" style={{ textAlign: 'center', display: 'flex', gap: '0.3rem', flexWrap: 'wrap', justifyContent: 'center' }}>
