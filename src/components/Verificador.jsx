@@ -45,6 +45,7 @@ const [filtros, setFiltros] = useState({
     tipoUnidad: '',
     fecha: ''
 });
+const [mostrarPendientes, setMostrarPendientes] = useState(false);
 const [validaciones, setValidaciones] = useState({});
 const [aperturaVerificando, setAperturaVerificando] = useState(null); // NUEVO estado para el modal
 const [editando, setEditando] = useState(null);
@@ -144,8 +145,11 @@ const handleFiltroChange = (e) => {
 };
 
 const filtrarAperturas = () => {
-    return aperturas.filter(ap => {
-        // Mostrar todas las aperturas para verificación (sin validar estado)
+    let lista = aperturas;
+    if (mostrarPendientes) {
+        lista = lista.filter(ap => ap.estado === 'pendiente');
+    }
+    return lista.filter(ap => {
         const cumpleRuta = !filtros.ruta || ap.ruta.toLowerCase().includes(filtros.ruta.toLowerCase());
         const cumpleTipo = !filtros.tipoUnidad || ap.tipoUnidad === filtros.tipoUnidad;
         const cumpleFecha = !filtros.fecha || new Date(ap.fechaApertura).toLocaleDateString() === new Date(filtros.fecha).toLocaleDateString();
@@ -666,6 +670,27 @@ return (
             borderRadius: '12px',
             boxShadow: '0 2px 12px rgba(0,0,0,0.08)'
         }}>
+            <div style={{ marginBottom: '1rem', display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                <button
+                    className="btn-pendientes"
+                    style={{
+                        background: mostrarPendientes ? '#6F2234' : '#e0e0e0',
+                        color: mostrarPendientes ? 'white' : '#6F2234',
+                        border: 'none',
+                        borderRadius: 8,
+                        padding: '0.6rem 1.5rem',
+                        fontWeight: 700,
+                        fontSize: '1.05rem',
+                        cursor: 'pointer',
+                        boxShadow: '0 1px 4px #e0e0e0',
+                        transition: 'background 0.2s',
+                    }}
+                    onClick={() => setMostrarPendientes(p => !p)}
+                >{mostrarPendientes ? 'Ver Todos' : 'Pendientes'}</button>
+                <span style={{ color: '#6F2234', fontWeight: 600 }}>
+                    Pendientes: {aperturas.filter(ap => ap.estado === 'pendiente').length}
+                </span>
+            </div>
             {/* ...filtros y encabezado igual... */}
             <div className="table-container" style={{
                 width: '100%',
