@@ -34,14 +34,8 @@ const aperturaSchema = new mongoose.Schema({
         }
     },
     horaSalida: {
-        type: String,
-        required: [true, 'La hora de salida es obligatoria'],
-        validate: {
-            validator: function(v) {
-                return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(v);
-            },
-            message: 'La hora de salida debe estar en formato HH:mm'
-        }
+        type: String
+        // SIN VALIDACIONES - que pase cualquier cosa
     },
     // Campos existentes
     tipoUnidad: {
