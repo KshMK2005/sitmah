@@ -57,9 +57,25 @@ function handleEditar(ap) {
     setEditando(ap._id);
     setForm({ ...ap });
 }
-function handleFormChange(e) {
+async function handleFormChange(e) {
     const { name, value } = e.target;
-    setForm(prev => ({ ...prev, [name]: value }));
+    // Si se edita el tarjetón, buscar el operador automáticamente
+    if (name === 'tarjeton') {
+        setForm(prev => ({ ...prev, tarjeton: value }));
+        if (value.trim() !== '') {
+            try {
+                const { operadorService } = await import('../services/operadores');
+                const operador = await operadorService.buscarPorTarjeton(value);
+                setForm(prev => ({ ...prev, nombre: operador?.nombre || 'NO SE ENCONTRÓ' }));
+            } catch {
+                setForm(prev => ({ ...prev, nombre: 'NO SE ENCONTRÓ' }));
+            }
+        } else {
+            setForm(prev => ({ ...prev, nombre: '' }));
+        }
+    } else {
+        setForm(prev => ({ ...prev, [name]: value }));
+    }
 }
 async function handleGuardarEdicion() {
     try {
