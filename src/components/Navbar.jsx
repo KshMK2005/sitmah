@@ -22,7 +22,7 @@ function Navbar() {
     if (result.isConfirmed) {
       localStorage.removeItem('userRole');
       localStorage.removeItem('userName');
-      navigateWithTransition('/home');
+      navigateWithTransition('/login');
     }
     // Si elige 'No', no hace nada y permanece en la página
   };

@@ -488,7 +488,7 @@ function App() {
 
   const handleLogout = () => {
     localStorage.removeItem('userRole');
-    navigateWithTransition('/home');
+    navigateWithTransition('/login');
   };
 
   const handleApertura = (horario) => {

@@ -62,8 +62,8 @@ function HistorialVerificador() {
     const cargarAperturas = async () => {
       try {
         const data = await aperturaService.getAll();
-        // Mostrar solo verificadas (completado/cancelado). Las regresadas van a 'pendiente' y no deben verse aquí
-        setAperturas(data.filter(ap => ['completado', 'cancelado'].includes(ap.estado)));
+        // Mostrar solo verificadas (dashboard/cancelado). Las regresadas van a 'pendiente' y no deben verse aquí
+        setAperturas(data.filter(ap => ['dashboard', 'cancelado'].includes(ap.estado)));
       } catch (error) {
         setAperturas([]);
       }
@@ -213,7 +213,7 @@ function HistorialVerificador() {
 
         // Recargar datos
         const data = await aperturaService.getAll();
-        setAperturas(data.filter(item => ['completado', 'cancelado', 'dashboard', 'retrasado'].includes(item.estado)));
+        setAperturas(data.filter(item => ['dashboard', 'cancelado'].includes(item.estado)));
       }
     } catch (error) {
       Swal.fire({

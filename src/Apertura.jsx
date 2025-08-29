@@ -140,7 +140,7 @@ function Apertura() {
         economico: formData.economico.toString().trim().toUpperCase(),
         tarjeton: formData.tarjeton.toString().trim().toUpperCase(),
         nombre: formData.nombre.trim(),
-        horaSalida: toHHmm(formData.horaSalida || programacion.horaSalida || '05:30'),
+        horaSalida: toHHmm(new Date().toTimeString().slice(0, 5)), // Hora actual real
         horaProgramada: toHHmm(formData.horaSalida || programacion.horaSalida || '05:30'),
         intervalo: parseInt(formData.intervalo || programacion.intervalo || '15'),
         corridaInicial: parseInt(formData.corridaInicial || programacion.corridaInicial || '1'),
@@ -376,7 +376,7 @@ ${JSON.stringify(aperturaData, null, 2)}
             economico: (item.economico || '').toString().trim().toUpperCase(),
             tarjeton: (item.tarjeton || '').toString().trim().toUpperCase(),
             nombre: (item.nombre || '').toString().trim(),
-            horaSalida: formatToHHmm(item.horaSalida || programacion?.horaSalida || '05:30'),
+            horaSalida: formatToHHmm(new Date().toTimeString().slice(0, 5)), // Hora actual real
             horaProgramada: formatToHHmm(item.horaSalida || programacion?.horaSalida || '05:30'),
             intervalo: parseInt(item.intervalo || programacion?.intervalo || '15'),
             corridaInicial: parseInt(item.corridaInicial || programacion?.corridaInicial || '1'),

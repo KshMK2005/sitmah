@@ -56,7 +56,7 @@ function NavbarAdministrador() {
     const handleLogout = () => {
         localStorage.removeItem('userRole');
         localStorage.removeItem('userName');
-        navigateWithTransition('/home');
+        navigateWithTransition('/login');
     };
 
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);

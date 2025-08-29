@@ -124,7 +124,7 @@ export default function Login() {
                 }}>
                     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100%', padding: '2.5rem 2.5rem 2rem 2.5rem' }}>
                         <div className="login-logo-wrapper">
-                            <img src="/src/assets/logobola.png" alt="Logo TUZ" className="login-logo-img" />
+                            <img src="src/assets/logobola.png" alt="Logo TUZ" className="login-logo-img" />
                             <div className="login-logo-border"></div>
                         </div>
                         <h2 style={{ margin: '1.5rem 0 1rem 0', fontWeight: 700, color: '#6F2234' }}>Ingreso al sistema</h2>
