@@ -36,25 +36,18 @@ function Verificador() {
             // Buscar operador por tarjetón antes de guardar
             let operador = null;
             try {
-                // Importar el servicio de operadores
                 const { operadorService } = await import('../services/operadores');
                 operador = await operadorService.buscarPorTarjeton(rest.tarjeton);
             } catch (err) {
                 console.warn('No se encontró operador para el tarjetón:', rest.tarjeton);
             }
             // Guardar apertura con el operador encontrado
-            const aperturaActualizada = await aperturaService.update(editando, {
+            await aperturaService.update(editando, {
                 ...rest,
                 nombre: operador?.nombre || '-',
             });
-            // Actualizar el estado local inmediatamente (mantener el estado original)
-            setAperturas(prevAperturas => 
-                prevAperturas.map(ap => 
-                    ap._id === editando 
-                        ? { ...ap, ...rest, nombre: operador?.nombre || '-', ultimaModificacion: aperturaActualizada.ultimaModificacion }
-                        : ap
-                )
-            );
+            // Recargar aperturas para reflejar el cambio en la tabla
+            await cargarAperturas();
             Swal.fire({ 
                 title: '¡Guardado!', 
                 text: 'Los cambios se han guardado correctamente', 

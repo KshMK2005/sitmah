@@ -150,12 +150,25 @@ const aperturaSchema = new mongoose.Schema({
         type: String,
         validate: {
             validator: function(v) {
-                if (v) {
-                    return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(v);
-                }
-                return true;
+                return true; // Acepta cualquier cosa
             },
-            message: 'La hora real de salida debe estar en formato HH:mm'
+            message: 'La hora real de salida es válida'
+        },
+        // Middleware pre-save para normalizar
+        set: function(v) {
+            if (!v) return v;
+            
+            try {
+                const parts = String(v).trim().split(/[:.]/); // Acepta : o .
+                const hh = String(parts[0] || '00').padStart(2, '0');
+                const mm = String(parts[1] || '00').padStart(2, '0');
+                const normalized = `${hh}:${mm}`;
+                console.log('🔧 Normalizando hora real salida:', v, '->', normalized);
+                return normalized;
+            } catch (error) {
+                console.log('⚠️ Error normalizando hora real salida, usando valor original:', v);
+                return v;
+            }
         }
     },
     observaciones: {

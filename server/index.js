@@ -10,7 +10,7 @@ import operadorRoutes from './routes/operadorRoutes.js';
 import usuarioRoutes from './routes/usuarioRoutes.js';
 import configuracionRoutes from './routes/configuracionRoutes.js';
 
-// FORZAR REINICIO DEL SERVIDOR - Modelo Apertura actualizado con ORION y estado apertura
+// FORZAR REINICIO DEL SERVIDOR - Todas las validaciones de hora ultra permisivas - v2.2
 dotenv.config();
 
 const app = express();
