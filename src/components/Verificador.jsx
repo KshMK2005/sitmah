@@ -38,6 +38,29 @@ import '../Apertura.css';
 import ReactDOM from 'react-dom/client';
 
 function Verificador() {
+// Mover una apertura a pendientes
+const handlePendiente = async (id) => {
+    try {
+        await aperturaService.update(id, {
+            estado: 'pendiente',
+            usuarioModificacion: localStorage.getItem('userName') || 'verificador'
+        });
+        Swal.fire({
+            title: 'Movido a pendientes',
+            text: 'La apertura ha sido enviada a pendientes.',
+            icon: 'info',
+            timer: 1200,
+            showConfirmButton: false
+        });
+        cargarAperturas();
+    } catch (error) {
+        Swal.fire({
+            title: 'Error',
+            text: 'No se pudo mover a pendientes',
+            icon: 'error'
+        });
+    }
+};
 const { navigateWithTransition } = useTransition();
 const [aperturas, setAperturas] = useState([]);
 const [filtros, setFiltros] = useState({
@@ -761,44 +784,63 @@ return (
                             <div className="table-cell" style={{ textAlign: 'center' }}>{ap.horaSalida || ''}</div>
                             <div className="table-cell" style={{ textAlign: 'center' }}>{ap.nombre || ''}</div>
                             <div className="table-cell" style={{ textAlign: 'center', display: 'flex', gap: '0.3rem', flexWrap: 'wrap', justifyContent: 'center' }}>
-                                <button
-                                    onClick={() => handleAprobar(ap._id)}
-                                    className="btn-edit action-btn"
-                                    style={{
-                                        background: '#6F2234',
-                                        color: 'white',
-                                        border: 'none',
-                                        borderRadius: '6px',
-                                        padding: '0.4rem 0.9rem',
-                                        fontWeight: 600,
-                                        cursor: 'pointer',
-                                        boxShadow: '0 1px 4px #e0e0e0',
-                                        transition: 'background 0.2s',
-                                        width: '80px',
-                                        height: '32px',
-                                        fontSize: '0.85rem'
-                                    }}
-                                    title="Aprobar apertura"
-                                >Aprobar</button>
-                                <button
-                                    onClick={() => handleEditar(ap)}
-                                    className="btn-edit action-btn"
-                                    style={{
-                                        background: '#f7b731',
-                                        color: '#6F2234',
-                                        border: 'none',
-                                        borderRadius: '6px',
-                                        padding: '0.4rem 0.9rem',
-                                        fontWeight: 600,
-                                        cursor: 'pointer',
-                                        boxShadow: '0 1px 4px #e0e0e0',
-                                        transition: 'background 0.2s',
-                                        width: '80px',
-                                        height: '32px',
-                                        fontSize: '0.85rem'
-                                    }}
-                                    title="Editar apertura"
-                                >Editar</button>
+                                                <button
+                                                    onClick={() => handleAprobar(ap._id)}
+                                                    className="btn-edit action-btn"
+                                                    style={{
+                                                        background: '#6F2234',
+                                                        color: 'white',
+                                                        border: 'none',
+                                                        borderRadius: '6px',
+                                                        padding: '0.4rem 0.9rem',
+                                                        fontWeight: 600,
+                                                        cursor: 'pointer',
+                                                        boxShadow: '0 1px 4px #e0e0e0',
+                                                        transition: 'background 0.2s',
+                                                        width: '80px',
+                                                        height: '32px',
+                                                        fontSize: '0.85rem'
+                                                    }}
+                                                    title="Aprobar apertura"
+                                                >Aprobar</button>
+                                                <button
+                                                    onClick={() => handleEditar(ap)}
+                                                    className="btn-edit action-btn"
+                                                    style={{
+                                                        background: '#f7b731',
+                                                        color: '#6F2234',
+                                                        border: 'none',
+                                                        borderRadius: '6px',
+                                                        padding: '0.4rem 0.9rem',
+                                                        fontWeight: 600,
+                                                        cursor: 'pointer',
+                                                        boxShadow: '0 1px 4px #e0e0e0',
+                                                        transition: 'background 0.2s',
+                                                        width: '80px',
+                                                        height: '32px',
+                                                        fontSize: '0.85rem'
+                                                    }}
+                                                    title="Editar apertura"
+                                                >Editar</button>
+                                                <button
+                                                    onClick={() => handlePendiente(ap._id)}
+                                                    className="btn-edit action-btn"
+                                                    style={{
+                                                        background: '#ff8a65',
+                                                        color: 'white',
+                                                        border: 'none',
+                                                        borderRadius: '6px',
+                                                        padding: '0.4rem 0.9rem',
+                                                        fontWeight: 600,
+                                                        cursor: 'pointer',
+                                                        boxShadow: '0 1px 4px #e0e0e0',
+                                                        transition: 'background 0.2s',
+                                                        width: '90px',
+                                                        height: '32px',
+                                                        fontSize: '0.85rem'
+                                                    }}
+                                                    title="Enviar a pendientes"
+                                                >Pendientes</button>
                             </div>
                         </div>
                     ))}
