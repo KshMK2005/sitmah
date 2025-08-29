@@ -45,6 +45,7 @@ const handlePendiente = async (id) => {
             estado: 'pendiente',
             usuarioModificacion: localStorage.getItem('userName') || 'verificador'
         });
+        localStorage.setItem('flashPendienteId', id); // Para animación en Pendientes.jsx
         Swal.fire({
             title: 'Movido a pendientes',
             text: 'La apertura ha sido enviada a pendientes.',
