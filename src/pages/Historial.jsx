@@ -9,7 +9,7 @@ import './Historial.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-// Estilos CSS para animaciones de expansión
+
 const animationStyles = `
   @keyframes slideDown {
     from {
