@@ -425,151 +425,87 @@ function Dashboard() {
         nombre: 'GRAN VIALE',
         tipo: 'gran viale',
         img: granVialeImg,
-              fallas: (aperturasDeFecha) => {
-        const arr = aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === 'gran viale' && a.estado === 'pendiente');
-        if (arr.length === 0) return 'Ninguna';
-        
-        // Extraer tipo de falla de observaciones
-        const fallasConTipo = arr.map(a => {
-          const economico = a.economico || '';
-          let tipoFalla = '';
-          
-          if (a.observaciones && a.observaciones.includes('REGRESO POR FALLA TÉCNICA:')) {
-            tipoFalla = a.observaciones.split('REGRESO POR FALLA TÉCNICA:')[1]?.trim() || '';
-          }
-          
-          return tipoFalla ? `${economico} (${tipoFalla})` : economico;
-        });
-        
-        // Si todas tienen el mismo tipo de falla, agrupar
-        const tiposUnicos = [...new Set(fallasConTipo.map(f => f.includes('(') ? f.split('(')[1]?.split(')')[0] : ''))];
-        if (tiposUnicos.length === 1 && tiposUnicos[0]) {
-          const economicos = arr.map(a => a.economico || '').join(', ');
-          return `${economicos} (${tiposUnicos[0]})`;
+        fallas: (aperturasDeFecha) => {
+          // Solo mostrar unidades regresadas (con observaciones de regreso)
+          const arr = aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === 'gran viale' && a.estado === 'pendiente' && a.observaciones && a.observaciones.toUpperCase().includes('REGRESO POR'));
+          if (arr.length === 0) return 'Ninguna';
+          return arr.map(a => {
+            const economico = a.economico || '';
+            let tipoFalla = '';
+            if (a.observaciones && a.observaciones.includes('REGRESO POR FALLA TÉCNICA:')) {
+              tipoFalla = a.observaciones.split('REGRESO POR FALLA TÉCNICA:')[1]?.trim() || '';
+            }
+            return tipoFalla ? `${economico} (${tipoFalla})` : economico;
+          }).join(', ');
         }
-        
-        return fallasConTipo.join(', ');
-      }
       },
       {
         nombre: 'BÓXER',
         tipo: 'boxer',
         img: boxerImg,
-              fallas: (aperturasDeFecha) => {
-        const arr = aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === 'boxer' && a.estado === 'pendiente');
-        if (arr.length === 0) return 'Ninguna';
-        
-        // Extraer tipo de falla de observaciones
-        const fallasConTipo = arr.map(a => {
-          const economico = a.economico || '';
-          let tipoFalla = '';
-          
-          if (a.observaciones && a.observaciones.includes('REGRESO POR FALLA TÉCNICA:')) {
-            tipoFalla = a.observaciones.split('REGRESO POR FALLA TÉCNICA:')[1]?.trim() || '';
-          }
-          
-          return tipoFalla ? `${economico} (${tipoFalla})` : economico;
-        });
-        
-        // Si todas tienen el mismo tipo de falla, agrupar
-        const tiposUnicos = [...new Set(fallasConTipo.map(f => f.includes('(') ? f.split('(')[1]?.split(')')[0] : ''))];
-        if (tiposUnicos.length === 1 && tiposUnicos[0]) {
-          const economicos = arr.map(a => a.economico || '').join(', ');
-          return `${economicos} (${tiposUnicos[0]})`;
+        fallas: (aperturasDeFecha) => {
+          const arr = aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === 'boxer' && a.estado === 'pendiente' && a.observaciones && a.observaciones.toUpperCase().includes('REGRESO POR'));
+          if (arr.length === 0) return 'Ninguna';
+          return arr.map(a => {
+            const economico = a.economico || '';
+            let tipoFalla = '';
+            if (a.observaciones && a.observaciones.includes('REGRESO POR FALLA TÉCNICA:')) {
+              tipoFalla = a.observaciones.split('REGRESO POR FALLA TÉCNICA:')[1]?.trim() || '';
+            }
+            return tipoFalla ? `${economico} (${tipoFalla})` : economico;
+          }).join(', ');
         }
-        
-        return fallasConTipo.join(', ');
-      }
       },
       {
         nombre: 'SPRINTER',
         tipo: 'sprinter',
         img: sprinterImg,
-              fallas: (aperturasDeFecha) => {
-        const arr = aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === 'sprinter' && a.estado === 'pendiente');
-        if (arr.length === 0) return 'Ninguna';
-        
-        // Extraer tipo de falla de observaciones
-        const fallasConTipo = arr.map(a => {
-          const economico = a.economico || '';
-          let tipoFalla = '';
-          
-          if (a.observaciones && a.observaciones.includes('REGRESO POR FALLA TÉCNICA:')) {
-            tipoFalla = a.observaciones.split('REGRESO POR FALLA TÉCNICA:')[1]?.trim() || '';
-          }
-          
-          return tipoFalla ? `${economico} (${tipoFalla})` : economico;
-        });
-        
-        // Si todas tienen el mismo tipo de falla, agrupar
-        const tiposUnicos = [...new Set(fallasConTipo.map(f => f.includes('(') ? f.split('(')[1]?.split(')')[0] : ''))];
-        if (tiposUnicos.length === 1 && tiposUnicos[0]) {
-          const economicos = arr.map(a => a.economico || '').join(', ');
-          return `${economicos} (${tiposUnicos[0]})`;
+        fallas: (aperturasDeFecha) => {
+          const arr = aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === 'sprinter' && a.estado === 'pendiente' && a.observaciones && a.observaciones.toUpperCase().includes('REGRESO POR'));
+          if (arr.length === 0) return 'Ninguna';
+          return arr.map(a => {
+            const economico = a.economico || '';
+            let tipoFalla = '';
+            if (a.observaciones && a.observaciones.includes('REGRESO POR FALLA TÉCNICA:')) {
+              tipoFalla = a.observaciones.split('REGRESO POR FALLA TÉCNICA:')[1]?.trim() || '';
+            }
+            return tipoFalla ? `${economico} (${tipoFalla})` : economico;
+          }).join(', ');
         }
-        
-        return fallasConTipo.join(', ');
-      }
       },
       {
         nombre: 'VAGONETA',
         tipo: 'vagoneta',
         img: vagonetaImg,
-              fallas: (aperturasDeFecha) => {
-        const arr = aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === 'vagoneta' && a.estado === 'pendiente');
-        if (arr.length === 0) return 'Ninguna';
-        
-        // Extraer tipo de falla de observaciones
-        const fallasConTipo = arr.map(a => {
-          const economico = a.economico || '';
-          let tipoFalla = '';
-          
-          if (a.observaciones && a.observaciones.includes('REGRESO POR FALLA TÉCNICA:')) {
-            tipoFalla = a.observaciones.split('REGRESO POR FALLA TÉCNICA:')[1]?.trim() || '';
-          }
-          
-          return tipoFalla ? `${economico} (${tipoFalla})` : economico;
-        });
-        
-        // Si todas tienen el mismo tipo de falla, agrupar
-        const tiposUnicos = [...new Set(fallasConTipo.map(f => f.includes('(') ? f.split('(')[1]?.split(')')[0] : ''))];
-        if (tiposUnicos.length === 1 && tiposUnicos[0]) {
-          const economicos = arr.map(a => a.economico || '').join(', ');
-          return `${economicos} (${tiposUnicos[0]})`;
+        fallas: (aperturasDeFecha) => {
+          const arr = aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === 'vagoneta' && a.estado === 'pendiente' && a.observaciones && a.observaciones.toUpperCase().includes('REGRESO POR'));
+          if (arr.length === 0) return 'Ninguna';
+          return arr.map(a => {
+            const economico = a.economico || '';
+            let tipoFalla = '';
+            if (a.observaciones && a.observaciones.includes('REGRESO POR FALLA TÉCNICA:')) {
+              tipoFalla = a.observaciones.split('REGRESO POR FALLA TÉCNICA:')[1]?.trim() || '';
+            }
+            return tipoFalla ? `${economico} (${tipoFalla})` : economico;
+          }).join(', ');
         }
-        
-        return fallasConTipo.join(', ');
-      }
       },
       {
         nombre: 'ORIÓN',
         tipo: 'orion',
         img: orionImg,
-              fallas: (aperturasDeFecha) => {
-        const arr = aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === 'orion' && a.estado === 'pendiente');
-        if (arr.length === 0) return 'Ninguna';
-        
-        // Extraer tipo de falla de observaciones
-        const fallasConTipo = arr.map(a => {
-          const economico = a.economico || '';
-          let tipoFalla = '';
-          
-          if (a.observaciones && a.observaciones.includes('REGRESO POR FALLA TÉCNICA:')) {
-            tipoFalla = a.observaciones.split('REGRESO POR FALLA TÉCNICA:')[1]?.trim() || '';
-          }
-          
-          return tipoFalla ? `${economico} (${tipoFalla})` : economico;
-        });
-        
-        // Si todas tienen el mismo tipo de falla, agrupar
-        const tiposUnicos = [...new Set(fallasConTipo.map(f => f.includes('(') ? f.split('(')[1]?.split(')')[0] : ''))];
-        if (tiposUnicos.length === 1 && tiposUnicos[0]) {
-          const economicos = arr.map(a => a.economico || '').join(', ');
-          return `${economicos} (${tiposUnicos[0]})`;
+        fallas: (aperturasDeFecha) => {
+          const arr = aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === 'orion' && a.estado === 'pendiente' && a.observaciones && a.observaciones.toUpperCase().includes('REGRESO POR'));
+          if (arr.length === 0) return 'Ninguna';
+          return arr.map(a => {
+            const economico = a.economico || '';
+            let tipoFalla = '';
+            if (a.observaciones && a.observaciones.includes('REGRESO POR FALLA TÉCNICA:')) {
+              tipoFalla = a.observaciones.split('REGRESO POR FALLA TÉCNICA:')[1]?.trim() || '';
+            }
+            return tipoFalla ? `${economico} (${tipoFalla})` : economico;
+          }).join(', ');
         }
-        
-        return fallasConTipo.join(', ');
-      }
       },
     ];
 
@@ -600,16 +536,14 @@ function Dashboard() {
     });
 
     // Funciones de conteo
-    const unidadesProgramadas = tipo => programacionesDeFecha.filter(p => (p.tipoUnidad || p.tipoVehiculo || '').toLowerCase().trim() === tipo).length;
-    const unidadesEnOperacion = tipo => verificadosDeFechaResumen.filter(v => (v.tipoUnidad || v.tipoVehiculo || '').toLowerCase().trim() === tipo && v.estado === 'completado').length;
-    const unidadesEnFalla = tipo => aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === tipo && (a.estado === 'pendiente' || a.estado === 'apertura')).length;
-    const unidadesEnReserva = tipo => {
-      const programadas = unidadesProgramadas(tipo);
-      const operacion = unidadesEnOperacion(tipo);
-      const fallas = unidadesEnFalla(tipo);
-      const reserva = programadas - (operacion + fallas);
-      return reserva > 0 ? reserva : 0;
-    };
+  // Unidades programadas: solo las programadas en programador.jsx
+  const unidadesProgramadas = tipo => programacionesDeFecha.filter(p => (p.tipoUnidad || p.tipoVehiculo || '').toLowerCase().trim() === tipo).length;
+  // Unidades en operación: solo las aprobadas en verificador.jsx (estado 'dashboard' o 'completado')
+  const unidadesEnOperacion = tipo => aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === tipo && (a.estado === 'dashboard' || a.estado === 'completado')).length;
+  // Unidades en reserva: solo las que están en pendientes.jsx (estado 'pendiente' y NO tienen observaciones de regreso)
+  const unidadesEnReserva = tipo => aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === tipo && a.estado === 'pendiente' && (!a.observaciones || !a.observaciones.toUpperCase().includes('REGRESO POR'))).length;
+  // Unidades con falla: solo las que fueron regresadas desde historialverificador.jsx a pendientes.jsx (estado 'pendiente' y observaciones de regreso)
+  const unidadesEnFalla = tipo => aperturasDeFecha.filter(a => (a.tipoUnidad || a.tipoVehiculo || '').toLowerCase().trim() === tipo && a.estado === 'pendiente' && a.observaciones && a.observaciones.toUpperCase().includes('REGRESO POR')).length;
 
     // Convert all images to Base64
     const imageData = await Promise.all(modelos.map(async (m) => {
