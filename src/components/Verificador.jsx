@@ -1,12 +1,16 @@
 // Guardar cambios de tarjetón y operador en la base de datos por fila
 const handleGuardarFila = async (ap) => {
     try {
-        const tarjeton = editRows[ap._id]?.tarjeton || '';
-        const nombre = editRows[ap._id]?.nombre || '';
+        const row = editRows[ap._id] || {};
         await aperturaService.update(ap._id, {
             ...ap,
-            tarjeton,
-            nombre,
+            ruta: row.ruta ?? ap.ruta,
+            economico: row.economico ?? ap.economico,
+            corridaInicial: row.corridaInicial ?? ap.corridaInicial,
+            horaProgramada: row.horaProgramada ?? ap.horaProgramada,
+            horaSalida: row.horaSalida ?? ap.horaSalida,
+            tarjeton: row.tarjeton ?? ap.tarjeton,
+            nombre: row.nombre ?? ap.nombre,
             usuarioModificacion: localStorage.getItem('userName') || 'verificador'
         });
         await cargarAperturas();
