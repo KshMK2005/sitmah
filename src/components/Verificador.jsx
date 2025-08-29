@@ -759,29 +759,27 @@ return (
                                     style={{ padding: 6, borderRadius: 6, border: '1px solid #ccc', width: 80, textAlign: 'center', textTransform: 'uppercase' }}
                                     autoComplete="off"
                                     spellCheck="false"
-                                    // Nunca disabled ni readOnly
                                 />
                             </div>
                             <div className="table-cell" style={{ textAlign: 'center' }}>{ap.corridaInicial}</div>
                             <div className="table-cell" style={{ textAlign: 'center' }}>{ap.horaProgramada || 'N/A'}</div>
-                            <div className="table-cell" style={{ textAlign: 'center' }}>
-                                <input
-                                    type="time"
-                                    value={/^(\d{2}:\d{2})$/.test(ap.horaSalida || '') ? ap.horaSalida : ''}
-                                    onChange={e => {
-                                        const nuevaHora = e.target.value;
-                                        setAperturas(prev => prev.map(a => a._id === ap._id ? { ...a, horaSalida: nuevaHora } : a));
-                                    }}
-                                    style={{ padding: 4, borderRadius: 4, border: '1px solid #ccc', width: 110 }}
-                                />
-                            </div>
+                            <div className="table-cell" style={{ textAlign: 'center' }}>{ap.horaSalida || ''}</div>
                             <div className="table-cell" style={{ textAlign: 'center' }}>
                                 <input
                                     type="text"
                                     value={editRows[ap._id]?.nombre || ''}
                                     readOnly
                                     placeholder="Operador"
-                                    style={{ padding: 6, borderRadius: 6, border: '1px solid #ccc', width: 180, textAlign: 'center', background: editRows[ap._id]?.nombre && editRows[ap._id]?.nombre !== 'NO SE ENCONTRÓ' ? '#e8f5e8' : '#f7f7fa', fontWeight: editRows[ap._id]?.nombre && editRows[ap._id]?.nombre !== 'NO SE ENCONTRÓ' ? 600 : 500, color: editRows[ap._id]?.nombre === 'NO SE ENCONTRÓ' ? '#f44336' : '#333' }}
+                                    style={{
+                                        padding: 6,
+                                        borderRadius: 6,
+                                        border: '1px solid #ccc',
+                                        width: 180,
+                                        textAlign: 'center',
+                                        background: editRows[ap._id]?.nombre && editRows[ap._id]?.nombre !== 'NO SE ENCONTRÓ' ? '#e8f5e8' : '#f7f7fa',
+                                        fontWeight: editRows[ap._id]?.nombre && editRows[ap._id]?.nombre !== 'NO SE ENCONTRÓ' ? 600 : 500,
+                                        color: editRows[ap._id]?.nombre === 'NO SE ENCONTRÓ' ? '#f44336' : '#333'
+                                    }}
                                 />
                                 {editRows[ap._id]?.buscando && (
                                     <small style={{ color: '#ff9800', fontSize: '0.8rem', marginTop: '0.25rem', display: 'block' }}>
@@ -803,15 +801,15 @@ return (
                                 <button
                                     onClick={() => handleGuardarFila(ap)}
                                     className="btn-edit action-btn"
-                                    style={{ 
-                                        background: '#1bc47d', 
-                                        color: 'white', 
-                                        border: 'none', 
-                                        borderRadius: '6px', 
-                                        padding: '0.4rem 0.9rem', 
-                                        fontWeight: 600, 
-                                        cursor: 'pointer', 
-                                        boxShadow: '0 1px 4px #e0e0e0', 
+                                    style={{
+                                        background: '#1bc47d',
+                                        color: 'white',
+                                        border: 'none',
+                                        borderRadius: '6px',
+                                        padding: '0.4rem 0.9rem',
+                                        fontWeight: 600,
+                                        cursor: 'pointer',
+                                        boxShadow: '0 1px 4px #e0e0e0',
                                         transition: 'background 0.2s',
                                         width: '80px',
                                         height: '32px',
@@ -822,15 +820,15 @@ return (
                                 <button
                                     onClick={() => handleAprobar(ap._id)}
                                     className="btn-edit action-btn"
-                                    style={{ 
-                                        background: '#6F2234', 
-                                        color: 'white', 
-                                        border: 'none', 
-                                        borderRadius: '6px', 
-                                        padding: '0.4rem 0.9rem', 
-                                        fontWeight: 600, 
-                                        cursor: 'pointer', 
-                                        boxShadow: '0 1px 4px #e0e0e0', 
+                                    style={{
+                                        background: '#6F2234',
+                                        color: 'white',
+                                        border: 'none',
+                                        borderRadius: '6px',
+                                        padding: '0.4rem 0.9rem',
+                                        fontWeight: 600,
+                                        cursor: 'pointer',
+                                        boxShadow: '0 1px 4px #e0e0e0',
                                         transition: 'background 0.2s',
                                         width: '80px',
                                         height: '32px',
@@ -841,15 +839,15 @@ return (
                                 <button
                                     onClick={() => handleEditar(ap)}
                                     className="btn-edit action-btn"
-                                    style={{ 
-                                        background: '#f7b731', 
-                                        color: '#6F2234', 
-                                        border: 'none', 
-                                        borderRadius: '6px', 
-                                        padding: '0.4rem 0.9rem', 
-                                        fontWeight: 600, 
-                                        cursor: 'pointer', 
-                                        boxShadow: '0 1px 4px #e0e0e0', 
+                                    style={{
+                                        background: '#f7b731',
+                                        color: '#6F2234',
+                                        border: 'none',
+                                        borderRadius: '6px',
+                                        padding: '0.4rem 0.9rem',
+                                        fontWeight: 600,
+                                        cursor: 'pointer',
+                                        boxShadow: '0 1px 4px #e0e0e0',
                                         transition: 'background 0.2s',
                                         width: '80px',
                                         height: '32px',
@@ -857,7 +855,6 @@ return (
                                     }}
                                     title="Editar apertura"
                                 >Editar</button>
-                                {/* ...modal y botón pendiente igual... */}
                             </div>
                         </div>
                     ))}
