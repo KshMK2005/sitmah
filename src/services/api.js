@@ -88,16 +88,33 @@ export const aperturaService = {
         return response.json();
     },
     async update(id, data) {
+        console.log('📤 Actualizando apertura ID:', id);
+        console.log('📤 Datos enviados:', JSON.stringify(data, null, 2));
+        
         const response = await fetch(`${API_URL}/apertura/${id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         });
+        
+        console.log('📡 Respuesta del servidor:', response.status, response.statusText);
+        
         if (!response.ok) {
-            const error = await response.json();
-            throw new Error(error.error || 'Error al actualizar apertura');
+            const errorText = await response.text();
+            console.error('❌ Error del servidor (texto):', errorText);
+            
+            try {
+                const errorJson = JSON.parse(errorText);
+                console.error('❌ Error del servidor (JSON):', errorJson);
+                throw new Error(errorJson.error || errorJson.message || 'Error al actualizar apertura');
+            } catch (parseError) {
+                throw new Error(`Error ${response.status}: ${errorText}`);
+            }
         }
-        return response.json();
+        
+        const result = await response.json();
+        console.log('✅ Respuesta exitosa:', result);
+        return result;
     },
 
     async verificarRetrasos() {
