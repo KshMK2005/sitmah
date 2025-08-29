@@ -26,28 +26,50 @@ function Verificador() {
         setEditando(ap._id);
         setForm({ ...ap });
     }
-    function handleFormChange(e) {
+    async function handleFormChange(e) {
         const { name, value } = e.target;
         setForm(prev => ({ ...prev, [name]: value }));
+        
+        // Si cambió el tarjetón, buscar el operador automáticamente
+        if (name === 'tarjeton') {
+            console.log('🔍 Tarjetón cambiado a:', value);
+            
+            if (value.trim() !== '') {
+                try {
+                    const { operadorService } = await import('../services/operadores');
+                    const operador = await operadorService.buscarPorTarjeton(value.trim());
+                    
+                    if (operador && operador.nombre) {
+                        console.log('✅ Operador encontrado:', operador.nombre);
+                        setForm(prev => ({ ...prev, nombre: operador.nombre }));
+                    } else {
+                        console.log('❌ Operador no encontrado para tarjetón:', value);
+                        setForm(prev => ({ ...prev, nombre: 'Operador no encontrado' }));
+                    }
+                } catch (error) {
+                    console.error('Error buscando operador:', error);
+                    setForm(prev => ({ ...prev, nombre: 'Error al buscar operador' }));
+                }
+            } else {
+                setForm(prev => ({ ...prev, nombre: '' }));
+            }
+        }
     }
     async function handleGuardarEdicion() {
         try {
             const { _id, estado, ...rest } = form; // Excluir estado para no cambiarlo
-            // Buscar operador por tarjetón antes de guardar
-            let operador = null;
-            try {
-                const { operadorService } = await import('../services/operadores');
-                operador = await operadorService.buscarPorTarjeton(rest.tarjeton);
-            } catch (err) {
-                console.warn('No se encontró operador para el tarjetón:', rest.tarjeton);
-            }
-            // Guardar apertura con el operador encontrado
+            
+            console.log('💾 Guardando cambios:', rest);
+            
+            // Guardar apertura con los datos del formulario (ya incluye el nombre actualizado)
             await aperturaService.update(editando, {
                 ...rest,
-                nombre: operador?.nombre || '-',
+                usuarioModificacion: localStorage.getItem('userName') || 'verificador'
             });
+            
             // Recargar aperturas para reflejar el cambio en la tabla
             await cargarAperturas();
+            
             Swal.fire({ 
                 title: '¡Guardado!', 
                 text: 'Los cambios se han guardado correctamente', 
