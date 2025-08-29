@@ -586,13 +586,22 @@ const pendientes = aperturas.filter(ap => ap.estado === 'pendiente');
 // Estado para edición en línea de tarjetón y nombre
 const [editRows, setEditRows] = useState({});
 
-// Función para manejar el cambio de tarjetón en la tabla
-const handleTarjetonChange = async (id, value) => {
+// Permitir edición libre y buscar operador solo al salir del input
+const handleTarjetonChange = (id, value) => {
     setEditRows(prev => ({
         ...prev,
         [id]: {
             ...prev[id],
-            tarjeton: value,
+            tarjeton: value
+        }
+    }));
+};
+
+const handleTarjetonBlur = async (id, value) => {
+    setEditRows(prev => ({
+        ...prev,
+        [id]: {
+            ...prev[id],
             buscando: true
         }
     }));
@@ -731,6 +740,7 @@ return (
                                     type="text"
                                     value={editRows[ap._id]?.tarjeton || ''}
                                     onChange={e => handleTarjetonChange(ap._id, e.target.value)}
+                                    onBlur={e => handleTarjetonBlur(ap._id, e.target.value)}
                                     placeholder="Tarjetón"
                                     style={{ padding: 6, borderRadius: 6, border: '1px solid #ccc', width: 80, textAlign: 'center', textTransform: 'uppercase' }}
                                     autoComplete="off"
