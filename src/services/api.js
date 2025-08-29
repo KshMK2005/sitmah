@@ -156,11 +156,37 @@ export const usuarioService = {
     },
     // Buscar usuario por nombre
     async getByUsuario(usuario) {
-        const response = await fetch(`${API_URL}/usuarios/${usuario}`);
-        if (!response.ok) {
-            return null;
+        try {
+            console.log('🔍 Buscando usuario:', usuario);
+            console.log('🌐 URL de la petición:', `${API_URL}/usuarios/${usuario}`);
+            
+            const response = await fetch(`${API_URL}/usuarios/${usuario}`);
+            
+            console.log('📡 Respuesta del servidor:', response.status, response.statusText);
+            
+            if (!response.ok) {
+                if (response.status === 404) {
+                    console.log('❌ Usuario no encontrado');
+                    return null;
+                }
+                
+                const errorText = await response.text();
+                console.error('❌ Error del servidor:', errorText);
+                throw new Error(`Error del servidor: ${response.status} - ${errorText}`);
+            }
+            
+            const userData = await response.json();
+            console.log('✅ Usuario encontrado:', userData);
+            return userData;
+        } catch (error) {
+            console.error('❌ Error en getByUsuario:', error);
+            
+            if (error.name === 'TypeError' && error.message.includes('fetch')) {
+                throw new Error('Error de conexión: No se pudo conectar con el servidor');
+            }
+            
+            throw error;
         }
-        return response.json();
     },
     // Buscar usuario por tarjetón
     async getByTarjeton(tarjeton) {

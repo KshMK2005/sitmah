@@ -24,12 +24,19 @@ router.post('/', async (req, res) => {
 // Buscar usuario por nombre
 router.get('/:usuario', async (req, res) => {
   try {
+    console.log('🔍 Buscando usuario en BD:', req.params.usuario);
+    
     const usuario = await Usuario.findOne({ usuario: req.params.usuario });
+    
     if (!usuario) {
+      console.log('❌ Usuario no encontrado en BD:', req.params.usuario);
       return res.status(404).json({ error: 'Usuario no encontrado' });
     }
+    
+    console.log('✅ Usuario encontrado en BD:', usuario.usuario);
     res.json(usuario);
   } catch (err) {
+    console.error('❌ Error al buscar usuario en BD:', err);
     res.status(500).json({ error: 'Error al buscar usuario', message: err.message });
   }
 });
