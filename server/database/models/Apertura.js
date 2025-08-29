@@ -42,21 +42,70 @@ const aperturaSchema = new mongoose.Schema({
         required: [true, 'La hora de salida es obligatoria'],
         validate: {
             validator: function(v) {
-                return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(v);
+                if (!v) return false;
+                
+                // Normalizar la hora antes de validar
+                const normalizeTime = (timeStr) => {
+                    if (!timeStr) return '';
+                    const parts = String(timeStr).trim().split(':');
+                    const hh = String(parts[0] || '00').padStart(2, '0');
+                    const mm = String(parts[1] || '00').padStart(2, '0');
+                    return `${hh}:${mm}`;
+                };
+                
+                const normalizedTime = normalizeTime(v);
+                const regex = /^([01][0-9]|2[0-3]):[0-5][0-9]$/;
+                
+                console.log('🕐 Validando hora de salida:', v, '-> normalizada:', normalizedTime, '-> válida:', regex.test(normalizedTime));
+                
+                return regex.test(normalizedTime);
             },
             message: 'La hora de salida debe estar en formato HH:mm'
+        },
+        // Middleware pre-save para normalizar la hora
+        set: function(v) {
+            if (!v) return v;
+            const parts = String(v).trim().split(':');
+            const hh = String(parts[0] || '00').padStart(2, '0');
+            const mm = String(parts[1] || '00').padStart(2, '0');
+            const normalized = `${hh}:${mm}`;
+            console.log('🔧 Normalizando hora de salida:', v, '->', normalized);
+            return normalized;
         }
     },
     horaProgramada: {
         type: String,
         validate: {
             validator: function(v) {
-                if (v) {
-                    return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(v);
-                }
-                return true;
+                if (!v) return true; // Campo opcional
+                
+                // Normalizar la hora antes de validar
+                const normalizeTime = (timeStr) => {
+                    if (!timeStr) return '';
+                    const parts = String(timeStr).trim().split(':');
+                    const hh = String(parts[0] || '00').padStart(2, '0');
+                    const mm = String(parts[1] || '00').padStart(2, '0');
+                    return `${hh}:${mm}`;
+                };
+                
+                const normalizedTime = normalizeTime(v);
+                const regex = /^([01][0-9]|2[0-3]):[0-5][0-9]$/;
+                
+                console.log('🕐 Validando hora programada:', v, '-> normalizada:', normalizedTime, '-> válida:', regex.test(normalizedTime));
+                
+                return regex.test(normalizedTime);
             },
             message: 'La hora programada debe estar en formato HH:mm'
+        },
+        // Middleware pre-save para normalizar la hora
+        set: function(v) {
+            if (!v) return v;
+            const parts = String(v).trim().split(':');
+            const hh = String(parts[0] || '00').padStart(2, '0');
+            const mm = String(parts[1] || '00').padStart(2, '0');
+            const normalized = `${hh}:${mm}`;
+            console.log('🔧 Normalizando hora programada:', v, '->', normalized);
+            return normalized;
         }
     },
     // Campos existentes

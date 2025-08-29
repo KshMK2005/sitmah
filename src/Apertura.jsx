@@ -157,13 +157,26 @@ function Apertura() {
         usuarioCreacion: localStorage.getItem('userName') || 'sistema'
       };
 
-                console.log('🚀 Datos completos antes de enviar:', JSON.stringify(aperturaData, null, 2));
-          console.log('🔍 Validando formato de hora:', {
-            horaSalida: aperturaData.horaSalida,
-            horaProgramada: aperturaData.horaProgramada,
-            horaSalidaRegex: /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(aperturaData.horaSalida),
-            horaProgramadaRegex: /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(aperturaData.horaProgramada)
-          });
+      // Función para asegurar formato HH:mm
+      const ensureHHmm = (timeStr) => {
+        if (!timeStr) return '00:00';
+        const parts = String(timeStr).trim().split(':');
+        const hh = String(parts[0] || '00').padStart(2, '0');
+        const mm = String(parts[1] || '00').padStart(2, '0');
+        return `${hh}:${mm}`;
+      };
+
+      // Normalizar las horas antes de enviar
+      aperturaData.horaSalida = ensureHHmm(aperturaData.horaSalida);
+      aperturaData.horaProgramada = ensureHHmm(aperturaData.horaProgramada);
+
+      console.log('🚀 Datos completos antes de enviar:', JSON.stringify(aperturaData, null, 2));
+      console.log('🔍 Validando formato de hora:', {
+        horaSalida: aperturaData.horaSalida,
+        horaProgramada: aperturaData.horaProgramada,
+        horaSalidaRegex: /^([01][0-9]|2[0-3]):[0-5][0-9]$/.test(aperturaData.horaSalida),
+        horaProgramadaRegex: /^([01][0-9]|2[0-3]):[0-5][0-9]$/.test(aperturaData.horaProgramada)
+      });
 
           // Crear la apertura en la base de datos
           await aperturaService.create(aperturaData);
@@ -399,7 +412,9 @@ ${JSON.stringify(aperturaData, null, 2)}
             const now = new Date();
             const hh = String(now.getHours()).padStart(2, '0');
             const mm = String(now.getMinutes()).padStart(2, '0');
-            return `${hh}:${mm}`;
+            const formatted = `${hh}:${mm}`;
+            console.log('🕐 Generando hora actual:', formatted);
+            return formatted;
           };
 
           const horaSalidaGenerada = getCurrentTimeFormatted();
@@ -432,12 +447,25 @@ ${JSON.stringify(aperturaData, null, 2)}
             usuarioCreacion: localStorage.getItem('userName') || 'sistema'
           };
 
+          // Función para asegurar formato HH:mm
+          const ensureHHmm = (timeStr) => {
+            if (!timeStr) return '00:00';
+            const parts = String(timeStr).trim().split(':');
+            const hh = String(parts[0] || '00').padStart(2, '0');
+            const mm = String(parts[1] || '00').padStart(2, '0');
+            return `${hh}:${mm}`;
+          };
+
+          // Normalizar las horas antes de enviar
+          aperturaData.horaSalida = ensureHHmm(aperturaData.horaSalida);
+          aperturaData.horaProgramada = ensureHHmm(aperturaData.horaProgramada);
+
           console.log('📦 Importación masiva - Datos antes de enviar:', JSON.stringify(aperturaData, null, 2));
           console.log('🔍 Validando formato de horas en masivo:', {
             horaSalida: aperturaData.horaSalida,
             horaProgramada: aperturaData.horaProgramada,
-            horaSalidaRegex: /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(aperturaData.horaSalida || ''),
-            horaProgramadaRegex: /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(aperturaData.horaProgramada || '')
+            horaSalidaRegex: /^([01][0-9]|2[0-3]):[0-5][0-9]$/.test(aperturaData.horaSalida || ''),
+            horaProgramadaRegex: /^([01][0-9]|2[0-3]):[0-5][0-9]$/.test(aperturaData.horaProgramada || '')
           });
 
           await aperturaService.create(aperturaData);
