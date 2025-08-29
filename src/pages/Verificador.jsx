@@ -26,9 +26,28 @@ function Verificador() {
         setEditando(ap._id);
         setForm({ ...ap });
     }
-    function handleFormChange(e) {
+    async function handleFormChange(e) {
         const { name, value } = e.target;
-        setForm(prev => ({ ...prev, [name]: value }));
+        if (name === 'tarjeton') {
+            setForm(prev => ({ ...prev, tarjeton: value }));
+            // Buscar el nombre del operador en tiempo real
+            if (value.trim() !== '') {
+                try {
+                    const operador = await import('../services/operadores').then(mod => mod.operadorService.buscarPorTarjeton(value.trim()));
+                    if (operador && operador.nombre) {
+                        setForm(prev => ({ ...prev, nombre: operador.nombre }));
+                    } else {
+                        setForm(prev => ({ ...prev, nombre: '' }));
+                    }
+                } catch {
+                    setForm(prev => ({ ...prev, nombre: '' }));
+                }
+            } else {
+                setForm(prev => ({ ...prev, nombre: '' }));
+            }
+        } else {
+            setForm(prev => ({ ...prev, [name]: value }));
+        }
     }
     async function handleGuardarEdicion() {
         try {
@@ -812,6 +831,8 @@ function Verificador() {
                                                     <input name="economico" value={form.economico || ''} onChange={handleFormChange} placeholder="Económico" style={{ padding: 8, borderRadius: 6, border: '1px solid #ccc' }} />
                                                     <label htmlFor="tarjeton">Tarjetón</label>
                                                     <input name="tarjeton" value={form.tarjeton || ''} onChange={handleFormChange} placeholder="Tarjetón" style={{ padding: 8, borderRadius: 6, border: '1px solid #ccc' }} />
+                                                    <label htmlFor="nombre">Nombre de operador</label>
+                                                    <input name="nombre" value={form.nombre || ''} readOnly style={{ padding: 8, borderRadius: 6, border: '1px solid #ccc', background: '#f3f3f3', color: '#6F2234', fontWeight: 600 }} />
                                                     <label htmlFor="corridaInicial">Corrida Inicial</label>
                                                     <input name="corridaInicial" value={form.corridaInicial || ''} onChange={handleFormChange} placeholder="Corrida Inicial" type="number" style={{ padding: 8, borderRadius: 6, border: '1px solid #ccc' }} />
                                                     <label htmlFor="horaProgramada">Hora Programada</label>
