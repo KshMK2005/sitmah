@@ -48,6 +48,14 @@ function Dashboard() {
 
   useEffect(() => {
     cargarDatos();
+    
+    // Auto-refresh cada 30 segundos
+    const interval = setInterval(() => {
+      console.log('🔄 Dashboard auto-refresh');
+      cargarDatos();
+    }, 30000);
+    
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
