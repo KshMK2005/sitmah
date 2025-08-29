@@ -33,17 +33,44 @@ function Verificador() {
     async function handleGuardarEdicion() {
         try {
             const { _id, estado, ...rest } = form; // Excluir estado para no cambiarlo
-            let nombreOperador = '';
-            // Si hay tarjetón, buscar el nombre del operador
-            if (rest.tarjeton && rest.tarjeton.trim() !== '') {
+            let nombreOperador = undefined;
+            // Buscar el original
+            const aperturaOriginal = aperturas.find(ap => ap._id === editando);
+            // Solo buscar el nombre si el tarjetón fue modificado
+            if (aperturaOriginal && rest.tarjeton && rest.tarjeton.trim() !== '' && rest.tarjeton.trim() !== (aperturaOriginal.tarjeton || '').trim()) {
                 try {
                     const operador = await import('../services/operadores').then(mod => mod.operadorService.buscarPorTarjeton(rest.tarjeton.trim()));
                     if (operador && operador.nombre) {
                         nombreOperador = operador.nombre;
+                    } else {
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'No se encontró un operador con ese tarjetón. Verifica el número.',
+                            icon: 'error'
+                        });
+                        return;
                     }
                 } catch (err) {
-                    nombreOperador = '';
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'No se encontró un operador con ese tarjetón. Verifica el número.',
+                        icon: 'error'
+                    });
+                    return;
                 }
+            }
+            // Si no se modificó el tarjetón, mantener el nombre actual
+            if (typeof nombreOperador === 'undefined') {
+                nombreOperador = aperturaOriginal ? aperturaOriginal.nombre : '';
+            }
+            // Validar nombre antes de guardar
+            if (!nombreOperador || nombreOperador.length < 3 || nombreOperador.length > 100) {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'El nombre del operador es inválido. Debe tener entre 3 y 100 caracteres.',
+                    icon: 'error'
+                });
+                return;
             }
             // Actualizar en la base de datos incluyendo el nombre
             const aperturaActualizada = await aperturaService.update(editando, { ...rest, nombre: nombreOperador });
