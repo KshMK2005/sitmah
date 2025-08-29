@@ -36,7 +36,9 @@ function Verificador() {
             // Buscar operador por tarjetón antes de guardar
             let operador = null;
             try {
-                operador = await import('../services/operadores').then(mod => mod.operadorService.buscarPorTarjeton(rest.tarjeton));
+                // Importar el servicio de operadores
+                const { operadorService } = await import('../services/operadores');
+                operador = await operadorService.buscarPorTarjeton(rest.tarjeton);
             } catch (err) {
                 console.warn('No se encontró operador para el tarjetón:', rest.tarjeton);
             }

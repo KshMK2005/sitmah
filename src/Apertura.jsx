@@ -411,12 +411,43 @@ ${JSON.stringify(aperturaData, null, 2)}
   const handleBulkImport = async () => {
     if (importData.length === 0) return;
 
+    // Confirmar con el usuario antes de proceder
+    const result = await Swal.fire({
+      title: '⚠️ Confirmar Importación',
+      html: `
+        <div style="text-align: left; margin: 1rem 0;">
+          <p><strong>Se van a importar ${importData.length} elementos.</strong></p>
+          <p style="color: #dc3545;">⚠️ Esto eliminará todas las aperturas del día actual antes de importar las nuevas.</p>
+          <p>¿Deseas continuar?</p>
+        </div>
+      `,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#6F2234',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, importar',
+      cancelButtonText: 'Cancelar'
+    });
+
+    if (!result.isConfirmed) return;
+
     console.log('🚀 INICIANDO IMPORTACIÓN MASIVA');
     console.log('📊 Cantidad de elementos:', importData.length);
     console.log('⏰ Hora actual del sistema:', new Date().toLocaleString());
 
     setImporting(true);
     try {
+      // Limpiar aperturas del día actual antes de importar
+      const fechaHoy = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+      console.log('🧹 Limpiando aperturas del día:', fechaHoy);
+      
+      try {
+        const deleteResponse = await aperturaService.deleteByDate(fechaHoy);
+        console.log('✅ Limpieza completada:', deleteResponse);
+      } catch (deleteError) {
+        console.warn('⚠️ Error al limpiar (continuando):', deleteError.message);
+      }
+
       let successCount = 0;
       let errorCount = 0;
 
@@ -550,7 +581,18 @@ ${JSON.stringify(aperturaData, null, 2)}
           await aperturaService.create(aperturaData);
           successCount++;
         } catch (error) {
-          console.error('Error al crear apertura:', error);
+          console.error('❌ Error al crear apertura:', error);
+          console.error('📋 Datos del elemento que falló:', {
+            ruta: item.ruta,
+            economico: item.economico,
+            tarjeton: item.tarjeton,
+            nombre: item.nombre
+          });
+          
+          if (error.message.includes('tarjetón')) {
+            console.warn('⚠️ Error de tarjetón duplicado para:', item.tarjeton);
+          }
+          
           errorCount++;
         }
       }
