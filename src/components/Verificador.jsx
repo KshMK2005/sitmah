@@ -739,74 +739,12 @@ return (
                                 )}
                             </div>
                             <div className="table-cell" style={{ textAlign: 'center' }}>{ap.economico}</div>
-                            <div className="table-cell" style={{ textAlign: 'center' }}>
-                                <input
-                                    type="text"
-                                    value={editRows[ap._id]?.tarjeton || ''}
-                                    onChange={e => handleTarjetonChange(ap._id, e.target.value)}
-                                    onBlur={e => handleTarjetonBlur(ap._id, e.target.value)}
-                                    placeholder="Tarjetón"
-                                    style={{ padding: 6, borderRadius: 6, border: '1px solid #ccc', width: 80, textAlign: 'center', textTransform: 'uppercase' }}
-                                    autoComplete="off"
-                                    spellCheck="false"
-                                />
-                            </div>
+                            <div className="table-cell" style={{ textAlign: 'center' }}>{ap.tarjeton}</div>
                             <div className="table-cell" style={{ textAlign: 'center' }}>{ap.corridaInicial}</div>
                             <div className="table-cell" style={{ textAlign: 'center' }}>{ap.horaProgramada || 'N/A'}</div>
                             <div className="table-cell" style={{ textAlign: 'center' }}>{ap.horaSalida || ''}</div>
-                            <div className="table-cell" style={{ textAlign: 'center' }}>
-                                <input
-                                    type="text"
-                                    value={editRows[ap._id]?.nombre || ''}
-                                    readOnly
-                                    placeholder="Operador"
-                                    style={{
-                                        padding: 6,
-                                        borderRadius: 6,
-                                        border: '1px solid #ccc',
-                                        width: 180,
-                                        textAlign: 'center',
-                                        background: editRows[ap._id]?.nombre && editRows[ap._id]?.nombre !== 'NO SE ENCONTRÓ' ? '#e8f5e8' : '#f7f7fa',
-                                        fontWeight: editRows[ap._id]?.nombre && editRows[ap._id]?.nombre !== 'NO SE ENCONTRÓ' ? 600 : 500,
-                                        color: editRows[ap._id]?.nombre === 'NO SE ENCONTRÓ' ? '#f44336' : '#333'
-                                    }}
-                                />
-                                {editRows[ap._id]?.buscando && (
-                                    <small style={{ color: '#ff9800', fontSize: '0.8rem', marginTop: '0.25rem', display: 'block' }}>
-                                        🔍 Buscando operador...
-                                    </small>
-                                )}
-                                {editRows[ap._id]?.nombre === 'NO SE ENCONTRÓ' && !editRows[ap._id]?.buscando && (
-                                    <small style={{ color: '#f44336', fontSize: '0.8rem', marginTop: '0.25rem', display: 'block' }}>
-                                        ❌ Operador no encontrado
-                                    </small>
-                                )}
-                                {editRows[ap._id]?.nombre && editRows[ap._id]?.nombre !== 'NO SE ENCONTRÓ' && (
-                                    <small style={{ color: '#4CAF50', fontSize: '0.8rem', marginTop: '0.25rem', display: 'block' }}>
-                                        ✓ Operador encontrado automáticamente
-                                    </small>
-                                )}
-                            </div>
+                            <div className="table-cell" style={{ textAlign: 'center' }}>{ap.nombre || ''}</div>
                             <div className="table-cell" style={{ textAlign: 'center', display: 'flex', gap: '0.3rem', flexWrap: 'wrap', justifyContent: 'center' }}>
-                                <button
-                                    onClick={() => handleGuardarFila(ap)}
-                                    className="btn-edit action-btn"
-                                    style={{
-                                        background: '#1bc47d',
-                                        color: 'white',
-                                        border: 'none',
-                                        borderRadius: '6px',
-                                        padding: '0.4rem 0.9rem',
-                                        fontWeight: 600,
-                                        cursor: 'pointer',
-                                        boxShadow: '0 1px 4px #e0e0e0',
-                                        transition: 'background 0.2s',
-                                        width: '80px',
-                                        height: '32px',
-                                        fontSize: '0.85rem'
-                                    }}
-                                    title="Guardar cambios"
-                                >Guardar</button>
                                 <button
                                     onClick={() => handleAprobar(ap._id)}
                                     className="btn-edit action-btn"
@@ -850,6 +788,48 @@ return (
                     ))}
                 </div>
             </div>
+            {/* Modal de edición al estilo Pendientes.jsx */}
+            {editando && (
+                <div className="modal-edicion-pendientes" style={{
+                    position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(0,0,0,0.25)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center'
+                }}>
+                    <div style={{ background: 'white', borderRadius: 12, padding: 32, minWidth: 400, boxShadow: '0 2px 12px #6F2234a0', maxWidth: 500 }}>
+                        <h3 style={{ color: '#6F2234', marginBottom: 18 }}>Editar Apertura</h3>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                            <label htmlFor="ruta">Ruta</label>
+                            <input name="ruta" value={form.ruta || ''} onChange={handleFormChange} placeholder="Ruta" style={{ padding: 8, borderRadius: 6, border: '1px solid #ccc' }} />
+                            <label htmlFor="economico">Económico</label>
+                            <input name="economico" value={form.economico || ''} onChange={handleFormChange} placeholder="Económico" style={{ padding: 8, borderRadius: 6, border: '1px solid #ccc' }} />
+                            <label htmlFor="tarjeton">Tarjetón</label>
+                            <input name="tarjeton" value={form.tarjeton || ''} onChange={handleFormChange} placeholder="Tarjetón" style={{ padding: 8, borderRadius: 6, border: '1px solid #ccc' }} />
+                            <label htmlFor="corridaInicial">Corrida Inicial</label>
+                            <input name="corridaInicial" value={form.corridaInicial || ''} onChange={handleFormChange} placeholder="Corrida Inicial" type="number" style={{ padding: 8, borderRadius: 6, border: '1px solid #ccc' }} />
+                            <label htmlFor="horaProgramada">Salida Programada</label>
+                            <input name="horaProgramada" value={form.horaProgramada || ''} onChange={handleFormChange} placeholder="Salida Programada" type="time" style={{ padding: 8, borderRadius: 6, border: '1px solid #ccc' }} />
+                            <label htmlFor="horaSalida">Hora Salida</label>
+                            <input name="horaSalida" value={form.horaSalida || ''} onChange={handleFormChange} placeholder="Hora Salida" type="time" style={{ padding: 8, borderRadius: 6, border: '1px solid #ccc' }} />
+                            <label htmlFor="nombre">Operador</label>
+                            <input name="nombre" value={form.nombre || ''} onChange={handleFormChange} placeholder="Nombre del operador" style={{ padding: 8, borderRadius: 6, border: '1px solid #ccc' }} />
+                            {form.fechaRegreso && (
+                                <>
+                                    <label htmlFor="observaciones">Motivo de Regreso</label>
+                                    <textarea 
+                                        name="observaciones" 
+                                        value={form.observaciones || ''} 
+                                        onChange={handleFormChange} 
+                                        placeholder="Motivo del regreso..." 
+                                        style={{ padding: 8, borderRadius: 6, border: '1px solid #ccc', minHeight: '60px', resize: 'vertical' }} 
+                                    />
+                                </>
+                            )}
+                        </div>
+                        <div style={{ display: 'flex', gap: 12, marginTop: 24, justifyContent: 'flex-end' }}>
+                            <button onClick={handleGuardarEdicion} style={{ background: '#6F2234', color: 'white', border: 'none', borderRadius: 6, padding: '0.5rem 1.2rem', fontWeight: 600, cursor: 'pointer' }}>Guardar</button>
+                            <button onClick={handleCancelarEdicion} style={{ background: '#ccc', color: '#333', border: 'none', borderRadius: 6, padding: '0.5rem 1.2rem', fontWeight: 600, cursor: 'pointer' }}>Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+            )}
             {/* ...mensaje de tabla vacía igual... */}
         </main>
     </div>
