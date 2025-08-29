@@ -60,20 +60,19 @@ function handleFormChange(e) {
 async function handleGuardarEdicion() {
     try {
         const { _id, estado, ...rest } = form; // Excluir estado para no cambiarlo
-        // Buscar operador por tarjetón antes de guardar
+        // Buscar operador por tarjetón antes de guardar, pero permitir guardar aunque no exista
         let operador = null;
         try {
             const { operadorService } = await import('../services/operadores');
             operador = await operadorService.buscarPorTarjeton(rest.tarjeton);
         } catch (err) {
-            console.warn('No se encontró operador para el tarjetón:', rest.tarjeton);
+            // No bloquear el guardado si no existe operador
+            operador = null;
         }
-        // Guardar apertura con el operador encontrado
         await aperturaService.update(editando, {
             ...rest,
-            nombre: operador?.nombre || '-',
+            nombre: operador?.nombre || rest.nombre || '-',
         });
-        // Recargar aperturas para reflejar el cambio en la tabla
         await cargarAperturas();
         Swal.fire({ 
             title: '¡Guardado!', 
@@ -734,6 +733,9 @@ return (
                                     onChange={e => handleTarjetonChange(ap._id, e.target.value)}
                                     placeholder="Tarjetón"
                                     style={{ padding: 6, borderRadius: 6, border: '1px solid #ccc', width: 80, textAlign: 'center', textTransform: 'uppercase' }}
+                                    autoComplete="off"
+                                    spellCheck="false"
+                                    // Nunca disabled ni readOnly
                                 />
                             </div>
                             <div className="table-cell" style={{ textAlign: 'center' }}>{ap.corridaInicial}</div>
