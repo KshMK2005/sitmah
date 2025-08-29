@@ -1,12 +1,16 @@
 // Guardar cambios de tarjetón y operador en la base de datos por fila
 const handleGuardarFila = async (ap) => {
     try {
-        const tarjeton = editRows[ap._id]?.tarjeton || '';
-        const nombre = editRows[ap._id]?.nombre || '';
+        const row = editRows[ap._id] || {};
         await aperturaService.update(ap._id, {
             ...ap,
-            tarjeton,
-            nombre,
+            ruta: row.ruta ?? ap.ruta,
+            economico: row.economico ?? ap.economico,
+            corridaInicial: row.corridaInicial ?? ap.corridaInicial,
+            horaProgramada: row.horaProgramada ?? ap.horaProgramada,
+            horaSalida: row.horaSalida ?? ap.horaSalida,
+            tarjeton: row.tarjeton ?? ap.tarjeton,
+            nombre: row.nombre ?? ap.nombre,
             usuarioModificacion: localStorage.getItem('userName') || 'verificador'
         });
         await cargarAperturas();
@@ -41,6 +45,7 @@ const [filtros, setFiltros] = useState({
     tipoUnidad: '',
     fecha: ''
 });
+const [mostrarPendientes, setMostrarPendientes] = useState(false);
 const [validaciones, setValidaciones] = useState({});
 const [aperturaVerificando, setAperturaVerificando] = useState(null); // NUEVO estado para el modal
 const [editando, setEditando] = useState(null);
@@ -60,20 +65,19 @@ function handleFormChange(e) {
 async function handleGuardarEdicion() {
     try {
         const { _id, estado, ...rest } = form; // Excluir estado para no cambiarlo
-        // Buscar operador por tarjetón antes de guardar
+        // Buscar operador por tarjetón antes de guardar, pero permitir guardar aunque no exista
         let operador = null;
         try {
             const { operadorService } = await import('../services/operadores');
             operador = await operadorService.buscarPorTarjeton(rest.tarjeton);
         } catch (err) {
-            console.warn('No se encontró operador para el tarjetón:', rest.tarjeton);
+            // No bloquear el guardado si no existe operador
+            operador = null;
         }
-        // Guardar apertura con el operador encontrado
         await aperturaService.update(editando, {
             ...rest,
-            nombre: operador?.nombre || '-',
+            nombre: operador?.nombre || rest.nombre || '-',
         });
-        // Recargar aperturas para reflejar el cambio en la tabla
         await cargarAperturas();
         Swal.fire({ 
             title: '¡Guardado!', 
@@ -141,8 +145,11 @@ const handleFiltroChange = (e) => {
 };
 
 const filtrarAperturas = () => {
-    return aperturas.filter(ap => {
-        // Mostrar todas las aperturas para verificación (sin validar estado)
+    let lista = aperturas;
+    if (mostrarPendientes) {
+        lista = lista.filter(ap => ap.estado === 'pendiente');
+    }
+    return lista.filter(ap => {
         const cumpleRuta = !filtros.ruta || ap.ruta.toLowerCase().includes(filtros.ruta.toLowerCase());
         const cumpleTipo = !filtros.tipoUnidad || ap.tipoUnidad === filtros.tipoUnidad;
         const cumpleFecha = !filtros.fecha || new Date(ap.fechaApertura).toLocaleDateString() === new Date(filtros.fecha).toLocaleDateString();
@@ -587,13 +594,22 @@ const pendientes = aperturas.filter(ap => ap.estado === 'pendiente');
 // Estado para edición en línea de tarjetón y nombre
 const [editRows, setEditRows] = useState({});
 
-// Función para manejar el cambio de tarjetón en la tabla
-const handleTarjetonChange = async (id, value) => {
+// Permitir edición libre y buscar operador solo al salir del input
+const handleTarjetonChange = (id, value) => {
     setEditRows(prev => ({
         ...prev,
         [id]: {
             ...prev[id],
-            tarjeton: value,
+            tarjeton: value
+        }
+    }));
+};
+
+const handleTarjetonBlur = async (id, value) => {
+    setEditRows(prev => ({
+        ...prev,
+        [id]: {
+            ...prev[id],
             buscando: true
         }
     }));
@@ -613,24 +629,34 @@ const handleTarjetonChange = async (id, value) => {
             ...prev,
             [id]: {
                 ...prev[id],
-                nombre: '',
+                nombre: 'NO SE ENCONTRÓ',
                 buscando: false
             }
         }));
     }
 };
 
-// Inicializar los valores editables al cargar aperturas
+// Inicializar solo filas nuevas en editRows, sin sobrescribir cambios del usuario
 useEffect(() => {
-    const initial = {};
-    aperturasOrdenadas.forEach(ap => {
-        initial[ap._id] = {
-            tarjeton: ap.tarjeton || '',
-            nombre: ap.nombre || '',
-            buscando: false
-        };
+    setEditRows(prev => {
+        const updated = { ...prev };
+        aperturasOrdenadas.forEach(ap => {
+            if (!updated[ap._id]) {
+                updated[ap._id] = {
+                    tarjeton: ap.tarjeton || '',
+                    nombre: ap.nombre || '',
+                    buscando: false
+                };
+            }
+        });
+        // Opcional: limpiar filas que ya no existen en aperturasOrdenadas
+        Object.keys(updated).forEach(id => {
+            if (!aperturasOrdenadas.find(ap => ap._id === id)) {
+                delete updated[id];
+            }
+        });
+        return updated;
     });
-    setEditRows(initial);
 }, [aperturasOrdenadas]);
 
 return (
@@ -644,6 +670,27 @@ return (
             borderRadius: '12px',
             boxShadow: '0 2px 12px rgba(0,0,0,0.08)'
         }}>
+            <div style={{ marginBottom: '1rem', display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                <button
+                    className="btn-pendientes"
+                    style={{
+                        background: mostrarPendientes ? '#6F2234' : '#e0e0e0',
+                        color: mostrarPendientes ? 'white' : '#6F2234',
+                        border: 'none',
+                        borderRadius: 8,
+                        padding: '0.6rem 1.5rem',
+                        fontWeight: 700,
+                        fontSize: '1.05rem',
+                        cursor: 'pointer',
+                        boxShadow: '0 1px 4px #e0e0e0',
+                        transition: 'background 0.2s',
+                    }}
+                    onClick={() => setMostrarPendientes(p => !p)}
+                >{mostrarPendientes ? 'Ver Todos' : 'Pendientes'}</button>
+                <span style={{ color: '#6F2234', fontWeight: 600 }}>
+                    Pendientes: {aperturas.filter(ap => ap.estado === 'pendiente').length}
+                </span>
+            </div>
             {/* ...filtros y encabezado igual... */}
             <div className="table-container" style={{
                 width: '100%',
@@ -732,8 +779,12 @@ return (
                                     type="text"
                                     value={editRows[ap._id]?.tarjeton || ''}
                                     onChange={e => handleTarjetonChange(ap._id, e.target.value)}
+                                    onBlur={e => handleTarjetonBlur(ap._id, e.target.value)}
                                     placeholder="Tarjetón"
                                     style={{ padding: 6, borderRadius: 6, border: '1px solid #ccc', width: 80, textAlign: 'center', textTransform: 'uppercase' }}
+                                    autoComplete="off"
+                                    spellCheck="false"
+                                    // Nunca disabled ni readOnly
                                 />
                             </div>
                             <div className="table-cell" style={{ textAlign: 'center' }}>{ap.corridaInicial}</div>
@@ -755,19 +806,19 @@ return (
                                     value={editRows[ap._id]?.nombre || ''}
                                     readOnly
                                     placeholder="Operador"
-                                    style={{ padding: 6, borderRadius: 6, border: '1px solid #ccc', width: 180, textAlign: 'center', background: editRows[ap._id]?.nombre ? '#e8f5e8' : '#f7f7fa', fontWeight: editRows[ap._id]?.nombre ? 600 : 500, color: '#333' }}
+                                    style={{ padding: 6, borderRadius: 6, border: '1px solid #ccc', width: 180, textAlign: 'center', background: editRows[ap._id]?.nombre && editRows[ap._id]?.nombre !== 'NO SE ENCONTRÓ' ? '#e8f5e8' : '#f7f7fa', fontWeight: editRows[ap._id]?.nombre && editRows[ap._id]?.nombre !== 'NO SE ENCONTRÓ' ? 600 : 500, color: editRows[ap._id]?.nombre === 'NO SE ENCONTRÓ' ? '#f44336' : '#333' }}
                                 />
                                 {editRows[ap._id]?.buscando && (
                                     <small style={{ color: '#ff9800', fontSize: '0.8rem', marginTop: '0.25rem', display: 'block' }}>
                                         🔍 Buscando operador...
                                     </small>
                                 )}
-                                {editRows[ap._id]?.tarjeton && !editRows[ap._id]?.nombre && !editRows[ap._id]?.buscando && (
+                                {editRows[ap._id]?.nombre === 'NO SE ENCONTRÓ' && !editRows[ap._id]?.buscando && (
                                     <small style={{ color: '#f44336', fontSize: '0.8rem', marginTop: '0.25rem', display: 'block' }}>
                                         ❌ Operador no encontrado
                                     </small>
                                 )}
-                                {editRows[ap._id]?.nombre && (
+                                {editRows[ap._id]?.nombre && editRows[ap._id]?.nombre !== 'NO SE ENCONTRÓ' && (
                                     <small style={{ color: '#4CAF50', fontSize: '0.8rem', marginTop: '0.25rem', display: 'block' }}>
                                         ✓ Operador encontrado automáticamente
                                     </small>
