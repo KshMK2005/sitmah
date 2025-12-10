@@ -61,106 +61,61 @@ function Programador() {
         }
     }, [location]);
 
-    // Manejador de carga de Excel para programaciones
-    const handleProgramFileUpload = (event) => {
-        const file = event.target.files && event.target.files[0];
-        if (!file) return;
+const handleProgramFileUpload = (event) => {
+    const file = event.target.files && event.target.files[0];
+    if (!file) return;
 
-        const reader = new FileReader();
-        reader.onload = async (e) => {
-            try {
-                const data = new Uint8Array(e.target.result);
-                const workbook = XLSX.read(data, { type: 'array' });
-                const sheetName = workbook.SheetNames[0];
-                const worksheet = workbook.Sheets[sheetName];
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+        try {
+            // ... (código existente hasta el bloque try-catch de las filas)
 
-                // Intentar leer con cabeceras si las tiene
-                const rowsWithHeaders = XLSX.utils.sheet_to_json(worksheet, { defval: '' });
+            Swal.fire({
+                title: 'Confirmar Importación',
+                html: resumen.replace(/\n/g, '<br/>') + '<br/><br/>¿Deseas continuar?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Continuar',
+                cancelButtonText: 'Cancelar'
+            }).then(async (result) => {
+                if (!result.isConfirmed) return;
 
-                let rows = [];
-                if (rowsWithHeaders && rowsWithHeaders.length > 0) {
-                    rows = rowsWithHeaders;
-                } else {
-                    // Fallback: leer como matriz y mapear por posición
-                    // Columnas esperadas: 0=ruta, 1=tipoVehiculo, 2=numeroEconomico, 3=cantidadUnidades, 4=intervalo, 5=numeroCorridaInicial
-                    const raw = XLSX.utils.sheet_to_json(worksheet, { header: 1, defval: '' });
-                    rows = raw.map(r => ({
-                        ruta: r[0] || '',
-                        tipoVehiculo: r[1] || '',
-                        numeroEconomico: r[2] || '',
-                        cantidadUnidades: r[3] || '',
-                        intervalo: r[4] || '',
-                        numeroCorridaInicial: r[5] || '',
-                        horaSalida: r[6] || '05:30',
-                        programador: r[7] || (localStorage.getItem('userName') || 'sistema')
-                    })).filter(r => r.ruta);
-                }
-
-                // Filtrar filas vacías y excluir encabezados
-                const filteredRows = rows.filter(r => {
-                    if (!r.ruta) return false;
-                    // Excluir posibles filas de encabezado
-                    const rutaLower = String(r.ruta || '').toLowerCase();
-                    const tipoLower = String(r.tipoVehiculo || '').toLowerCase();
-                    const looksHeader = rutaLower.includes('ruta') || tipoLower.includes('tipo') || rutaLower.includes('route');
-                    return !looksHeader;
-                });
-
-                if (filteredRows.length === 0) {
-                    Swal.fire({
-                        title: 'Advertencia',
-                        text: 'No se encontraron filas válidas en el Excel',
-                        icon: 'warning'
-                    });
-                    return;
-                }
-
-                // Mostrar resumen de previsualización
-                const resumen = `Se van a importar ${filteredRows.length} programaciones.`;
-                Swal.fire({
-                    title: 'Confirmar Importación',
-                    html: resumen + '<br/>¿Deseas continuar?',
-                    icon: 'question',
-                    showCancelButton: true,
-                    confirmButtonText: 'Continuar',
-                    cancelButtonText: 'Cancelar'
-                }).then(async (result) => {
-                    if (!result.isConfirmed) return;
-
-                    // Guardar cada fila como programación
+                try {
                     let success = 0;
                     let errors = [];
+                    
                     for (const row of filteredRows) {
                         try {
-                            // Interpretar 'numeroCorridaInicial' como cantidad de corridas
-                            // Si hay corridaFinal, usarlo; si no, usar corridaInicial como rango (1 a N)
-                            const cantidadCorridas = parseInt(row.numeroCorridaInicial) || 1;
-                            
                             const payload = {
-                                ruta: String(row.ruta || '').trim(),
-                                tipoVehiculo: String(row.tipoVehiculo || row.tipoUnidad || '').trim().toUpperCase(),
-                                numeroEconomico: String(row.numeroEconomico || row.numero || '').trim().toUpperCase(),
-                                cantidadUnidades: parseInt(row.cantidadUnidades) || 1,
-                                intervalo: parseInt(row.intervalo) || 15,
+                                ruta: String(row['RUTA'] || '').trim(),
+                                tipoVehiculo: String(row['TIPO DE VEHÍCULO'] || '').trim().toUpperCase(),
+                                cantidadUnidades: parseInt(row['CANTIDAD DE UNIDADES']) || 1,
+                                kilometraje: parseInt(row['KILOMETRAJE PROGRAMADO']) || 0,
+                                viajesProgramados: parseInt(row['VIAJES PROGRAMADOS']) || 0,
+                                intervaloPico: String(row['INTERVALO HR PICO'] || '').trim(),
+                                intervaloValle: String(row['INTERVALO HR VALLE'] || '').trim(),
+                                programador: localStorage.getItem('userName') || 'sistema',
+                                // Mantener compatibilidad
+                                intervalo: 15,
                                 corridaInicial: 1,
-                                corridaFinal: cantidadCorridas,  // cantidad total de corridas
-                                horaSalida: String(row.horaSalida || '05:30').trim(),
-                                programador: row.programador || (localStorage.getItem('userName') || 'sistema')
+                                corridaFinal: 1,
+                                horaSalida: '05:30'
                             };
 
-                            // Validar que los campos obligatorios existan
+                            // Validar campos obligatorios
                             if (!payload.ruta || !payload.tipoVehiculo) {
-                                throw new Error('Faltan datos obligatorios (ruta o tipoVehiculo)');
+                                throw new Error('Faltan datos obligatorios (ruta o tipo de vehículo)');
                             }
 
                             await programacionService.create(payload);
                             success++;
-                        } catch (err) {
-                            console.error('Error al crear programación desde Excel:', err);
-                            errors.push(`Ruta ${row.ruta || '?'}: ${err.message || 'Error desconocido'}`);
+                        } catch (error) {
+                            console.error('Error al guardar fila:', error);
+                            errors.push(`Error en ruta ${row['RUTA'] || '?'}: ${error.message}`);
                         }
                     }
 
+                    // Mostrar resumen
                     const resultMessage = errors.length > 0
                         ? `✅ ${success} creadas<br/>❌ ${errors.length} errores: ${errors.slice(0, 3).join('; ')}`
                         : `✅ ${success} programaciones creadas correctamente`;
@@ -173,16 +128,21 @@ function Programador() {
 
                     // Recargar programaciones
                     cargarProgramaciones();
+                } catch (error) {
+                    console.error('Error en la importación:', error);
+                    Swal.fire('Error', 'Ocurrió un error durante la importación', 'error');
+                } finally {
                     // Limpiar input de archivo
                     event.target.value = '';
-                });
-            } catch (error) {
-                console.error('Error al procesar archivo:', error);
-                Swal.fire({ title: 'Error', text: 'Error al procesar el archivo Excel', icon: 'error' });
-            }
-        };
-        reader.readAsArrayBuffer(file);
+                }
+            });
+        } catch (error) {
+            console.error('Error al procesar archivo:', error);
+            Swal.fire('Error', 'Error al procesar el archivo Excel', 'error');
+        }
     };
+    reader.readAsArrayBuffer(file);
+};
 
     const cargarProgramaciones = async () => {
         try {
