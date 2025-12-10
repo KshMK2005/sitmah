@@ -1,0 +1,6 @@
+{
+  "fecha": "2025-09-30T17:45:43.626Z",
+  "error": "Operation `usuarios.find()` buffering timed out after 10000ms",
+  "stack": "MongooseError: Operation `usuarios.find()` buffering timed out after 10000ms\n    at Timeout.<anonymous> (C:\\Users\\AntonioMK\\respaldo5_1\\sitmah\\node_modules\\mongoose\\lib\\drivers\\node-mongodb-native\\collection.js:185:23)\n    at listOnTimeout (node:internal/timers:594:17)\n    at process.processTimers (node:internal/timers:529:7)",
+  "status": "ERROR"
+}

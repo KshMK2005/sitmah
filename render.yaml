@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: sitmah-app
+    env: node
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        fromDatabase:
+          name: sitmah-db
+          property: connectionString
+
+databases:
+  - name: sitmah-db
+    databaseName: sitmah
+    user: sitmah_user 

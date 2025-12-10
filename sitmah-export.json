@@ -1,0 +1,5581 @@
+{
+  "operadors": [
+    {
+      "_id": "6888f8a84ea6b2a69a8e5e8b",
+      "id": 1,
+      "tarjeton": "TPA0001",
+      "nombre": "ORAN AZPEITIA JESÚS",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.871Z",
+      "updatedAt": "2025-07-29T16:36:56.871Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5e8c",
+      "id": 2,
+      "tarjeton": "TPA0002",
+      "nombre": "LEÓN ESQUIVEL REFUGIO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.872Z",
+      "updatedAt": "2025-07-29T16:36:56.872Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5e8d",
+      "id": 3,
+      "tarjeton": "TPA0005",
+      "nombre": "BAUTISTA BAUTISTA EFRAÍN",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.872Z",
+      "updatedAt": "2025-07-29T16:36:56.872Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5e8e",
+      "id": 4,
+      "tarjeton": "TPA0008",
+      "nombre": "SANTILLAN VÁZQUEZ GLADIS",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.872Z",
+      "updatedAt": "2025-07-29T16:36:56.872Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5e8f",
+      "id": 5,
+      "tarjeton": "TPA0009",
+      "nombre": "ISLAS CASTRO GUILLERMO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.872Z",
+      "updatedAt": "2025-07-29T16:36:56.872Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5e90",
+      "id": 6,
+      "tarjeton": "TPA0010",
+      "nombre": "ESCUDERO LARA JOEL",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.872Z",
+      "updatedAt": "2025-07-29T16:36:56.872Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5e91",
+      "id": 7,
+      "tarjeton": "TPA0011",
+      "nombre": "RÍOS SALAS JORGE",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.872Z",
+      "updatedAt": "2025-07-29T16:36:56.872Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5e92",
+      "id": 8,
+      "tarjeton": "TPA0013",
+      "nombre": "ESPINOZA ORTIZ JULIO IVÁN",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.872Z",
+      "updatedAt": "2025-07-29T16:36:56.872Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5e93",
+      "id": 9,
+      "tarjeton": "TPA0014",
+      "nombre": "CERÓN MORALES MATÍAS",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.872Z",
+      "updatedAt": "2025-07-29T16:36:56.872Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5e94",
+      "id": 10,
+      "tarjeton": "TPA0019",
+      "nombre": "CASTILLO MARTÍNEZ MARIO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.873Z",
+      "updatedAt": "2025-07-29T16:36:56.873Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5e95",
+      "id": 11,
+      "tarjeton": "TPA0020",
+      "nombre": "BONILLA CABAÑAS ALEJANDRO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.873Z",
+      "updatedAt": "2025-07-29T16:36:56.873Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5e96",
+      "id": 12,
+      "tarjeton": "TPA0021",
+      "nombre": "HERNÁNDEZ BOJORQUEZ GILBERTO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.873Z",
+      "updatedAt": "2025-07-29T16:36:56.873Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5e97",
+      "id": 13,
+      "tarjeton": "TPA0022",
+      "nombre": "HERNÁNDEZ RÍOS JOSÉ ALFREDO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.873Z",
+      "updatedAt": "2025-07-29T16:36:56.873Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5e98",
+      "id": 14,
+      "tarjeton": "TPA0024",
+      "nombre": "CABAÑAS GARCÍA AGUSTÍN",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.873Z",
+      "updatedAt": "2025-07-29T16:36:56.873Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5e99",
+      "id": 15,
+      "tarjeton": "TPA0028",
+      "nombre": "OLIVARES MENDOZA ÁNGEL",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.873Z",
+      "updatedAt": "2025-07-29T16:36:56.873Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5e9a",
+      "id": 16,
+      "tarjeton": "TPA0029",
+      "nombre": "PADILLA GARCÍA ARMANDO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.873Z",
+      "updatedAt": "2025-07-29T16:36:56.873Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5e9b",
+      "id": 17,
+      "tarjeton": "TPA0034",
+      "nombre": "PÉREZ CASTAÑEDA TOMAS",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.873Z",
+      "updatedAt": "2025-07-29T16:36:56.873Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5e9c",
+      "id": 18,
+      "tarjeton": "TPA0036",
+      "nombre": "GARCÍA CANO ERNESTO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.873Z",
+      "updatedAt": "2025-07-29T16:36:56.873Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5e9d",
+      "id": 19,
+      "tarjeton": "TPA0038",
+      "nombre": "HERNÁNDEZ ALCIBAR FRANCISCO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.873Z",
+      "updatedAt": "2025-07-29T16:36:56.873Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5e9e",
+      "id": 20,
+      "tarjeton": "TPA0039",
+      "nombre": "BARAJAS OLMOS GUSTAVO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.873Z",
+      "updatedAt": "2025-07-29T16:36:56.873Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5e9f",
+      "id": 21,
+      "tarjeton": "TPA0044",
+      "nombre": "DOLORES LÓPEZ ARTEMIO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.873Z",
+      "updatedAt": "2025-07-29T16:36:56.873Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ea0",
+      "id": 22,
+      "tarjeton": "TPA0045",
+      "nombre": "MONZALVO HERNÁNDEZ JAIME",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.873Z",
+      "updatedAt": "2025-07-29T16:36:56.873Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ea1",
+      "id": 23,
+      "tarjeton": "TPA0046",
+      "nombre": "PÉREZ MARTÍNEZ JESÚS",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.873Z",
+      "updatedAt": "2025-07-29T16:36:56.873Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ea2",
+      "id": 24,
+      "tarjeton": "TPA0048",
+      "nombre": "PALOMINO HERNÁNDEZ JOSÉ ROBERTO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.873Z",
+      "updatedAt": "2025-07-29T16:36:56.873Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ea3",
+      "id": 25,
+      "tarjeton": "TPA0052",
+      "nombre": "SÁNCHEZ UBALDO JUAN GERMÁN",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.873Z",
+      "updatedAt": "2025-07-29T16:36:56.873Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ea4",
+      "id": 26,
+      "tarjeton": "TPA0054",
+      "nombre": "MONZALVO MORALES JUAN MANUEL",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.873Z",
+      "updatedAt": "2025-07-29T16:36:56.873Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ea5",
+      "id": 27,
+      "tarjeton": "TPA0056",
+      "nombre": "PRADO GONZÁLEZ MARTÍN GREGORIO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.873Z",
+      "updatedAt": "2025-07-29T16:36:56.873Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ea6",
+      "id": 28,
+      "tarjeton": "TPA0057",
+      "nombre": "GUTIÉRREZ HIDALGO OSCAR",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.873Z",
+      "updatedAt": "2025-07-29T16:36:56.873Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ea7",
+      "id": 29,
+      "tarjeton": "TPA0058",
+      "nombre": "ANAYA AVILÉS OSCAR",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.873Z",
+      "updatedAt": "2025-07-29T16:36:56.873Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ea8",
+      "id": 30,
+      "tarjeton": "TPA0060",
+      "nombre": "VICTORIA RUBIO ROBERTO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.873Z",
+      "updatedAt": "2025-07-29T16:36:56.873Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ea9",
+      "id": 31,
+      "tarjeton": "TPA0061",
+      "nombre": "MONZALVO HERNÁNDEZ SANTIAGO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.873Z",
+      "updatedAt": "2025-07-29T16:36:56.873Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5eaa",
+      "id": 32,
+      "tarjeton": "TPA0067",
+      "nombre": "MARTÍNEZ JIMÉNEZ ALEJANDRO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.874Z",
+      "updatedAt": "2025-07-29T16:36:56.874Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5eab",
+      "id": 33,
+      "tarjeton": "TPA0068",
+      "nombre": "TRUJILLO ALVARADO LUIS PABLO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.874Z",
+      "updatedAt": "2025-07-29T16:36:56.874Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5eac",
+      "id": 34,
+      "tarjeton": "TPA0069",
+      "nombre": "NIETO FLORES MIGUEL ÁNGEL",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.874Z",
+      "updatedAt": "2025-07-29T16:36:56.874Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ead",
+      "id": 35,
+      "tarjeton": "TPA0070",
+      "nombre": "HERNÁNDEZ JUÁREZ NICOLAS",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.874Z",
+      "updatedAt": "2025-07-29T16:36:56.874Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5eae",
+      "id": 36,
+      "tarjeton": "TPA0077",
+      "nombre": "VALENCIA DORANTES JOAQUIN",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.874Z",
+      "updatedAt": "2025-07-29T16:36:56.874Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5eaf",
+      "id": 37,
+      "tarjeton": "TPA0079",
+      "nombre": "MADARIAGA ESPINOSA OSCAR ARMANDO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.874Z",
+      "updatedAt": "2025-07-29T16:36:56.874Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5eb0",
+      "id": 38,
+      "tarjeton": "TPA0080",
+      "nombre": "NORIEGA ORTEGA RAFAEL",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.874Z",
+      "updatedAt": "2025-07-29T16:36:56.874Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5eb1",
+      "id": 39,
+      "tarjeton": "TPA0083",
+      "nombre": "ACAXTENCO MORGADO JOSÉ",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.874Z",
+      "updatedAt": "2025-07-29T16:36:56.874Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5eb2",
+      "id": 40,
+      "tarjeton": "TPA0084",
+      "nombre": "MARTÍNEZ ARISTA FERMIN",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.874Z",
+      "updatedAt": "2025-07-29T16:36:56.874Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5eb3",
+      "id": 41,
+      "tarjeton": "TPA0086",
+      "nombre": "ZUÑIGA OLMOS OSCAR ANDRÉS",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.874Z",
+      "updatedAt": "2025-07-29T16:36:56.874Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5eb4",
+      "id": 42,
+      "tarjeton": "TPA0087",
+      "nombre": "PÉREZ RUÍZ DAVID",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.874Z",
+      "updatedAt": "2025-07-29T16:36:56.874Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5eb5",
+      "id": 43,
+      "tarjeton": "TPA0092",
+      "nombre": "MEJÍA GÓMEZ GABINO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.874Z",
+      "updatedAt": "2025-07-29T16:36:56.874Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5eb6",
+      "id": 44,
+      "tarjeton": "TPA0095",
+      "nombre": "ISLAS MENESES ELOY",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.874Z",
+      "updatedAt": "2025-07-29T16:36:56.874Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5eb7",
+      "id": 45,
+      "tarjeton": "TPA0097",
+      "nombre": "GARCÍA RUIZ JOSÉ LUIS",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.874Z",
+      "updatedAt": "2025-07-29T16:36:56.874Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5eb8",
+      "id": 46,
+      "tarjeton": "TPA0098",
+      "nombre": "SANTILLAN SANTILLAN JUAN CARLOS",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.874Z",
+      "updatedAt": "2025-07-29T16:36:56.874Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5eb9",
+      "id": 47,
+      "tarjeton": "TPA0100",
+      "nombre": "GUTIÉRREZ LUGO ARMANDO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.874Z",
+      "updatedAt": "2025-07-29T16:36:56.874Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5eba",
+      "id": 48,
+      "tarjeton": "TPA0101",
+      "nombre": "RAMÍREZ BARRAZA ÁNGEL GABRIEL",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.874Z",
+      "updatedAt": "2025-07-29T16:36:56.874Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ebb",
+      "id": 49,
+      "tarjeton": "TPA0104",
+      "nombre": "MONTES DE OCA ISLAS OSCAR",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.874Z",
+      "updatedAt": "2025-07-29T16:36:56.874Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ebc",
+      "id": 50,
+      "tarjeton": "TPA0107",
+      "nombre": "RODRÍGUEZ RECILLAS ALEJANDRO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.874Z",
+      "updatedAt": "2025-07-29T16:36:56.874Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ebd",
+      "id": 51,
+      "tarjeton": "TPA0108",
+      "nombre": "HERNÁNDEZ PÉREZ ARTURO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.874Z",
+      "updatedAt": "2025-07-29T16:36:56.874Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ebe",
+      "id": 52,
+      "tarjeton": "TPA0110",
+      "nombre": "SÁNCHEZ BAUTISTA ERNESTO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.874Z",
+      "updatedAt": "2025-07-29T16:36:56.874Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ebf",
+      "id": 53,
+      "tarjeton": "TPA0113",
+      "nombre": "CURIEL SÁNCHEZ JOSÉ DANIEL",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.874Z",
+      "updatedAt": "2025-07-29T16:36:56.874Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ec0",
+      "id": 54,
+      "tarjeton": "TPA0115",
+      "nombre": "PALACIOS DOMÍNGUEZ LEONARDO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.874Z",
+      "updatedAt": "2025-07-29T16:36:56.874Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ec1",
+      "id": 55,
+      "tarjeton": "TPA0116",
+      "nombre": "BOLAÑOS GÓMEZ LUIS ÁNGEL",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.875Z",
+      "updatedAt": "2025-07-29T16:36:56.875Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ec2",
+      "id": 56,
+      "tarjeton": "TPA0117",
+      "nombre": "CERÓN ORDOÑEZ RODOLFO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.875Z",
+      "updatedAt": "2025-07-29T16:36:56.875Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ec3",
+      "id": 57,
+      "tarjeton": "TPA0123",
+      "nombre": "HERNÁNDEZ REYES JAVIER",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.875Z",
+      "updatedAt": "2025-07-29T16:36:56.875Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ec4",
+      "id": 58,
+      "tarjeton": "TPA0126",
+      "nombre": "GARCÍA RUIZ JAVIER",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.875Z",
+      "updatedAt": "2025-07-29T16:36:56.875Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ec5",
+      "id": 59,
+      "tarjeton": "TPA0129",
+      "nombre": "IBARRA PERALES ALFREDO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.875Z",
+      "updatedAt": "2025-07-29T16:36:56.875Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ec6",
+      "id": 60,
+      "tarjeton": "TPA0132",
+      "nombre": "NIETO LÓPEZ NOÉ",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.875Z",
+      "updatedAt": "2025-07-29T16:36:56.875Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ec7",
+      "id": 61,
+      "tarjeton": "TPA0134",
+      "nombre": "VILLAFUERTE TREJO SERGIO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.875Z",
+      "updatedAt": "2025-07-29T16:36:56.875Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ec8",
+      "id": 62,
+      "tarjeton": "TPA0143",
+      "nombre": "ISLAS FLORES JOSÉ",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.875Z",
+      "updatedAt": "2025-07-29T16:36:56.875Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ec9",
+      "id": 63,
+      "tarjeton": "TPA0151",
+      "nombre": "SÁNCHEZ LEÓN JUAN MANUEL",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.875Z",
+      "updatedAt": "2025-07-29T16:36:56.875Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5eca",
+      "id": 64,
+      "tarjeton": "TPA0265",
+      "nombre": "CORONA VÁZQUEZ HÉCTOR OSCAR",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.875Z",
+      "updatedAt": "2025-07-29T16:36:56.875Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ecb",
+      "id": 65,
+      "tarjeton": "TPA0267",
+      "nombre": "MARTÍNEZ MONTAÑO FLORENTINO ESMEREGILDO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.875Z",
+      "updatedAt": "2025-07-29T16:36:56.875Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ecc",
+      "id": 66,
+      "tarjeton": "TPA0270",
+      "nombre": "PÉREZ RUÍZ MELESIO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.875Z",
+      "updatedAt": "2025-07-29T16:36:56.875Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ecd",
+      "id": 67,
+      "tarjeton": "TPA0163",
+      "nombre": "FLORES SÁNCHEZ ARMANDO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.875Z",
+      "updatedAt": "2025-07-29T16:36:56.875Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ece",
+      "id": 68,
+      "tarjeton": "TPA0165",
+      "nombre": "ZAMORA VARGAS EDGAR RICARDO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.875Z",
+      "updatedAt": "2025-07-29T16:36:56.875Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ecf",
+      "id": 69,
+      "tarjeton": "TPA0168",
+      "nombre": "MORENO CASTILLO JESÚS ENRIQUE",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.875Z",
+      "updatedAt": "2025-07-29T16:36:56.875Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ed0",
+      "id": 70,
+      "tarjeton": "TPA0172",
+      "nombre": "CRUZ HERNÁNDEZ ÁNGEL",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.875Z",
+      "updatedAt": "2025-07-29T16:36:56.875Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ed1",
+      "id": 71,
+      "tarjeton": "TPA0177",
+      "nombre": "LECHUGA JUÁREZ MARIO ALBERTO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.875Z",
+      "updatedAt": "2025-07-29T16:36:56.875Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ed2",
+      "id": 72,
+      "tarjeton": "TPA0178",
+      "nombre": "NARANJO RAMÍREZ JOSÉ ENRIQUE",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.875Z",
+      "updatedAt": "2025-07-29T16:36:56.875Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ed3",
+      "id": 73,
+      "tarjeton": "TPA0184",
+      "nombre": "FUENTES LÓPEZ JUAN JOSÉ",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.875Z",
+      "updatedAt": "2025-07-29T16:36:56.875Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ed4",
+      "id": 74,
+      "tarjeton": "TPA0186",
+      "nombre": "GONZÁLEZ HERNÁNDEZ EDUARDO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.875Z",
+      "updatedAt": "2025-07-29T16:36:56.875Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ed5",
+      "id": 75,
+      "tarjeton": "TPA0188",
+      "nombre": "LANGO AVILEZ ISRAEL",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.875Z",
+      "updatedAt": "2025-07-29T16:36:56.875Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ed6",
+      "id": 76,
+      "tarjeton": "TPA0189",
+      "nombre": "LEÓN CARRILLO ENRIQUE",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.875Z",
+      "updatedAt": "2025-07-29T16:36:56.875Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ed7",
+      "id": 77,
+      "tarjeton": "TPA0191",
+      "nombre": "MONTALVO HERNÁNDEZ EUSEBIO ALEJANDRO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.875Z",
+      "updatedAt": "2025-07-29T16:36:56.875Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ed8",
+      "id": 78,
+      "tarjeton": "TPA0192",
+      "nombre": "MORENO OLVERA PATRICIO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.875Z",
+      "updatedAt": "2025-07-29T16:36:56.875Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ed9",
+      "id": 79,
+      "tarjeton": "TPA0194",
+      "nombre": "VALDON LARA MARYAVIT",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.875Z",
+      "updatedAt": "2025-07-29T16:36:56.875Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5eda",
+      "id": 80,
+      "tarjeton": "TPA0356",
+      "nombre": "HERNÁNDEZ MARTÍNEZ JUAN RAFAEL",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.875Z",
+      "updatedAt": "2025-07-29T16:36:56.875Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5edb",
+      "id": 81,
+      "tarjeton": "TPA0358",
+      "nombre": "MENESES MENDOZA EDUARDO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.876Z",
+      "updatedAt": "2025-07-29T16:36:56.876Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5edc",
+      "id": 82,
+      "tarjeton": "TPA0359",
+      "nombre": "MONZALVO REYES OSCAR",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.876Z",
+      "updatedAt": "2025-07-29T16:36:56.876Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5edd",
+      "id": 83,
+      "tarjeton": "TPA0364",
+      "nombre": "SÁNCHEZ ROMERO SERGIO RAÚL",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.876Z",
+      "updatedAt": "2025-07-29T16:36:56.876Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ede",
+      "id": 84,
+      "tarjeton": "TPA0366",
+      "nombre": "VINIEGRA CANTÓN GERARDO FERNANDO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.876Z",
+      "updatedAt": "2025-07-29T16:36:56.876Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5edf",
+      "id": 85,
+      "tarjeton": "TPA0370",
+      "nombre": "ÁLVAREZ HERNÁNDEZ MANUEL",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.876Z",
+      "updatedAt": "2025-07-29T16:36:56.876Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ee0",
+      "id": 86,
+      "tarjeton": "TPA0373",
+      "nombre": "RAMIREZ BARRAZA CLEMENTE",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.876Z",
+      "updatedAt": "2025-07-29T16:36:56.876Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ee1",
+      "id": 87,
+      "tarjeton": "TPA0383",
+      "nombre": "LOZADA PÉREZ MIGUEL ÁNGEL",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.876Z",
+      "updatedAt": "2025-07-29T16:36:56.876Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ee2",
+      "id": 88,
+      "tarjeton": "TPA0389",
+      "nombre": "PÉREZ BAÑOS PEDRO JAVIER",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.876Z",
+      "updatedAt": "2025-07-29T16:36:56.876Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ee3",
+      "id": 89,
+      "tarjeton": "TPA0391",
+      "nombre": "PÉREZ ARROYO SALVADOR",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.876Z",
+      "updatedAt": "2025-07-29T16:36:56.876Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ee4",
+      "id": 90,
+      "tarjeton": "TPA0392",
+      "nombre": "LEAL ORTIZ ALDO ISAAC",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.876Z",
+      "updatedAt": "2025-07-29T16:36:56.876Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ee5",
+      "id": 91,
+      "tarjeton": "TPA0397",
+      "nombre": "FIGUEROA PASCUAL ANDRÉS",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.876Z",
+      "updatedAt": "2025-07-29T16:36:56.876Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ee6",
+      "id": 92,
+      "tarjeton": "TPA0401",
+      "nombre": "VEGA QUIJANO VICTOR GABRIEL",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.876Z",
+      "updatedAt": "2025-07-29T16:36:56.876Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ee7",
+      "id": 93,
+      "tarjeton": "TPA0417",
+      "nombre": "CHAPARRO RAMÍREZ JOSÉ JUAN",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.876Z",
+      "updatedAt": "2025-07-29T16:36:56.876Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ee8",
+      "id": 94,
+      "tarjeton": "TPA0421",
+      "nombre": "VELÁZQUEZ ESCALANTE CARLOS GERARDO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.876Z",
+      "updatedAt": "2025-07-29T16:36:56.876Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ee9",
+      "id": 95,
+      "tarjeton": "TPA0433",
+      "nombre": "NAJERA RAMÍREZ SALOMON",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.876Z",
+      "updatedAt": "2025-07-29T16:36:56.876Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5eea",
+      "id": 96,
+      "tarjeton": "TPA0444",
+      "nombre": "BOLAÑOS GARCÍA MIGUEL ÁNGEL",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.876Z",
+      "updatedAt": "2025-07-29T16:36:56.876Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5eeb",
+      "id": 97,
+      "tarjeton": "TPA0448",
+      "nombre": "AMADOR JIMÉNEZ JOSUE",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.876Z",
+      "updatedAt": "2025-07-29T16:36:56.876Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5eec",
+      "id": 98,
+      "tarjeton": "TPA0452",
+      "nombre": "CABRERA LAZCANO GUADALUPE",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.876Z",
+      "updatedAt": "2025-07-29T16:36:56.876Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5eed",
+      "id": 99,
+      "tarjeton": "TP00455",
+      "nombre": "GARZA LÓPEZ ISRAEL",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.876Z",
+      "updatedAt": "2025-07-29T16:36:56.876Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5eee",
+      "id": 100,
+      "tarjeton": "TPA0456",
+      "nombre": "ARAGON LARIOS JORGE",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.876Z",
+      "updatedAt": "2025-07-29T16:36:56.876Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5eef",
+      "id": 101,
+      "tarjeton": "TPA0463",
+      "nombre": "TORRES MORENO MIGUEL ÁNGEL",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.876Z",
+      "updatedAt": "2025-07-29T16:36:56.876Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ef0",
+      "id": 102,
+      "tarjeton": "TPA0469",
+      "nombre": "GUEVARA LEDEZMA ISIDRO EDGAR",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.876Z",
+      "updatedAt": "2025-07-29T16:36:56.876Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ef1",
+      "id": 103,
+      "tarjeton": "TPA0476",
+      "nombre": "VERA NERI ROSALIO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.876Z",
+      "updatedAt": "2025-07-29T16:36:56.876Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ef2",
+      "id": 104,
+      "tarjeton": "TPA0506",
+      "nombre": "FIGUEROA ARROYO LUIS ALBERTO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.876Z",
+      "updatedAt": "2025-07-29T16:36:56.876Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ef3",
+      "id": 105,
+      "tarjeton": "TPA0515",
+      "nombre": "LÓPEZ GARCÍA LUIS FERNANDO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.876Z",
+      "updatedAt": "2025-07-29T16:36:56.876Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ef4",
+      "id": 106,
+      "tarjeton": "TPA0517",
+      "nombre": "SEGURA ROBLES EDGAR ADAN",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.876Z",
+      "updatedAt": "2025-07-29T16:36:56.876Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ef5",
+      "id": 107,
+      "tarjeton": "TPA0530",
+      "nombre": "TÉLLEZ GIRÓN ZENIL JUAN ALBERTO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.876Z",
+      "updatedAt": "2025-07-29T16:36:56.876Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ef6",
+      "id": 108,
+      "tarjeton": "TPA0534",
+      "nombre": "ISLAS PÉREZ FRANCISCO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.876Z",
+      "updatedAt": "2025-07-29T16:36:56.876Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ef7",
+      "id": 109,
+      "tarjeton": "TP00535",
+      "nombre": "CABELLO LARA GONZALO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.877Z",
+      "updatedAt": "2025-07-29T16:36:56.877Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ef8",
+      "id": 110,
+      "tarjeton": "TPA0542",
+      "nombre": "MORALES PERÉZ JOSÉ MARIA",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.877Z",
+      "updatedAt": "2025-07-29T16:36:56.877Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5ef9",
+      "id": 111,
+      "tarjeton": "TP00550",
+      "nombre": "BOLAÑOS GÓMEZ EMMANUEL",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.877Z",
+      "updatedAt": "2025-07-29T16:36:56.877Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5efa",
+      "id": 112,
+      "tarjeton": "TP00556",
+      "nombre": "AVILES JUARICO MIGUEL ÁNGEL",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.877Z",
+      "updatedAt": "2025-07-29T16:36:56.877Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5efb",
+      "id": 113,
+      "tarjeton": "TP00559",
+      "nombre": "LUNA RODRIGUEZ JESÚS",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.877Z",
+      "updatedAt": "2025-07-29T16:36:56.877Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5efc",
+      "id": 114,
+      "tarjeton": "TPA0581",
+      "nombre": "PÉREZ BUTANDA FERNANDO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.877Z",
+      "updatedAt": "2025-07-29T16:36:56.877Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5efd",
+      "id": 115,
+      "tarjeton": "TPA0590",
+      "nombre": "ROSAS RODRÍGUEZ GIL ARTURO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.877Z",
+      "updatedAt": "2025-07-29T16:36:56.877Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5efe",
+      "id": 116,
+      "tarjeton": "TPB00592",
+      "nombre": "OLVERA RAMOS LUIS ALBERTO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.877Z",
+      "updatedAt": "2025-07-29T16:36:56.877Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5eff",
+      "id": 117,
+      "tarjeton": "TPA0602",
+      "nombre": "LABASTIDA GARCIA ROBERTO ISRRAEL",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.877Z",
+      "updatedAt": "2025-07-29T16:36:56.877Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f00",
+      "id": 118,
+      "tarjeton": "TPA0606",
+      "nombre": "MAYO RAMÍREZ JORGE ERNESTO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.877Z",
+      "updatedAt": "2025-07-29T16:36:56.877Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f01",
+      "id": 119,
+      "tarjeton": "TPA0626",
+      "nombre": "HERNÁNDEZ GÓMEZ JOSÉ",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.877Z",
+      "updatedAt": "2025-07-29T16:36:56.877Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f02",
+      "id": 120,
+      "tarjeton": "TPA0629",
+      "nombre": "LOYDE MARTINEZ ROSALIO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.877Z",
+      "updatedAt": "2025-07-29T16:36:56.877Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f03",
+      "id": 121,
+      "tarjeton": "TPA0646",
+      "nombre": "ORTIZ SEGURA FELIPE HUMBERTO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.877Z",
+      "updatedAt": "2025-07-29T16:36:56.877Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f04",
+      "id": 122,
+      "tarjeton": "TPA0649",
+      "nombre": "CORTES TOVAR ANDRES",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.877Z",
+      "updatedAt": "2025-07-29T16:36:56.877Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f05",
+      "id": 123,
+      "tarjeton": "TPA0671",
+      "nombre": "GARCÍA LÓPEZ EDUARDO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.877Z",
+      "updatedAt": "2025-07-29T16:36:56.877Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f06",
+      "id": 124,
+      "tarjeton": "TPA0673",
+      "nombre": "GARCÍA ROSALES JUPITER",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.877Z",
+      "updatedAt": "2025-07-29T16:36:56.877Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f07",
+      "id": 125,
+      "tarjeton": "TPA0678",
+      "nombre": "SÁNCHEZ TENIENTE GERARDO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.877Z",
+      "updatedAt": "2025-07-29T16:36:56.877Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f08",
+      "id": 126,
+      "tarjeton": "TPA0680",
+      "nombre": "ZAMORA ZAMORA ALVARO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.877Z",
+      "updatedAt": "2025-07-29T16:36:56.877Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f09",
+      "id": 127,
+      "tarjeton": "TPA0681",
+      "nombre": "FONSECA PAREDES MARIO ANDRÉS",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.877Z",
+      "updatedAt": "2025-07-29T16:36:56.877Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f0a",
+      "id": 128,
+      "tarjeton": "TPA0684",
+      "nombre": "LÓPEZ MIRANDA SEVERIANO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.877Z",
+      "updatedAt": "2025-07-29T16:36:56.877Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f0b",
+      "id": 129,
+      "tarjeton": "TPA0691",
+      "nombre": "CABRERA HERNÁNDEZ HEBERTO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.877Z",
+      "updatedAt": "2025-07-29T16:36:56.877Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f0c",
+      "id": 130,
+      "tarjeton": "TPA0695",
+      "nombre": "BAUTISTA HERNÁNDEZ JOSÉ SANTIAGO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.877Z",
+      "updatedAt": "2025-07-29T16:36:56.877Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f0d",
+      "id": 131,
+      "tarjeton": "TPA0703",
+      "nombre": "SALINAS CERON ESTEBAN",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.877Z",
+      "updatedAt": "2025-07-29T16:36:56.877Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f0e",
+      "id": 132,
+      "tarjeton": "TPA0707",
+      "nombre": "SOTO AMADOR JOSE MANUEL",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.877Z",
+      "updatedAt": "2025-07-29T16:36:56.877Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f0f",
+      "id": 133,
+      "tarjeton": "TPA0715",
+      "nombre": "JAEN PEÑA UVALDO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.877Z",
+      "updatedAt": "2025-07-29T16:36:56.877Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f10",
+      "id": 134,
+      "tarjeton": "TPA0718",
+      "nombre": "VEGA MARQUEZ JOSE DANIEL",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.877Z",
+      "updatedAt": "2025-07-29T16:36:56.877Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f11",
+      "id": 135,
+      "tarjeton": "TPA0725",
+      "nombre": "ROMERO ESPINOSA LUIS ÁNGEL",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.877Z",
+      "updatedAt": "2025-07-29T16:36:56.877Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f12",
+      "id": 136,
+      "tarjeton": "TPA0726",
+      "nombre": "CUELLAR LEÓN RICARDO ISRAEL",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.877Z",
+      "updatedAt": "2025-07-29T16:36:56.877Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f13",
+      "id": 137,
+      "tarjeton": "TPA0728",
+      "nombre": "CASTILLO GONZALEZ ALBERTO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.877Z",
+      "updatedAt": "2025-07-29T16:36:56.877Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f14",
+      "id": 138,
+      "tarjeton": "TPA0737",
+      "nombre": "MARTINEZ VERONICA JULIAN",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.877Z",
+      "updatedAt": "2025-07-29T16:36:56.877Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f15",
+      "id": 139,
+      "tarjeton": "TPA0738",
+      "nombre": "CENOBIO QUIROZ MARCEL",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.878Z",
+      "updatedAt": "2025-07-29T16:36:56.878Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f16",
+      "id": 140,
+      "tarjeton": "TPA0745",
+      "nombre": "ARMAS ALVARADO OSCAR MARIO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.878Z",
+      "updatedAt": "2025-07-29T16:36:56.878Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f17",
+      "id": 141,
+      "tarjeton": "TPA0748",
+      "nombre": "SANCHEZ RAMIREZ JOSEFINA",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.878Z",
+      "updatedAt": "2025-07-29T16:36:56.878Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f18",
+      "id": 142,
+      "tarjeton": "TPA0752",
+      "nombre": "COLIN SAMANO MIGUEL ANGEL",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.878Z",
+      "updatedAt": "2025-07-29T16:36:56.878Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f19",
+      "id": 143,
+      "tarjeton": "TPA0755",
+      "nombre": "MARISCAL CERVANTES GABRIEL JESUS",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.878Z",
+      "updatedAt": "2025-07-29T16:36:56.878Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f1a",
+      "id": 144,
+      "tarjeton": "TPA0763",
+      "nombre": "BARRERA REYES VICTOR MANUEL",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.878Z",
+      "updatedAt": "2025-07-29T16:36:56.878Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f1b",
+      "id": 145,
+      "tarjeton": "TPA0767",
+      "nombre": "HERNANDEZ DELGADO OSCAR ISIDRO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.878Z",
+      "updatedAt": "2025-07-29T16:36:56.878Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f1c",
+      "id": 146,
+      "tarjeton": "TPA0768",
+      "nombre": "JARILLO GONZALEZ MARIO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.878Z",
+      "updatedAt": "2025-07-29T16:36:56.878Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f1d",
+      "id": 147,
+      "tarjeton": "TPA0773",
+      "nombre": "MAGALLANES RAMIREZ JIRAM",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.878Z",
+      "updatedAt": "2025-07-29T16:36:56.878Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f1e",
+      "id": 148,
+      "tarjeton": "TPA0775",
+      "nombre": "BRITO ESTRADA RAUL ADAN",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.878Z",
+      "updatedAt": "2025-07-29T16:36:56.878Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f1f",
+      "id": 149,
+      "tarjeton": "TPA0779",
+      "nombre": "ALMAZAN BUSTAMANTE JOSE LUIS",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.878Z",
+      "updatedAt": "2025-07-29T16:36:56.878Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f20",
+      "id": 150,
+      "tarjeton": "TPA0786",
+      "nombre": "GONZÁLEZ BOBADILLA JUAN ALEJANDRO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.878Z",
+      "updatedAt": "2025-07-29T16:36:56.878Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f21",
+      "id": 151,
+      "tarjeton": "TPA0787",
+      "nombre": "JAEN ESPINOZA JOSÉ ALBERTO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.878Z",
+      "updatedAt": "2025-07-29T16:36:56.878Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f22",
+      "id": 152,
+      "tarjeton": "TPA0790",
+      "nombre": "GONZÁLEZ SAMPAYO FILOMENA",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.878Z",
+      "updatedAt": "2025-07-29T16:36:56.878Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f23",
+      "id": 153,
+      "tarjeton": "TPA0791",
+      "nombre": "MORENO FLORES LEONARDO DANIEL",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.878Z",
+      "updatedAt": "2025-07-29T16:36:56.878Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f24",
+      "id": 154,
+      "tarjeton": "TPA0792",
+      "nombre": "SOTO PAREDES DANIEL",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.878Z",
+      "updatedAt": "2025-07-29T16:36:56.878Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f25",
+      "id": 155,
+      "tarjeton": "TPA0795",
+      "nombre": "BECERRIL OLVERA ELEAZAR",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.878Z",
+      "updatedAt": "2025-07-29T16:36:56.878Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f26",
+      "id": 156,
+      "tarjeton": "TPA0798",
+      "nombre": "PÉREZ HERNÁNDEZ FEDERICO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.878Z",
+      "updatedAt": "2025-07-29T16:36:56.878Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f27",
+      "id": 157,
+      "tarjeton": "TPA0800",
+      "nombre": "SÁNCHEZ LAZO LUIS EDUARDO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.878Z",
+      "updatedAt": "2025-07-29T16:36:56.878Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f28",
+      "id": 158,
+      "tarjeton": "TPA0802",
+      "nombre": "TÉLLEZ CERÓN SAÚL",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.878Z",
+      "updatedAt": "2025-07-29T16:36:56.878Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f29",
+      "id": 159,
+      "tarjeton": "TPA0805",
+      "nombre": "ORTEGA HERNÁNDEZ JOSÉ ANDRÉS",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.878Z",
+      "updatedAt": "2025-07-29T16:36:56.878Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f2a",
+      "id": 160,
+      "tarjeton": "TPA0810",
+      "nombre": "GONZÁLEZ VENEGAS LUIS ANTONIO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.878Z",
+      "updatedAt": "2025-07-29T16:36:56.878Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f2b",
+      "id": 161,
+      "tarjeton": "TPA0812",
+      "nombre": "AGUILAR ROSALES ALÁN NOÉ",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.878Z",
+      "updatedAt": "2025-07-29T16:36:56.878Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f2c",
+      "id": 162,
+      "tarjeton": "TPA0815",
+      "nombre": "REYES ARRIAGA NATANAEL",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.878Z",
+      "updatedAt": "2025-07-29T16:36:56.878Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f2d",
+      "id": 163,
+      "tarjeton": "TPA0820",
+      "nombre": "LORA MARTÍNEZ MARGARITA",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.878Z",
+      "updatedAt": "2025-07-29T16:36:56.878Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f2e",
+      "id": 164,
+      "tarjeton": "TPA0821",
+      "nombre": "HERRERA ROMERO EDGAR",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.878Z",
+      "updatedAt": "2025-07-29T16:36:56.878Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f2f",
+      "id": 165,
+      "tarjeton": "TPA0835",
+      "nombre": "OLVERA ANGELES ALVARO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.878Z",
+      "updatedAt": "2025-07-29T16:36:56.878Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f30",
+      "id": 166,
+      "tarjeton": "TPA0837",
+      "nombre": "BARRÓN GUERRERO VICTOR MANUEL",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.878Z",
+      "updatedAt": "2025-07-29T16:36:56.878Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f31",
+      "id": 167,
+      "tarjeton": "TPA0842",
+      "nombre": "CAMPOS CAMARENA ISRAEL",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.878Z",
+      "updatedAt": "2025-07-29T16:36:56.878Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f32",
+      "id": 168,
+      "tarjeton": "TPA0844",
+      "nombre": "VIVEROS GARCÍA DANIEL",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.878Z",
+      "updatedAt": "2025-07-29T16:36:56.878Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f33",
+      "id": 169,
+      "tarjeton": "TPA0845",
+      "nombre": "VÁZQUEZ PÉREZ ÁNGEL",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.878Z",
+      "updatedAt": "2025-07-29T16:36:56.878Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f34",
+      "id": 170,
+      "tarjeton": "TPA0846",
+      "nombre": "MANZANARES CHÁVEZ ERIK SAMAR",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.878Z",
+      "updatedAt": "2025-07-29T16:36:56.878Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f35",
+      "id": 171,
+      "tarjeton": "TPA0848",
+      "nombre": "LUCAS MARTÍNEZ MARIANO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.878Z",
+      "updatedAt": "2025-07-29T16:36:56.878Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f36",
+      "id": 172,
+      "tarjeton": "TPA0852",
+      "nombre": "CAMPOS CAMARENA FELIPE DE JESÚS",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.879Z",
+      "updatedAt": "2025-07-29T16:36:56.879Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f37",
+      "id": 173,
+      "tarjeton": "TPA0854",
+      "nombre": "BAUTISTA GARCÍA JOSÉ",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.879Z",
+      "updatedAt": "2025-07-29T16:36:56.879Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f38",
+      "id": 174,
+      "tarjeton": "TPA0856",
+      "nombre": "ARENAS ESCAMILLA TONATIUH",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.879Z",
+      "updatedAt": "2025-07-29T16:36:56.879Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f39",
+      "id": 175,
+      "tarjeton": "TPA0857",
+      "nombre": "ORTA HERNÁNDEZ JAVIER SAMUEL",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.879Z",
+      "updatedAt": "2025-07-29T16:36:56.879Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f3a",
+      "id": 176,
+      "tarjeton": "TPA0861",
+      "nombre": "CHIPOLINI DÁVALOS NORMA ANGELICA",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.879Z",
+      "updatedAt": "2025-07-29T16:36:56.879Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f3b",
+      "id": 177,
+      "tarjeton": "TPA0864",
+      "nombre": "CABRERA POMAR ALEJANDRO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.879Z",
+      "updatedAt": "2025-07-29T16:36:56.879Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f3c",
+      "id": 178,
+      "tarjeton": "TPA0867",
+      "nombre": "JUÁREZ SÁNCHEZ JORGE LUIS",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.879Z",
+      "updatedAt": "2025-07-29T16:36:56.879Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f3d",
+      "id": 179,
+      "tarjeton": "TPA0868",
+      "nombre": "GARCÍA TORRES ALDO URIEL",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.879Z",
+      "updatedAt": "2025-07-29T16:36:56.879Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f3e",
+      "id": 180,
+      "tarjeton": "TPA0869",
+      "nombre": "ABREGO LEAL GUADALUPE",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.879Z",
+      "updatedAt": "2025-07-29T16:36:56.879Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f3f",
+      "id": 181,
+      "tarjeton": "TPA0871",
+      "nombre": "MORALES ISLAS JUAN AUGUSTO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.879Z",
+      "updatedAt": "2025-07-29T16:36:56.879Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f40",
+      "id": 182,
+      "tarjeton": "TPA0872",
+      "nombre": "CASTEL ORTEGA OSCAR",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.879Z",
+      "updatedAt": "2025-07-29T16:36:56.879Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f41",
+      "id": 183,
+      "tarjeton": "TPA0873",
+      "nombre": "LÓPEZ FLORES HAERVY JAHIR",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.879Z",
+      "updatedAt": "2025-07-29T16:36:56.879Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f42",
+      "id": 184,
+      "tarjeton": "TPA0876",
+      "nombre": "GARCÍA RIVERA EUSEBIO ARTURO",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.879Z",
+      "updatedAt": "2025-07-29T16:36:56.879Z"
+    },
+    {
+      "_id": "6888f8a84ea6b2a69a8e5f43",
+      "id": 185,
+      "tarjeton": "TPA0877",
+      "nombre": "CASTEL ORTEGA OSCAR",
+      "__v": 0,
+      "createdAt": "2025-07-29T16:36:56.879Z",
+      "updatedAt": "2025-07-29T16:36:56.879Z"
+    }
+  ],
+  "usuarios": [
+    {
+      "_id": "6888193a1cadbf54fc1221f6",
+      "usuario": "admin",
+      "password": "admin123",
+      "rol": "administrador",
+      "tarjeton": "ADMIN001",
+      "correo": "admin@sitmah.com",
+      "__v": 0
+    },
+    {
+      "_id": "6888e348e289be3c070ce1a7",
+      "usuario": "Programador",
+      "password": "pro123",
+      "rol": "programador",
+      "tarjeton": "12",
+      "correo": "programador@gmail.com",
+      "__v": 0
+    },
+    {
+      "_id": "688bce6d56c975de92131352",
+      "usuario": "AdminMK",
+      "password": "kshmk",
+      "rol": "administrador",
+      "tarjeton": "1",
+      "correo": "MKM759769@Gmail.com",
+      "__v": 0
+    },
+    {
+      "_id": "688bcee456c975de92131357",
+      "usuario": "Verificador",
+      "password": "ver123",
+      "rol": "verificador",
+      "tarjeton": "2",
+      "correo": "correa@gmail.com",
+      "__v": 0
+    },
+    {
+      "_id": "6890f86d48f115c91f50485f",
+      "usuario": "aperturador",
+      "password": "12345",
+      "rol": "apertura",
+      "tarjeton": "1345467890",
+      "correo": "apertura@gmail.com",
+      "__v": 0
+    },
+    {
+      "_id": "6894df3b21ee95d3a29aad73",
+      "usuario": "marino rivera",
+      "password": "tuzobus",
+      "rol": "administrador",
+      "tarjeton": "1234",
+      "correo": "sitmahverificacion@gmail.com",
+      "tema": "normal",
+      "__v": 0
+    },
+    {
+      "_id": "6894e18e8a107fb825712579",
+      "usuario": "admin gerardo",
+      "password": "luis123",
+      "rol": "administrador",
+      "tarjeton": "12345678",
+      "correo": "apertura1@gmail.com",
+      "tema": "normal",
+      "__v": 0
+    }
+  ],
+  "configuracions": [
+    {
+      "_id": "6893d4a7dadc2c0cf9e7ae24",
+      "nombre": "temaGlobal",
+      "valor": "normal",
+      "descripcion": "Tema global de la aplicación",
+      "fechaActualizacion": "2025-08-29T07:17:13.925Z",
+      "__v": 0
+    },
+    {
+      "_id": "6893df155744248194ea08ba",
+      "nombre": "temaNormal",
+      "__v": 0,
+      "descripcion": "Tema estándar de la aplicación",
+      "fechaActualizacion": "2025-08-06T23:02:45.849Z",
+      "valor": "normal"
+    },
+    {
+      "_id": "6893df155744248194ea08bb",
+      "nombre": "temaSanValentin",
+      "__v": 0,
+      "descripcion": "Tema romántico de San Valentín",
+      "fechaActualizacion": "2025-08-06T23:02:45.853Z",
+      "valor": "sanvalentin"
+    },
+    {
+      "_id": "6893df155744248194ea08bc",
+      "nombre": "temaNavidad",
+      "__v": 0,
+      "descripcion": "Tema festivo de Navidad",
+      "fechaActualizacion": "2025-08-06T23:02:45.856Z",
+      "valor": "navidad"
+    },
+    {
+      "_id": "6893df155744248194ea08bd",
+      "nombre": "temaMuertos",
+      "__v": 0,
+      "descripcion": "Tema del Día de los Muertos",
+      "fechaActualizacion": "2025-08-06T23:02:45.858Z",
+      "valor": "muertos"
+    },
+    {
+      "_id": "6893df155744248194ea08be",
+      "nombre": "temaGrises",
+      "__v": 0,
+      "descripcion": "Tema en escala de grises",
+      "fechaActualizacion": "2025-08-06T23:02:45.861Z",
+      "valor": "grises"
+    }
+  ],
+  "aperturas": [
+    {
+      "_id": "68b1694e5a0d10881fa29eed",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "01-01",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "VAGONETA",
+      "economico": "358",
+      "tarjeton": "861",
+      "nombre": "CHIPOLINI DÁVALOS NORMA ANGELICA",
+      "fechaApertura": "2025-08-29T08:48:15.080Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:14.933Z"
+      },
+      "createdAt": "2025-08-29T08:48:14.933Z",
+      "updatedAt": "2025-08-29T08:48:14.933Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1694f5a0d10881fa29ef0",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "1B-01",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "VAGONETA",
+      "economico": "364",
+      "tarjeton": "767",
+      "nombre": "HERNÁNDEZ DELGADO OSCAR ISIDRO",
+      "fechaApertura": "2025-08-29T08:48:15.352Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:15.164Z"
+      },
+      "createdAt": "2025-08-29T08:48:15.164Z",
+      "updatedAt": "2025-08-29T08:48:15.164Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1694f5a0d10881fa29ef3",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "2A-01",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "BOXER",
+      "economico": "140",
+      "tarjeton": "014",
+      "nombre": "CERÓN MORALES MATIAS",
+      "fechaApertura": "2025-08-29T08:48:15.582Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:15.398Z"
+      },
+      "createdAt": "2025-08-29T08:48:15.398Z",
+      "updatedAt": "2025-08-29T08:48:15.398Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1694f5a0d10881fa29ef6",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "2A-02",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "BOXER",
+      "economico": "104",
+      "tarjeton": "373",
+      "nombre": "RAMIREZ BARRAZA CLEMENTE",
+      "fechaApertura": "2025-08-29T08:48:15.814Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:15.612Z"
+      },
+      "createdAt": "2025-08-29T08:48:15.612Z",
+      "updatedAt": "2025-08-29T08:48:15.612Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1694f5a0d10881fa29ef9",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "2A-03",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "BOXER",
+      "economico": "130",
+      "tarjeton": "738",
+      "nombre": "CENOBIO QUIROZ MARCEL",
+      "fechaApertura": "2025-08-29T08:48:16.028Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:15.825Z"
+      },
+      "createdAt": "2025-08-29T08:48:15.825Z",
+      "updatedAt": "2025-08-29T08:48:15.825Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b169505a0d10881fa29efc",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "2B-01",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "BOXER",
+      "economico": "141",
+      "tarjeton": "791",
+      "nombre": "MORENO FLORES LEONARDO DANIEL",
+      "fechaApertura": "2025-08-29T08:48:16.241Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:16.033Z"
+      },
+      "createdAt": "2025-08-29T08:48:16.033Z",
+      "updatedAt": "2025-08-29T08:48:16.033Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b169505a0d10881fa29eff",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "2B-02",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "BOXER",
+      "economico": "132",
+      "tarjeton": "448",
+      "nombre": "AMADOR JIMÉNEZ JOSUÉ",
+      "fechaApertura": "2025-08-29T08:48:16.449Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:16.349Z"
+      },
+      "createdAt": "2025-08-29T08:48:16.349Z",
+      "updatedAt": "2025-08-29T08:48:16.349Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695024bb6848b2c80f02",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "2B-03",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "BOXER",
+      "economico": "115",
+      "tarjeton": "084",
+      "nombre": "MARTÍNEZ ARISTA FERMIN",
+      "fechaApertura": "2025-08-29T08:48:16.765Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:16.628Z"
+      },
+      "createdAt": "2025-08-29T08:48:16.628Z",
+      "updatedAt": "2025-08-29T08:48:16.628Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695024bb6848b2c80f05",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "2D-01",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "VAGONETA",
+      "economico": "139",
+      "tarjeton": "005",
+      "nombre": "BAUTISTA BAUTISTA EFRAÍN",
+      "fechaApertura": "2025-08-29T08:48:17.046Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:16.858Z"
+      },
+      "createdAt": "2025-08-29T08:48:16.858Z",
+      "updatedAt": "2025-08-29T08:48:16.858Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695124bb6848b2c80f09",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "2D-02",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "VAGONETA",
+      "economico": "123",
+      "tarjeton": "143",
+      "nombre": "ISLAS FLORES JOSÉ",
+      "fechaApertura": "2025-08-29T08:48:17.278Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:17.074Z"
+      },
+      "createdAt": "2025-08-29T08:48:17.074Z",
+      "updatedAt": "2025-08-29T08:48:17.074Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695124bb6848b2c80f0c",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "2E-01",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "SPRINTER",
+      "economico": "371",
+      "tarjeton": "820",
+      "nombre": "LORA MARTÍNEZ MARGARITA",
+      "fechaApertura": "2025-08-29T08:48:17.497Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:17.316Z"
+      },
+      "createdAt": "2025-08-29T08:48:17.315Z",
+      "updatedAt": "2025-08-29T08:48:17.315Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695124bb6848b2c80f0f",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "03-01",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "SPRINTER",
+      "economico": "226",
+      "tarjeton": "178",
+      "nombre": "NARANJO RAMIREZ JOSE ENRIQUE",
+      "fechaApertura": "2025-08-29T08:48:17.735Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:17.556Z"
+      },
+      "createdAt": "2025-08-29T08:48:17.556Z",
+      "updatedAt": "2025-08-29T08:48:17.556Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695124bb6848b2c80f12",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "03-02",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "SPRINTER",
+      "economico": "332",
+      "tarjeton": "058",
+      "nombre": "ANAYA AVILÉS OSCAR",
+      "fechaApertura": "2025-08-29T08:48:17.974Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:17.776Z"
+      },
+      "createdAt": "2025-08-29T08:48:17.776Z",
+      "updatedAt": "2025-08-29T08:48:17.776Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695124bb6848b2c80f15",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "03-03",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "SPRINTER",
+      "economico": "356",
+      "tarjeton": "737",
+      "nombre": "MARTÍNEZ VERONICA JULIAN",
+      "fechaApertura": "2025-08-29T08:48:18.190Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:17.982Z"
+      },
+      "createdAt": "2025-08-29T08:48:17.982Z",
+      "updatedAt": "2025-08-29T08:48:17.982Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695224bb6848b2c80f18",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "04-01",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "BOXER",
+      "economico": "110",
+      "tarjeton": "001",
+      "nombre": "ORAN AZPEITIA JÉSUS",
+      "fechaApertura": "2025-08-29T08:48:18.396Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:18.191Z"
+      },
+      "createdAt": "2025-08-29T08:48:18.191Z",
+      "updatedAt": "2025-08-29T08:48:18.191Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695224bb6848b2c80f1b",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "05-01",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "VAGONETA",
+      "economico": "353",
+      "tarjeton": "113",
+      "nombre": "CURIEL SÁNCHEZ JOSÉ DANIEL",
+      "fechaApertura": "2025-08-29T08:48:18.604Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:18.391Z"
+      },
+      "createdAt": "2025-08-29T08:48:18.391Z",
+      "updatedAt": "2025-08-29T08:48:18.391Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695224bb6848b2c80f1e",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "06-01",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "BOXER",
+      "economico": "126",
+      "tarjeton": "626",
+      "nombre": "HERNÁNDEZ GÓMEZ JOSÉ",
+      "fechaApertura": "2025-08-29T08:48:18.805Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:18.635Z"
+      },
+      "createdAt": "2025-08-29T08:48:18.635Z",
+      "updatedAt": "2025-08-29T08:48:18.635Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695224bb6848b2c80f21",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "06-02",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "BOXER",
+      "economico": "127",
+      "tarjeton": "054",
+      "nombre": "MONZALVO MORALES JUAN MANUEL",
+      "fechaApertura": "2025-08-29T08:48:19.053Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:18.861Z"
+      },
+      "createdAt": "2025-08-29T08:48:18.861Z",
+      "updatedAt": "2025-08-29T08:48:18.861Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695324bb6848b2c80f24",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "07-01",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "VAGONETA",
+      "economico": "365",
+      "tarjeton": "810",
+      "nombre": "GONZÁLEZ VENEGAS LUIS ANTONIO",
+      "fechaApertura": "2025-08-29T08:48:19.275Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:19.062Z"
+      },
+      "createdAt": "2025-08-29T08:48:19.062Z",
+      "updatedAt": "2025-08-29T08:48:19.062Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695324bb6848b2c80f27",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "08-01",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "BOXER",
+      "economico": "120",
+      "tarjeton": "515",
+      "nombre": "LÓPEZ GARCÍA LUIS FERNANDO",
+      "fechaApertura": "2025-08-29T08:48:19.476Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:19.276Z"
+      },
+      "createdAt": "2025-08-29T08:48:19.276Z",
+      "updatedAt": "2025-08-29T08:48:19.276Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695324bb6848b2c80f2b",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "08-02",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "BOXER",
+      "economico": "122",
+      "tarjeton": "077",
+      "nombre": "VALENCIA DORANTES JOAQUIN",
+      "fechaApertura": "2025-08-29T08:48:19.689Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:19.484Z"
+      },
+      "createdAt": "2025-08-29T08:48:19.484Z",
+      "updatedAt": "2025-08-29T08:48:19.484Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695324bb6848b2c80f2e",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "08-03",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "BOXER",
+      "economico": "124",
+      "tarjeton": "061",
+      "nombre": "MONZALVO HERNÁNDEZ SANTIAGO",
+      "fechaApertura": "2025-08-29T08:48:19.897Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:19.691Z"
+      },
+      "createdAt": "2025-08-29T08:48:19.691Z",
+      "updatedAt": "2025-08-29T08:48:19.691Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695324bb6848b2c80f31",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "09-01",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "0.:00",
+      "tipoUnidad": "SPRINTER",
+      "economico": "318",
+      "tarjeton": "629",
+      "nombre": "LOYDE MARTÍNEZ ROSALÍO",
+      "fechaApertura": "2025-08-29T08:48:20.104Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:19.913Z"
+      },
+      "createdAt": "2025-08-29T08:48:19.913Z",
+      "updatedAt": "2025-08-29T08:48:19.913Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695424bb6848b2c80f35",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "10-01",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "VAGONETA",
+      "economico": "377",
+      "tarjeton": "691",
+      "nombre": "CABRERA HERNÁNDEZ HEBERTO",
+      "fechaApertura": "2025-08-29T08:48:20.326Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:20.122Z"
+      },
+      "createdAt": "2025-08-29T08:48:20.121Z",
+      "updatedAt": "2025-08-29T08:48:20.121Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695424bb6848b2c80f38",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "11-01",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "BOXER",
+      "economico": "107",
+      "tarjeton": "192",
+      "nombre": "MORENO OLVERA PATRICIO",
+      "fechaApertura": "2025-08-29T08:48:20.541Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:20.333Z"
+      },
+      "createdAt": "2025-08-29T08:48:20.333Z",
+      "updatedAt": "2025-08-29T08:48:20.333Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695424bb6848b2c80f3b",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "11-02",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "BOXER",
+      "economico": "133",
+      "tarjeton": "695",
+      "nombre": "BAUTISTA HERNÁNDEZ JOSÉ SANTIAGO",
+      "fechaApertura": "2025-08-29T08:48:20.747Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:20.565Z"
+      },
+      "createdAt": "2025-08-29T08:48:20.565Z",
+      "updatedAt": "2025-08-29T08:48:20.565Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695424bb6848b2c80f3e",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "11-03",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "BOXER",
+      "economico": "118",
+      "tarjeton": "100",
+      "nombre": "GUTIÉRREZ LUGO ARMANDO",
+      "fechaApertura": "2025-08-29T08:48:20.978Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:20.773Z"
+      },
+      "createdAt": "2025-08-29T08:48:20.773Z",
+      "updatedAt": "2025-08-29T08:48:20.773Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695424bb6848b2c80f41",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "12-01",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "VAGONETA",
+      "economico": "374",
+      "tarjeton": "079",
+      "nombre": "MADARIAGA ESPINOSA OSCAR ARMANDO",
+      "fechaApertura": "2025-08-29T08:48:21.186Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:20.981Z"
+      },
+      "createdAt": "2025-08-29T08:48:20.981Z",
+      "updatedAt": "2025-08-29T08:48:20.981Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695524bb6848b2c80f44",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "13-01",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "VAGONETA",
+      "economico": "361",
+      "tarjeton": "755",
+      "nombre": "MARISCAL CERVANTES GABRIEL JESUS",
+      "fechaApertura": "2025-08-29T08:48:21.398Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:21.194Z"
+      },
+      "createdAt": "2025-08-29T08:48:21.194Z",
+      "updatedAt": "2025-08-29T08:48:21.194Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695524bb6848b2c80f47",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "13-02",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "VAGONETA",
+      "economico": "317",
+      "tarjeton": "852",
+      "nombre": "CAMPOS CAMARENA FELIPE DE JESUS",
+      "fechaApertura": "2025-08-29T08:48:21.611Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:21.405Z"
+      },
+      "createdAt": "2025-08-29T08:48:21.405Z",
+      "updatedAt": "2025-08-29T08:48:21.405Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695524bb6848b2c80f4a",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "13-03",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "VAGONETA",
+      "economico": "319",
+      "tarjeton": "795",
+      "nombre": "BECERRIL OLVERA ELEAZAR",
+      "fechaApertura": "2025-08-29T08:48:21.817Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:21.621Z"
+      },
+      "createdAt": "2025-08-29T08:48:21.621Z",
+      "updatedAt": "2025-08-29T08:48:21.621Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695524bb6848b2c80f4d",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "14-01",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "VAGONETA",
+      "economico": "316",
+      "tarjeton": "805",
+      "nombre": "ORTEGA HERNÁNDEZ JOSÉ ANDRÉS",
+      "fechaApertura": "2025-08-29T08:48:22.038Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:21.842Z"
+      },
+      "createdAt": "2025-08-29T08:48:21.842Z",
+      "updatedAt": "2025-08-29T08:48:21.842Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695624bb6848b2c80f50",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "14-02",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "VAGONETA",
+      "economico": "369",
+      "tarjeton": "186",
+      "nombre": "GONZALEZ HERNANDEZ EDUARDO",
+      "fechaApertura": "2025-08-29T08:48:22.257Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:22.055Z"
+      },
+      "createdAt": "2025-08-29T08:48:22.055Z",
+      "updatedAt": "2025-08-29T08:48:22.055Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695624bb6848b2c80f53",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "14-03",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "VAGONETA",
+      "economico": "320",
+      "tarjeton": "646",
+      "nombre": "ORTIZ SEGURA FELIPE HUMBERTO",
+      "fechaApertura": "2025-08-29T08:48:22.467Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:22.277Z"
+      },
+      "createdAt": "2025-08-29T08:48:22.277Z",
+      "updatedAt": "2025-08-29T08:48:22.277Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695624bb6848b2c80f57",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "15A-01",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "BOXER",
+      "economico": "105",
+      "tarjeton": "019",
+      "nombre": "CASTILLO MARTÍNEZ MARIO",
+      "fechaApertura": "2025-08-29T08:48:22.690Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:22.480Z"
+      },
+      "createdAt": "2025-08-29T08:48:22.479Z",
+      "updatedAt": "2025-08-29T08:48:22.479Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695624bb6848b2c80f5a",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "15A-02",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "BOXER",
+      "economico": "136",
+      "tarjeton": "129",
+      "nombre": "IBARRA PERALES ALFREDO",
+      "fechaApertura": "2025-08-29T08:48:22.896Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:22.686Z"
+      },
+      "createdAt": "2025-08-29T08:48:22.686Z",
+      "updatedAt": "2025-08-29T08:48:22.686Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695624bb6848b2c80f5d",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "15A-03",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "BOXER",
+      "economico": "116",
+      "tarjeton": "752",
+      "nombre": "COLIN SAMANO MIGUEL ANGEL",
+      "fechaApertura": "2025-08-29T08:48:23.104Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:22.904Z"
+      },
+      "createdAt": "2025-08-29T08:48:22.904Z",
+      "updatedAt": "2025-08-29T08:48:22.904Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695724bb6848b2c80f61",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "15B-01",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "BOXER",
+      "economico": "142",
+      "tarjeton": "123",
+      "nombre": "HERNÁNDEZ REYES JAVIER",
+      "fechaApertura": "2025-08-29T08:48:23.325Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:23.121Z"
+      },
+      "createdAt": "2025-08-29T08:48:23.121Z",
+      "updatedAt": "2025-08-29T08:48:23.121Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695724bb6848b2c80f64",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "15B-02",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "BOXER",
+      "economico": "100",
+      "tarjeton": "581",
+      "nombre": "PÉREZ BUTANDA FERNANDO",
+      "fechaApertura": "2025-08-29T08:48:23.534Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:23.327Z"
+      },
+      "createdAt": "2025-08-29T08:48:23.327Z",
+      "updatedAt": "2025-08-29T08:48:23.327Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695724bb6848b2c80f67",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "15C-01",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "VAGONETA",
+      "economico": "331",
+      "tarjeton": "165",
+      "nombre": "ZAMORA VARGAS EDGAR RICARDO",
+      "fechaApertura": "2025-08-29T08:48:23.742Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:23.547Z"
+      },
+      "createdAt": "2025-08-29T08:48:23.547Z",
+      "updatedAt": "2025-08-29T08:48:23.547Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695724bb6848b2c80f6a",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "15C-02",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "VAGONETA",
+      "economico": "345",
+      "tarjeton": "034",
+      "nombre": "PÉREZ CASTAÑEDA TOMÁS",
+      "fechaApertura": "2025-08-29T08:48:23.965Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:23.763Z"
+      },
+      "createdAt": "2025-08-29T08:48:23.763Z",
+      "updatedAt": "2025-08-29T08:48:23.763Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695724bb6848b2c80f6d",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "15C-03",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "VAGONETA",
+      "economico": "321",
+      "tarjeton": "812",
+      "nombre": "AGUILAR ROSALES ALAN NOÉ",
+      "fechaApertura": "2025-08-29T08:48:24.177Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:23.971Z"
+      },
+      "createdAt": "2025-08-29T08:48:23.971Z",
+      "updatedAt": "2025-08-29T08:48:23.971Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695824bb6848b2c80f70",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "16-01",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "VAGONETA",
+      "economico": "360",
+      "tarjeton": "745",
+      "nombre": "ARMAS ALVARADO OSCAR MARIO",
+      "fechaApertura": "2025-08-29T08:48:24.384Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:24.165Z"
+      },
+      "createdAt": "2025-08-29T08:48:24.165Z",
+      "updatedAt": "2025-08-29T08:48:24.165Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695824bb6848b2c80f73",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "17-01",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "SPRINTER",
+      "economico": "352",
+      "tarjeton": "191",
+      "nombre": "MONTALVO HERNANDEZ EUSEBIO ALEJANDRO",
+      "fechaApertura": "2025-08-29T08:48:24.597Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:24.386Z"
+      },
+      "createdAt": "2025-08-29T08:48:24.386Z",
+      "updatedAt": "2025-08-29T08:48:24.386Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695824bb6848b2c80f76",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "17-02",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "SPRINTER",
+      "economico": "340",
+      "tarjeton": "718",
+      "nombre": "VEGA MÁRQUEZ JOSÉ DANIEL",
+      "fechaApertura": "2025-08-29T08:48:24.801Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:24.600Z"
+      },
+      "createdAt": "2025-08-29T08:48:24.600Z",
+      "updatedAt": "2025-08-29T08:48:24.600Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695824bb6848b2c80f79",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "17-03",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "SPRINTER",
+      "economico": "378",
+      "tarjeton": "779",
+      "nombre": "ALMAZÁN BUSTAMANTE JOSÉ LUIS",
+      "fechaApertura": "2025-08-29T08:48:25.012Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:24.805Z"
+      },
+      "createdAt": "2025-08-29T08:48:24.805Z",
+      "updatedAt": "2025-08-29T08:48:24.805Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695924bb6848b2c80f7c",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "19-01",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "SPRINTER",
+      "economico": "329",
+      "tarjeton": "715",
+      "nombre": "JAEN PEÑA UVALDO",
+      "fechaApertura": "2025-08-29T08:48:25.219Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:25.016Z"
+      },
+      "createdAt": "2025-08-29T08:48:25.016Z",
+      "updatedAt": "2025-08-29T08:48:25.016Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b169595a0d10881fa29f03",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "19-02",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "SPRINTER",
+      "economico": "322",
+      "tarjeton": "401",
+      "nombre": "VEGA QUIJANO VICTOR GABRIEL",
+      "fechaApertura": "2025-08-29T08:48:25.570Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:25.379Z"
+      },
+      "createdAt": "2025-08-29T08:48:25.379Z",
+      "updatedAt": "2025-08-29T08:48:25.379Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b169595a0d10881fa29f06",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "19-03",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "SPRINTER",
+      "economico": "363",
+      "tarjeton": "837",
+      "nombre": "BARRÓN GUERRERO VICTOR MANUEL",
+      "fechaApertura": "2025-08-29T08:48:25.793Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:25.590Z"
+      },
+      "createdAt": "2025-08-29T08:48:25.590Z",
+      "updatedAt": "2025-08-29T08:48:25.590Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b169595a0d10881fa29f09",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "T01-01",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "GRAN VIALE",
+      "economico": "15",
+      "tarjeton": "067",
+      "nombre": "MARTÍNEZ JIMÉNEZ ALEJANDRO",
+      "fechaApertura": "2025-08-29T08:48:26.031Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:25.837Z"
+      },
+      "createdAt": "2025-08-29T08:48:25.837Z",
+      "updatedAt": "2025-08-29T08:48:25.837Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695a5a0d10881fa29f0d",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "T01-02",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "GRAN VIALE",
+      "economico": "04",
+      "tarjeton": "087",
+      "nombre": "PÉREZ RUÍZ DAVID",
+      "fechaApertura": "2025-08-29T08:48:26.253Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:26.051Z"
+      },
+      "createdAt": "2025-08-29T08:48:26.051Z",
+      "updatedAt": "2025-08-29T08:48:26.051Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695a5a0d10881fa29f10",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "T01-03",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "GRAN VIALE",
+      "economico": "11",
+      "tarjeton": "008",
+      "nombre": "SANTILLAN VÁZQUEZ GLADIS",
+      "fechaApertura": "2025-08-29T08:48:26.464Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:26.279Z"
+      },
+      "createdAt": "2025-08-29T08:48:26.279Z",
+      "updatedAt": "2025-08-29T08:48:26.279Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695a5a0d10881fa29f13",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "T01-04",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "GRAN VIALE",
+      "economico": "31",
+      "tarjeton": "189",
+      "nombre": "LEON CARRILLO ENRIQUE",
+      "fechaApertura": "2025-08-29T08:48:26.728Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:26.527Z"
+      },
+      "createdAt": "2025-08-29T08:48:26.527Z",
+      "updatedAt": "2025-08-29T08:48:26.527Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695a5a0d10881fa29f16",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "T01-05",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "GRAN VIALE",
+      "economico": "46",
+      "tarjeton": "024",
+      "nombre": "CABAÑAS GARCÍA AGUSTÍN",
+      "fechaApertura": "2025-08-29T08:48:26.946Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:26.743Z"
+      },
+      "createdAt": "2025-08-29T08:48:26.743Z",
+      "updatedAt": "2025-08-29T08:48:26.743Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695a5a0d10881fa29f19",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "T01-06",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "GRAN VIALE",
+      "economico": "16",
+      "tarjeton": "194",
+      "nombre": "VALDON LARA MARYAVIT",
+      "fechaApertura": "2025-08-29T08:48:27.161Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:26.968Z"
+      },
+      "createdAt": "2025-08-29T08:48:26.968Z",
+      "updatedAt": "2025-08-29T08:48:26.968Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695b5a0d10881fa29f1c",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "T01-07",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "GRAN VIALE",
+      "economico": "08",
+      "tarjeton": "530",
+      "nombre": "TÉLLEZ GIRÓN ZENIL JUAN ALBERTO",
+      "fechaApertura": "2025-08-29T08:48:27.381Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:27.177Z"
+      },
+      "createdAt": "2025-08-29T08:48:27.177Z",
+      "updatedAt": "2025-08-29T08:48:27.177Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695b5a0d10881fa29f1f",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "T01-08",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "GRAN VIALE",
+      "economico": "21",
+      "tarjeton": "086",
+      "nombre": "ZUÑIGA OLMOS OSCAR ANDRÉS",
+      "fechaApertura": "2025-08-29T08:48:27.593Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:27.404Z"
+      },
+      "createdAt": "2025-08-29T08:48:27.404Z",
+      "updatedAt": "2025-08-29T08:48:27.404Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695b5a0d10881fa29f22",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "T02-01",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "GRAN VIALE",
+      "economico": "30",
+      "tarjeton": "802",
+      "nombre": "TÉLLEZ CERÓN SAÚL",
+      "fechaApertura": "2025-08-29T08:48:27.818Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:27.610Z"
+      },
+      "createdAt": "2025-08-29T08:48:27.610Z",
+      "updatedAt": "2025-08-29T08:48:27.610Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695b5a0d10881fa29f25",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "T02-02",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "GRAN VIALE",
+      "economico": "05",
+      "tarjeton": "542",
+      "nombre": "MORALES PÉREZ JOSÉ MARIA",
+      "fechaApertura": "2025-08-29T08:48:28.026Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:27.820Z"
+      },
+      "createdAt": "2025-08-29T08:48:27.820Z",
+      "updatedAt": "2025-08-29T08:48:27.820Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695c5a0d10881fa29f28",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "T02-03",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "GRAN VIALE",
+      "economico": "07",
+      "tarjeton": "184",
+      "nombre": "FUENTES LOPEZ JUAN JOSE",
+      "fechaApertura": "2025-08-29T08:48:28.234Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:28.023Z"
+      },
+      "createdAt": "2025-08-29T08:48:28.023Z",
+      "updatedAt": "2025-08-29T08:48:28.023Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695c5a0d10881fa29f2b",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "T02-04",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "GRAN VIALE",
+      "economico": "18",
+      "tarjeton": "392",
+      "nombre": "LEAL ORTÍZ ALDO ISAAC",
+      "fechaApertura": "2025-08-29T08:48:28.436Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:28.240Z"
+      },
+      "createdAt": "2025-08-29T08:48:28.240Z",
+      "updatedAt": "2025-08-29T08:48:28.240Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695c5a0d10881fa29f2f",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "T02-05",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "GRAN VIALE",
+      "economico": "34",
+      "tarjeton": "534",
+      "nombre": "ISLAS PÉREZ FRANCISCO",
+      "fechaApertura": "2025-08-29T08:48:28.659Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:28.456Z"
+      },
+      "createdAt": "2025-08-29T08:48:28.456Z",
+      "updatedAt": "2025-08-29T08:48:28.456Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695c5a0d10881fa29f32",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "T02-06",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "GRAN VIALE",
+      "economico": "38",
+      "tarjeton": "366",
+      "nombre": "VINIEGRA CANTON GERARDO FERNANDO",
+      "fechaApertura": "2025-08-29T08:48:28.869Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:28.665Z"
+      },
+      "createdAt": "2025-08-29T08:48:28.665Z",
+      "updatedAt": "2025-08-29T08:48:28.665Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695c5a0d10881fa29f35",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "T04-01",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "GRAN VIALE",
+      "economico": "37",
+      "tarjeton": "092",
+      "nombre": "MEJÍA GÓMEZ GABINO",
+      "fechaApertura": "2025-08-29T08:48:29.080Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:28.874Z"
+      },
+      "createdAt": "2025-08-29T08:48:28.874Z",
+      "updatedAt": "2025-08-29T08:48:28.874Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695d5a0d10881fa29f39",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "T04-02",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "GRAN VIALE",
+      "economico": "42",
+      "tarjeton": "177",
+      "nombre": "LECHUGA JUAREZ MARIO ALBERTO",
+      "fechaApertura": "2025-08-29T08:48:29.289Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:29.109Z"
+      },
+      "createdAt": "2025-08-29T08:48:29.109Z",
+      "updatedAt": "2025-08-29T08:48:29.109Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695d5a0d10881fa29f3c",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "T04-03",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "GRAN VIALE",
+      "economico": "02",
+      "tarjeton": "110",
+      "nombre": "SÁNCHEZ BAUTISTA ERNESTO",
+      "fechaApertura": "2025-08-29T08:48:29.523Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:29.331Z"
+      },
+      "createdAt": "2025-08-29T08:48:29.331Z",
+      "updatedAt": "2025-08-29T08:48:29.331Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695d5a0d10881fa29f3f",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "T04-04",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "GRAN VIALE",
+      "economico": "40",
+      "tarjeton": "116",
+      "nombre": "BOLAÑOS GÓMEZ LUIS ÁNGEL",
+      "fechaApertura": "2025-08-29T08:48:29.744Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:29.538Z"
+      },
+      "createdAt": "2025-08-29T08:48:29.538Z",
+      "updatedAt": "2025-08-29T08:48:29.538Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695d5a0d10881fa29f42",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "T04-05",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "GRAN VIALE",
+      "economico": "36",
+      "tarjeton": "080",
+      "nombre": "NORIEGA ORTEGA RAFAEL",
+      "fechaApertura": "2025-08-29T08:48:29.960Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:29.752Z"
+      },
+      "createdAt": "2025-08-29T08:48:29.752Z",
+      "updatedAt": "2025-08-29T08:48:29.752Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695d5a0d10881fa29f45",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "T04-06",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "GRAN VIALE",
+      "economico": "19",
+      "tarjeton": "844",
+      "nombre": "VIVEROS GARCÍA DANIEL",
+      "fechaApertura": "2025-08-29T08:48:30.165Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:29.968Z"
+      },
+      "createdAt": "2025-08-29T08:48:29.968Z",
+      "updatedAt": "2025-08-29T08:48:29.968Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695e5a0d10881fa29f48",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "T05-01",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "GRAN VIALE",
+      "economico": "17",
+      "tarjeton": "048",
+      "nombre": "PALOMINO HERNÁNDEZ JOSÉ ROBERTO",
+      "fechaApertura": "2025-08-29T08:48:30.381Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:30.182Z"
+      },
+      "createdAt": "2025-08-29T08:48:30.182Z",
+      "updatedAt": "2025-08-29T08:48:30.182Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695e5a0d10881fa29f4b",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "T05-02",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "GRAN VIALE",
+      "economico": "14",
+      "tarjeton": "444",
+      "nombre": "BOLAÑOS GARCÍA MIGUEL ÁNGEL",
+      "fechaApertura": "2025-08-29T08:48:30.599Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:30.395Z"
+      },
+      "createdAt": "2025-08-29T08:48:30.395Z",
+      "updatedAt": "2025-08-29T08:48:30.395Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695e5a0d10881fa29f4e",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "T05-03",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "GRAN VIALE",
+      "economico": "45",
+      "tarjeton": "052",
+      "nombre": "SÁNCHEZ UBALDO JUAN GERMÁN",
+      "fechaApertura": "2025-08-29T08:48:30.812Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:30.608Z"
+      },
+      "createdAt": "2025-08-29T08:48:30.608Z",
+      "updatedAt": "2025-08-29T08:48:30.608Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695e5a0d10881fa29f51",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "T05-04",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "GRAN VIALE",
+      "economico": "26",
+      "tarjeton": "383",
+      "nombre": "LOZADA PÉREZ MIGUEL ÁNGEL",
+      "fechaApertura": "2025-08-29T08:48:31.021Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:30.822Z"
+      },
+      "createdAt": "2025-08-29T08:48:30.822Z",
+      "updatedAt": "2025-08-29T08:48:30.822Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695f5a0d10881fa29f54",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "T05-05",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "GRAN VIALE",
+      "economico": "43",
+      "tarjeton": "356",
+      "nombre": "HERNANDEZ MARTINEZ JUAN RAFAEL",
+      "fechaApertura": "2025-08-29T08:48:31.234Z",
+      "estado": "apertura",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T08:48:31.029Z"
+      },
+      "createdAt": "2025-08-29T08:48:31.029Z",
+      "updatedAt": "2025-08-29T08:48:31.029Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695f5a0d10881fa29f57",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "T05-06",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "GRAN VIALE",
+      "economico": "28",
+      "tarjeton": "358",
+      "nombre": "MENÉSES MENDOZA EDUARDO",
+      "fechaApertura": "2025-08-29T08:48:31.443Z",
+      "estado": "pendiente",
+      "observaciones": "REGRESO POR FALLA TÉCNICA: si",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T18:44:18.010Z"
+      },
+      "createdAt": "2025-08-29T08:48:31.261Z",
+      "updatedAt": "2025-08-29T18:44:18.010Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695f5a0d10881fa29f5b",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "T05-07",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "GRAN VIALE",
+      "economico": "24",
+      "tarjeton": "057",
+      "nombre": "GUTIÉRREZ HIDALGO OSCAR",
+      "fechaApertura": "2025-08-29T08:48:31.680Z",
+      "estado": "pendiente",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T18:43:57.418Z"
+      },
+      "createdAt": "2025-08-29T08:48:31.472Z",
+      "updatedAt": "2025-08-29T18:43:57.418Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695f5a0d10881fa29f5e",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "T05-08",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "GRAN VIALE",
+      "economico": "20",
+      "tarjeton": "188",
+      "nombre": "LANGO AVILES ISRAEL",
+      "fechaApertura": "2025-08-29T08:48:31.885Z",
+      "estado": "pendiente",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T18:43:53.753Z"
+      },
+      "createdAt": "2025-08-29T08:48:31.683Z",
+      "updatedAt": "2025-08-29T18:43:53.753Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b1695f5a0d10881fa29f61",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "T05-09",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "GRAN VIALE",
+      "economico": "35",
+      "tarjeton": "800",
+      "nombre": "SANCHEZ LAZO LUIS FERNANDO",
+      "fechaApertura": "2025-08-29T08:48:32.103Z",
+      "estado": "pendiente",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T18:43:49.602Z"
+      },
+      "createdAt": "2025-08-29T08:48:31.904Z",
+      "updatedAt": "2025-08-29T18:43:49.602Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b169605a0d10881fa29f65",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "T05-10",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "GRAN VIALE",
+      "economico": "03",
+      "tarjeton": "044",
+      "nombre": "DOLORES LÓPEZ ARTEMIO",
+      "fechaApertura": "2025-08-29T08:48:32.319Z",
+      "estado": "pendiente",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T18:43:46.607Z"
+      },
+      "createdAt": "2025-08-29T08:48:32.108Z",
+      "updatedAt": "2025-08-29T18:43:46.607Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b169605a0d10881fa29f68",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "T05-11",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "GRAN VIALE",
+      "economico": "33",
+      "tarjeton": "821",
+      "nombre": "HERRERA ROMERO EDGAR",
+      "fechaApertura": "2025-08-29T08:48:32.525Z",
+      "estado": "dashboard",
+      "observaciones": "",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T18:30:09.427Z"
+      },
+      "createdAt": "2025-08-29T08:48:32.323Z",
+      "updatedAt": "2025-08-29T18:30:09.427Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b169605a0d10881fa29f6b",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "T05-S",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "GRAN VIALE",
+      "economico": "29",
+      "tarjeton": "TPA0013",
+      "nombre": "SÁNCHEZ RAMÍREZ JOSEFINA",
+      "fechaApertura": "2025-08-29T08:48:32.738Z",
+      "estado": "dashboard",
+      "observaciones": "REGRESO POR FALLA TÉCNICA: si",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T18:43:39.531Z"
+      },
+      "createdAt": "2025-08-29T08:48:32.526Z",
+      "updatedAt": "2025-08-29T18:43:39.531Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b169605a0d10881fa29f6e",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "20A-01",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "ORION",
+      "economico": "401",
+      "tarjeton": "TPA370",
+      "nombre": "ALVAREZ HERNÁNDEZ MANUEL",
+      "fechaApertura": "2025-08-29T08:48:32.941Z",
+      "estado": "dashboard",
+      "observaciones": "REGRESO POR FALLA TÉCNICA: si",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T17:26:28.307Z"
+      },
+      "createdAt": "2025-08-29T08:48:32.744Z",
+      "updatedAt": "2025-08-29T17:26:28.307Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b169605a0d10881fa29f71",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "20B-01",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "ORION",
+      "economico": "402",
+      "tarjeton": "TPA0039",
+      "nombre": "BARAJAS OLMOS GUSTAVO",
+      "fechaApertura": "2025-08-29T08:48:33.157Z",
+      "estado": "dashboard",
+      "observaciones": "REGRESO POR FALLA TÉCNICA: s",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T18:43:42.867Z"
+      },
+      "createdAt": "2025-08-29T08:48:32.977Z",
+      "updatedAt": "2025-08-29T18:43:42.867Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b169615a0d10881fa29f74",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "20B-02",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "ORION",
+      "economico": "403",
+      "tarjeton": "TPA0021",
+      "nombre": "TORRES MORENO MIGUEL ÁNGEL",
+      "fechaApertura": "2025-08-29T08:48:33.393Z",
+      "estado": "pendiente",
+      "observaciones": "REGRESO POR FALLA TÉCNICA: si",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T18:44:22.925Z"
+      },
+      "createdAt": "2025-08-29T08:48:33.178Z",
+      "updatedAt": "2025-08-29T18:44:22.924Z",
+      "__v": 0
+    },
+    {
+      "_id": "68b169615a0d10881fa29f77",
+      "programacionId": "68955c5f83d70b7e768cc418",
+      "ruta": "20B-03",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 1,
+      "horaSalida": "05:30",
+      "tipoUnidad": "ORION",
+      "economico": "404",
+      "tarjeton": "029",
+      "nombre": "ESPINOZA ORTIZ JULIO IVÁN",
+      "fechaApertura": "2025-08-29T08:48:33.597Z",
+      "estado": "pendiente",
+      "observaciones": "REGRESO POR FALLA TÉCNICA: sd",
+      "comentario": "",
+      "usuarioCreacion": "AdminMK",
+      "ultimaModificacion": {
+        "usuario": "AdminMK",
+        "fecha": "2025-08-29T17:12:33.693Z"
+      },
+      "createdAt": "2025-08-29T08:48:33.390Z",
+      "updatedAt": "2025-08-29T17:12:33.693Z",
+      "__v": 0
+    }
+  ],
+  "programacions": [
+    {
+      "_id": "688d080cbc1af067d87d3171",
+      "ruta": "T-01",
+      "tipoVehiculo": "GRAN VIALE",
+      "cantidadUnidades": 8,
+      "numeroEconomico": "0000",
+      "intervalo": 3,
+      "corridaInicial": 1,
+      "corridaFinal": 14,
+      "horaSalida": "05:30",
+      "horarios": [
+        {
+          "hora": "05:30",
+          "corrida": 1,
+          "estado": "pendiente",
+          "_id": "688d080cbc1af067d87d3172"
+        },
+        {
+          "hora": "05:33",
+          "corrida": 2,
+          "estado": "pendiente",
+          "_id": "688d080cbc1af067d87d3173"
+        },
+        {
+          "hora": "05:36",
+          "corrida": 3,
+          "estado": "pendiente",
+          "_id": "688d080cbc1af067d87d3174"
+        },
+        {
+          "hora": "05:39",
+          "corrida": 4,
+          "estado": "pendiente",
+          "_id": "688d080dbc1af067d87d3175"
+        },
+        {
+          "hora": "05:42",
+          "corrida": 5,
+          "estado": "pendiente",
+          "_id": "688d080dbc1af067d87d3176"
+        },
+        {
+          "hora": "05:45",
+          "corrida": 6,
+          "estado": "pendiente",
+          "_id": "688d080dbc1af067d87d3177"
+        },
+        {
+          "hora": "05:48",
+          "corrida": 7,
+          "estado": "pendiente",
+          "_id": "688d080dbc1af067d87d3178"
+        },
+        {
+          "hora": "05:51",
+          "corrida": 8,
+          "estado": "pendiente",
+          "_id": "688d080dbc1af067d87d3179"
+        },
+        {
+          "hora": "05:54",
+          "corrida": 9,
+          "estado": "pendiente",
+          "_id": "688d080dbc1af067d87d317a"
+        },
+        {
+          "hora": "05:57",
+          "corrida": 10,
+          "estado": "pendiente",
+          "_id": "688d080dbc1af067d87d317b"
+        },
+        {
+          "hora": "06:00",
+          "corrida": 11,
+          "estado": "pendiente",
+          "_id": "688d080dbc1af067d87d317c"
+        },
+        {
+          "hora": "06:03",
+          "corrida": 12,
+          "estado": "pendiente",
+          "_id": "688d080dbc1af067d87d317d"
+        },
+        {
+          "hora": "06:06",
+          "corrida": 13,
+          "estado": "pendiente",
+          "_id": "688d080dbc1af067d87d317e"
+        },
+        {
+          "hora": "06:09",
+          "corrida": 14,
+          "estado": "pendiente",
+          "_id": "688d080dbc1af067d87d317f"
+        }
+      ],
+      "programador": "sistema",
+      "estado": "activo",
+      "fechaCreacion": "2025-08-01T18:31:41.001Z",
+      "createdAt": "2025-08-01T18:31:41.018Z",
+      "updatedAt": "2025-08-01T18:31:41.018Z",
+      "__v": 0
+    },
+    {
+      "_id": "688d08abbc1af067d87d3226",
+      "ruta": "T-02",
+      "tipoVehiculo": "GRAN VIALE",
+      "cantidadUnidades": 6,
+      "numeroEconomico": "1111",
+      "intervalo": 6,
+      "corridaInicial": 3,
+      "corridaFinal": 10,
+      "horaSalida": "05:55",
+      "horarios": [
+        {
+          "hora": "05:55",
+          "corrida": 3,
+          "estado": "pendiente",
+          "_id": "688d08abbc1af067d87d3227"
+        },
+        {
+          "hora": "06:01",
+          "corrida": 4,
+          "estado": "pendiente",
+          "_id": "688d08abbc1af067d87d3228"
+        },
+        {
+          "hora": "06:07",
+          "corrida": 5,
+          "estado": "pendiente",
+          "_id": "688d08abbc1af067d87d3229"
+        },
+        {
+          "hora": "06:13",
+          "corrida": 6,
+          "estado": "pendiente",
+          "_id": "688d08abbc1af067d87d322a"
+        },
+        {
+          "hora": "06:19",
+          "corrida": 7,
+          "estado": "pendiente",
+          "_id": "688d08abbc1af067d87d322b"
+        },
+        {
+          "hora": "06:25",
+          "corrida": 8,
+          "estado": "pendiente",
+          "_id": "688d08abbc1af067d87d322c"
+        },
+        {
+          "hora": "06:31",
+          "corrida": 9,
+          "estado": "pendiente",
+          "_id": "688d08abbc1af067d87d322d"
+        },
+        {
+          "hora": "06:37",
+          "corrida": 10,
+          "estado": "pendiente",
+          "_id": "688d08abbc1af067d87d322e"
+        }
+      ],
+      "programador": "sistema",
+      "estado": "activo",
+      "fechaCreacion": "2025-08-01T18:34:19.644Z",
+      "createdAt": "2025-08-01T18:34:19.647Z",
+      "updatedAt": "2025-08-01T18:34:19.647Z",
+      "__v": 0
+    },
+    {
+      "_id": "688d0934bc1af067d87d32d1",
+      "ruta": "T-04",
+      "tipoVehiculo": "GRAN VIALE",
+      "cantidadUnidades": 6,
+      "numeroEconomico": "2222",
+      "intervalo": 5,
+      "corridaInicial": 3,
+      "corridaFinal": 12,
+      "horaSalida": "06:00",
+      "horarios": [
+        {
+          "hora": "06:00",
+          "corrida": 3,
+          "estado": "pendiente",
+          "_id": "688d0934bc1af067d87d32d2"
+        },
+        {
+          "hora": "06:05",
+          "corrida": 4,
+          "estado": "pendiente",
+          "_id": "688d0934bc1af067d87d32d3"
+        },
+        {
+          "hora": "06:10",
+          "corrida": 5,
+          "estado": "pendiente",
+          "_id": "688d0934bc1af067d87d32d4"
+        },
+        {
+          "hora": "06:15",
+          "corrida": 6,
+          "estado": "pendiente",
+          "_id": "688d0934bc1af067d87d32d5"
+        },
+        {
+          "hora": "06:20",
+          "corrida": 7,
+          "estado": "pendiente",
+          "_id": "688d0934bc1af067d87d32d6"
+        },
+        {
+          "hora": "06:25",
+          "corrida": 8,
+          "estado": "pendiente",
+          "_id": "688d0934bc1af067d87d32d7"
+        },
+        {
+          "hora": "06:30",
+          "corrida": 9,
+          "estado": "pendiente",
+          "_id": "688d0934bc1af067d87d32d8"
+        },
+        {
+          "hora": "06:35",
+          "corrida": 10,
+          "estado": "pendiente",
+          "_id": "688d0934bc1af067d87d32d9"
+        },
+        {
+          "hora": "06:40",
+          "corrida": 11,
+          "estado": "pendiente",
+          "_id": "688d0934bc1af067d87d32da"
+        },
+        {
+          "hora": "06:45",
+          "corrida": 12,
+          "estado": "pendiente",
+          "_id": "688d0934bc1af067d87d32db"
+        }
+      ],
+      "programador": "sistema",
+      "estado": "activo",
+      "fechaCreacion": "2025-08-01T18:36:36.367Z",
+      "createdAt": "2025-08-01T18:36:36.369Z",
+      "updatedAt": "2025-08-01T18:36:36.369Z",
+      "__v": 0
+    },
+    {
+      "_id": "688d09eebc1af067d87d33c4",
+      "ruta": "T-05",
+      "tipoVehiculo": "GRAN VIALE",
+      "cantidadUnidades": 11,
+      "numeroEconomico": "333",
+      "intervalo": 2,
+      "corridaInicial": 1,
+      "corridaFinal": 14,
+      "horaSalida": "05:30",
+      "horarios": [
+        {
+          "hora": "05:30",
+          "corrida": 1,
+          "estado": "pendiente",
+          "_id": "688d09eebc1af067d87d33c5"
+        },
+        {
+          "hora": "05:32",
+          "corrida": 2,
+          "estado": "pendiente",
+          "_id": "688d09eebc1af067d87d33c6"
+        },
+        {
+          "hora": "05:34",
+          "corrida": 3,
+          "estado": "pendiente",
+          "_id": "688d09eebc1af067d87d33c7"
+        },
+        {
+          "hora": "05:36",
+          "corrida": 4,
+          "estado": "pendiente",
+          "_id": "688d09eebc1af067d87d33c8"
+        },
+        {
+          "hora": "05:38",
+          "corrida": 5,
+          "estado": "pendiente",
+          "_id": "688d09eebc1af067d87d33c9"
+        },
+        {
+          "hora": "05:40",
+          "corrida": 6,
+          "estado": "pendiente",
+          "_id": "688d09eebc1af067d87d33ca"
+        },
+        {
+          "hora": "05:42",
+          "corrida": 7,
+          "estado": "pendiente",
+          "_id": "688d09eebc1af067d87d33cb"
+        },
+        {
+          "hora": "05:44",
+          "corrida": 8,
+          "estado": "pendiente",
+          "_id": "688d09eebc1af067d87d33cc"
+        },
+        {
+          "hora": "05:46",
+          "corrida": 9,
+          "estado": "pendiente",
+          "_id": "688d09eebc1af067d87d33cd"
+        },
+        {
+          "hora": "05:48",
+          "corrida": 10,
+          "estado": "pendiente",
+          "_id": "688d09eebc1af067d87d33ce"
+        },
+        {
+          "hora": "05:50",
+          "corrida": 11,
+          "estado": "pendiente",
+          "_id": "688d09eebc1af067d87d33cf"
+        },
+        {
+          "hora": "05:52",
+          "corrida": 12,
+          "estado": "pendiente",
+          "_id": "688d09eebc1af067d87d33d0"
+        },
+        {
+          "hora": "05:54",
+          "corrida": 13,
+          "estado": "pendiente",
+          "_id": "688d09eebc1af067d87d33d1"
+        },
+        {
+          "hora": "05:56",
+          "corrida": 14,
+          "estado": "pendiente",
+          "_id": "688d09eebc1af067d87d33d2"
+        }
+      ],
+      "programador": "sistema",
+      "estado": "activo",
+      "fechaCreacion": "2025-08-01T18:39:42.315Z",
+      "createdAt": "2025-08-01T18:39:42.317Z",
+      "updatedAt": "2025-08-01T18:39:42.317Z",
+      "__v": 0
+    },
+    {
+      "_id": "688d0a77bc1af067d87d34bf",
+      "ruta": "T-05S",
+      "tipoVehiculo": "GRAN VIALE",
+      "cantidadUnidades": 1,
+      "numeroEconomico": "1112",
+      "intervalo": 2,
+      "corridaInicial": 1,
+      "corridaFinal": 14,
+      "horaSalida": "05:40",
+      "horarios": [
+        {
+          "hora": "05:40",
+          "corrida": 1,
+          "estado": "pendiente",
+          "_id": "688d0a77bc1af067d87d34c0"
+        },
+        {
+          "hora": "05:42",
+          "corrida": 2,
+          "estado": "pendiente",
+          "_id": "688d0a77bc1af067d87d34c1"
+        },
+        {
+          "hora": "05:44",
+          "corrida": 3,
+          "estado": "pendiente",
+          "_id": "688d0a77bc1af067d87d34c2"
+        },
+        {
+          "hora": "05:46",
+          "corrida": 4,
+          "estado": "pendiente",
+          "_id": "688d0a77bc1af067d87d34c3"
+        },
+        {
+          "hora": "05:48",
+          "corrida": 5,
+          "estado": "pendiente",
+          "_id": "688d0a77bc1af067d87d34c4"
+        },
+        {
+          "hora": "05:50",
+          "corrida": 6,
+          "estado": "pendiente",
+          "_id": "688d0a77bc1af067d87d34c5"
+        },
+        {
+          "hora": "05:52",
+          "corrida": 7,
+          "estado": "pendiente",
+          "_id": "688d0a77bc1af067d87d34c6"
+        },
+        {
+          "hora": "05:54",
+          "corrida": 8,
+          "estado": "pendiente",
+          "_id": "688d0a77bc1af067d87d34c7"
+        },
+        {
+          "hora": "05:56",
+          "corrida": 9,
+          "estado": "pendiente",
+          "_id": "688d0a77bc1af067d87d34c8"
+        },
+        {
+          "hora": "05:58",
+          "corrida": 10,
+          "estado": "pendiente",
+          "_id": "688d0a77bc1af067d87d34c9"
+        },
+        {
+          "hora": "06:00",
+          "corrida": 11,
+          "estado": "pendiente",
+          "_id": "688d0a77bc1af067d87d34ca"
+        },
+        {
+          "hora": "06:02",
+          "corrida": 12,
+          "estado": "pendiente",
+          "_id": "688d0a77bc1af067d87d34cb"
+        },
+        {
+          "hora": "06:04",
+          "corrida": 13,
+          "estado": "pendiente",
+          "_id": "688d0a77bc1af067d87d34cc"
+        },
+        {
+          "hora": "06:06",
+          "corrida": 14,
+          "estado": "pendiente",
+          "_id": "688d0a77bc1af067d87d34cd"
+        }
+      ],
+      "programador": "sistema",
+      "estado": "activo",
+      "fechaCreacion": "2025-08-01T18:41:59.022Z",
+      "createdAt": "2025-08-01T18:41:59.024Z",
+      "updatedAt": "2025-08-01T18:41:59.024Z",
+      "__v": 0
+    },
+    {
+      "_id": "688d0d10bc1af067d87d3837",
+      "ruta": "RA-01I",
+      "tipoVehiculo": "VAGONETA",
+      "cantidadUnidades": 1,
+      "numeroEconomico": "1212",
+      "intervalo": 12,
+      "corridaInicial": 1,
+      "corridaFinal": 3,
+      "horaSalida": "17:30",
+      "horarios": [
+        {
+          "hora": "17:30",
+          "corrida": 1,
+          "estado": "pendiente",
+          "_id": "688d0d10bc1af067d87d3838"
+        },
+        {
+          "hora": "17:42",
+          "corrida": 2,
+          "estado": "pendiente",
+          "_id": "688d0d10bc1af067d87d3839"
+        },
+        {
+          "hora": "17:54",
+          "corrida": 3,
+          "estado": "pendiente",
+          "_id": "688d0d10bc1af067d87d383a"
+        }
+      ],
+      "programador": "sistema",
+      "estado": "activo",
+      "fechaCreacion": "2025-08-01T18:53:04.859Z",
+      "createdAt": "2025-08-01T18:53:04.860Z",
+      "updatedAt": "2025-08-01T18:53:04.860Z",
+      "__v": 0
+    },
+    {
+      "_id": "688d0d80bc1af067d87d397c",
+      "ruta": "RA-01R",
+      "tipoVehiculo": "VAGONETA",
+      "cantidadUnidades": 1,
+      "numeroEconomico": "2121",
+      "intervalo": 9,
+      "corridaInicial": 1,
+      "corridaFinal": 3,
+      "horaSalida": "17:30",
+      "horarios": [
+        {
+          "hora": "17:30",
+          "corrida": 1,
+          "estado": "pendiente",
+          "_id": "688d0d80bc1af067d87d397d"
+        },
+        {
+          "hora": "17:39",
+          "corrida": 2,
+          "estado": "pendiente",
+          "_id": "688d0d80bc1af067d87d397e"
+        },
+        {
+          "hora": "17:48",
+          "corrida": 3,
+          "estado": "pendiente",
+          "_id": "688d0d80bc1af067d87d397f"
+        }
+      ],
+      "programador": "sistema",
+      "estado": "activo",
+      "fechaCreacion": "2025-08-01T18:54:56.003Z",
+      "createdAt": "2025-08-01T18:54:56.004Z",
+      "updatedAt": "2025-08-01T18:54:56.004Z",
+      "__v": 0
+    },
+    {
+      "_id": "688d0e4dbc1af067d87d39c4",
+      "ruta": "RA-02A",
+      "tipoVehiculo": "BOXER",
+      "cantidadUnidades": 3,
+      "numeroEconomico": "3121",
+      "intervalo": 7,
+      "corridaInicial": 1,
+      "corridaFinal": 3,
+      "horaSalida": "05:02",
+      "horarios": [
+        {
+          "hora": "05:02",
+          "corrida": 1,
+          "estado": "pendiente",
+          "_id": "688d0e4dbc1af067d87d39c5"
+        },
+        {
+          "hora": "05:09",
+          "corrida": 2,
+          "estado": "pendiente",
+          "_id": "688d0e4dbc1af067d87d39c6"
+        },
+        {
+          "hora": "05:16",
+          "corrida": 3,
+          "estado": "pendiente",
+          "_id": "688d0e4dbc1af067d87d39c7"
+        }
+      ],
+      "programador": "sistema",
+      "estado": "activo",
+      "fechaCreacion": "2025-08-01T18:58:21.662Z",
+      "createdAt": "2025-08-01T18:58:21.663Z",
+      "updatedAt": "2025-08-01T18:58:21.663Z",
+      "__v": 0
+    },
+    {
+      "_id": "688d0eb1bc1af067d87d3a0f",
+      "ruta": "RA-02B",
+      "tipoVehiculo": "BOXER",
+      "cantidadUnidades": 3,
+      "numeroEconomico": "3232",
+      "intervalo": 10,
+      "corridaInicial": 1,
+      "corridaFinal": 7,
+      "horaSalida": "05:16",
+      "horarios": [
+        {
+          "hora": "05:16",
+          "corrida": 1,
+          "estado": "pendiente",
+          "_id": "688d0eb1bc1af067d87d3a10"
+        },
+        {
+          "hora": "05:26",
+          "corrida": 2,
+          "estado": "pendiente",
+          "_id": "688d0eb1bc1af067d87d3a11"
+        },
+        {
+          "hora": "05:36",
+          "corrida": 3,
+          "estado": "pendiente",
+          "_id": "688d0eb1bc1af067d87d3a12"
+        },
+        {
+          "hora": "05:46",
+          "corrida": 4,
+          "estado": "pendiente",
+          "_id": "688d0eb1bc1af067d87d3a13"
+        },
+        {
+          "hora": "05:56",
+          "corrida": 5,
+          "estado": "pendiente",
+          "_id": "688d0eb1bc1af067d87d3a14"
+        },
+        {
+          "hora": "06:06",
+          "corrida": 6,
+          "estado": "pendiente",
+          "_id": "688d0eb1bc1af067d87d3a15"
+        },
+        {
+          "hora": "06:16",
+          "corrida": 7,
+          "estado": "pendiente",
+          "_id": "688d0eb1bc1af067d87d3a16"
+        }
+      ],
+      "programador": "sistema",
+      "estado": "activo",
+      "fechaCreacion": "2025-08-01T19:00:01.994Z",
+      "createdAt": "2025-08-01T19:00:01.995Z",
+      "updatedAt": "2025-08-01T19:00:01.995Z",
+      "__v": 0
+    },
+    {
+      "_id": "688d0f47bc1af067d87d3a65",
+      "ruta": "RA-02D",
+      "tipoVehiculo": "VAGONETA",
+      "cantidadUnidades": 2,
+      "numeroEconomico": "1414",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 3,
+      "horaSalida": "05:23",
+      "horarios": [
+        {
+          "hora": "05:23",
+          "corrida": 1,
+          "estado": "pendiente",
+          "_id": "688d0f47bc1af067d87d3a66"
+        },
+        {
+          "hora": "05:38",
+          "corrida": 2,
+          "estado": "pendiente",
+          "_id": "688d0f47bc1af067d87d3a67"
+        },
+        {
+          "hora": "05:53",
+          "corrida": 3,
+          "estado": "pendiente",
+          "_id": "688d0f47bc1af067d87d3a68"
+        }
+      ],
+      "programador": "sistema",
+      "estado": "activo",
+      "fechaCreacion": "2025-08-01T19:02:31.646Z",
+      "createdAt": "2025-08-01T19:02:31.646Z",
+      "updatedAt": "2025-08-01T19:02:31.646Z",
+      "__v": 0
+    },
+    {
+      "_id": "688d0f90bc1af067d87d3aba",
+      "ruta": "RA-02E",
+      "tipoVehiculo": "SPRINTER",
+      "cantidadUnidades": 1,
+      "numeroEconomico": "1232",
+      "intervalo": 9,
+      "corridaInicial": 1,
+      "corridaFinal": 3,
+      "horaSalida": "05:21",
+      "horarios": [
+        {
+          "hora": "05:21",
+          "corrida": 1,
+          "estado": "pendiente",
+          "_id": "688d0f90bc1af067d87d3abb"
+        },
+        {
+          "hora": "05:30",
+          "corrida": 2,
+          "estado": "pendiente",
+          "_id": "688d0f90bc1af067d87d3abc"
+        },
+        {
+          "hora": "05:39",
+          "corrida": 3,
+          "estado": "pendiente",
+          "_id": "688d0f90bc1af067d87d3abd"
+        }
+      ],
+      "programador": "sistema",
+      "estado": "activo",
+      "fechaCreacion": "2025-08-01T19:03:44.019Z",
+      "createdAt": "2025-08-01T19:03:44.020Z",
+      "updatedAt": "2025-08-01T19:03:44.020Z",
+      "__v": 0
+    },
+    {
+      "_id": "688d1008bc1af067d87d3b12",
+      "ruta": "RA-03",
+      "tipoVehiculo": "SPRINTER",
+      "cantidadUnidades": 3,
+      "numeroEconomico": "2123",
+      "intervalo": 14,
+      "corridaInicial": 1,
+      "corridaFinal": 3,
+      "horaSalida": "05:08",
+      "horarios": [
+        {
+          "hora": "05:08",
+          "corrida": 1,
+          "estado": "pendiente",
+          "_id": "688d1008bc1af067d87d3b13"
+        },
+        {
+          "hora": "05:22",
+          "corrida": 2,
+          "estado": "pendiente",
+          "_id": "688d1008bc1af067d87d3b14"
+        },
+        {
+          "hora": "05:36",
+          "corrida": 3,
+          "estado": "pendiente",
+          "_id": "688d1008bc1af067d87d3b15"
+        }
+      ],
+      "programador": "sistema",
+      "estado": "activo",
+      "fechaCreacion": "2025-08-01T19:05:44.752Z",
+      "createdAt": "2025-08-01T19:05:44.753Z",
+      "updatedAt": "2025-08-01T19:05:44.753Z",
+      "__v": 0
+    },
+    {
+      "_id": "688d1054bc1af067d87d3b6d",
+      "ruta": "RA-04",
+      "tipoVehiculo": "BOXER",
+      "cantidadUnidades": 1,
+      "numeroEconomico": "142",
+      "intervalo": 10,
+      "corridaInicial": 1,
+      "corridaFinal": 3,
+      "horaSalida": "05:30",
+      "horarios": [
+        {
+          "hora": "05:30",
+          "corrida": 1,
+          "estado": "pendiente",
+          "_id": "688d1054bc1af067d87d3b6e"
+        },
+        {
+          "hora": "05:40",
+          "corrida": 2,
+          "estado": "pendiente",
+          "_id": "688d1054bc1af067d87d3b6f"
+        },
+        {
+          "hora": "05:50",
+          "corrida": 3,
+          "estado": "pendiente",
+          "_id": "688d1054bc1af067d87d3b70"
+        }
+      ],
+      "programador": "sistema",
+      "estado": "activo",
+      "fechaCreacion": "2025-08-01T19:07:00.468Z",
+      "createdAt": "2025-08-01T19:07:00.469Z",
+      "updatedAt": "2025-08-01T19:07:00.469Z",
+      "__v": 0
+    },
+    {
+      "_id": "688d109dbc1af067d87d3bcb",
+      "ruta": "RA-05",
+      "tipoVehiculo": "VAGONETA",
+      "cantidadUnidades": 1,
+      "numeroEconomico": "2312",
+      "intervalo": 10,
+      "corridaInicial": 1,
+      "corridaFinal": 3,
+      "horaSalida": "05:30",
+      "horarios": [
+        {
+          "hora": "05:30",
+          "corrida": 1,
+          "estado": "pendiente",
+          "_id": "688d109dbc1af067d87d3bcc"
+        },
+        {
+          "hora": "05:40",
+          "corrida": 2,
+          "estado": "pendiente",
+          "_id": "688d109dbc1af067d87d3bcd"
+        },
+        {
+          "hora": "05:50",
+          "corrida": 3,
+          "estado": "pendiente",
+          "_id": "688d109dbc1af067d87d3bce"
+        }
+      ],
+      "programador": "sistema",
+      "estado": "activo",
+      "fechaCreacion": "2025-08-01T19:08:13.731Z",
+      "createdAt": "2025-08-01T19:08:13.731Z",
+      "updatedAt": "2025-08-01T19:08:13.731Z",
+      "__v": 0
+    },
+    {
+      "_id": "688d10fbbc1af067d87d3c2c",
+      "ruta": "RA-06",
+      "tipoVehiculo": "BOXER",
+      "cantidadUnidades": 2,
+      "numeroEconomico": "21",
+      "intervalo": 10,
+      "corridaInicial": 1,
+      "corridaFinal": 3,
+      "horaSalida": "05:30",
+      "horarios": [
+        {
+          "hora": "05:30",
+          "corrida": 1,
+          "estado": "pendiente",
+          "_id": "688d10fbbc1af067d87d3c2d"
+        },
+        {
+          "hora": "05:40",
+          "corrida": 2,
+          "estado": "pendiente",
+          "_id": "688d10fbbc1af067d87d3c2e"
+        },
+        {
+          "hora": "05:50",
+          "corrida": 3,
+          "estado": "pendiente",
+          "_id": "688d10fbbc1af067d87d3c2f"
+        }
+      ],
+      "programador": "sistema",
+      "estado": "activo",
+      "fechaCreacion": "2025-08-01T19:09:47.948Z",
+      "createdAt": "2025-08-01T19:09:47.949Z",
+      "updatedAt": "2025-08-01T19:09:47.949Z",
+      "__v": 0
+    },
+    {
+      "_id": "688d1153bc1af067d87d3c90",
+      "ruta": "RA-07",
+      "tipoVehiculo": "VAGONETA",
+      "cantidadUnidades": 1,
+      "numeroEconomico": "1221",
+      "intervalo": 12,
+      "corridaInicial": 1,
+      "corridaFinal": 3,
+      "horaSalida": "05:30",
+      "horarios": [
+        {
+          "hora": "05:30",
+          "corrida": 1,
+          "estado": "pendiente",
+          "_id": "688d1153bc1af067d87d3c91"
+        },
+        {
+          "hora": "05:42",
+          "corrida": 2,
+          "estado": "pendiente",
+          "_id": "688d1153bc1af067d87d3c92"
+        },
+        {
+          "hora": "05:54",
+          "corrida": 3,
+          "estado": "pendiente",
+          "_id": "688d1153bc1af067d87d3c93"
+        }
+      ],
+      "programador": "sistema",
+      "estado": "activo",
+      "fechaCreacion": "2025-08-01T19:11:15.879Z",
+      "createdAt": "2025-08-01T19:11:15.879Z",
+      "updatedAt": "2025-08-01T19:11:15.879Z",
+      "__v": 0
+    },
+    {
+      "_id": "688d11b6bc1af067d87d3f43",
+      "ruta": "RA-08",
+      "tipoVehiculo": "BOXER",
+      "cantidadUnidades": 3,
+      "numeroEconomico": "1",
+      "intervalo": 11,
+      "corridaInicial": 1,
+      "corridaFinal": 3,
+      "horaSalida": "05:30",
+      "horarios": [
+        {
+          "hora": "05:30",
+          "corrida": 1,
+          "estado": "pendiente",
+          "_id": "688d11b6bc1af067d87d3f44"
+        },
+        {
+          "hora": "05:41",
+          "corrida": 2,
+          "estado": "pendiente",
+          "_id": "688d11b6bc1af067d87d3f45"
+        },
+        {
+          "hora": "05:52",
+          "corrida": 3,
+          "estado": "pendiente",
+          "_id": "688d11b6bc1af067d87d3f46"
+        }
+      ],
+      "programador": "sistema",
+      "estado": "activo",
+      "fechaCreacion": "2025-08-01T19:12:54.843Z",
+      "createdAt": "2025-08-01T19:12:54.844Z",
+      "updatedAt": "2025-08-01T19:12:54.844Z",
+      "__v": 0
+    },
+    {
+      "_id": "688d11b6bc1af067d87d3f48",
+      "ruta": "RA-08",
+      "tipoVehiculo": "BOXER",
+      "cantidadUnidades": 3,
+      "numeroEconomico": "1",
+      "intervalo": 11,
+      "corridaInicial": 1,
+      "corridaFinal": 3,
+      "horaSalida": "05:30",
+      "horarios": [
+        {
+          "hora": "05:30",
+          "corrida": 1,
+          "estado": "pendiente",
+          "_id": "688d11b6bc1af067d87d3f49"
+        },
+        {
+          "hora": "05:41",
+          "corrida": 2,
+          "estado": "pendiente",
+          "_id": "688d11b6bc1af067d87d3f4a"
+        },
+        {
+          "hora": "05:52",
+          "corrida": 3,
+          "estado": "pendiente",
+          "_id": "688d11b6bc1af067d87d3f4b"
+        }
+      ],
+      "programador": "sistema",
+      "estado": "activo",
+      "fechaCreacion": "2025-08-01T19:12:54.947Z",
+      "createdAt": "2025-08-01T19:12:54.948Z",
+      "updatedAt": "2025-08-01T19:12:54.948Z",
+      "__v": 0
+    },
+    {
+      "_id": "688d1214bc1af067d87d4291",
+      "ruta": "RA-09",
+      "tipoVehiculo": "SPRINTER",
+      "cantidadUnidades": 1,
+      "numeroEconomico": "2",
+      "intervalo": 12,
+      "corridaInicial": 1,
+      "corridaFinal": 3,
+      "horaSalida": "05:30",
+      "horarios": [
+        {
+          "hora": "05:30",
+          "corrida": 1,
+          "estado": "pendiente",
+          "_id": "688d1214bc1af067d87d4292"
+        },
+        {
+          "hora": "05:42",
+          "corrida": 2,
+          "estado": "pendiente",
+          "_id": "688d1214bc1af067d87d4293"
+        },
+        {
+          "hora": "05:54",
+          "corrida": 3,
+          "estado": "pendiente",
+          "_id": "688d1214bc1af067d87d4294"
+        }
+      ],
+      "programador": "sistema",
+      "estado": "activo",
+      "fechaCreacion": "2025-08-01T19:14:28.133Z",
+      "createdAt": "2025-08-01T19:14:28.134Z",
+      "updatedAt": "2025-08-01T19:14:28.134Z",
+      "__v": 0
+    },
+    {
+      "_id": "688d12adbc1af067d87d4303",
+      "ruta": "RA-10",
+      "tipoVehiculo": "VAGONETA",
+      "cantidadUnidades": 1,
+      "numeroEconomico": "21",
+      "intervalo": 12,
+      "corridaInicial": 1,
+      "corridaFinal": 3,
+      "horaSalida": "05:30",
+      "horarios": [
+        {
+          "hora": "05:30",
+          "corrida": 1,
+          "estado": "pendiente",
+          "_id": "688d12adbc1af067d87d4304"
+        },
+        {
+          "hora": "05:42",
+          "corrida": 2,
+          "estado": "pendiente",
+          "_id": "688d12adbc1af067d87d4305"
+        },
+        {
+          "hora": "05:54",
+          "corrida": 3,
+          "estado": "pendiente",
+          "_id": "688d12adbc1af067d87d4306"
+        }
+      ],
+      "programador": "sistema",
+      "estado": "activo",
+      "fechaCreacion": "2025-08-01T19:17:01.920Z",
+      "createdAt": "2025-08-01T19:17:01.921Z",
+      "updatedAt": "2025-08-01T19:17:01.921Z",
+      "__v": 0
+    },
+    {
+      "_id": "688d1345bc1af067d87d4376",
+      "ruta": "RA-11",
+      "tipoVehiculo": "BOXER",
+      "cantidadUnidades": 3,
+      "numeroEconomico": "68",
+      "intervalo": 15,
+      "corridaInicial": 1,
+      "corridaFinal": 3,
+      "horaSalida": "05:30",
+      "horarios": [
+        {
+          "hora": "05:30",
+          "corrida": 1,
+          "estado": "pendiente",
+          "_id": "688d1345bc1af067d87d4377"
+        },
+        {
+          "hora": "05:45",
+          "corrida": 2,
+          "estado": "pendiente",
+          "_id": "688d1345bc1af067d87d4378"
+        },
+        {
+          "hora": "06:00",
+          "corrida": 3,
+          "estado": "pendiente",
+          "_id": "688d1345bc1af067d87d4379"
+        }
+      ],
+      "programador": "sistema",
+      "estado": "activo",
+      "fechaCreacion": "2025-08-01T19:19:33.873Z",
+      "createdAt": "2025-08-01T19:19:33.874Z",
+      "updatedAt": "2025-08-01T19:19:33.874Z",
+      "__v": 0
+    },
+    {
+      "_id": "688d138bbc1af067d87d43ec",
+      "ruta": "RA-12",
+      "tipoVehiculo": "VAGONETA",
+      "cantidadUnidades": 1,
+      "numeroEconomico": "123",
+      "intervalo": 12,
+      "corridaInicial": 1,
+      "corridaFinal": 3,
+      "horaSalida": "05:30",
+      "horarios": [
+        {
+          "hora": "05:30",
+          "corrida": 1,
+          "estado": "pendiente",
+          "_id": "688d138bbc1af067d87d43ed"
+        },
+        {
+          "hora": "05:42",
+          "corrida": 2,
+          "estado": "pendiente",
+          "_id": "688d138bbc1af067d87d43ee"
+        },
+        {
+          "hora": "05:54",
+          "corrida": 3,
+          "estado": "pendiente",
+          "_id": "688d138bbc1af067d87d43ef"
+        }
+      ],
+      "programador": "sistema",
+      "estado": "activo",
+      "fechaCreacion": "2025-08-01T19:20:43.891Z",
+      "createdAt": "2025-08-01T19:20:43.892Z",
+      "updatedAt": "2025-08-01T19:20:43.892Z",
+      "__v": 0
+    },
+    {
+      "_id": "688d1458bc1af067d87d4465",
+      "ruta": "RA-13",
+      "tipoVehiculo": "VAGONETA",
+      "cantidadUnidades": 3,
+      "numeroEconomico": "12344",
+      "intervalo": 10,
+      "corridaInicial": 1,
+      "corridaFinal": 3,
+      "horaSalida": "03:30",
+      "horarios": [
+        {
+          "hora": "03:30",
+          "corrida": 1,
+          "estado": "pendiente",
+          "_id": "688d1458bc1af067d87d4466"
+        },
+        {
+          "hora": "03:40",
+          "corrida": 2,
+          "estado": "pendiente",
+          "_id": "688d1458bc1af067d87d4467"
+        },
+        {
+          "hora": "03:50",
+          "corrida": 3,
+          "estado": "pendiente",
+          "_id": "688d1458bc1af067d87d4468"
+        }
+      ],
+      "programador": "sistema",
+      "estado": "activo",
+      "fechaCreacion": "2025-08-01T19:24:08.755Z",
+      "createdAt": "2025-08-01T19:24:08.756Z",
+      "updatedAt": "2025-08-01T19:24:08.756Z",
+      "__v": 0
+    },
+    {
+      "_id": "688d14d7bc1af067d87d44e1",
+      "ruta": "RA-14",
+      "tipoVehiculo": "VAGONETA",
+      "cantidadUnidades": 3,
+      "numeroEconomico": "098",
+      "intervalo": 10,
+      "corridaInicial": 1,
+      "corridaFinal": 3,
+      "horaSalida": "05:30",
+      "horarios": [
+        {
+          "hora": "05:30",
+          "corrida": 1,
+          "estado": "pendiente",
+          "_id": "688d14d7bc1af067d87d44e2"
+        },
+        {
+          "hora": "05:40",
+          "corrida": 2,
+          "estado": "pendiente",
+          "_id": "688d14d7bc1af067d87d44e3"
+        },
+        {
+          "hora": "05:50",
+          "corrida": 3,
+          "estado": "pendiente",
+          "_id": "688d14d7bc1af067d87d44e4"
+        }
+      ],
+      "programador": "sistema",
+      "estado": "activo",
+      "fechaCreacion": "2025-08-01T19:26:15.615Z",
+      "createdAt": "2025-08-01T19:26:15.616Z",
+      "updatedAt": "2025-08-01T19:26:15.616Z",
+      "__v": 0
+    },
+    {
+      "_id": "688d15acbc1af067d87d474a",
+      "ruta": "RA-15A",
+      "tipoVehiculo": "BOXER",
+      "cantidadUnidades": 3,
+      "numeroEconomico": "56",
+      "intervalo": 25,
+      "corridaInicial": 1,
+      "corridaFinal": 4,
+      "horaSalida": "05:30",
+      "horarios": [
+        {
+          "hora": "05:30",
+          "corrida": 1,
+          "estado": "pendiente",
+          "_id": "688d15acbc1af067d87d474b"
+        },
+        {
+          "hora": "05:55",
+          "corrida": 2,
+          "estado": "pendiente",
+          "_id": "688d15acbc1af067d87d474c"
+        },
+        {
+          "hora": "06:20",
+          "corrida": 3,
+          "estado": "pendiente",
+          "_id": "688d15acbc1af067d87d474d"
+        },
+        {
+          "hora": "06:45",
+          "corrida": 4,
+          "estado": "pendiente",
+          "_id": "688d15acbc1af067d87d474e"
+        }
+      ],
+      "programador": "sistema",
+      "estado": "activo",
+      "fechaCreacion": "2025-08-01T19:29:48.645Z",
+      "createdAt": "2025-08-01T19:29:48.645Z",
+      "updatedAt": "2025-08-01T19:29:48.645Z",
+      "__v": 0
+    },
+    {
+      "_id": "688d164ebc1af067d87d48ca",
+      "ruta": "RA-15B",
+      "tipoVehiculo": "BOXER",
+      "cantidadUnidades": 2,
+      "numeroEconomico": "556",
+      "intervalo": 23,
+      "corridaInicial": 1,
+      "corridaFinal": 4,
+      "horaSalida": "05:30",
+      "horarios": [
+        {
+          "hora": "05:30",
+          "corrida": 1,
+          "estado": "pendiente",
+          "_id": "688d164ebc1af067d87d48cb"
+        },
+        {
+          "hora": "05:53",
+          "corrida": 2,
+          "estado": "pendiente",
+          "_id": "688d164ebc1af067d87d48cc"
+        },
+        {
+          "hora": "06:16",
+          "corrida": 3,
+          "estado": "pendiente",
+          "_id": "688d164ebc1af067d87d48cd"
+        },
+        {
+          "hora": "06:39",
+          "corrida": 4,
+          "estado": "pendiente",
+          "_id": "688d164ebc1af067d87d48ce"
+        }
+      ],
+      "programador": "sistema",
+      "estado": "activo",
+      "fechaCreacion": "2025-08-01T19:32:30.697Z",
+      "createdAt": "2025-08-01T19:32:30.697Z",
+      "updatedAt": "2025-08-01T19:32:30.697Z",
+      "__v": 0
+    },
+    {
+      "_id": "688d16d0bc1af067d87d4952",
+      "ruta": "RA-15C",
+      "tipoVehiculo": "VAGONETA",
+      "cantidadUnidades": 3,
+      "numeroEconomico": "87",
+      "intervalo": 20,
+      "corridaInicial": 1,
+      "corridaFinal": 4,
+      "horaSalida": "05:30",
+      "horarios": [
+        {
+          "hora": "05:30",
+          "corrida": 1,
+          "estado": "pendiente",
+          "_id": "688d16d0bc1af067d87d4953"
+        },
+        {
+          "hora": "05:50",
+          "corrida": 2,
+          "estado": "pendiente",
+          "_id": "688d16d0bc1af067d87d4954"
+        },
+        {
+          "hora": "06:10",
+          "corrida": 3,
+          "estado": "pendiente",
+          "_id": "688d16d0bc1af067d87d4955"
+        },
+        {
+          "hora": "06:30",
+          "corrida": 4,
+          "estado": "pendiente",
+          "_id": "688d16d0bc1af067d87d4956"
+        }
+      ],
+      "programador": "sistema",
+      "estado": "activo",
+      "fechaCreacion": "2025-08-01T19:34:40.287Z",
+      "createdAt": "2025-08-01T19:34:40.288Z",
+      "updatedAt": "2025-08-01T19:34:40.288Z",
+      "__v": 0
+    },
+    {
+      "_id": "688d17a6bc1af067d87d4aea",
+      "ruta": "RA-16",
+      "tipoVehiculo": "VAGONETA",
+      "cantidadUnidades": 1,
+      "numeroEconomico": "1",
+      "intervalo": 12,
+      "corridaInicial": 1,
+      "corridaFinal": 3,
+      "horaSalida": "05:30",
+      "horarios": [
+        {
+          "hora": "05:30",
+          "corrida": 1,
+          "estado": "pendiente",
+          "_id": "688d17a6bc1af067d87d4aeb"
+        },
+        {
+          "hora": "05:42",
+          "corrida": 2,
+          "estado": "pendiente",
+          "_id": "688d17a6bc1af067d87d4aec"
+        },
+        {
+          "hora": "05:54",
+          "corrida": 3,
+          "estado": "pendiente",
+          "_id": "688d17a6bc1af067d87d4aed"
+        }
+      ],
+      "programador": "sistema",
+      "estado": "activo",
+      "fechaCreacion": "2025-08-01T19:38:14.603Z",
+      "createdAt": "2025-08-01T19:38:14.604Z",
+      "updatedAt": "2025-08-01T19:38:14.604Z",
+      "__v": 0
+    },
+    {
+      "_id": "688d183ebc1af067d87d4b78",
+      "ruta": "RA-17",
+      "tipoVehiculo": "SPRINTER",
+      "cantidadUnidades": 3,
+      "numeroEconomico": "678",
+      "intervalo": 28,
+      "corridaInicial": 1,
+      "corridaFinal": 5,
+      "horaSalida": "05:30",
+      "horarios": [
+        {
+          "hora": "05:30",
+          "corrida": 1,
+          "estado": "pendiente",
+          "_id": "688d183ebc1af067d87d4b79"
+        },
+        {
+          "hora": "05:58",
+          "corrida": 2,
+          "estado": "pendiente",
+          "_id": "688d183ebc1af067d87d4b7a"
+        },
+        {
+          "hora": "06:26",
+          "corrida": 3,
+          "estado": "pendiente",
+          "_id": "688d183ebc1af067d87d4b7b"
+        },
+        {
+          "hora": "06:54",
+          "corrida": 4,
+          "estado": "pendiente",
+          "_id": "688d183ebc1af067d87d4b7c"
+        },
+        {
+          "hora": "07:22",
+          "corrida": 5,
+          "estado": "pendiente",
+          "_id": "688d183ebc1af067d87d4b7d"
+        }
+      ],
+      "programador": "sistema",
+      "estado": "activo",
+      "fechaCreacion": "2025-08-01T19:40:46.251Z",
+      "createdAt": "2025-08-01T19:40:46.252Z",
+      "updatedAt": "2025-08-01T19:40:46.252Z",
+      "__v": 0
+    },
+    {
+      "_id": "688d1873bc1af067d87d4c0d",
+      "ruta": "RA-19",
+      "tipoVehiculo": "SPRINTER",
+      "cantidadUnidades": 3,
+      "numeroEconomico": "678",
+      "intervalo": 26,
+      "corridaInicial": 1,
+      "corridaFinal": 3,
+      "horaSalida": "05:30",
+      "horarios": [
+        {
+          "hora": "05:30",
+          "corrida": 1,
+          "estado": "pendiente",
+          "_id": "688d1873bc1af067d87d4c0e"
+        },
+        {
+          "hora": "05:56",
+          "corrida": 2,
+          "estado": "pendiente",
+          "_id": "688d1873bc1af067d87d4c0f"
+        },
+        {
+          "hora": "06:22",
+          "corrida": 3,
+          "estado": "pendiente",
+          "_id": "688d1873bc1af067d87d4c10"
+        }
+      ],
+      "programador": "sistema",
+      "estado": "activo",
+      "fechaCreacion": "2025-08-01T19:41:39.991Z",
+      "createdAt": "2025-08-01T19:41:39.992Z",
+      "updatedAt": "2025-08-01T19:41:39.992Z",
+      "__v": 0
+    },
+    {
+      "_id": "6893bc37fcf488945a053438",
+      "ruta": "T-04",
+      "tipoVehiculo": "GRAN VIALE",
+      "cantidadUnidades": 3,
+      "numeroEconomico": "123",
+      "intervalo": 2,
+      "corridaInicial": 4,
+      "corridaFinal": 6,
+      "horaSalida": "02:33",
+      "horarios": [
+        {
+          "hora": "02:33",
+          "corrida": 4,
+          "estado": "pendiente",
+          "_id": "6893bc37fcf488945a053439"
+        },
+        {
+          "hora": "02:35",
+          "corrida": 5,
+          "estado": "pendiente",
+          "_id": "6893bc37fcf488945a05343a"
+        },
+        {
+          "hora": "02:37",
+          "corrida": 6,
+          "estado": "pendiente",
+          "_id": "6893bc37fcf488945a05343b"
+        }
+      ],
+      "programador": "sistema",
+      "estado": "activo",
+      "fechaCreacion": "2025-08-06T20:33:59.402Z",
+      "createdAt": "2025-08-06T20:33:59.407Z",
+      "updatedAt": "2025-08-06T20:33:59.407Z",
+      "__v": 0
+    },
+    {
+      "_id": "6894d3e26314930e49adb07c",
+      "ruta": "T-04",
+      "tipoVehiculo": "BOXER",
+      "cantidadUnidades": 7,
+      "numeroEconomico": "1235",
+      "intervalo": 5,
+      "corridaInicial": 1,
+      "corridaFinal": 6,
+      "horaSalida": "05:30",
+      "horarios": [
+        {
+          "hora": "05:30",
+          "corrida": 1,
+          "estado": "pendiente",
+          "_id": "6894d3e26314930e49adb07d"
+        },
+        {
+          "hora": "05:35",
+          "corrida": 2,
+          "estado": "pendiente",
+          "_id": "6894d3e26314930e49adb07e"
+        },
+        {
+          "hora": "05:40",
+          "corrida": 3,
+          "estado": "pendiente",
+          "_id": "6894d3e26314930e49adb07f"
+        },
+        {
+          "hora": "05:45",
+          "corrida": 4,
+          "estado": "pendiente",
+          "_id": "6894d3e26314930e49adb080"
+        },
+        {
+          "hora": "05:50",
+          "corrida": 5,
+          "estado": "pendiente",
+          "_id": "6894d3e26314930e49adb081"
+        },
+        {
+          "hora": "05:55",
+          "corrida": 6,
+          "estado": "pendiente",
+          "_id": "6894d3e26314930e49adb082"
+        }
+      ],
+      "programador": "admin",
+      "estado": "activo",
+      "fechaCreacion": "2025-08-07T16:27:14.690Z",
+      "createdAt": "2025-08-07T16:27:14.697Z",
+      "updatedAt": "2025-08-07T16:27:14.697Z",
+      "__v": 0
+    },
+    {
+      "_id": "6894d7456314930e49adb2ee",
+      "ruta": "prueba",
+      "tipoVehiculo": "GRAN VIALE",
+      "cantidadUnidades": 3,
+      "numeroEconomico": "1224",
+      "intervalo": 3,
+      "corridaInicial": 1,
+      "corridaFinal": 7,
+      "horaSalida": "10:35",
+      "horarios": [
+        {
+          "hora": "10:35",
+          "corrida": 1,
+          "estado": "pendiente",
+          "_id": "6894d7456314930e49adb2ef"
+        },
+        {
+          "hora": "10:38",
+          "corrida": 2,
+          "estado": "pendiente",
+          "_id": "6894d7456314930e49adb2f0"
+        },
+        {
+          "hora": "10:41",
+          "corrida": 3,
+          "estado": "pendiente",
+          "_id": "6894d7456314930e49adb2f1"
+        },
+        {
+          "hora": "10:44",
+          "corrida": 4,
+          "estado": "pendiente",
+          "_id": "6894d7456314930e49adb2f2"
+        },
+        {
+          "hora": "10:47",
+          "corrida": 5,
+          "estado": "pendiente",
+          "_id": "6894d7456314930e49adb2f3"
+        },
+        {
+          "hora": "10:50",
+          "corrida": 6,
+          "estado": "pendiente",
+          "_id": "6894d7456314930e49adb2f4"
+        },
+        {
+          "hora": "10:53",
+          "corrida": 7,
+          "estado": "pendiente",
+          "_id": "6894d7456314930e49adb2f5"
+        }
+      ],
+      "programador": "admin",
+      "estado": "activo",
+      "fechaCreacion": "2025-08-07T16:41:41.393Z",
+      "createdAt": "2025-08-07T16:41:41.395Z",
+      "updatedAt": "2025-08-07T16:41:41.395Z",
+      "__v": 0
+    },
+    {
+      "_id": "68955c5f83d70b7e768cc418",
+      "ruta": "T-07",
+      "tipoVehiculo": "SPRINTER",
+      "cantidadUnidades": 6,
+      "numeroEconomico": "435y7",
+      "intervalo": 10,
+      "corridaInicial": 1,
+      "corridaFinal": 10,
+      "horaSalida": "05:30",
+      "horarios": [
+        {
+          "hora": "05:30",
+          "corrida": 1,
+          "estado": "pendiente",
+          "_id": "68955c5f83d70b7e768cc419"
+        },
+        {
+          "hora": "05:40",
+          "corrida": 2,
+          "estado": "pendiente",
+          "_id": "68955c5f83d70b7e768cc41a"
+        },
+        {
+          "hora": "05:50",
+          "corrida": 3,
+          "estado": "pendiente",
+          "_id": "68955c5f83d70b7e768cc41b"
+        },
+        {
+          "hora": "06:00",
+          "corrida": 4,
+          "estado": "pendiente",
+          "_id": "68955c5f83d70b7e768cc41c"
+        },
+        {
+          "hora": "06:10",
+          "corrida": 5,
+          "estado": "pendiente",
+          "_id": "68955c5f83d70b7e768cc41d"
+        },
+        {
+          "hora": "06:20",
+          "corrida": 6,
+          "estado": "pendiente",
+          "_id": "68955c5f83d70b7e768cc41e"
+        },
+        {
+          "hora": "06:30",
+          "corrida": 7,
+          "estado": "pendiente",
+          "_id": "68955c5f83d70b7e768cc41f"
+        },
+        {
+          "hora": "06:40",
+          "corrida": 8,
+          "estado": "pendiente",
+          "_id": "68955c5f83d70b7e768cc420"
+        },
+        {
+          "hora": "06:50",
+          "corrida": 9,
+          "estado": "pendiente",
+          "_id": "68955c5f83d70b7e768cc421"
+        },
+        {
+          "hora": "07:00",
+          "corrida": 10,
+          "estado": "pendiente",
+          "_id": "68955c5f83d70b7e768cc422"
+        }
+      ],
+      "programador": "AdminMK",
+      "estado": "activo",
+      "fechaCreacion": "2025-08-08T02:09:35.022Z",
+      "createdAt": "2025-08-08T02:09:35.028Z",
+      "updatedAt": "2025-08-08T02:09:35.028Z",
+      "__v": 0
+    }
+  ]
+}

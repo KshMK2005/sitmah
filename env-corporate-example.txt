@@ -1,0 +1,22 @@
+# Variables de entorno para migración a cuenta corporativa
+# Copia este contenido a .env y actualiza con tus valores reales
+
+# Base de datos actual (tu cuenta personal) - SOLO PARA MIGRACIÓN
+MONGODB_URI=mongodb+srv://tu_usuario_personal:tu_password_personal@cluster-personal.mongodb.net/sitmah?retryWrites=true&w=majority
+
+# Base de datos corporativa (nueva cuenta del organismo)
+CORPORATE_MONGODB_URI=mongodb+srv://usuario_corporativo:password_corporativo@cluster-corporativo.mongodb.net/sitmah?retryWrites=true&w=majority
+
+# Después de la migración, cambiar MONGODB_URI por CORPORATE_MONGODB_URI
+# y eliminar CORPORATE_MONGODB_URI
+
+# PASOS PARA LA MIGRACIÓN:
+# 1. Crear cuenta MongoDB Atlas corporativa
+# 2. Crear cluster y base de datos 'sitmah'
+# 3. Crear usuario de base de datos con permisos de lectura/escritura
+# 4. Configurar IP whitelist (0.0.0.0/0 para desarrollo)
+# 5. Obtener cadena de conexión
+# 6. Actualizar estas variables de entorno
+# 7. Ejecutar: node migrate-to-corporate-atlas.js
+# 8. Actualizar MONGODB_URI en Vercel
+# 9. Probar aplicación

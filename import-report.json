@@ -1,0 +1,12 @@
+{
+  "fecha": "2025-09-30T17:50:25.360Z",
+  "total_documentos_importados": 317,
+  "colecciones": [
+    "operadors",
+    "usuarios",
+    "configuracions",
+    "aperturas",
+    "programacions"
+  ],
+  "status": "COMPLETADO"
+}

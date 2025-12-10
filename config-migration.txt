@@ -1,0 +1,25 @@
+# Variables de entorno para migración - ACTUALIZAR CON TUS VALORES REALES
+
+# Base de datos actual (tu cuenta personal) - OBTENER DE VERCEL
+MONGODB_URI=mongodb+srv://REEMPLAZAR_CON_TU_CONEXION_ACTUAL.mongodb.net/sitmah?retryWrites=true&w=majority
+
+# Base de datos corporativa (nueva cuenta del organismo) - OBTENER DE ATLAS CORPORATIVO
+CORPORATE_MONGODB_URI=mongodb+srv://sitmah_user:REEMPLAZAR_CON_PASSWORD@cluster-corporativo.mongodb.net/sitmah?retryWrites=true&w=majority
+
+# INSTRUCCIONES:
+# 1. Reemplazar MONGODB_URI con la cadena de conexión actual (de Vercel o tu .env actual)
+# 2. Reemplazar CORPORATE_MONGODB_URI con la nueva cadena de conexión de Atlas
+# 3. Cambiar el nombre del cluster en CORPORATE_MONGODB_URI por el nombre real de tu cluster
+# 4. Reemplazar la password en CORPORATE_MONGODB_URI con la password real del usuario
+
+# PARA OBTENER LA CADENA ACTUAL:
+# - Ve a Vercel Dashboard
+# - Selecciona tu proyecto SITMAH
+# - Settings > Environment Variables
+# - Copia el valor de MONGODB_URI
+
+# PARA OBTENER LA NUEVA CADENA:
+# - Ve a tu Atlas corporativo
+# - Database > Connect > Connect your application
+# - Copia la cadena de conexión
+# - Reemplaza <password> con la password del usuario creado
