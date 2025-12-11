@@ -74,126 +74,73 @@ const handleProgramFileUpload = (event) => {
             const sheetName = workbook.SheetNames[0];
             const worksheet = workbook.Sheets[sheetName];
             
-            // Mostrar el contenido crudo de la hoja
-            console.log('Contenido de la hoja:', worksheet);
-            
-            // Leer como JSON
+            // Leer los datos comenzando desde la fila 11 (índice 10)
             const jsonData = XLSX.utils.sheet_to_json(worksheet, { 
                 defval: '',
-                header: 1, // Leer como matriz para ver los datos crudos
-                blankrows: true
+                header: 0,
+                range: 10  // Comenzar desde la fila 11 (0-indexed)
             });
-            
-            console.log('Datos en bruto del Excel:', jsonData);
-            
-            // Leer nuevamente como objetos con encabezados
-            const jsonWithHeaders = XLSX.utils.sheet_to_json(worksheet, { 
-                defval: '',
-                header: 0 // Usar la primera fila como encabezados
-            });
-            
-            console.log('Datos con encabezados:', jsonWithHeaders);
 
-            // Mapear y normalizar los nombres de las columnas
-            const mappedData = jsonWithHeaders.map((row, index) => {
-                console.log(`Fila ${index + 1}:`, row);
-                const mapped = {};
-                Object.keys(row).forEach(key => {
-                    const normalizedKey = String(key).trim().toUpperCase().replace(/\s+/g, ' ');
-                    mapped[normalizedKey] = row[key];
+            console.log('Datos leídos del Excel:', jsonData);
+
+            // Verificar si hay datos
+            if (jsonData.length === 0) {
+                console.error('No se encontraron datos en el archivo');
+                Swal.fire({
+                    title: 'Error',
+                    text: 'No se encontraron datos en el archivo. Asegúrate de que el archivo tenga datos en la hoja activa.',
+                    icon: 'error'
                 });
+                return;
+            }
+
+            // Mapear y normalizar los datos
+            const mappedData = jsonData.map((row, index) => {
+                // Mapear manualmente las columnas según su posición
+                const mapped = {
+                    RUTA: String(row[0] || '').trim(),
+                    TIPO_DE_VEHICULO: String(row[1] || '').trim().toUpperCase(),
+                    CANTIDAD_DE_UNIDADES: parseInt(row[2]) || 1,
+                    KILOMETRAJE_PROGRAMADO: parseInt(row[3]) || 0,
+                    VIAJES_PROGRAMADOS: parseInt(row[4]) || 0,
+                    INTERVALO_HR_PICO: String(row[5] || '').trim(),
+                    INTERVALO_HR_VALLE: String(row[6] || '').trim()
+                };
+                console.log(`Fila ${index + 1} mapeada:`, mapped);
                 return mapped;
             });
 
-            console.log('Datos mapeados:', mappedData);
-
-            // Filtrar filas vacías y encabezados
-            const filteredRows = mappedData.filter((r, index) => {
-                const ruta = String(r['RUTA'] || '').trim();
-                const tipo = String(r['TIPO DE VEHÍCULO'] || '').trim();
-                const rutaLower = ruta.toLowerCase();
-                const tipoLower = tipo.toLowerCase();
-                
-                const esFilaVacia = !ruta && !tipo;
-                const esEncabezado = rutaLower.includes('ruta') || 
-                                   tipoLower.includes('tipo') || 
-                                   rutaLower.includes('route');
-                
-                console.log(`Fila ${index + 1}:`, {
-                    ruta,
-                    tipo,
-                    esFilaVacia,
-                    esEncabezado,
-                    seIncluye: !esFilaVacia && !esEncabezado
-                });
-                
-                return !esFilaVacia && !esEncabezado;
+            // Filtrar filas vacías
+            const filteredRows = mappedData.filter(row => {
+                const ruta = row.RUTA;
+                const tipo = row.TIPO_DE_VEHICULO;
+                const esValida = ruta && tipo;
+                console.log(`Fila con ruta "${ruta}" y tipo "${tipo}":`, esValida ? 'VÁLIDA' : 'INVÁLIDA');
+                return esValida;
             });
 
-            console.log('Filas filtradas:', filteredRows);
+            console.log('Filas válidas encontradas:', filteredRows);
 
             if (filteredRows.length === 0) {
-                // Mostrar más detalles sobre por qué no se encontraron filas
-                const razones = [];
-                if (mappedData.length === 0) {
-                    razones.push('El archivo está vacío o no se pudieron leer los datos.');
-                } else {
-                    razones.push(`Se encontraron ${mappedData.length} filas, pero ninguna pasó el filtro.`);
-                    razones.push('Primeras filas del archivo:');
-                    mappedData.slice(0, 3).forEach((row, i) => {
-                        razones.push(`Fila ${i + 1}: ${JSON.stringify(row)}`);
-                    });
-                }
-                
-                console.error('No se encontraron filas válidas. Razones:', razones.join('\n'));
-                
                 Swal.fire({
                     title: 'Error en el archivo',
                     html: `
                         <div style="text-align: left;">
                             <p>No se encontraron filas válidas en el archivo. Razones posibles:</p>
                             <ul>
-                                <li>El archivo está vacío</li>
-                                <li>Las columnas no tienen los nombres correctos</li>
-                                <li>Los datos no están en la primera hoja</li>
+                                <li>El archivo está vacío o no tiene el formato esperado</li>
+                                <li>Los datos no comienzan en la fila 11</li>
+                                <li>Las columnas no están en el orden correcto</li>
                             </ul>
                             <p>Por favor, verifica que el archivo tenga el formato correcto.</p>
-                            <p>Columnas requeridas: RUTA, TIPO DE VEHÍCULO, CANTIDAD DE UNIDADES, KILOMETRAJE PROGRAMADO, VIAJES PROGRAMADOS, INTERVALO HR PICO, INTERVALO HR VALLE</p>
-                        </div>
-                    `,
-                    icon: 'error'
-                });
-                return;
-            }
-
-            // Validar columnas requeridas
-            const requiredColumns = [
-                'RUTA', 
-                'TIPO DE VEHÍCULO', 
-                'CANTIDAD DE UNIDADES', 
-                'KILOMETRAJE PROGRAMADO',
-                'VIAJES PROGRAMADOS',
-                'INTERVALO HR PICO',
-                'INTERVALO HR VALLE'
-            ];
-
-            const missingColumns = requiredColumns.filter(col => 
-                !Object.keys(filteredRows[0] || {}).some(key => 
-                    key.trim().toUpperCase() === col
-                )
-            );
-
-            if (missingColumns.length > 0) {
-                console.error('Faltan columnas requeridas:', missingColumns);
-                console.log('Columnas encontradas:', Object.keys(filteredRows[0] || {}));
-                
-                Swal.fire({
-                    title: 'Error en el formato',
-                    html: `
-                        <div style="text-align: left;">
-                            <p>Faltan las siguientes columnas: <strong>${missingColumns.join(', ')}</strong></p>
-                            <p>Columnas encontradas: ${Object.keys(filteredRows[0] || {}).join(', ')}</p>
-                            <p>Por favor, asegúrate de que el archivo tenga todas las columnas requeridas con los nombres correctos.</p>
+                            <p>Columnas requeridas (en este orden):<br>
+                            1. RUTA<br>
+                            2. TIPO DE VEHÍCULO<br>
+                            3. CANTIDAD DE UNIDADES<br>
+                            4. KILOMETRAJE PROGRAMADO<br>
+                            5. VIAJES PROGRAMADOS<br>
+                            6. INTERVALO HR PICO<br>
+                            7. INTERVALO HR VALLE</p>
                         </div>
                     `,
                     icon: 'error'
@@ -202,8 +149,8 @@ const handleProgramFileUpload = (event) => {
             }
 
             // Calcular resumen
-            const rutasT = filteredRows.filter(r => String(r['RUTA'] || '').startsWith('T-'));
-            const rutasRA = filteredRows.filter(r => String(r['RUTA'] || '').startsWith('RA-'));
+            const rutasT = filteredRows.filter(r => String(r.RUTA || '').startsWith('T-'));
+            const rutasRA = filteredRows.filter(r => String(r.RUTA || '').startsWith('RA-'));
             const resumen = `Se van a importar:\n` +
                            `- ${rutasT.length} rutas T- (Troncales)\n` +
                            `- ${rutasRA.length} rutas RA- (Rutas Alimentadoras)`;
@@ -227,13 +174,13 @@ const handleProgramFileUpload = (event) => {
                     for (const row of filteredRows) {
                         try {
                             const payload = {
-                                ruta: String(row['RUTA'] || '').trim(),
-                                tipoVehiculo: String(row['TIPO DE VEHÍCULO'] || '').trim().toUpperCase(),
-                                cantidadUnidades: parseInt(row['CANTIDAD DE UNIDADES']) || 1,
-                                kilometraje: parseInt(row['KILOMETRAJE PROGRAMADO']) || 0,
-                                viajesProgramados: parseInt(row['VIAJES PROGRAMADOS']) || 0,
-                                intervaloPico: String(row['INTERVALO HR PICO'] || '').trim(),
-                                intervaloValle: String(row['INTERVALO HR VALLE'] || '').trim(),
+                                ruta: row.RUTA,
+                                tipoVehiculo: row.TIPO_DE_VEHICULO,
+                                cantidadUnidades: row.CANTIDAD_DE_UNIDADES,
+                                kilometraje: row.KILOMETRAJE_PROGRAMADO,
+                                viajesProgramados: row.VIAJES_PROGRAMADOS,
+                                intervaloPico: row.INTERVALO_HR_PICO,
+                                intervaloValle: row.INTERVALO_HR_VALLE,
                                 programador: localStorage.getItem('userName') || 'sistema',
                                 // Mantener compatibilidad
                                 intervalo: 15,
@@ -253,7 +200,7 @@ const handleProgramFileUpload = (event) => {
                             success++;
                         } catch (error) {
                             console.error('Error al guardar fila:', error);
-                            errors.push(`Error en ruta ${row['RUTA'] || '?'}: ${error.message}`);
+                            errors.push(`Error en ruta ${row.RUTA || '?'}: ${error.message}`);
                         }
                     }
 
