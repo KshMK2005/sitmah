@@ -68,7 +68,75 @@ const handleProgramFileUpload = (event) => {
     const reader = new FileReader();
     reader.onload = async (e) => {
         try {
-            // ... (código existente hasta el bloque try-catch de las filas)
+            const data = new Uint8Array(e.target.result);
+            const workbook = XLSX.read(data, { type: 'array' });
+            const sheetName = workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[sheetName];
+            const jsonData = XLSX.utils.sheet_to_json(worksheet, { defval: '' });
+
+            // Mapear y normalizar los nombres de las columnas
+            const mappedData = jsonData.map(row => {
+                const mapped = {};
+                Object.keys(row).forEach(key => {
+                    const normalizedKey = key.trim().toUpperCase().replace(/\s+/g, ' ');
+                    mapped[normalizedKey] = row[key];
+                });
+                return mapped;
+            });
+
+            // Filtrar filas vacías y encabezados
+            const filteredRows = mappedData.filter(r => {
+                if (!r['RUTA']) return false;
+                const rutaLower = String(r['RUTA'] || '').toLowerCase();
+                const tipoLower = String(r['TIPO DE VEHÍCULO'] || '').toLowerCase();
+                const looksHeader = rutaLower.includes('ruta') || 
+                                 tipoLower.includes('tipo') || 
+                                 rutaLower.includes('route') ||
+                                 rutaLower === 'ruta';
+                return !looksHeader && rutaLower.trim() !== '';
+            });
+
+            if (filteredRows.length === 0) {
+                Swal.fire({
+                    title: 'Advertencia',
+                    text: 'No se encontraron filas válidas en el Excel',
+                    icon: 'warning'
+                });
+                return;
+            }
+
+            // Validar columnas requeridas
+            const requiredColumns = [
+                'RUTA', 
+                'TIPO DE VEHÍCULO', 
+                'CANTIDAD DE UNIDADES', 
+                'KILOMETRAJE PROGRAMADO',
+                'VIAJES PROGRAMADOS',
+                'INTERVALO HR PICO',
+                'INTERVALO HR VALLE'
+            ];
+
+            const missingColumns = requiredColumns.filter(col => 
+                !Object.keys(filteredRows[0] || {}).some(key => 
+                    key.trim().toUpperCase() === col
+                )
+            );
+
+            if (missingColumns.length > 0) {
+                Swal.fire({
+                    title: 'Error en el formato',
+                    text: `Faltan las siguientes columnas: ${missingColumns.join(', ')}`,
+                    icon: 'error'
+                });
+                return;
+            }
+
+            // Calcular resumen
+            const rutasT = filteredRows.filter(r => String(r['RUTA']).startsWith('T-'));
+            const rutasRA = filteredRows.filter(r => String(r['RUTA']).startsWith('RA-'));
+            const resumen = `Se van a importar:\n` +
+                           `- ${rutasT.length} rutas T- (Troncales)\n` +
+                           `- ${rutasRA.length} rutas RA- (Rutas Alimentadoras)`;
 
             Swal.fire({
                 title: 'Confirmar Importación',
