@@ -65,20 +65,41 @@ const handleProgramFileUpload = (event) => {
     const file = event.target.files && event.target.files[0];
     if (!file) return;
 
-    // Función para convertir valores decimales a formato HH:MM
+    // Función mejorada para convertir valores de tiempo a formato HH:MM
     const formatIntervalo = (valor) => {
-        if (valor === '-' || valor === '') return '00:00';
+        if (valor === null || valor === undefined || valor === '') return '00:00';
         
-        // Si es un número en formato decimal (horas)
+        // Si es un número, asumimos que son minutos
         if (typeof valor === 'number') {
-            const horas = Math.floor(valor * 24); // Convertir fracción de día a horas
-            const minutos = Math.round(((valor * 24) - horas) * 60);
-            return `${horas.toString().padStart(2, '0')}:${minutos.toString().padStart(2, '0')}`;
+            // Si el número es menor a 1, asumimos que es fracción de día (0-1)
+            if (valor < 1) {
+                const horas = Math.floor(valor * 24);
+                const minutos = Math.round(((valor * 24) - horas) * 60);
+                return `${horas.toString().padStart(2, '0')}:${minutos.toString().padStart(2, '0')}`;
+            } 
+            // Si es un número mayor, asumimos que son minutos directos
+            else {
+                const horas = Math.floor(valor / 60);
+                const minutos = Math.round(valor % 60);
+                return `${horas.toString().padStart(2, '0')}:${minutos.toString().padStart(2, '0')}`;
+            }
         }
         
-        // Si ya está en formato HH:MM
+        // Si es un string con formato HH:MM
         if (typeof valor === 'string' && valor.includes(':')) {
-            return valor;
+            const [horas, minutos] = valor.split(':').map(Number);
+            if (!isNaN(horas) && !isNaN(minutos)) {
+                return `${horas.toString().padStart(2, '0')}:${minutos.toString().padStart(2, '0')}`;
+            }
+            return '00:00';
+        }
+        
+        // Si es un string que puede convertirse a número
+        const numValor = parseFloat(valor);
+        if (!isNaN(numValor)) {
+            const horas = Math.floor(numValor);
+            const minutos = Math.round((numValor - horas) * 60);
+            return `${horas.toString().padStart(2, '0')}:${minutos.toString().padStart(2, '0')}`;
         }
         
         return '00:00';
@@ -226,17 +247,30 @@ const handleProgramFileUpload = (event) => {
                             console.log('Enviando datos al servidor:', JSON.stringify(payload, null, 2));
 
                             try {
+                                console.log('Enviando datos al servidor:', JSON.stringify(payload, null, 2));
                                 const response = await programacionService.create(payload);
                                 console.log('Respuesta del servidor:', response);
                                 success++;
                             } catch (error) {
-                                console.error('Error al guardar fila:', {
-                                    error: error.message,
-                                    respuesta: error.response?.data,
-                                    estado: error.response?.status,
-                                    ruta: row.RUTA
-                                });
-                                errors.push(`Error en ruta ${row.RUTA}: ${error.response?.data?.message || error.message}`);
+                                let errorMessage = 'Error al crear la programación';
+                                if (error.response) {
+                                    // El servidor respondió con un código de estado fuera del rango 2xx
+                                    console.error('Error en la respuesta del servidor:', {
+                                        status: error.response.status,
+                                        data: error.response.data,
+                                        headers: error.response.headers
+                                    });
+                                    errorMessage = error.response.data?.message || errorMessage;
+                                } else if (error.request) {
+                                    // La solicitud fue hecha pero no se recibió respuesta
+                                    console.error('No se recibió respuesta del servidor:', error.request);
+                                    errorMessage = 'No se pudo conectar con el servidor';
+                                } else {
+                                    // Algo pasó en la configuración de la solicitud
+                                    console.error('Error al configurar la solicitud:', error.message);
+                                    errorMessage = `Error: ${error.message}`;
+                                }
+                                errors.push(`Error en ruta ${row.RUTA || '?'}: ${errorMessage}`);
                             }
                         } catch (error) {
                             console.error('Error al procesar fila:', error);
