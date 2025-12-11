@@ -204,28 +204,35 @@ const handleProgramFileUpload = (event) => {
                                 horaSalida: '05:30'
                             };
 
-                            console.log('Procesando fila:', payload);
+                            console.log('Enviando datos al servidor:', JSON.stringify(payload, null, 2));
 
-                            if (!payload.ruta || !payload.tipoVehiculo) {
-                                throw new Error('Faltan datos obligatorios (ruta o tipo de vehículo)');
+                            try {
+                                const response = await programacionService.create(payload);
+                                console.log('Respuesta del servidor:', response);
+                                success++;
+                            } catch (error) {
+                                console.error('Error al guardar fila:', {
+                                    error: error.message,
+                                    respuesta: error.response?.data,
+                                    estado: error.response?.status,
+                                    ruta: row.RUTA
+                                });
+                                errors.push(`Error en ruta ${row.RUTA}: ${error.response?.data?.message || error.message}`);
                             }
-
-                            await programacionService.create(payload);
-                            success++;
                         } catch (error) {
-                            console.error('Error al guardar fila:', error);
+                            console.error('Error al procesar fila:', error);
                             errors.push(`Error en ruta ${row.RUTA || '?'}: ${error.message}`);
                         }
                     }
 
                     const resultMessage = errors.length > 0
-                        ? `✅ ${success} creadas<br/>❌ ${errors.length} errores: ${errors.slice(0, 3).join('; ')}`
+                        ? `✅ ${success} creadas correctamente<br/>❌ ${errors.length} errores: ${errors.slice(0, 3).join('; ')}${errors.length > 3 ? `... (${errors.length - 3} más)` : ''}`
                         : `✅ ${success} programaciones creadas correctamente`;
 
                     console.log('Resultado de la importación:', resultMessage);
 
                     Swal.fire({
-                        title: 'Importación completada',
+                        title: errors.length > 0 ? 'Importación con errores' : '¡Éxito!',
                         html: resultMessage,
                         icon: errors.length > 0 ? 'warning' : 'success'
                     });
@@ -233,7 +240,11 @@ const handleProgramFileUpload = (event) => {
                     cargarProgramaciones();
                 } catch (error) {
                     console.error('Error en la importación:', error);
-                    Swal.fire('Error', 'Ocurrió un error durante la importación', 'error');
+                    Swal.fire({
+                        title: 'Error',
+                        html: `Ocurrió un error durante la importación:<br/><strong>${error.message}</strong>`,
+                        icon: 'error'
+                    });
                 } finally {
                     event.target.value = '';
                 }
