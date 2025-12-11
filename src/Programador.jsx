@@ -62,6 +62,22 @@ function Programador() {
     }, [location]);
 
 const handleProgramFileUpload = (event) => {
+    // Mostrar SweetAlert de carga inicial
+    const loadingAlert = Swal.fire({
+        title: 'Procesando archivo',
+        html: 'Por favor espera mientras se procesa el archivo...',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+
+    const file = event.target.files && event.target.files[0];
+    if (!file) {
+        Swal.close();
+        return;
+    }
+
     // Función para normalizar el tipo de vehículo
     const normalizarTipoVehiculo = (tipo) => {
         if (!tipo) return 'VAGONETA';
@@ -84,9 +100,6 @@ const handleProgramFileUpload = (event) => {
         
         return mapeoTipos[tipoNormalizado] || 'VAGONETA';
     };
-    
-    const file = event.target.files && event.target.files[0];
-    if (!file) return;
 
     // Función mejorada para convertir valores de tiempo a formato HH:MM
     const formatIntervalo = (valor) => {
@@ -131,75 +144,68 @@ const handleProgramFileUpload = (event) => {
     const reader = new FileReader();
     reader.onload = async (e) => {
         try {
-            console.log('Iniciando procesamiento del archivo...');
             const data = new Uint8Array(e.target.result);
             const workbook = XLSX.read(data, { type: 'array' });
-            const sheetName = workbook.SheetNames[0];
-            const worksheet = workbook.Sheets[sheetName];
-            
-            // Leer como matriz para ver la estructura real
-            const rawData = XLSX.utils.sheet_to_json(worksheet, { 
-                header: 1,
-                defval: '',
-                blankrows: true
-            });
-            
-            console.log('Datos en bruto:', rawData);
+            const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+            const rawData = XLSX.utils.sheet_to_json(firstSheet, { header: 1, defval: '' });
 
-            // Buscar la fila que contiene los encabezados
-            let headerRowIndex = -1;
-            const headerRow = rawData.find((row, index) => {
-                const hasRuta = row.some(cell => 
-                    String(cell).trim().toUpperCase() === 'RUTA'
-                );
-                if (hasRuta) {
-                    headerRowIndex = index;
-                    return true;
-                }
-                return false;
-            });
-
-            if (headerRowIndex === -1) {
-                throw new Error('No se encontró la fila de encabezados con la columna "RUTA"');
+            if (!rawData || rawData.length < 2) {
+                throw new Error('El archivo está vacío o no contiene datos válidos');
             }
 
-            // Mapeo de columnas
+            // Encontrar la fila de encabezados
+            let headerRowIndex = 0;
+            for (let i = 0; i < Math.min(5, rawData.length); i++) {
+                const row = rawData[i];
+                if (row.some(cell => typeof cell === 'string' && cell.trim() === 'RUTA')) {
+                    headerRowIndex = i;
+                    break;
+                }
+            }
+
+            const headerRow = rawData[headerRowIndex];
             const headerMap = {};
-            headerRow.forEach((header, index) => {
-                const cleanHeader = String(header).trim().toUpperCase();
-                if (cleanHeader) {
-                    headerMap[cleanHeader] = index;
+            const columnMapping = {};
+
+            // Mapeo de columnas con manejo flexible
+            const columnasRequeridas = [
+                'RUTA', 
+                'TIPO DE VEHÍCULO', 
+                'CANTIDAD DE UNIDADES', 
+                'KILOMETRAJE PROGRAMADO', 
+                'VIAJES PROGRAMADOS', 
+                'INTERVALO HR PICO', 
+                'INTERVALO HR VALLE'
+            ];
+
+            // Crear mapeo de columnas
+            headerRow.forEach((cell, index) => {
+                if (typeof cell === 'string') {
+                    const cellValue = cell.trim().toUpperCase();
+                    headerMap[cellValue] = index;
                 }
             });
 
-            console.log('Mapa de columnas:', headerMap);
+            // Verificar columnas requeridas
+            const columnasFaltantes = columnasRequeridas.filter(col => 
+                !Object.keys(headerMap).some(key => 
+                    key.includes(col.split(' ')[0]) // Verificación flexible
+                )
+            );
+
+            if (columnasFaltantes.length > 0) {
+                throw new Error(`Faltan columnas requeridas: ${columnasFaltantes.join(', ')}`);
+            }
 
             // Mapeo flexible de columnas
-            const columnMapping = {
-                'RUTA': null,
-                'TIPO DE VEHÍCULO': null,
-                'CANTIDAD DE UNIDADES': null,
-                'KILOMETRAJE PROGRAMADO': null,
-                'VIAJES PROGRAMADOS': null,
-                'INTERVALO HR PICO': null,
-                'INTERVALO HR VALLE': null
-            };
-
-            // Buscar coincidencias flexibles
-            Object.keys(columnMapping).forEach(requiredCol => {
-                const cleanRequired = requiredCol.replace(/\s+/g, '').toUpperCase();
-                const foundCol = Object.keys(headerMap).find(header => {
-                    const cleanHeader = header.replace(/\s+/g, '').toUpperCase();
-                    return cleanHeader.includes(cleanRequired) || cleanRequired.includes(cleanHeader);
-                });
-
-                if (!foundCol) {
-                    throw new Error(`No se encontró la columna: ${requiredCol}`);
+            columnasRequeridas.forEach(col => {
+                const colMatch = Object.keys(headerMap).find(key => 
+                    key.includes(col.split(' ')[0]) // Coincidencia parcial
+                );
+                if (colMatch) {
+                    columnMapping[col] = colMatch;
                 }
-                columnMapping[requiredCol] = foundCol;
             });
-
-            console.log('Columnas mapeadas:', columnMapping);
 
             // Procesar filas de datos
             const filteredRows = [];
@@ -221,8 +227,6 @@ const handleProgramFileUpload = (event) => {
                 }
             }
 
-            console.log('Filas procesadas:', filteredRows);
-
             if (filteredRows.length === 0) {
                 throw new Error('No se encontraron filas con datos válidos después de los encabezados');
             }
@@ -230,102 +234,108 @@ const handleProgramFileUpload = (event) => {
             // Calcular resumen
             const rutasT = filteredRows.filter(r => r.RUTA.startsWith('T-'));
             const rutasRA = filteredRows.filter(r => r.RUTA.startsWith('RA-'));
-            const resumen = `Se van a importar:\n` +
-                           `- ${rutasT.length} rutas T- (Troncales)\n` +
+            const resumen = `Se van a importar:<br/>` +
+                           `- ${rutasT.length} rutas T- (Troncales)<br/>` +
                            `- ${rutasRA.length} rutas RA- (Rutas Alimentadoras)`;
 
-            console.log('Resumen de importación:', resumen);
+            // Cerrar el diálogo de carga inicial
+            Swal.close();
 
-            Swal.fire({
+            // Mostrar resumen antes de enviar
+            const result = await Swal.fire({
                 title: 'Confirmar Importación',
-                html: resumen.replace(/\n/g, '<br/>') + '<br/><br/>¿Deseas continuar?',
+                html: resumen,
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonText: 'Continuar',
                 cancelButtonText: 'Cancelar'
-            }).then(async (result) => {
-                if (!result.isConfirmed) return;
+            });
 
-                try {
-                    let success = 0;
-                    let errors = [];
-                    
-                    for (const row of filteredRows) {
-                        try {
-                            const payload = {
-                                ruta: row.RUTA,
-                                tipoVehiculo: normalizarTipoVehiculo(row.TIPO_DE_VEHICULO),
-                                cantidadUnidades: row.CANTIDAD_DE_UNIDADES,
-                                kilometraje: row.KILOMETRAJE_PROGRAMADO,
-                                viajesProgramados: row.VIAJES_PROGRAMADOS,
-                                intervaloPico: formatIntervalo(row.INTERVALO_HR_PICO),
-                                intervaloValle: formatIntervalo(row.INTERVALO_HR_VALLE),
-                                programador: localStorage.getItem('userName') || 'sistema',
-                                intervalo: 15,
-                                corridaInicial: 1,
-                                corridaFinal: 1,
-                                horaSalida: '05:30',
-                                numeroEconomico: `E-${row.RUTA.replace(/[^a-zA-Z0-9]/g, '')}`
-                            };
+            if (!result.isConfirmed) {
+                event.target.value = '';
+                return;
+            }
 
-                            console.log('Enviando datos al servidor:', JSON.stringify(payload, null, 2));
-
-                            try {
-                                console.log('Enviando datos al servidor:', JSON.stringify(payload, null, 2));
-                                const response = await programacionService.create(payload);
-                                console.log('Respuesta del servidor:', response);
-                                success++;
-                            } catch (error) {
-                                let errorMessage = 'Error al crear la programación';
-                                if (error.response) {
-                                    // El servidor respondió con un código de estado fuera del rango 2xx
-                                    console.error('Error en la respuesta del servidor:', {
-                                        status: error.response.status,
-                                        data: error.response.data,
-                                        headers: error.response.headers
-                                    });
-                                    errorMessage = error.response.data?.message || errorMessage;
-                                } else if (error.request) {
-                                    // La solicitud fue hecha pero no se recibió respuesta
-                                    console.error('No se recibió respuesta del servidor:', error.request);
-                                    errorMessage = 'No se pudo conectar con el servidor';
-                                } else {
-                                    // Algo pasó en la configuración de la solicitud
-                                    console.error('Error al configurar la solicitud:', error.message);
-                                    errorMessage = `Error: ${error.message}`;
-                                }
-                                errors.push(`Error en ruta ${row.RUTA || '?'}: ${errorMessage}`);
-                            }
-                        } catch (error) {
-                            console.error('Error al procesar fila:', error);
-                            errors.push(`Error en ruta ${row.RUTA || '?'}: ${error.message}`);
-                        }
-                    }
-
-                    const resultMessage = errors.length > 0
-                        ? `✅ ${success} creadas correctamente<br/>❌ ${errors.length} errores: ${errors.slice(0, 3).join('; ')}${errors.length > 3 ? `... (${errors.length - 3} más)` : ''}`
-                        : `✅ ${success} programaciones creadas correctamente`;
-
-                    console.log('Resultado de la importación:', resultMessage);
-
-                    Swal.fire({
-                        title: errors.length > 0 ? 'Importación con errores' : '¡Éxito!',
-                        html: resultMessage,
-                        icon: errors.length > 0 ? 'warning' : 'success'
-                    });
-
-                    cargarProgramaciones();
-                } catch (error) {
-                    console.error('Error en la importación:', error);
-                    Swal.fire({
-                        title: 'Error',
-                        html: `Ocurrió un error durante la importación:<br/><strong>${error.message}</strong>`,
-                        icon: 'error'
-                    });
-                } finally {
-                    event.target.value = '';
+            // Mostrar SweetAlert de carga para el envío
+            const sendingAlert = Swal.fire({
+                title: 'Enviando datos',
+                html: 'Por favor espera mientras se guardan los datos...',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
                 }
             });
+
+            let success = 0;
+            let errors = [];
+            
+            for (const row of filteredRows) {
+                try {
+                    const payload = {
+                        ruta: row.RUTA,
+                        tipoVehiculo: normalizarTipoVehiculo(row.TIPO_DE_VEHICULO),
+                        cantidadUnidades: row.CANTIDAD_DE_UNIDADES,
+                        kilometraje: row.KILOMETRAJE_PROGRAMADO,
+                        viajesProgramados: row.VIAJES_PROGRAMADOS,
+                        intervaloPico: formatIntervalo(row.INTERVALO_HR_PICO),
+                        intervaloValle: formatIntervalo(row.INTERVALO_HR_VALLE),
+                        programador: localStorage.getItem('userName') || 'sistema',
+                        intervalo: 15,
+                        corridaInicial: 1,
+                        corridaFinal: 1,
+                        horaSalida: '05:30',
+                        numeroEconomico: `E-${row.RUTA.replace(/[^a-zA-Z0-9]/g, '')}`
+                    };
+
+                    console.log('Enviando datos al servidor:', JSON.stringify(payload, null, 2));
+                    const response = await programacionService.create(payload);
+                    console.log('Respuesta del servidor:', response);
+                    success++;
+                    
+                } catch (error) {
+                    let errorMessage = 'Error al crear la programación';
+                    if (error.response) {
+                        console.error('Error en la respuesta del servidor:', {
+                            status: error.response.status,
+                            data: error.response.data,
+                            headers: error.response.headers
+                        });
+                        errorMessage = error.response.data?.message || errorMessage;
+                    } else if (error.request) {
+                        console.error('No se recibió respuesta del servidor:', error.request);
+                        errorMessage = 'No se pudo conectar con el servidor';
+                    } else {
+                        console.error('Error al configurar la solicitud:', error.message);
+                        errorMessage = `Error: ${error.message}`;
+                    }
+                    errors.push(`Error en ruta ${row.RUTA || '?'}: ${errorMessage}`);
+                }
+            }
+
+            // Cerrar el SweetAlert de carga
+            Swal.close();
+
+            // Mostrar resumen final
+            if (errors.length > 0) {
+                await Swal.fire({
+                    title: 'Proceso completado con errores',
+                    html: `Se importaron ${success} registros correctamente.<br/><br/>
+                          <strong>Errores (${errors.length}):</strong><br/>
+                          <div style="max-height: 200px; overflow-y: auto; text-align: left; margin-top: 10px;">
+                              ${errors.map((e, i) => `${i+1}. ${e}`).join('<br/>')}
+                          </div>`,
+                    icon: 'warning'
+                });
+            } else {
+                await Swal.fire({
+                    title: '¡Éxito!',
+                    text: `Se importaron ${success} registros correctamente.`,
+                    icon: 'success'
+                });
+            }
+
+            // Recargar las programaciones
+            await cargarProgramaciones();
 
         } catch (error) {
             console.error('Error al procesar archivo:', error);
@@ -350,11 +360,14 @@ const handleProgramFileUpload = (event) => {
                 `,
                 icon: 'error'
             });
+        } finally {
+            // Asegurarse de cerrar cualquier alerta de carga que pueda quedar abierta
+            Swal.close();
+            event.target.value = ''; // Limpiar input file
         }
     };
     reader.readAsArrayBuffer(file);
 };
-
     const cargarProgramaciones = async () => {
         try {
             const data = await programacionService.getAll();
