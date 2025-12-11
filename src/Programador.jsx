@@ -241,7 +241,8 @@ const handleProgramFileUpload = (event) => {
                                 intervalo: 15,
                                 corridaInicial: 1,
                                 corridaFinal: 1,
-                                horaSalida: '05:30'
+                                horaSalida: '05:30',
+                                numeroEconomico: `E-${row.RUTA.replace(/[^a-zA-Z0-9]/g, '')}`
                             };
 
                             console.log('Enviando datos al servidor:', JSON.stringify(payload, null, 2));
