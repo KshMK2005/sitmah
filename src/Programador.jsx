@@ -68,39 +68,100 @@ const handleProgramFileUpload = (event) => {
     const reader = new FileReader();
     reader.onload = async (e) => {
         try {
+            console.log('Iniciando procesamiento del archivo...');
             const data = new Uint8Array(e.target.result);
             const workbook = XLSX.read(data, { type: 'array' });
             const sheetName = workbook.SheetNames[0];
             const worksheet = workbook.Sheets[sheetName];
-            const jsonData = XLSX.utils.sheet_to_json(worksheet, { defval: '' });
+            
+            // Mostrar el contenido crudo de la hoja
+            console.log('Contenido de la hoja:', worksheet);
+            
+            // Leer como JSON
+            const jsonData = XLSX.utils.sheet_to_json(worksheet, { 
+                defval: '',
+                header: 1, // Leer como matriz para ver los datos crudos
+                blankrows: true
+            });
+            
+            console.log('Datos en bruto del Excel:', jsonData);
+            
+            // Leer nuevamente como objetos con encabezados
+            const jsonWithHeaders = XLSX.utils.sheet_to_json(worksheet, { 
+                defval: '',
+                header: 0 // Usar la primera fila como encabezados
+            });
+            
+            console.log('Datos con encabezados:', jsonWithHeaders);
 
             // Mapear y normalizar los nombres de las columnas
-            const mappedData = jsonData.map(row => {
+            const mappedData = jsonWithHeaders.map((row, index) => {
+                console.log(`Fila ${index + 1}:`, row);
                 const mapped = {};
                 Object.keys(row).forEach(key => {
-                    const normalizedKey = key.trim().toUpperCase().replace(/\s+/g, ' ');
+                    const normalizedKey = String(key).trim().toUpperCase().replace(/\s+/g, ' ');
                     mapped[normalizedKey] = row[key];
                 });
                 return mapped;
             });
 
+            console.log('Datos mapeados:', mappedData);
+
             // Filtrar filas vacías y encabezados
-            const filteredRows = mappedData.filter(r => {
-                if (!r['RUTA']) return false;
-                const rutaLower = String(r['RUTA'] || '').toLowerCase();
-                const tipoLower = String(r['TIPO DE VEHÍCULO'] || '').toLowerCase();
-                const looksHeader = rutaLower.includes('ruta') || 
-                                 tipoLower.includes('tipo') || 
-                                 rutaLower.includes('route') ||
-                                 rutaLower === 'ruta';
-                return !looksHeader && rutaLower.trim() !== '';
+            const filteredRows = mappedData.filter((r, index) => {
+                const ruta = String(r['RUTA'] || '').trim();
+                const tipo = String(r['TIPO DE VEHÍCULO'] || '').trim();
+                const rutaLower = ruta.toLowerCase();
+                const tipoLower = tipo.toLowerCase();
+                
+                const esFilaVacia = !ruta && !tipo;
+                const esEncabezado = rutaLower.includes('ruta') || 
+                                   tipoLower.includes('tipo') || 
+                                   rutaLower.includes('route');
+                
+                console.log(`Fila ${index + 1}:`, {
+                    ruta,
+                    tipo,
+                    esFilaVacia,
+                    esEncabezado,
+                    seIncluye: !esFilaVacia && !esEncabezado
+                });
+                
+                return !esFilaVacia && !esEncabezado;
             });
 
+            console.log('Filas filtradas:', filteredRows);
+
             if (filteredRows.length === 0) {
+                // Mostrar más detalles sobre por qué no se encontraron filas
+                const razones = [];
+                if (mappedData.length === 0) {
+                    razones.push('El archivo está vacío o no se pudieron leer los datos.');
+                } else {
+                    razones.push(`Se encontraron ${mappedData.length} filas, pero ninguna pasó el filtro.`);
+                    razones.push('Primeras filas del archivo:');
+                    mappedData.slice(0, 3).forEach((row, i) => {
+                        razones.push(`Fila ${i + 1}: ${JSON.stringify(row)}`);
+                    });
+                }
+                
+                console.error('No se encontraron filas válidas. Razones:', razones.join('\n'));
+                
                 Swal.fire({
-                    title: 'Advertencia',
-                    text: 'No se encontraron filas válidas en el Excel',
-                    icon: 'warning'
+                    title: 'Error en el archivo',
+                    html: `
+                        <div style="text-align: left;">
+                            <p>No se encontraron filas válidas en el archivo. Razones posibles:</p>
+                            <ul>
+                                <li>El archivo está vacío</li>
+                                <li>Las columnas no tienen los nombres correctos</li>
+                                <li>Los datos no están en la primera hoja</li>
+                            </ul>
+                            <p>Por favor, verifica que el archivo tenga el formato correcto.</p>
+                            <p>Columnas requeridas: RUTA, TIPO DE VEHÍCULO, CANTIDAD DE UNIDADES, KILOMETRAJE PROGRAMADO, VIAJES PROGRAMADOS, INTERVALO HR PICO, INTERVALO HR VALLE</p>
+                        </div>
+                    `,
+                    icon: 'error'
                 });
                 return;
             }
@@ -123,20 +184,31 @@ const handleProgramFileUpload = (event) => {
             );
 
             if (missingColumns.length > 0) {
+                console.error('Faltan columnas requeridas:', missingColumns);
+                console.log('Columnas encontradas:', Object.keys(filteredRows[0] || {}));
+                
                 Swal.fire({
                     title: 'Error en el formato',
-                    text: `Faltan las siguientes columnas: ${missingColumns.join(', ')}`,
+                    html: `
+                        <div style="text-align: left;">
+                            <p>Faltan las siguientes columnas: <strong>${missingColumns.join(', ')}</strong></p>
+                            <p>Columnas encontradas: ${Object.keys(filteredRows[0] || {}).join(', ')}</p>
+                            <p>Por favor, asegúrate de que el archivo tenga todas las columnas requeridas con los nombres correctos.</p>
+                        </div>
+                    `,
                     icon: 'error'
                 });
                 return;
             }
 
             // Calcular resumen
-            const rutasT = filteredRows.filter(r => String(r['RUTA']).startsWith('T-'));
-            const rutasRA = filteredRows.filter(r => String(r['RUTA']).startsWith('RA-'));
+            const rutasT = filteredRows.filter(r => String(r['RUTA'] || '').startsWith('T-'));
+            const rutasRA = filteredRows.filter(r => String(r['RUTA'] || '').startsWith('RA-'));
             const resumen = `Se van a importar:\n` +
                            `- ${rutasT.length} rutas T- (Troncales)\n` +
                            `- ${rutasRA.length} rutas RA- (Rutas Alimentadoras)`;
+
+            console.log('Resumen de importación:', resumen);
 
             Swal.fire({
                 title: 'Confirmar Importación',
@@ -170,6 +242,8 @@ const handleProgramFileUpload = (event) => {
                                 horaSalida: '05:30'
                             };
 
+                            console.log('Procesando fila:', payload);
+
                             // Validar campos obligatorios
                             if (!payload.ruta || !payload.tipoVehiculo) {
                                 throw new Error('Faltan datos obligatorios (ruta o tipo de vehículo)');
@@ -187,6 +261,8 @@ const handleProgramFileUpload = (event) => {
                     const resultMessage = errors.length > 0
                         ? `✅ ${success} creadas<br/>❌ ${errors.length} errores: ${errors.slice(0, 3).join('; ')}`
                         : `✅ ${success} programaciones creadas correctamente`;
+
+                    console.log('Resultado de la importación:', resultMessage);
 
                     Swal.fire({
                         title: 'Importación completada',
