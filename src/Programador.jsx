@@ -76,7 +76,7 @@ const handleProgramFileUpload = (event) => {
             
             // Leer como matriz para ver la estructura real
             const rawData = XLSX.utils.sheet_to_json(worksheet, { 
-                header: 1,  // Leer como matriz
+                header: 1,
                 defval: '',
                 blankrows: true
             });
@@ -100,7 +100,7 @@ const handleProgramFileUpload = (event) => {
                 throw new Error('No se encontró la fila de encabezados con la columna "RUTA"');
             }
 
-            // Obtener índices de las columnas
+            // Mapeo de columnas
             const headerMap = {};
             headerRow.forEach((header, index) => {
                 const cleanHeader = String(header).trim().toUpperCase();
@@ -111,43 +111,49 @@ const handleProgramFileUpload = (event) => {
 
             console.log('Mapa de columnas:', headerMap);
 
-            // Validar columnas requeridas
-            const requiredColumns = [
-                'RUTA', 
-                'TIPO DE VEHÍCULO', 
-                'CANTIDAD DE UNIDADES', 
-                'KILOMETRAJE PROGRAMADO',
-                'VIAJES PROGRAMADOS',
-                'INTERVALO HR PICO',
-                'INTERVALO HR VALLE'
-            ];
+            // Mapeo flexible de columnas
+            const columnMapping = {
+                'RUTA': null,
+                'TIPO DE VEHÍCULO': null,
+                'CANTIDAD DE UNIDADES': null,
+                'KILOMETRAJE PROGRAMADO': null,
+                'VIAJES PROGRAMADOS': null,
+                'INTERVALO HR PICO': null,
+                'INTERVALO HR VALLE': null
+            };
 
-            const missingColumns = requiredColumns.filter(col => 
-                !Object.keys(headerMap).some(header => 
-                    header.includes(col)
-                )
-            );
+            // Buscar coincidencias flexibles
+            Object.keys(columnMapping).forEach(requiredCol => {
+                const cleanRequired = requiredCol.replace(/\s+/g, '').toUpperCase();
+                const foundCol = Object.keys(headerMap).find(header => {
+                    const cleanHeader = header.replace(/\s+/g, '').toUpperCase();
+                    return cleanHeader.includes(cleanRequired) || cleanRequired.includes(cleanHeader);
+                });
 
-            if (missingColumns.length > 0) {
-                throw new Error(`Faltan columnas requeridas: ${missingColumns.join(', ')}`);
-            }
+                if (!foundCol) {
+                    throw new Error(`No se encontró la columna: ${requiredCol}`);
+                }
+                columnMapping[requiredCol] = foundCol;
+            });
 
-            // Procesar filas de datos (empezando después de los encabezados)
+            console.log('Columnas mapeadas:', columnMapping);
+
+            // Procesar filas de datos
             const filteredRows = [];
             for (let i = headerRowIndex + 1; i < rawData.length; i++) {
                 const row = rawData[i];
-                const ruta = String(row[headerMap['RUTA']] || '').trim();
-                const tipo = String(row[headerMap['TIPO DE VEHÍCULO']] || '').trim();
+                const ruta = String(row[headerMap[columnMapping['RUTA']]] || '').trim();
+                const tipo = String(row[headerMap[columnMapping['TIPO DE VEHÍCULO']]] || '').trim();
                 
                 if (ruta && tipo) {
                     filteredRows.push({
                         RUTA: ruta,
                         TIPO_DE_VEHICULO: tipo.toUpperCase(),
-                        CANTIDAD_DE_UNIDADES: parseInt(row[headerMap['CANTIDAD DE UNIDADES']]) || 1,
-                        KILOMETRAJE_PROGRAMADO: parseInt(row[headerMap['KILOMETRAJE PROGRAMADO']]) || 0,
-                        VIAJES_PROGRAMADOS: parseInt(row[headerMap['VIAJES PROGRAMADOS']]) || 0,
-                        INTERVALO_HR_PICO: String(row[headerMap['INTERVALO HR PICO']] || '').trim(),
-                        INTERVALO_HR_VALLE: String(row[headerMap['INTERVALO HR VALLE']] || '').trim()
+                        CANTIDAD_DE_UNIDADES: parseInt(row[headerMap[columnMapping['CANTIDAD DE UNIDADES']]]) || 1,
+                        KILOMETRAJE_PROGRAMADO: parseInt(row[headerMap[columnMapping['KILOMETRAJE PROGRAMADO']]]) || 0,
+                        VIAJES_PROGRAMADOS: parseInt(row[headerMap[columnMapping['VIAJES PROGRAMADOS']]]) || 0,
+                        INTERVALO_HR_PICO: String(row[headerMap[columnMapping['INTERVALO HR PICO']]] || '').trim(),
+                        INTERVALO_HR_VALLE: String(row[headerMap[columnMapping['INTERVALO HR VALLE']]] || '').trim()
                     });
                 }
             }
@@ -158,7 +164,7 @@ const handleProgramFileUpload = (event) => {
                 throw new Error('No se encontraron filas con datos válidos después de los encabezados');
             }
 
-            // Resto del código para procesar las filas válidas...
+            // Calcular resumen
             const rutasT = filteredRows.filter(r => r.RUTA.startsWith('T-'));
             const rutasRA = filteredRows.filter(r => r.RUTA.startsWith('RA-'));
             const resumen = `Se van a importar:\n` +
