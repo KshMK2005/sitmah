@@ -65,6 +65,25 @@ const handleProgramFileUpload = (event) => {
     const file = event.target.files && event.target.files[0];
     if (!file) return;
 
+    // Función para convertir valores decimales a formato HH:MM
+    const formatIntervalo = (valor) => {
+        if (valor === '-' || valor === '') return '00:00';
+        
+        // Si es un número en formato decimal (horas)
+        if (typeof valor === 'number') {
+            const horas = Math.floor(valor * 24); // Convertir fracción de día a horas
+            const minutos = Math.round(((valor * 24) - horas) * 60);
+            return `${horas.toString().padStart(2, '0')}:${minutos.toString().padStart(2, '0')}`;
+        }
+        
+        // Si ya está en formato HH:MM
+        if (typeof valor === 'string' && valor.includes(':')) {
+            return valor;
+        }
+        
+        return '00:00';
+    };
+
     const reader = new FileReader();
     reader.onload = async (e) => {
         try {
@@ -152,8 +171,8 @@ const handleProgramFileUpload = (event) => {
                         CANTIDAD_DE_UNIDADES: parseInt(row[headerMap[columnMapping['CANTIDAD DE UNIDADES']]]) || 1,
                         KILOMETRAJE_PROGRAMADO: parseInt(row[headerMap[columnMapping['KILOMETRAJE PROGRAMADO']]]) || 0,
                         VIAJES_PROGRAMADOS: parseInt(row[headerMap[columnMapping['VIAJES PROGRAMADOS']]]) || 0,
-                        INTERVALO_HR_PICO: String(row[headerMap[columnMapping['INTERVALO HR PICO']]] || '').trim(),
-                        INTERVALO_HR_VALLE: String(row[headerMap[columnMapping['INTERVALO HR VALLE']]] || '').trim()
+                        INTERVALO_HR_PICO: row[headerMap[columnMapping['INTERVALO HR PICO']]],
+                        INTERVALO_HR_VALLE: row[headerMap[columnMapping['INTERVALO HR VALLE']]]
                     });
                 }
             }
@@ -195,8 +214,8 @@ const handleProgramFileUpload = (event) => {
                                 cantidadUnidades: row.CANTIDAD_DE_UNIDADES,
                                 kilometraje: row.KILOMETRAJE_PROGRAMADO,
                                 viajesProgramados: row.VIAJES_PROGRAMADOS,
-                                intervaloPico: row.INTERVALO_HR_PICO,
-                                intervaloValle: row.INTERVALO_HR_VALLE,
+                                intervaloPico: formatIntervalo(row.INTERVALO_HR_PICO),
+                                intervaloValle: formatIntervalo(row.INTERVALO_HR_VALLE),
                                 programador: localStorage.getItem('userName') || 'sistema',
                                 intervalo: 15,
                                 corridaInicial: 1,
