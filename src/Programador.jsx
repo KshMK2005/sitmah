@@ -62,6 +62,29 @@ function Programador() {
     }, [location]);
 
 const handleProgramFileUpload = (event) => {
+    // Función para normalizar el tipo de vehículo
+    const normalizarTipoVehiculo = (tipo) => {
+        if (!tipo) return 'VAGONETA';
+        
+        const tipoNormalizado = tipo.toString().toUpperCase().trim();
+        
+        const mapeoTipos = {
+            'GRAN VIALE': 'GRAN VIALE',
+            'GRAN_VIALE': 'GRAN VIALE',
+            'GRANVIALE': 'GRAN VIALE',
+            'BÓXER': 'BOXER',
+            'BOXER': 'BOXER',
+            'ORIÓN': 'BOXER',
+            'ORION': 'BOXER',
+            'SPRINTER': 'SPRINTER',
+            'VAGONETA': 'VAGONETA',
+            'VAN': 'VAGONETA',
+            'CAMIONETA': 'VAGONETA'
+        };
+        
+        return mapeoTipos[tipoNormalizado] || 'VAGONETA';
+    };
+    
     const file = event.target.files && event.target.files[0];
     if (!file) return;
 
@@ -231,7 +254,7 @@ const handleProgramFileUpload = (event) => {
                         try {
                             const payload = {
                                 ruta: row.RUTA,
-                                tipoVehiculo: row.TIPO_DE_VEHICULO,
+                                tipoVehiculo: normalizarTipoVehiculo(row.TIPO_DE_VEHICULO),
                                 cantidadUnidades: row.CANTIDAD_DE_UNIDADES,
                                 kilometraje: row.KILOMETRAJE_PROGRAMADO,
                                 viajesProgramados: row.VIAJES_PROGRAMADOS,
